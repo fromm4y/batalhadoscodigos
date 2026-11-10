@@ -9,16 +9,25 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 
 - **Nada** de _La Casa de Papel_ ou _One Piece_: sem máscara de Dalí (usar **máscara de olhos simples, tipo dominó**), sem Luffy, sem chapéu de palha **com fita vermelha** (usar **fita azul**), sem Jolly Roger com chapéu, sem logos.
 - Personagens **originais**. Evitar pedir "no estilo de [obra/artista]" no prompt.
+- **Imagens de referência** (fotos de séries, filmes ou museus reais) servem **só para inspirar o clima**. Nunca colocar essas imagens no repositório nem usá-las como base direta no gerador.
 - Diversidade: variar tons de pele e cabelos nos personagens.
 
-## Estilo (usar em TODOS os prompts)
+## Estilo "HQ Noir" (usar em TODOS os prompts) — VISUAL.md §10
 
 **Prompt base (em inglês funciona melhor nos geradores):**
 
-> _comic book illustration, bold black ink outlines, flat vibrant colors, halftone dot shading, dynamic composition, kid-friendly, original characters, no text, no letters, no logos_
+> _noir comic book illustration, dark moody night scene, museum heist atmosphere, dramatic spotlight lighting, deep shadows, bold black ink outlines, halftone dot shading, limited palette of deep navy and charcoal with red alarm accents, blue moonlight accents and warm brass gold highlights, cinematic composition, mysterious but kid-friendly, original characters, no text, no letters, no logos_
 
-**Paleta:** vermelho `#E63946`, azul `#1D4ED8`, amarelo palha `#F4C430`, papel `#FFF8E7`, tinta `#111111`.
-**Importante:** **sem texto dentro da imagem** (os textos e balões são colocados pelo jogo).
+**Acrescente conforme a imagem:**
+
+| Tipo de imagem             | Acrescentar ao prompt base                                    |
+| -------------------------- | ------------------------------------------------------------- |
+| Coisas do **Bando**        | _red accent lighting, red security lasers, blueprint details_ |
+| Coisas dos **Piratas**     | _blue moonlight, harbor at night, old nautical map details_   |
+| **Personagens** (retratos) | _waist-up portrait, transparent background, rim lighting_     |
+
+**Paleta:** noite `#0B0D14`, grafite `#171B26`, alarme `#E63946`, luar `#2F6BFF`, latão `#D4A537`, holofote `#FFF4C2`, papel envelhecido `#EDE3CC`.
+**Importante:** **sem texto dentro da imagem** (os textos e balões são colocados pelo jogo). Fundo escuro: as imagens vão aparecer sobre a tela noturna, então evite céus claros/diurnos.
 
 ## Formatos e onde salvar
 
@@ -89,5 +98,16 @@ Retrato da cintura pra cima, olhando um pouco para o lado, para caber ao lado do
 
 ---
 
-**Total: 30 imagens** (7 quadros + 10 retratos + 7 cenários + 6 habilidades).
-**Prioridade** se faltar tempo: 1) quadros do Ep. 1 → 2) personagens neutros + robô provocando → 3) o resto.
+## 5. Ganchos "quero jogar mais" (VISUAL.md §8.7 e §9) — `src/assets/scenes/`
+
+| id            | Onde aparece                        | Descrição                                                                                                                                                                                           |
+| ------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `carta-ep1`   | Álbum do Museu (carta colecionável) | A Máquina Analítica como "carta de colecionador": a máquina de engrenagens em destaque, fundo escuro, brilho de vitrine. Formato **retrato 600 × 840**, `.png`. (A moldura de latão o jogo coloca.) |
+| `proximo-ep2` | Cliffhanger do fim do Ep. 1         | Objeto do tamanho de uma máquina de escrever **coberto por um pano**, só a silhueta, sob um holofote, num depósito escuro. (O carimbo "PRÓXIMA SEMANA" o jogo coloca.)                              |
+
+---
+
+**Total: 32 imagens** (7 quadros + 10 retratos + 7 cenários + 6 habilidades + 2 ganchos).
+**Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
+
+> O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.
