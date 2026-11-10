@@ -25,12 +25,7 @@ Scripts: `npm run build`, `npm run typecheck`, `npm run lint`, `npm test`, `npm 
 2. **Authentication** → _Vamos começar_ → aba **Método de login** → ative **Google**.
 3. **Firestore Database** → _Criar banco de dados_ → modo **produção** → região `southamerica-east1 (São Paulo)`.
 4. **Configurações do projeto** (engrenagem) → _Seus apps_ → ícone **Web `</>`** → registre o app. Copie `apiKey`, `authDomain`, `projectId` e `appId` para as variáveis `VITE_FIREBASE_*`.
-5. **Configurações do projeto** → **Contas de serviço** → _Gerar nova chave privada_. Vai baixar um `.json`. **Nunca commite esse arquivo.** Converta para base64:
-   - Linux: `base64 -w0 arquivo.json`
-   - Mac: `base64 -i arquivo.json`
-   - Windows (PowerShell): `[Convert]::ToBase64String([IO.File]::ReadAllBytes("arquivo.json"))`
-
-   O resultado vai em `FIREBASE_SERVICE_ACCOUNT_JSON`.
+5. **Configurações do projeto** → **Contas de serviço** → _Gerar nova chave privada_. Vai baixar um `.json`. **Nunca commite esse arquivo.** Abra o arquivo no Bloco de Notas, copie **todo** o conteúdo (de `{` até `}`) e cole como valor de `FIREBASE_SERVICE_ACCOUNT_JSON` na Vercel. Não precisa converter (base64 também é aceito).
 
 6. **Regras e índices** (Firebase CLI):
    ```bash
@@ -50,11 +45,11 @@ Scripts: `npm run build`, `npm run typecheck`, `npm run lint`, `npm test`, `npm 
 
 ### Variáveis de ambiente
 
-| Variável                        | Onde        | O que é                    |
-| ------------------------------- | ----------- | -------------------------- |
-| `VITE_FIREBASE_API_KEY`         | front       | config do app Web          |
-| `VITE_FIREBASE_AUTH_DOMAIN`     | front       | config do app Web          |
-| `VITE_FIREBASE_PROJECT_ID`      | front       | config do app Web          |
-| `VITE_FIREBASE_APP_ID`          | front       | config do app Web          |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | só servidor | conta de serviço em base64 |
-| `ADMIN_EMAIL`                   | só servidor | e-mail Google da admin     |
+| Variável                        | Onde        | O que é                  |
+| ------------------------------- | ----------- | ------------------------ |
+| `VITE_FIREBASE_API_KEY`         | front       | config do app Web        |
+| `VITE_FIREBASE_AUTH_DOMAIN`     | front       | config do app Web        |
+| `VITE_FIREBASE_PROJECT_ID`      | front       | config do app Web        |
+| `VITE_FIREBASE_APP_ID`          | front       | config do app Web        |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | só servidor | JSON da conta de serviço |
+| `ADMIN_EMAIL`                   | só servidor | e-mail Google da admin   |

@@ -6,15 +6,25 @@ import { cert, getApps, initializeApp, type App, type ServiceAccount } from 'fir
 import { getAuth, type Auth } from 'firebase-admin/auth';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 
+/**
+ * Aceita o JSON da conta de serviço colado direto (como baixado do Firebase)
+ * ou codificado em base64.
+ */
+export function parseServiceAccount(value: string): unknown {
+  const trimmed = value.trim();
+  const json = trimmed.startsWith('{') ? trimmed : Buffer.from(trimmed, 'base64').toString('utf8');
+  return JSON.parse(json);
+}
+
 type AdminBundle = { app: App; auth: Auth; db: Firestore; projectId: string };
 let cached: AdminBundle | null = null;
 
 type RawServiceAccount = { project_id?: string; client_email?: string; private_key?: string };
 
 function readServiceAccount(): ServiceAccount & { projectId: string } {
-  const b64 = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-  if (!b64) throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON não definida.');
-  const raw = JSON.parse(Buffer.from(b64, 'base64').toString('utf8')) as RawServiceAccount;
+  const value = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+  if (!value) throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON não definida.');
+  const raw = parseServiceAccount(value) as RawServiceAccount;
   if (!raw.project_id || !raw.client_email || !raw.private_key) {
     throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON inválida (faltam campos).');
   }

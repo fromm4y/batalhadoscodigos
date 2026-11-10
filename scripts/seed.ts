@@ -19,14 +19,17 @@ function loadEnvFile(path: string): void {
 loadEnvFile('.env.local');
 loadEnvFile('.env');
 
-const b64 = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+const saValue = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-if (!b64 || !adminEmail) {
+if (!saValue || !adminEmail) {
   console.error('Defina FIREBASE_SERVICE_ACCOUNT_JSON e ADMIN_EMAIL no .env.local.');
   process.exit(1);
 }
 
-const sa = JSON.parse(Buffer.from(b64, 'base64').toString('utf8')) as {
+const saText = saValue.trim().startsWith('{')
+  ? saValue.trim()
+  : Buffer.from(saValue.trim(), 'base64').toString('utf8');
+const sa = JSON.parse(saText) as {
   project_id: string;
   client_email: string;
   private_key: string;
