@@ -2,11 +2,13 @@ import { createBrowserRouter } from 'react-router';
 import { ComicTestPage } from './ComicTestPage';
 import { ComingSoon } from './ComingSoon';
 import { HomePage } from './HomePage';
+import { PrototypePage } from './prototype/PrototypePage';
 
 /** Rotas do SPEC 9.1. As telas reais chegam nas etapas indicadas. */
 export const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
   { path: '/teste-hq', element: <ComicTestPage /> },
+  { path: '/prototipo', element: <PrototypePage /> },
   { path: '/dupla', element: <ComingSoon title="Escolher dupla" stage={2} /> },
   { path: '/dupla/nova', element: <ComingSoon title="Nova dupla" stage={2} /> },
   { path: '/jogo', element: <ComingSoon title="O Jogo" stage={3} /> },
