@@ -1,7 +1,7 @@
 # CLAUDE.md — A Grande Caçada aos Códigos
 
-> **Fonte da verdade: `SPEC.md`.** Este arquivo é só o resumo das regras que valem SEMPRE.
-> Em caso de conflito, vale o SPEC.md. Em caso de dúvida, **perguntar à May antes de inventar**.
+> **Fontes da verdade: `SPEC.md` + `VISUAL.md`** (o VISUAL.md **substitui a seção 9.6** do SPEC e detalha o fluxo do aluno da 9.2).
+> Este arquivo é só o resumo das regras que valem SEMPRE. Em caso de conflito, valem o VISUAL.md (arte/fluxo) e o SPEC.md (o resto). Em caso de dúvida, **perguntar à May antes de inventar**.
 
 ## Como trabalhar
 
@@ -23,7 +23,7 @@
 1. **Todos os números de regra** (pontos, forças de puxão, tempos, chances, limites, volumes) ficam em **`src/config/gameRules.ts`**. Nunca hardcodar número de regra em componente/motor.
 2. **"Nada abre sem a Narradora" (RN-05):** fases só avançam por clique da instrutora. Tempos de fase são só **guia**; nada avança sozinho. Fora de sessão aberta, aluno vê _"A Narradora ainda não deu o sinal..."_.
 3. **Desafios espelhados:** os dois lados trabalham o **mesmo conceito com a mesma dificuldade**, com **ações opostas** (Bando quebra/lê/cria; Piratas protegem/escrevem/depuram). Vale para conteúdo e para habilidades.
-4. **Direitos de imagem:** usar só a **estética**. **PROIBIDO** usar nomes, logos, personagens, músicas ou imagens oficiais de _La Casa de Papel_ ou _One Piece_ (nada de Luffy, Jolly Roger oficial, máscara de Dalí, "Bella Ciao", etc.). Nenhum desses nomes aparece na UI, em assets ou em nomes de arquivo. Toda arte é **original** (SVG próprio).
+4. **Direitos de imagem:** usar só a **estética**. **PROIBIDO** usar nomes, logos, personagens, músicas ou imagens oficiais de _La Casa de Papel_ ou _One Piece_ (nada de Luffy, Jolly Roger oficial, máscara de Dalí, "Bella Ciao", etc.). Nenhum desses nomes aparece na UI, em assets ou em nomes de arquivo. Toda arte é **original**. Imagens de referência (séries, filmes, museus reais) servem só para inspirar: **nunca** entram no repositório.
 5. **Conteúdo dirigido por JSON:** o motor não conhece episódio nenhum. Episódio = `src/content/episodes/epN.json` + registro em `src/content/season.ts`.
 6. **LGPD:** nenhum dado pessoal de aluno (sem nome real, foto, e-mail, idade). Nomes de dupla só de listas fechadas (`src/content/names.ts`).
 7. **Barra do cabo de guerra:** alterada **sempre** por `runTransaction`. Timers sempre a partir de `serverTimestamp()` + offset de relógio estimado.
@@ -31,16 +31,22 @@
 9. **Anti-trapaça MVP:** nunca logar respostas no console nem deixá-las em texto puro no HTML; build minificado.
 10. **Toda a interface em português do Brasil.** Microcopy curta, divertida, **sem humilhar** quem erra.
 
-## Direção de arte (HQ) — "tem que parecer um gibi vivo"
+## Direção de arte v2 — "HQ Noir de assalto" (VISUAL.md)
 
-- Todo bloco é um **painel de HQ**: borda preta 3–4 px, cantos levemente irregulares, rotação leve (−1° a 1°).
-- Fundos com **retícula halftone** (`radial-gradient`).
-- **Balões de fala** com rabicho para personagens (Professor, Capitã, robô, Narradora).
-- **Onomatopeias** animadas: CLICK!, BOOM!, UÓ-UÓ!, ZZZT!, TCHÁ!, ERROU!.
-- Fontes: **Bangers** (títulos/onomatopeias) e **Nunito** (texto). Corpo mín. **18 px** no nível A, **16 px** nos demais.
-- Paleta (tokens Tailwind): papel `#FFF8E7`, tinta `#111111`, Bando `#E63946`/`#9D0208`, Piratas `#1D4ED8`/`#0B2A7A`, ouro `#F4C430`, sucesso `#2BB673`, alerta `#FF8C00`.
-- Framer Motion: "pop", molas, tremida em erro, confete em vitória. **Respeitar `prefers-reduced-motion`.**
-- Acessibilidade: contraste AA, foco visível, teclado, botões ≥ 44 px, nunca só cor (ícone + texto).
+**Meta:** parecer um **assalto à meia-noite num museu** (escuro, misterioso, tenso, com humor pontual). O aluno tem que sair pensando **"quero jogar mais"**. Nada de gibi infantil claro e amarelo.
+
+- **Fundo sempre escuro.** Luz é a protagonista: holofotes, lanternas, brilho de vitrine, alarmes.
+- **Quadros de HQ continuam:** borda preta grossa, cantos irregulares, rotação leve (−1° a 1°), mas agora em **grafite** ou **papel envelhecido** sobre a noite.
+- **Paleta v2 (tokens em `src/index.css`):** noite `#0B0D14` · grafite `#171B26` · grafite claro `#252B3A` · papel envelhecido `#EDE3CC` · tinta `#0A0A0A` · Bando `#E63946`/`#7A0F18` · Piratas `#2F6BFF`/`#0B2A7A` · latão `#D4A537` · holofote `#FFF4C2` · sucesso `#2BB673`.
+- Vermelho e azul **com brilho neon suave** (`box-shadow`/`drop-shadow`). Texto longo **só sobre papel envelhecido ou grafite**, contraste AA.
+- **Tipografia:** **Bebas Neue** (títulos de assalto, timer) · **Special Elite** (dossiês, lore, transmissões, com efeito de digitação) · **Bangers** (onomatopeias/impacto) · **Nunito** (enunciados e respostas; corpo mín. **18 px** no nível A, **16 px** nos demais).
+- **Texturas e cenário em CSS/SVG (sem imagem externa):** retícula escura, vinheta, holofotes varrendo, poeira na luz, lasers piscando, planta do museu (Bando), carta náutica (Piratas), documentos confidenciais (pasta, clipe, fita, carimbo CONFIDENCIAL, polaroide), moldura de vitrine em latão.
+- **Balões de fala** (papel envelhecido, com rabicho) para Professor, Capitã, robô e Narradora. Professor com **glitch** nas transmissões.
+- **Onomatopeias** (CLICK!, BOOM!, UÓ-UÓ!, ZZZT!, TCHÁ!, ERROU!) estouram **com brilho** sobre o escuro.
+- **Trilha de progresso = planta (Bando) / mapa (Piratas)**: 3 pontos (cadeados) + Cofre/X; cada cadeado aberto acende o ponto.
+- **Fim de episódio:** cliffhanger obrigatório ("TRANSMISSÃO INTERCEPTADA").
+- **`prefers-reduced-motion`:** sem tremidas, sem lanterna seguindo o mouse, sem holofote varrendo; transições simples.
+- **Acessibilidade:** foco visível, teclado, botões ≥ 44 px, nunca só cor (ícone + texto).
 
 ## Estrutura de pastas
 

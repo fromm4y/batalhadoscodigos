@@ -1,14 +1,14 @@
 # A Grande Caçada aos Códigos 🔴⚔️🔵
 
 Jogo web em episódios semanais (HQ + cabo de guerra) para o Núcleo WIT, de Barueri/SP.
-Especificação completa: [`SPEC.md`](./SPEC.md) · Regras para o Claude: [`CLAUDE.md`](./CLAUDE.md) · Imagens: [`docs/IMAGENS.md`](./docs/IMAGENS.md)
+Especificação completa: [`SPEC.md`](./SPEC.md) · Direção de arte: [`VISUAL.md`](./VISUAL.md) · Regras para o Claude: [`CLAUDE.md`](./CLAUDE.md) · Imagens: [`docs/IMAGENS.md`](./docs/IMAGENS.md)
 
 ## Rodando localmente
 
 ```bash
 npm install
 cp .env.example .env.local   # preencher com os dados do Firebase
-npm run dev                  # http://localhost:5173  (página de teste: /teste-hq)
+npm run dev                  # http://localhost:5173  (kit visual: /teste-hq · protótipo: /prototipo)
 ```
 
 Scripts: `npm run build`, `npm run typecheck`, `npm run lint`, `npm test`, `npm run seed`.
