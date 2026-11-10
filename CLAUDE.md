@@ -84,5 +84,5 @@ firestore.rules
 - **(10/11) Efeitos sonoros sintetizados** via Web Audio (sem arquivos, sem problema de licença).
 - **(10/11) Ilustrações:** a May gera as imagens (lista em `docs/IMAGENS.md`). Código usa placeholder até a imagem existir. Avatares das duplas continuam em SVG próprio.
 - **(10/11) Seed:** `npm run seed` cria escolas + admin.
-- **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
+- **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). **firebase-admin 13** (o 14 puxa `jose` 6 em ESM e quebra no carregador da Vercel com `ERR_REQUIRE_ESM`; não atualizar sem testar com `node --no-experimental-require-module`). Funções em **Node 22.x**. TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.
