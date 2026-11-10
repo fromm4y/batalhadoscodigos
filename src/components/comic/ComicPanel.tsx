@@ -2,55 +2,78 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { cn } from './cn';
 
-export type PanelTone = 'paper' | 'red' | 'blue' | 'gold' | 'ink' | 'halftone';
+export type PanelTone = 'graphite' | 'paper' | 'red' | 'blue' | 'blueprint' | 'nautical' | 'night';
 
 const toneClass: Record<PanelTone, string> = {
-  paper: 'bg-paper text-ink',
-  halftone: 'bg-halftone text-ink',
-  red: 'bg-halftone-red text-white',
-  blue: 'bg-halftone-blue text-white',
-  gold: 'bg-halftone-gold text-ink',
-  ink: 'bg-ink text-paper',
+  graphite: 'bg-graphite-dots text-paper',
+  paper: 'bg-aged text-ink',
+  red: 'bg-halftone-red text-paper',
+  blue: 'bg-halftone-blue text-paper',
+  blueprint: 'bg-blueprint text-paper',
+  nautical: 'bg-nautical text-ink',
+  night: 'bg-noir text-paper',
+};
+
+export type PanelGlow = 'red' | 'blue' | 'brass' | 'none';
+const glowClass: Record<PanelGlow, string> = {
+  red: 'glow-red',
+  blue: 'glow-blue',
+  brass: 'glow-brass',
+  none: '',
 };
 
 type ComicPanelProps = {
   children: ReactNode;
-  /** Legenda amarela no canto, estilo recordatório de HQ. */
+  /** Recordatório no canto (estilo legenda de HQ). */
   caption?: string;
   tone?: PanelTone;
-  /** Rotação leve em graus (SPEC 9.6: de −1 a 1). */
+  glow?: PanelGlow;
+  /** Rotação leve em graus (de −1 a 1). */
   tilt?: number;
-  /** Atraso da animação de entrada, em segundos. */
   delay?: number;
   className?: string;
   as?: 'section' | 'div' | 'article';
+  /** Sem padding interno (arte encostando na borda). */
+  flush?: boolean;
 };
 
-/** Quadro de HQ: borda grossa, cantos irregulares, sombra chapada e entrada com "pop". */
+/**
+ * Quadro de HQ noir: borda preta grossa, cantos irregulares, aro grafite e sombra chapada.
+ * Entra como página de HQ (slide + leve rotação).
+ */
 export function ComicPanel({
   children,
   caption,
-  tone = 'paper',
+  tone = 'graphite',
+  glow = 'none',
   tilt = 0,
   delay = 0,
   className,
   as = 'section',
+  flush = false,
 }: ComicPanelProps) {
   const MotionTag = motion[as];
   const safeTilt = Math.max(-1, Math.min(1, tilt));
   return (
     <MotionTag
-      initial={{ opacity: 0, scale: 0.85, rotate: safeTilt - 3 }}
-      animate={{ opacity: 1, scale: 1, rotate: safeTilt }}
-      transition={{ type: 'spring', stiffness: 320, damping: 18, delay }}
+      initial={{ opacity: 0, x: 60, rotate: safeTilt + 4 }}
+      animate={{ opacity: 1, x: 0, rotate: safeTilt }}
+      transition={{ type: 'spring', stiffness: 220, damping: 22, delay }}
       className={cn(
-        'relative border-4 border-ink rounded-hand shadow-comic p-5',
+        'relative rounded-hand border-4 border-ink outline-2 outline-graphite-light shadow-comic',
+        flush ? 'overflow-hidden p-0' : 'p-5',
         toneClass[tone],
+        glowClass[glow],
         className,
       )}
     >
       {caption && (
-        <p className="absolute -top-4 left-4 z-10 -rotate-1 border-[3px] border-ink bg-gold px-3 py-1 font-body text-sm font-extrabold uppercase tracking-wide text-ink shadow-comic-sm">
+        <p
+          className={cn(
+            'absolute left-4 z-10 -rotate-1 border-[3px] border-ink bg-paper px-3 py-1 font-type text-sm uppercase tracking-wide text-ink shadow-comic-sm',
+            flush ? 'top-3' : '-top-4',
+          )}
+        >
           {caption}
         </p>
       )}

@@ -1,43 +1,39 @@
+import type { ReactNode } from 'react';
+import { artUrl } from './artRegistry';
 import { cn } from './cn';
 
 /**
- * Ilustrações dos quadros (ids de `art` no JSON do episódio).
- * A May gera as imagens e coloca em src/assets/comic/<id>.webp (ver docs/IMAGENS.md).
- * Enquanto a imagem não existe, aparece um placeholder estilizado.
+ * Ilustrações por id (ids de `art` no JSON e de docs/IMAGENS.md).
+ * A May gera as imagens; enquanto não existem, aparece um placeholder noir
+ * (ou o `fallback` em SVG, quando o componente fornece um).
  */
-const files = import.meta.glob<string>('/src/assets/comic/*.{webp,png,jpg,svg}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
+type ComicArtProps = { id: string; alt: string; className?: string; fallback?: ReactNode };
 
-const byId = new Map<string, string>(
-  Object.entries(files).map(([path, url]) => [
-    path
-      .split('/')
-      .pop()!
-      .replace(/\.\w+$/, ''),
-    url,
-  ]),
-);
-
-type ComicArtProps = { id: string; alt: string; className?: string };
-
-export function ComicArt({ id, alt, className }: ComicArtProps) {
-  const url = byId.get(id);
+export function ComicArt({ id, alt, className, fallback }: ComicArtProps) {
+  const url = artUrl(id);
   if (url) {
     return <img src={url} alt={alt} className={cn('h-full w-full object-cover', className)} />;
+  }
+  if (fallback) {
+    return (
+      <div role="img" aria-label={alt} className={cn('relative h-full w-full', className)}>
+        {fallback}
+        <span className="absolute right-2 bottom-2 border-2 border-ink bg-paper/90 px-2 font-type text-xs text-ink">
+          🎨 {id}
+        </span>
+      </div>
+    );
   }
   return (
     <div
       role="img"
       aria-label={alt}
       className={cn(
-        'grid h-full min-h-32 w-full place-items-center bg-halftone-gold text-center text-ink',
+        'grid h-full min-h-32 w-full place-items-center bg-graphite-dots text-center',
         className,
       )}
     >
-      <span className="rotate-[-3deg] border-[3px] border-ink bg-paper px-3 py-1 font-comic text-xl tracking-wider shadow-comic-sm">
+      <span className="-rotate-2 border-2 border-dashed border-brass px-3 py-1 font-type text-base text-brass">
         🎨 {id}
       </span>
     </div>

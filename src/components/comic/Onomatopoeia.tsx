@@ -42,7 +42,7 @@ export function Onomatopoeia({
 }: OnomatopoeiaProps) {
   const style =
     kind === 'custom'
-      ? { text: text ?? 'POW!', burst: '#F4C430', textColor: '#E63946' }
+      ? { text: text ?? 'POW!', burst: '#D4A537', textColor: '#E63946', glow: '#FFD36B' }
       : ONOMATOPOEIA[kind];
   const points = useMemo(() => burstPoints(13, style.text.length * 31 + 7), [style.text]);
 
@@ -61,12 +61,13 @@ export function Onomatopoeia({
       >
         <svg
           viewBox="0 0 100 100"
-          className="absolute inset-0 h-full w-full drop-shadow-[5px_5px_0_#111]"
+          className="absolute inset-0 h-full w-full"
+          style={{ filter: `drop-shadow(5px 5px 0 #000) drop-shadow(0 0 22px ${style.glow})` }}
         >
           <polygon
             points={points}
             fill={style.burst}
-            stroke="#111"
+            stroke="#0A0A0A"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />

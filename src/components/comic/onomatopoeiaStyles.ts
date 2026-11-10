@@ -1,14 +1,14 @@
 export type OnomatopoeiaKind = 'click' | 'boom' | 'alarm' | 'zzzt' | 'tcha' | 'errou' | 'custom';
 
-/** Textos e cores das onomatopeias oficiais do jogo (SPEC 9.6). */
+/** Onomatopeias oficiais (SPEC 9.6 / VISUAL.md §6): estouram com brilho sobre o escuro. */
 export const ONOMATOPOEIA: Record<
   Exclude<OnomatopoeiaKind, 'custom'>,
-  { text: string; burst: string; textColor: string }
+  { text: string; burst: string; textColor: string; glow: string }
 > = {
-  click: { text: 'CLICK!', burst: '#2BB673', textColor: '#FFF8E7' },
-  boom: { text: 'BOOM!', burst: '#F4C430', textColor: '#E63946' },
-  alarm: { text: 'UÓ-UÓ!', burst: '#E63946', textColor: '#F4C430' },
-  zzzt: { text: 'ZZZT!', burst: '#7C3AED', textColor: '#FFF8E7' },
-  tcha: { text: 'TCHÁ!', burst: '#1D4ED8', textColor: '#F4C430' },
-  errou: { text: 'ERROU!', burst: '#FF8C00', textColor: '#FFF8E7' },
+  click: { text: 'CLICK!', burst: '#2BB673', textColor: '#EDE3CC', glow: '#2BB673' },
+  boom: { text: 'BOOM!', burst: '#D4A537', textColor: '#E63946', glow: '#FFD36B' },
+  alarm: { text: 'UÓ-UÓ!', burst: '#E63946', textColor: '#FFF4C2', glow: '#E63946' },
+  zzzt: { text: 'ZZZT!', burst: '#8B5CF6', textColor: '#EDE3CC', glow: '#A78BFA' },
+  tcha: { text: 'TCHÁ!', burst: '#2F6BFF', textColor: '#FFF4C2', glow: '#2F6BFF' },
+  errou: { text: 'ERROU!', burst: '#FF8C00', textColor: '#EDE3CC', glow: '#FF8C00' },
 };

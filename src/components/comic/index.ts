@@ -5,5 +5,6 @@ export { ONOMATOPOEIA, type OnomatopoeiaKind } from './onomatopoeiaStyles';
 export { ComicButton } from './ComicButton';
 export { HalftoneBackground } from './HalftoneBackground';
 export { ComicArt } from './ComicArt';
+export { hasArt, artUrl } from './artRegistry';
 export { GameLogo } from './GameLogo';
 export { cn } from './cn';
