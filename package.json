@@ -14,7 +14,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-cacada \"vitest run --config vitest.rules.config.ts\"",
+    "dev:emu": "firebase emulators:exec --only auth,firestore --project demo-cacada \"tsx scripts/seed-emulator.ts && vite --mode emulator\""
   },
   "dependencies": {
     "firebase": "^13.2.0",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@firebase/rules-unit-testing": "^6.0.0",
     "@tailwindcss/vite": "^4.3.5",
     "@types/howler": "^2.2.13",
     "@types/node": "^22.20.5",
@@ -39,6 +42,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
+    "firebase-tools": "^15.36.0",
     "globals": "^17.14.0",
     "prettier": "^3.9.10",
     "tailwindcss": "^4.3.5",

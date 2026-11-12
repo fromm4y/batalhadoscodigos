@@ -4,9 +4,13 @@ dist
 .env
 .env.*
 !.env.example
+!.env.emulator
 *.local
 coverage
 *.tsbuildinfo
 service-account*.json
 .firebase
 firebase-debug.log
+firestore-debug.log
+ui-debug.log
+firebase-debug.*.log

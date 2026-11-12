@@ -34,7 +34,7 @@ Scripts: `npm run build`, `npm run typecheck`, `npm run lint`, `npm test`, `npm 
    firebase use --add          # escolha o projeto
    firebase deploy --only firestore
    ```
-7. **Seed** (escolas + admin): com `FIREBASE_SERVICE_ACCOUNT_JSON` e `ADMIN_EMAIL` no `.env.local`, rode `npm run seed`.
+7. **Seed** (escolas + admin): depois do deploy, abra `https://SEU-PROJETO.vercel.app/api/setup` uma vez. (Alternativa local: `npm run seed` com o `.env.local` preenchido.)
 
 ### 2. Vercel
 
