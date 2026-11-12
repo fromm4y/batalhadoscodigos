@@ -72,7 +72,8 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
           <div>
             <p className="font-type text-lg text-mist">Hoje no museu: {episodeTitle}</p>
             <h1 className="font-heist text-6xl leading-none tracking-[0.08em] text-paper text-glow-spot">
-              {team.cityName} <span className="text-mist">·</span>{' '}
+              <span className="text-bando text-glow-red">{team.cityName}</span>{' '}
+              <span className="text-mist">·</span>{' '}
               <span className="text-piratas text-glow-blue">{team.pirateName}</span>
             </h1>
           </div>

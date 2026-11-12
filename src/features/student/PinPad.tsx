@@ -67,7 +67,7 @@ export function PinPad({ value, onChange, onSubmit, disabled, shakeKey = 0, labe
       <div className="grid grid-cols-3 gap-3" role="group" aria-label={label}>
         {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map((d, i) =>
           d === '' ? (
-            <span key={i} />
+            <span key={`vazio-${i}`} aria-hidden />
           ) : (
             <motion.button
               key={d}

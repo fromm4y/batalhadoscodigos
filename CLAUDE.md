@@ -74,7 +74,14 @@ firestore.rules
 - Tipos do domínio espelham o SPEC (seções 6 e 11) — mesmos nomes de campos.
 - Identificadores de código em inglês (como no SPEC: `lockIndex`, `vaultLeader`); textos de UI em pt-BR.
 - Imports com alias `@/` → `src/`.
-- Antes de commitar: `npm run lint`, `npm run typecheck`, `npm test`.
+- Antes de commitar: `npm run lint`, `npm run typecheck`, `npm test` e, se mexeu em regras ou API, `npm run test:emu`.
+
+## Testes e ambiente local
+
+- `npm test`: unitários (Vitest) em `src/` e `api/`.
+- `npm run test:emu`: regras do Firestore + rotas da API contra os emuladores (Auth + Firestore). Precisa de Java.
+- `npm run dev:emu`: app completo local com emuladores e dados falsos (admin@teste.br / ana@teste.br). As rotas `/api/*` rodam dentro do Vite (`scripts/vite-api-plugin.ts`, só em dev). Login de teste: `window.__emuGoogleLogin(email)` (existe só no modo emulador; não vai para o build).
+- Código de `api/` pode importar de `src/` só arquivos sem dependência de browser (`config/gameRules`, `content/names`, `content/season`, `types/domain`), com extensão `.js` no import.
 
 ## Decisões da May (sobrepõem o SPEC onde indicado)
 
@@ -87,3 +94,6 @@ firestore.rules
 - **(10/11) Seed:** `GET /api/setup` (um clique, idempotente) ou `npm run seed` criam escolas + admin. Lógica única em `api/_lib/seed.ts`.
 - **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). **firebase-admin 13** (o 14 puxa `jose` 6 em ESM e quebra no carregador da Vercel com `ERR_REQUIRE_ESM`; não atualizar sem testar com `node --no-experimental-require-module`). Funções em **Node 22.x**. TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.
+- **(12/11) Rota extra `POST /api/session-open`** (além das 4 da SPEC 8.1): o código precisa ser único entre todas as sessões abertas, e a Narradora só enxerga as próprias. Só a dona da turma abre sessão.
+- **(12/11) PIN resetado:** no próximo login, o PIN digitado (com confirmação) vira o novo PIN.
+- **(12/11) Presença:** a dupla marca `connected/lastSeenAt` a cada `GAME_RULES.presence.heartbeatSeconds`; o painel considera desconectada após 2,5× esse tempo.

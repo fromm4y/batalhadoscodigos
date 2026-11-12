@@ -32,7 +32,7 @@ export function Dossier({
         className="absolute top-0 left-6 h-7 w-36 rounded-t-md border-[3px] border-b-0 border-ink bg-[#a8834a]"
       />
       <div className="relative rounded-sm border-[3px] border-ink bg-[#a8834a] p-3 shadow-comic">
-        <div className="relative bg-aged p-6 pb-8 text-ink shadow-[inset_0_0_30px_rgb(120_90_40/0.25)]">
+        <div className="relative bg-aged p-6 pb-14 text-ink shadow-[inset_0_0_30px_rgb(120_90_40/0.25)]">
           {/* clipe */}
           <svg aria-hidden viewBox="0 0 24 60" className="absolute -top-6 right-10 h-16 w-6">
             <path
