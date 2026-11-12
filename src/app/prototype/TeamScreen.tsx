@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
-import { AvatarPreview } from '@/components/avatar/AvatarPreview';
+import { Avatar } from '@/components/avatar/Avatar';
 import { ComicButton, Onomatopoeia, cn } from '@/components/comic';
 import { Polaroid, RobotFigure, Typewriter, WantedPoster } from '@/components/scene';
 import type { GameMode, Side } from '@/types/domain';
@@ -55,11 +55,7 @@ export function TeamScreen({
                 delay={i * 0.15}
                 className={cn(t === MY_TEAM && 'ring-4 ring-bando glow-red')}
               >
-                <AvatarPreview
-                  avatar={t.avatar}
-                  side="red"
-                  className="h-full w-full bg-[#3a1418]"
-                />
+                <Avatar avatar={t.avatar} side="red" className="h-full w-full bg-[#3a1418]" />
               </Polaroid>
             ))}
           </div>
@@ -83,7 +79,7 @@ export function TeamScreen({
                 delay={i * 0.15}
                 className={cn(t === MY_TEAM && 'ring-4 ring-piratas glow-blue')}
               >
-                <AvatarPreview avatar={t.avatar} side="blue" className="h-full w-full" />
+                <Avatar avatar={t.avatar} side="blue" className="h-full w-full" />
               </WantedPoster>
             ))}
           </div>
@@ -178,7 +174,7 @@ function Fighter({
         }}
       />
       {team ? (
-        <AvatarPreview avatar={team.avatar} side={s} className="relative h-72 w-64" />
+        <Avatar avatar={team.avatar} side={s} className="relative h-72 w-64" />
       ) : (
         <RobotFigure className="relative h-72 w-64" />
       )}
