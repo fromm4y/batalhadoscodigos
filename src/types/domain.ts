@@ -113,3 +113,27 @@ export type SessionDoc = {
   createdAt: Timestamp;
   expiresAt: Timestamp;
 };
+
+/** Estado da dupla nesta sessão (SPEC 6.1). Campos de jogo detalhados nas próximas etapas. */
+export type PlayerDoc = {
+  teamId: string;
+  uid: string;
+  side: Side | null;
+  matchId: string | null;
+  connected: boolean;
+  lastSeenAt: Timestamp | null;
+  progress: {
+    lockIndex: 0 | 1 | 2 | 3;
+    locksOpenedAt: (Timestamp | null)[];
+    vaultSolvedAt: Timestamp | null;
+    eventResult: 'pending' | 'ok' | 'failed';
+    jailUntil: Timestamp | null;
+    heardTransmission: boolean;
+  };
+  hints: Record<string, 0 | 1 | 2>;
+  helpUsed: boolean;
+  abilities: { owned: AbilityId[]; used: AbilityId[] };
+  solvedCount: number;
+  episodePoints: number;
+  finishedAt: Timestamp | null;
+};

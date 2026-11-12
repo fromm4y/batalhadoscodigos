@@ -5,7 +5,10 @@ import { PrototypePage } from './prototype/PrototypePage';
 import { AdminPage } from '@/features/instructor/admin/AdminPage';
 import { InstructorLoginPage } from '@/features/instructor/auth/InstructorLoginPage';
 import { RequireInstructor } from '@/features/instructor/auth/RequireInstructor';
+import { ClassDetailPage } from '@/features/instructor/classes/ClassDetailPage';
 import { ClassesPage } from '@/features/instructor/classes/ClassesPage';
+import { ProjectorPage } from '@/features/instructor/session/ProjectorPage';
+import { SessionPage } from '@/features/instructor/session/SessionPage';
 import { EntrancePage } from '@/features/student/EntrancePage';
 import { GamePage } from '@/features/student/GamePage';
 import { NewTeamPage } from '@/features/student/NewTeamPage';
@@ -28,12 +31,30 @@ export const router = createBrowserRouter([
       </RequireInstructor>
     ),
   },
-  { path: '/instrutor/turmas/:classId', element: <ComingSoon title="Turma" stage={2} /> },
+  {
+    path: '/instrutor/turmas/:classId',
+    element: (
+      <RequireInstructor>
+        <ClassDetailPage />
+      </RequireInstructor>
+    ),
+  },
   {
     path: '/instrutor/sessao/:sessionId',
-    element: <ComingSoon title="Painel da Narradora" stage={5} />,
+    element: (
+      <RequireInstructor>
+        <SessionPage />
+      </RequireInstructor>
+    ),
   },
-  { path: '/projetor/:sessionId', element: <ComingSoon title="Tela do projetor" stage={6} /> },
+  {
+    path: '/projetor/:sessionId',
+    element: (
+      <RequireInstructor>
+        <ProjectorPage />
+      </RequireInstructor>
+    ),
+  },
   {
     path: '/admin',
     element: (
