@@ -1,6 +1,10 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { artUrl } from '@/components/comic';
 
-/** O Robô (oponente máquina) em SVG: lata retrô com antena e tela no rosto. Original. */
+/**
+ * O Robô (oponente máquina). Usa a ilustração `robo-<humor>` quando existe em src/assets;
+ * senão, o desenho SVG provisório (lata retrô com antena e tela no rosto). Original.
+ */
 export function RobotFigure({
   className,
   mood = 'provocando',
@@ -9,6 +13,18 @@ export function RobotFigure({
   mood?: 'provocando' | 'derrotado';
 }) {
   const reduce = useReducedMotion();
+  const url = artUrl(`robo-${mood}`);
+  if (url) {
+    return (
+      <motion.img
+        src={url}
+        alt={mood === 'provocando' ? 'O Robô, provocando' : 'O Robô, derrotado e soltando fumaça'}
+        className={`object-contain ${className ?? ''}`}
+        animate={reduce ? undefined : { y: [0, -6, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    );
+  }
   return (
     <motion.svg
       viewBox="0 0 200 240"

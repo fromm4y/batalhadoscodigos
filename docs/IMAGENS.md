@@ -29,6 +29,18 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 **Paleta:** noite `#0B0D14`, grafite `#171B26`, alarme `#E63946`, luar `#2F6BFF`, latão `#D4A537`, holofote `#FFF4C2`, papel envelhecido `#EDE3CC`.
 **Importante:** **sem texto dentro da imagem** (os textos e balões são colocados pelo jogo). Fundo escuro: as imagens vão aparecer sobre a tela noturna, então evite céus claros/diurnos.
 
+## ✅ Status das entregas
+
+| id                                                                                                                                                                 | Situação                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `tear-ciclos`, `ada-escrevendo`                                                                                                                                    | ✅ no jogo (margem branca cortada)                |
+| `capita-tensa`, `robo-provocando`, `robo-derrotado`                                                                                                                | ✅ no jogo (fundo xadrez removido)                |
+| `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`, `narradora-neutra`, `professor-neutro`, `professor-feliz`, `professor-tenso`, `capita-feliz` | ⏳ recebidas no chat, falta reenviar como arquivo |
+| demais                                                                                                                                                             | ⏳ a gerar                                        |
+
+> **Dica para personagens:** em vez de pedir "fundo transparente" (o gerador costuma **desenhar** um xadrez falso), peça **fundo liso de uma cor só**, por exemplo _"plain solid flat dark navy background (#0B0D14), no pattern"_. Fica fácil de recortar e, como o jogo é escuro, às vezes nem precisa recortar.
+> **Formato:** `.webp` também serve para personagens (fica ~7× mais leve que PNG).
+
 ## Formatos e onde salvar
 
 | Grupo                   | Tamanho                           | Formato | Pasta                    |
