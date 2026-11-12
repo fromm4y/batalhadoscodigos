@@ -81,8 +81,9 @@ firestore.rules
 - **(10/11) Puxão de cadeado = 20** (era 15), para a trava de ±60 antes do Cofre ter efeito (3 × 20 + 10 = 70).
 - **(10/11) Rate limit do `/api/join-session`:** conta só **códigos inválidos**, por IP (30/min). Escolas saem todas pelo mesmo IP, então limitar entradas válidas travaria a turma.
 - **(10/11) Temporada** gerada automaticamente pela data (`2026-T4`), em `seasonFromDate`.
-- **(10/11) Efeitos sonoros sintetizados** via Web Audio (sem arquivos, sem problema de licença).
+- **(10/11 e 12/11) Áudio 100% sintetizado** via Web Audio: efeitos **e música de fundo** (sem arquivos, sem problema de licença).
+- **(12/11) Clima "HQ Noir" aprovado** pela May (protótipo `/prototipo`).
 - **(10/11) Ilustrações:** a May gera as imagens (lista em `docs/IMAGENS.md`). Código usa placeholder até a imagem existir. Avatares das duplas continuam em SVG próprio.
-- **(10/11) Seed:** `npm run seed` cria escolas + admin.
+- **(10/11) Seed:** `GET /api/setup` (um clique, idempotente) ou `npm run seed` criam escolas + admin. Lógica única em `api/_lib/seed.ts`.
 - **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). **firebase-admin 13** (o 14 puxa `jose` 6 em ESM e quebra no carregador da Vercel com `ERR_REQUIRE_ESM`; não atualizar sem testar com `node --no-experimental-require-module`). Funções em **Node 22.x**. TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.

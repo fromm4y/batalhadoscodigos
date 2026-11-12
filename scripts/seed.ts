@@ -1,12 +1,12 @@
 /**
- * Seed inicial (SPEC 6.3): escolas + admin na allowlist.
+ * Seed inicial (SPEC 6.3): escolas + admin na allowlist. Mesmo efeito de abrir /api/setup.
  * Uso: preencher FIREBASE_SERVICE_ACCOUNT_JSON e ADMIN_EMAIL no .env.local e rodar `npm run seed`.
- * Pode rodar quantas vezes quiser (idempotente).
  */
 import { readFileSync, existsSync } from 'node:fs';
 import { cert, initializeApp } from 'firebase-admin/app';
-import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { SCHOOLS } from '../src/content/names.ts';
+import { getFirestore } from 'firebase-admin/firestore';
+import { parseServiceAccount } from '../api/_lib/admin.ts';
+import { runSeed } from '../api/_lib/seed.ts';
 
 function loadEnvFile(path: string): void {
   if (!existsSync(path)) return;
@@ -20,16 +20,13 @@ loadEnvFile('.env.local');
 loadEnvFile('.env');
 
 const saValue = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+const adminEmail = process.env.ADMIN_EMAIL;
 if (!saValue || !adminEmail) {
   console.error('Defina FIREBASE_SERVICE_ACCOUNT_JSON e ADMIN_EMAIL no .env.local.');
   process.exit(1);
 }
 
-const saText = saValue.trim().startsWith('{')
-  ? saValue.trim()
-  : Buffer.from(saValue.trim(), 'base64').toString('utf8');
-const sa = JSON.parse(saText) as {
+const sa = parseServiceAccount(saValue) as {
   project_id: string;
   client_email: string;
   private_key: string;
@@ -41,24 +38,7 @@ initializeApp({
     privateKey: sa.private_key,
   }),
 });
-const db = getFirestore();
-
-const batch = db.batch();
-for (const s of SCHOOLS) {
-  batch.set(db.doc(`schools/${s.id}`), { name: s.name, active: true }, { merge: true });
-}
-batch.set(
-  db.doc(`allowedInstructors/${adminEmail}`),
-  {
-    email: adminEmail,
-    role: 'admin',
-    addedBy: 'seed',
-    addedAt: FieldValue.serverTimestamp(),
-    active: true,
-  },
-  { merge: true },
-);
-await batch.commit();
+const result = await runSeed(getFirestore(), adminEmail);
 console.log(
-  `✅ Seed ok no projeto ${sa.project_id}: ${SCHOOLS.length} escolas + admin ${adminEmail}.`,
+  `✅ Seed ok no projeto ${sa.project_id}: ${result.schools} escolas + admin ${result.adminEmail}.`,
 );

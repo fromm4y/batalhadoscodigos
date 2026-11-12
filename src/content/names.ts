@@ -48,12 +48,3 @@ export const PIRATE_NAMES = [
 
 export type CityName = (typeof CITY_NAMES)[number];
 export type PirateName = (typeof PIRATE_NAMES)[number];
-
-/** Escolas atendidas (seed, seção 6.3). O id é estável e usado no Firestore. */
-export const SCHOOLS = [
-  { id: 'meduneckas', name: 'Meduneckas' },
-  { id: 'cavazza', name: 'Cavazza' },
-  { id: 'camisao', name: 'Camisão' },
-  { id: 'adherbal', name: 'Adherbal' },
-  { id: 'emidio', name: 'Emídio' },
-] as const;
