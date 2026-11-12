@@ -1,11 +1,107 @@
 rules_version = '2';
 
-// Etapa 0: tudo fechado. Cada coleção é aberta, com suas regras (SPEC 8.2), na etapa em que é usada.
+// Regras do Firestore (SPEC 8.2). Cada coleção é aberta na etapa em que passa a ser usada.
 // As Vercel Functions usam firebase-admin, que ignora estas regras.
+// Testes: npm run test:rules (emulador).
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+
+    // ---------- Funções auxiliares ----------
+    function signedIn() {
+      return request.auth != null;
     }
+    // Login Google com e-mail verificado (instrutores). Duplas usam custom token e não passam aqui.
+    function isGoogle() {
+      return signedIn()
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.email_verified == true;
+    }
+    function myEmail() {
+      return request.auth.token.email.lower();
+    }
+    function allowlistDoc() {
+      return /databases/$(database)/documents/allowedInstructors/$(myEmail());
+    }
+    // Instrutor autorizado e ativo na allowlist.
+    function isInstructor() {
+      return isGoogle() && exists(allowlistDoc()) && get(allowlistDoc()).data.active == true;
+    }
+    function isAdmin() {
+      return isInstructor() && get(allowlistDoc()).data.role == 'admin';
+    }
+    function onlyKeys(keys) {
+      return request.resource.data.keys().hasOnly(keys);
+    }
+
+    // ---------- allowedInstructors/{email} ----------
+    // Leitura do próprio e-mail (checagem no login) ou pela admin. Escrita só da admin.
+    match /allowedInstructors/{email} {
+      allow read: if isGoogle() && (email == myEmail() || isAdmin());
+      allow create, update: if isAdmin()
+        && email == email.lower()
+        && request.resource.data.email == email
+        && request.resource.data.role in ['admin', 'instructor']
+        && request.resource.data.active is bool
+        && onlyKeys(['email', 'role', 'addedBy', 'addedAt', 'active'])
+        // a admin não pode se desativar nem se rebaixar (evita ficar trancada para fora)
+        && (email != myEmail() || (request.resource.data.active == true && request.resource.data.role == 'admin'));
+      allow delete: if false;
+    }
+
+    // ---------- instructors/{uid} ----------
+    match /instructors/{uid} {
+      allow read: if isInstructor() && (uid == request.auth.uid || isAdmin());
+      allow create, update: if isInstructor()
+        && uid == request.auth.uid
+        && request.resource.data.uid == uid
+        && request.resource.data.email == myEmail()
+        && request.resource.data.role == get(allowlistDoc()).data.role
+        && request.resource.data.displayName is string
+        && (resource == null
+          ? request.resource.data.createdAt == request.time
+          : request.resource.data.createdAt == resource.data.createdAt)
+        && onlyKeys(['uid', 'email', 'displayName', 'role', 'createdAt']);
+      allow delete: if false;
+    }
+
+    // ---------- schools/{schoolId} ----------
+    match /schools/{schoolId} {
+      allow read: if isInstructor();
+      allow update: if isAdmin()
+        && request.resource.data.name is string
+        && request.resource.data.active is bool
+        && onlyKeys(['name', 'active']);
+      allow create, delete: if false;
+    }
+
+    // ---------- classes/{classId} ----------
+    function validClass(d) {
+      return d.keys().hasOnly(['schoolId', 'instructorId', 'name', 'grade', 'level', 'shift', 'season', 'archived', 'createdAt'])
+        && d.schoolId is string && exists(/databases/$(database)/documents/schools/$(d.schoolId))
+        && d.name is string && d.name.size() >= 1 && d.name.size() <= 30
+        && d.grade in [4, 5, 6, 7, 8, 9]
+        && d.level in ['A', 'B', 'C']
+        && d.shift in ['manha', 'tarde']
+        && d.season is string && d.season.size() <= 10
+        && d.archived is bool;
+    }
+
+    match /classes/{classId} {
+      // RN-01 / 8.2: o instrutor só vê e edita as próprias turmas; a admin lê todas.
+      allow read: if isInstructor() && (resource.data.instructorId == request.auth.uid || isAdmin());
+      allow create: if isInstructor()
+        && request.resource.data.instructorId == request.auth.uid
+        && request.resource.data.archived == false
+        && request.resource.data.createdAt == request.time
+        && validClass(request.resource.data);
+      allow update: if isInstructor()
+        && resource.data.instructorId == request.auth.uid
+        && request.resource.data.instructorId == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validClass(request.resource.data);
+      allow delete: if false; // turmas são arquivadas, nunca apagadas
+    }
+
+    // ---------- Todo o resto continua fechado ----------
   }
 }
