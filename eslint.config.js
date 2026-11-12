@@ -16,15 +16,25 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^_', argsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
       // RN anti-trapaça: nada de console.log no app (warn/error liberados).
       'no-console': ['error', { allow: ['warn', 'error'] }],
     },
   },
   {
-    files: ['api/**/*.ts', 'scripts/**/*.ts', '*.config.{ts,js}'],
+    files: ['api/**/*.ts', 'scripts/**/*.ts', 'tests/**/*.ts', '*.config.{ts,js}'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     languageOptions: { ecmaVersion: 2022, globals: globals.node },
-    rules: { '@typescript-eslint/no-explicit-any': 'error' },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^_', argsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
+    },
   },
   prettier,
 );

@@ -4,7 +4,7 @@
  * Nunca hardcodar estes valores em componentes ou no motor.
  */
 
-import type { Level } from '@/types/domain';
+import type { Level } from '../types/domain.js';
 
 export const GAME_RULES = {
   /** RN-02 [PADRÃO] */

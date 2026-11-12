@@ -33,6 +33,13 @@ function readServiceAccount(): ServiceAccount & { projectId: string } {
 
 export function getAdmin(): AdminBundle {
   if (cached) return cached;
+  // Testes locais: com os emuladores ligados, não usa credencial (nunca acontece na Vercel).
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    const projectId = process.env.GCLOUD_PROJECT ?? 'demo-cacada';
+    const app = getApps()[0] ?? initializeApp({ projectId });
+    cached = { app, auth: getAuth(app), db: getFirestore(app), projectId };
+    return cached;
+  }
   const sa = readServiceAccount();
   const app = getApps()[0] ?? initializeApp({ credential: cert(sa), projectId: sa.projectId });
   cached = { app, auth: getAuth(app), db: getFirestore(app), projectId: sa.projectId };
