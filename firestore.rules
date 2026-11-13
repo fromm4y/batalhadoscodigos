@@ -126,11 +126,40 @@ service cloud.firestore {
 
     // ---------- classes/{classId}/teams/{teamId} (dados públicos da dupla) ----------
     // Criação, PIN e pontos passam pelas funções da Vercel. `private/*`: nenhum acesso de cliente.
+    function isOwnTeam(classId, teamId) {
+      return teamSessionOpen()
+        && request.auth.token.classId == classId
+        && request.auth.token.teamId == teamId;
+    }
+
     match /classes/{classId}/teams/{teamId} {
       allow read: if ownsClass(classId)
         || isAdmin()
         || (teamSessionOpen() && request.auth.token.classId == classId);
-      allow write: if false;
+      // Etapa 3: a dupla atualiza só o próprio total, nunca negativo e em passos pequenos
+      // (anti-trapaça de nível MVP, SPEC 8.3). Criação e PIN continuam nas funções da Vercel.
+      allow update: if isOwnTeam(classId, teamId)
+        && changedOnly(['totalPoints'])
+        && request.resource.data.totalPoints is int
+        && request.resource.data.totalPoints >= 0
+        && request.resource.data.totalPoints - resource.data.totalPoints >= -4
+        && request.resource.data.totalPoints - resource.data.totalPoints <= 7;
+      allow create, delete: if false;
+
+      // ---------- ledger (histórico de pontos, RN-24) ----------
+      match /ledger/{entryId} {
+        allow read: if ownsClass(classId) || isAdmin() || isOwnTeam(classId, teamId);
+        allow create: if isOwnTeam(classId, teamId)
+          && request.resource.data.keys().hasOnly(['sessionId', 'episodeId', 'delta', 'reason', 'at', 'by'])
+          && request.resource.data.sessionId == request.auth.token.sessionId
+          && request.resource.data.by == 'game'
+          && request.resource.data.at == request.time
+          && request.resource.data.reason in ['lock_open', 'lock_first', 'event_ok', 'vault_win', 'draw', 'side_bonus', 'wrong_answer', 'hint_1', 'hint_2']
+          && request.resource.data.delta is int
+          && request.resource.data.delta >= -4
+          && request.resource.data.delta <= 5;
+        allow update, delete: if false;
+      }
     }
 
     // ---------- sessions/{sessionId} ----------
@@ -150,13 +179,30 @@ service cloud.firestore {
       match /players/{teamId} {
         allow read: if (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()))
           || (isTeam() && request.auth.token.sessionId == sessionId && request.auth.token.teamId == teamId);
-        // Etapa 2: a dupla só marca presença. Progresso e pontos abrem nas próximas etapas.
+        // A dupla marca presença, escolhe o lado e avança o próprio progresso (o cadeado nunca volta).
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt'])
-          && request.resource.data.connected is bool;
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt'])
+          && request.resource.data.connected is bool
+          && (request.resource.data.side == null || request.resource.data.side in ['red', 'blue'])
+          && request.resource.data.progress.lockIndex is int
+          && request.resource.data.progress.lockIndex >= resource.data.progress.lockIndex
+          && request.resource.data.progress.lockIndex <= 3;
         allow create, delete: if false;
+      }
+
+      // ---------- sessions/{sessionId}/firsts/{lockN} (bônus da 1ª dupla a abrir o cadeado N) ----------
+      match /firsts/{firstId} {
+        allow read: if (isTeam() && request.auth.token.sessionId == sessionId)
+          || (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()));
+        // Só pode ser criado uma vez: quem cria primeiro leva o bônus.
+        allow create: if teamSessionOpen()
+          && request.auth.token.sessionId == sessionId
+          && request.resource.data.keys().hasOnly(['teamId', 'at'])
+          && request.resource.data.teamId == request.auth.token.teamId
+          && request.resource.data.at == request.time;
+        allow update, delete: if false;
       }
     }
 

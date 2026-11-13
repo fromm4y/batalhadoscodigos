@@ -104,11 +104,15 @@ beforeEach(async () => {
       teamId: 't1',
       connected: false,
       episodePoints: 0,
+      side: null,
+      progress: { lockIndex: 0 },
     });
     await setDoc(doc(db, 'sessions', 's1', 'players', 't2'), {
       teamId: 't2',
       connected: false,
       episodePoints: 0,
+      side: null,
+      progress: { lockIndex: 0 },
     });
   });
 });
@@ -130,7 +134,7 @@ describe('dupla com sessão aberta', () => {
     await assertFails(getDoc(doc(db, 'sessions', 's1', 'players', 't2')));
   });
 
-  it('marca presença, mas não mexe em pontos, progresso nem na sessão', async () => {
+  it('marca presença, mas não mexe em confronto, em outra dupla nem na sessão', async () => {
     const db = asTeam('t1');
     await assertSucceeds(
       updateDoc(doc(db, 'sessions', 's1', 'players', 't1'), {
@@ -138,7 +142,9 @@ describe('dupla com sessão aberta', () => {
         lastSeenAt: serverTimestamp(),
       }),
     );
-    await assertFails(updateDoc(doc(db, 'sessions', 's1', 'players', 't1'), { episodePoints: 99 }));
+    await assertFails(
+      updateDoc(doc(db, 'sessions', 's1', 'players', 't1'), { matchId: 'm-falso' }),
+    );
     await assertFails(updateDoc(doc(db, 'sessions', 's1', 'players', 't2'), { connected: true }));
     await assertFails(updateDoc(doc(db, 'sessions', 's1'), { phase: 'vault' }));
     await assertFails(
