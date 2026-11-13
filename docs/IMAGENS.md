@@ -31,13 +31,12 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 
 ## ✅ Status das entregas
 
-| id                                                                                      | Situação                                          |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `tear-ciclos`, `ada-escrevendo`                                                         | ✅ no jogo (margem branca cortada)                |
-| `capita-tensa`, `robo-provocando`, `robo-derrotado`, `narradora-neutra`                 | ✅ no jogo (fundo xadrez removido)                |
-| `capita-navio`, `professor-sombra`, `vitrine-maquina`                                   | ✅ no jogo (margem branca cortada)                |
-| `museu-noite`, `professor-neutro`, `professor-feliz`, `professor-tenso`, `capita-feliz` | ⏳ recebidas no chat, falta reenviar como arquivo |
-| demais                                                                                  | ⏳ a gerar                                        |
+| id                                                                                                                                                | Situação                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `tear-ciclos`, `ada-escrevendo`                                                                                                                   | ✅ no jogo (margem branca cortada) |
+| `capita-tensa`, `capita-feliz`, `robo-provocando`, `robo-derrotado`, `narradora-neutra`, `professor-neutro`, `professor-feliz`, `professor-tenso` | ✅ no jogo (fundo removido)        |
+| `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`                                                                              | ✅ no jogo (margem branca cortada) |
+| `capita-neutra`, `robo-feliz`, `narradora` (quadro), cenas, habilidades e ganchos                                                                 | ⏳ a gerar                         |
 
 > **Dica para personagens:** em vez de pedir "fundo transparente" (o gerador costuma **desenhar** um xadrez falso), peça **fundo liso de uma cor só**, por exemplo _"plain solid flat dark navy background (#0B0D14), no pattern"_. Fica fácil de recortar e, como o jogo é escuro, às vezes nem precisa recortar.
 > **Formato:** `.webp` também serve para personagens (fica ~7× mais leve que PNG).
@@ -57,32 +56,31 @@ O **nome do arquivo** tem que ser **exatamente o id** da tabela (ex.: `museu-noi
 
 ## 1. Quadros do Episódio 1 (ids do JSON) — `src/assets/comic/`
 
-| id                 | Onde aparece       | Descrição                                                                                                                            |
-| ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `museu-noite`      | Abertura, quadro 1 | Fachada de um museu de tecnologia moderno à meia-noite, lua cheia, holofotes, clima de suspense.                                     |
-| `vitrine-maquina`  | Abertura, quadro 2 | Vitrine de vidro iluminada com uma máquina de engrenagens de latão do século 19 (inacabada), cartões perfurados ao lado.             |
-| `professor-sombra` | Abertura, quadro 3 | O Professor (líder do Bando) em silhueta/meia-sombra, de óculos, apontando para uma planta do museu numa mesa.                       |
-| `capita-navio`     | Abertura, quadro 4 | A Capitã no convés de um navio, chapéu de palha com fita azul, olhando por uma luneta para o museu no porto.                         |
-| `ada-escrevendo`   | Revelação (fim)    | Mulher do século 19 (vestido de época) escrevendo notas cheias de fórmulas à luz de vela.                                            |
-| `tear-ciclos`      | Revelação (fim)    | Tear de madeira com cartões perfurados em sequência formando um padrão de estrelas e bolinhas, setas circulares sugerindo repetição. |
-| `narradora`        | Revelação (fim)    | A Narradora: apresentadora animada segurando um microfone/megafone, sorrindo, fundo de raios.                                        |
+| id                                                                   | Onde aparece                       | Descrição                                                                                                                            |
+| -------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `vitrine-maquina`                                                    | Abertura, quadro 2                 | Vitrine de vidro iluminada com uma máquina de engrenagens de latão do século 19 (inacabada), cartões perfurados ao lado.             |
+| `professor-sombra`                                                   | Abertura, quadro 3                 | O Professor (líder do Bando) em silhueta/meia-sombra, de óculos, apontando para uma planta do museu numa mesa.                       |
+| `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite` | ✅ no jogo (margem branca cortada) |
+| `ada-escrevendo`                                                     | Revelação (fim)                    | Mulher do século 19 (vestido de época) escrevendo notas cheias de fórmulas à luz de vela.                                            |
+| `tear-ciclos`                                                        | Revelação (fim)                    | Tear de madeira com cartões perfurados em sequência formando um padrão de estrelas e bolinhas, setas circulares sugerindo repetição. |
+| `narradora`                                                          | Revelação (fim)                    | A Narradora: apresentadora animada segurando um microfone/megafone, sorrindo, fundo de raios.                                        |
 
 ## 2. Personagens — `src/assets/characters/`
 
 Retrato da cintura pra cima, olhando um pouco para o lado, para caber ao lado dos balões.
 
-| id                 | Descrição                                                                                                                                                               |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `professor-neutro` | **O Professor:** líder do Bando, adulto, óculos, barba curta, macacão vermelho com capuz, máscara de olhos vermelha simples pendurada no pescoço. Calmo e estrategista. |
-| `professor-feliz`  | Mesmo personagem, sorriso confiante, um dedo pra cima ("plano perfeito!").                                                                                              |
-| `professor-tenso`  | Mesmo personagem, suando, mão no queixo.                                                                                                                                |
-| `capita-neutra`    | **A Capitã:** líder dos Piratas, jovem adulta, chapéu de palha com fita azul, colete azul, lenço no pescoço, mapa enrolado na mão. Corajosa e alegre.                   |
-| `capita-feliz`     | Mesma personagem, rindo, punho erguido.                                                                                                                                 |
-| `capita-tensa`     | Mesma personagem, segurando o chapéu contra o vento, preocupada.                                                                                                        |
-| `narradora-neutra` | **A Narradora** (a instrutora no jogo): segura um microfone, expressão de suspense divertido.                                                                           |
-| `robo-provocando`  | **O Robô** (oponente máquina): robô retrô de lata, cabeça quadrada com antena e tela no rosto, braço apontando, cara de deboche (sem ser assustador).                   |
-| `robo-derrotado`   | Mesmo robô soltando fumaça, olhos em espiral.                                                                                                                           |
-| `robo-feliz`       | Mesmo robô comemorando, luzes piscando.                                                                                                                                 |
+| id                                                                                                                                                | Descrição                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `professor-neutro`                                                                                                                                | **O Professor:** líder do Bando, adulto, óculos, barba curta, macacão vermelho com capuz, máscara de olhos vermelha simples pendurada no pescoço. Calmo e estrategista. |
+| `professor-feliz`                                                                                                                                 | Mesmo personagem, sorriso confiante, um dedo pra cima ("plano perfeito!").                                                                                              |
+| `professor-tenso`                                                                                                                                 | Mesmo personagem, suando, mão no queixo.                                                                                                                                |
+| `capita-neutra`                                                                                                                                   | **A Capitã:** líder dos Piratas, jovem adulta, chapéu de palha com fita azul, colete azul, lenço no pescoço, mapa enrolado na mão. Corajosa e alegre.                   |
+| `capita-feliz`                                                                                                                                    | Mesma personagem, rindo, punho erguido.                                                                                                                                 |
+| `capita-tensa`, `capita-feliz`, `robo-provocando`, `robo-derrotado`, `narradora-neutra`, `professor-neutro`, `professor-feliz`, `professor-tenso` | ✅ no jogo (fundo removido)                                                                                                                                             |
+| `narradora-neutra`                                                                                                                                | **A Narradora** (a instrutora no jogo): segura um microfone, expressão de suspense divertido.                                                                           |
+| `robo-provocando`                                                                                                                                 | **O Robô** (oponente máquina): robô retrô de lata, cabeça quadrada com antena e tela no rosto, braço apontando, cara de deboche (sem ser assustador).                   |
+| `robo-derrotado`                                                                                                                                  | Mesmo robô soltando fumaça, olhos em espiral.                                                                                                                           |
+| `robo-feliz`                                                                                                                                      | Mesmo robô comemorando, luzes piscando.                                                                                                                                 |
 
 ## 3. Cenários de tela — `src/assets/scenes/`
 

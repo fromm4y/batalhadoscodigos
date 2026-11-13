@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
-import { ComicButton, ComicPanel, SpeechBubble, cn } from '@/components/comic';
+import { ComicButton, ComicPanel, cn } from '@/components/comic';
 import { SEASON } from '@/content/season';
 import { getFirebase } from '@/lib/firebase';
 import { useNow } from '@/lib/useNow';
@@ -11,6 +11,7 @@ import { useProfile } from '../auth/authStore';
 import { useClass, useClassTeams, useSession, useSessionPlayers } from '../data';
 import { InstructorLayout } from '../InstructorLayout';
 import { isOnline } from '../presence';
+import { SessionControls } from './SessionControls';
 
 const PHASE_LABEL = {
   lobby: 'Lobby (entrada das duplas)',
@@ -131,10 +132,14 @@ export function SessionPage() {
               </ComicButton>
             </div>
           )}
-          <SpeechBubble who="narradora" tail="left">
-            O painel completo (liberar fases, evento do museu, transmissões) chega na próxima etapa
-            da construção.
-          </SpeechBubble>
+          {!finished && mine && (
+            <SessionControls
+              sessionId={sessionId}
+              session={s}
+              level={cls.data?.level ?? null}
+              players={players.data}
+            />
+          )}
         </div>
 
         <ComicPanel
@@ -158,7 +163,19 @@ export function SessionPage() {
                     <Avatar avatar={t.avatar} className="h-14 w-12" decorative />
                     <div className="flex-1">
                       <p className="font-heist text-xl leading-none tracking-wider">{t.cityName}</p>
-                      <p className="text-sm text-mist">{t.pirateName}</p>
+                      <p className="text-sm text-mist">
+                        {p.side === 'red'
+                          ? '🎭 Bando'
+                          : p.side === 'blue'
+                            ? '⚓ Piratas'
+                            : 'sem lado'}
+                        {' · '}
+                        {p.progress.vaultSolvedAt
+                          ? 'Cofre ✔'
+                          : `${p.progress.lockIndex}/3 cadeados`}
+                        {' · '}
+                        {p.episodePoints} pts
+                      </p>
                     </div>
                     <span
                       className={cn(

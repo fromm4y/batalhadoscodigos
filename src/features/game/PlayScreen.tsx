@@ -1,0 +1,315 @@
+import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { ChallengeView } from '@/components/challenges/ChallengeView';
+import {
+  ComicArt,
+  HalftoneBackground,
+  Onomatopoeia,
+  SpeechBubble,
+  cn,
+  hasArt,
+  type OnomatopoeiaKind,
+} from '@/components/comic';
+import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
+import { GAME_RULES } from '@/config/gameRules';
+import type { Episode } from '@/content/types';
+import { resolveChallenge, type Slot } from '@/engine/challenges';
+import { currentStage, needsTransmission } from '@/engine/progress';
+import { nextHint } from '@/engine/scoring';
+import { useNow } from '@/lib/useNow';
+import type { Level, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import { buyHint, openLock, registerWrongAnswer, solveVault, type GameCtx } from './actions';
+
+type Props = {
+  ctx: GameCtx;
+  episode: Episode;
+  level: Level;
+  session: SessionDoc;
+  team: TeamDoc;
+  player: PlayerDoc;
+};
+
+const PHASE_TITLE = { locks: 'OS CADEADOS', vault: 'O COFRE' } as const;
+
+/** Fases `locks` e `vault`: layout fixo do jogo (SPEC 9.2, item 6; VISUAL 8.6). */
+export function PlayScreen({ ctx, episode, level, session, team, player }: Props) {
+  const side = player.side ?? 'red';
+  const red = side === 'red';
+  const stage = currentStage(session.phase, player.progress);
+  const slot: Slot | null = stage.kind === 'challenge' ? stage.slot : null;
+  const challenge = slot !== null ? resolveChallenge(episode, side, level, slot) : null;
+  const usedHints = (challenge && player.hints?.[challenge.key]) || 0;
+  const now = useNow(1000);
+
+  const [cooldown, setCooldown] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [pop, setPop] = useState<{ kind: OnomatopoeiaKind; key: number } | null>(null);
+  const [clue, setClue] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const shake = useAnimationControls();
+
+  useEffect(() => {
+    if (!pop) return;
+    const t = setTimeout(() => setPop(null), 1400);
+    return () => clearTimeout(t);
+  }, [pop]);
+
+  const leaderArt = red
+    ? 'professor-neutro'
+    : hasArt('capita-neutra')
+      ? 'capita-neutra'
+      : 'capita-tensa';
+  const phaseStart = session.phaseStartedAt?.toMillis?.() ?? now;
+  const elapsed = Math.max(0, Math.floor((now - phaseStart) / 1000));
+  const guide = GAME_RULES.phaseGuideMinutes[session.phase as 'locks' | 'vault'];
+
+  async function guard(fn: () => Promise<void>) {
+    setError(null);
+    try {
+      await fn();
+    } catch (err) {
+      console.error('[jogo]', err);
+      setError('Ops! A conexão falhou. Tentem de novo.');
+    }
+  }
+
+  function onWrong() {
+    setPop({ kind: 'errou', key: Date.now() });
+    void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
+    setCooldown(true);
+    setTimeout(() => setCooldown(false), GAME_RULES.answers.wrongAnswerCooldownMs);
+    void guard(() => registerWrongAnswer(ctx));
+  }
+
+  function onSolved() {
+    if (slot === null || busy) return;
+    setBusy(true);
+    void guard(async () => {
+      if (slot === 'vault') {
+        await solveVault(ctx);
+        setPop({ kind: 'boom', key: Date.now() });
+      } else {
+        await openLock(ctx, slot);
+        setPop({ kind: 'click', key: Date.now() });
+        const reward = episode.sides[side].locks[slot].reward?.clue;
+        setClue(reward ?? null);
+      }
+    }).finally(() => setBusy(false));
+  }
+
+  return (
+    <HalftoneBackground>
+      <Dust count={8} />
+      <div className="relative flex min-h-screen flex-col">
+        {/* Topo: fase, timer e equipe (o cabo de guerra entra na Etapa 4) */}
+        <header className="flex h-16 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
+          <p
+            className={cn(
+              'font-heist text-3xl tracking-[0.12em]',
+              red ? 'text-bando text-glow-red' : 'text-piratas text-glow-blue',
+            )}
+          >
+            {red ? '🎭' : '⚓'} {red ? team.cityName : team.pirateName}
+          </p>
+          <p className="font-heist text-3xl tracking-[0.15em] text-paper">
+            {PHASE_TITLE[session.phase as 'locks' | 'vault']}
+          </p>
+          <p className="font-heist text-3xl tracking-wider text-brass" aria-label="Tempo da fase">
+            ⏱ {String(Math.floor(elapsed / 60)).padStart(2, '0')}:
+            {String(elapsed % 60).padStart(2, '0')}
+            <span className="text-xl text-mist"> / {guide}:00</span>
+          </p>
+        </header>
+
+        <div className="grid flex-1 grid-cols-[300px_1fr] gap-5 p-5">
+          {/* Esquerda: planta / mapa como trilha de progresso */}
+          <aside className="flex flex-col gap-3">
+            <RouteMap
+              theme={red ? 'bando' : 'piratas'}
+              opened={player.progress.lockIndex}
+              goalReached={!!player.progress.vaultSolvedAt}
+              compact
+            />
+            <p className="font-type text-sm text-mist">
+              {red ? 'A rota acende a cada cadeado aberto.' : 'Cada defesa montada acende no mapa.'}
+            </p>
+            <p className="mt-auto font-type text-xs text-mist">
+              As habilidades especiais chegam na Etapa 4.
+            </p>
+          </aside>
+
+          {/* Centro: o desafio */}
+          <motion.section animate={shake} className="relative flex flex-col gap-3">
+            {challenge ? (
+              <>
+                <div className="flex items-start gap-3">
+                  <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
+                    <ComicArt
+                      id={leaderArt}
+                      alt={red ? 'O Professor' : 'A Capitã'}
+                      className="object-top"
+                    />
+                  </div>
+                  <SpeechBubble
+                    key={challenge.key + (clue ?? '')}
+                    who={red ? 'professor' : 'capita'}
+                    glitch={red}
+                    tail="left"
+                    className="max-w-none flex-1"
+                  >
+                    {clue ?? challenge.leaderLine}
+                  </SpeechBubble>
+                </div>
+                <ChallengeFrame red={red}>
+                  <div className="mb-3 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-2">
+                    <h2 className="font-heist text-3xl tracking-wider">
+                      {slot === 'vault'
+                        ? '🔐'
+                        : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
+                      {challenge.title}
+                    </h2>
+                    <p className="font-type text-sm">{challenge.variant.prompt}</p>
+                  </div>
+                  {usedHints > 0 && (
+                    <div className="mb-3 flex flex-col gap-1">
+                      <p className="border-l-4 border-brass bg-brass/20 px-3 py-1 font-bold">
+                        💡 Dica 1: {challenge.variant.hint1}
+                      </p>
+                      {usedHints > 1 && (
+                        <p className="border-l-4 border-alert bg-alert/20 px-3 py-1 font-bold">
+                          💡 Dica 2: {challenge.variant.hint2}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  <ChallengeView
+                    key={challenge.key}
+                    challenge={challenge}
+                    level={level}
+                    seed={ctx.teamId}
+                    heardTransmission={
+                      !needsTransmission(challenge) || player.progress.heardTransmission
+                    }
+                    locked={cooldown || busy}
+                    onWrong={onWrong}
+                    onSolved={onSolved}
+                  />
+                  {cooldown && (
+                    <p role="status" className="mt-3 font-bold text-alert">
+                      Respirem fundo... dá para tentar de novo em instantes.
+                    </p>
+                  )}
+                </ChallengeFrame>
+              </>
+            ) : (
+              <WaitingPanel
+                text={
+                  session.phase === 'vault'
+                    ? 'Cofre resolvido! Aguardando a Narradora...'
+                    : 'Todos os cadeados abertos! Aguardando a Narradora liberar o Cofre...'
+                }
+                curiosities={episode.curiosities}
+              />
+            )}
+            {error && (
+              <p role="alert" className="font-bold text-alert">
+                {error}
+              </p>
+            )}
+            <AnimatePresence>
+              {pop && (
+                <motion.div
+                  className="pointer-events-none absolute inset-0 z-20 grid place-items-center"
+                  exit={{ opacity: 0 }}
+                >
+                  <Onomatopoeia kind={pop.kind} playKey={pop.key} size={240} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.section>
+        </div>
+
+        {/* Rodapé: pontos e dicas */}
+        <footer className="flex h-20 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
+          <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
+            {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
+            <span className="ml-3 text-xl text-mist">
+              (hoje: {player.episodePoints >= 0 ? '+' : ''}
+              {player.episodePoints})
+            </span>
+          </p>
+          {challenge && (
+            <div className="flex gap-3">
+              {([1, 2] as const).map((tier) => {
+                const bought = usedHints >= tier;
+                const available = nextHint(usedHints as 0 | 1 | 2) === tier;
+                return (
+                  <button
+                    key={tier}
+                    type="button"
+                    disabled={!available || busy}
+                    onClick={() => void guard(() => buyHint(ctx, challenge.key, tier))}
+                    className={cn(
+                      'flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink px-4 pt-1 font-heist text-xl tracking-wider disabled:cursor-not-allowed',
+                      bought
+                        ? 'bg-graphite-light text-mist'
+                        : available
+                          ? 'bg-aged text-ink hover:glow-brass'
+                          : 'bg-graphite-light text-mist opacity-60',
+                    )}
+                  >
+                    {bought ? '📭' : '💌'} Dica {tier}{' '}
+                    {bought
+                      ? '(aberta)'
+                      : `(${tier === 1 ? GAME_RULES.points.hint1 : GAME_RULES.points.hint2})`}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </footer>
+      </div>
+    </HalftoneBackground>
+  );
+}
+
+/** Moldura do desafio: documento confidencial (Bando) ou vitrine de latão (Piratas). */
+function ChallengeFrame({ red, children }: { red: boolean; children: React.ReactNode }) {
+  if (red) {
+    return (
+      <div className="relative rounded-sm border-[3px] border-ink bg-[#a8834a] p-2 shadow-comic">
+        <div className="bg-aged p-5 text-ink">{children}</div>
+      </div>
+    );
+  }
+  return (
+    <BrassFrame className="bg-graphite">
+      <div className="rounded-sm bg-aged p-5 text-ink">{children}</div>
+    </BrassFrame>
+  );
+}
+
+function WaitingPanel({ text, curiosities }: { text: string; curiosities: string[] }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(
+      () => setI((x) => (x + 1) % Math.max(1, curiosities.length)),
+      GAME_RULES.ui.curiosityRotateSeconds * 1000,
+    );
+    return () => clearInterval(t);
+  }, [curiosities.length]);
+  return (
+    <div
+      className="flex flex-1 flex-col items-center justify-center gap-6 text-center"
+      role="status"
+    >
+      <Typewriter text={text} speed={40} className="text-3xl text-brass text-glow-brass" />
+      {curiosities.length > 0 && (
+        <SpeechBubble who="narradora" tail="center" className="max-w-xl">
+          <span className="mb-1 block font-type text-sm uppercase">Você sabia?</span>
+          {curiosities[i]}
+        </SpeechBubble>
+      )}
+    </div>
+  );
+}

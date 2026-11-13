@@ -96,4 +96,7 @@ firestore.rules
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.
 - **(12/11) Rota extra `POST /api/session-open`** (além das 4 da SPEC 8.1): o código precisa ser único entre todas as sessões abertas, e a Narradora só enxerga as próprias. Só a dona da turma abre sessão.
 - **(12/11) PIN resetado:** no próximo login, o PIN digitado (com confirmação) vira o novo PIN.
+- **(13/11) Pontos pelo cliente (Etapa 3):** a dupla grava ledger + total em transação (`src/features/game/actions.ts`); as regras limitam valores (−4 a +5 por lançamento, total ≥ 0, só a própria dupla, só com sessão aberta). O ledger guarda o valor efetivo (com a trava do zero), então a soma sempre bate com o total. Conferência: `scripts/check-ledger-emulator.ts`.
+- **(13/11) Bônus da 1ª dupla:** documento `sessions/{id}/firsts/lockN` que só pode ser criado uma vez.
+- **(13/11) Pendência de polimento (Etapa 7):** em 1366×768 o cartão perfurado e o Cofre do nível C pedem rolagem vertical.
 - **(12/11) Presença:** a dupla marca `connected/lastSeenAt` a cada `GAME_RULES.presence.heartbeatSeconds`; o painel considera desconectada após 2,5× esse tempo.
