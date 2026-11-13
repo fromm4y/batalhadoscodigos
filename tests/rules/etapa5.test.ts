@@ -137,3 +137,18 @@ describe('ações da Narradora por dupla', () => {
     );
   });
 });
+
+describe('destaque da aula (Etapa 6)', () => {
+  it('a dupla só lê os pontos de hoje das outras duplas na fase de fim', async () => {
+    const other = () => getDocs(collection(asTeam('t1'), 'sessions', 's1', 'players'));
+    await assertFails(other());
+    await env.withSecurityRulesDisabled((ctx) =>
+      updateDoc(doc(ctx.firestore(), 'sessions', 's1'), { phase: 'end' }),
+    );
+    await assertSucceeds(other());
+    // ler não dá direito de escrever no documento de outra dupla
+    await assertFails(
+      updateDoc(doc(asTeam('t1'), 'sessions', 's1', 'players', 't2'), { connected: false }),
+    );
+  });
+});
