@@ -9,10 +9,12 @@ type Props = {
   used: AbilityId[];
   disabled?: boolean;
   onUse: (id: AbilityId) => void;
+  /** Plano B / Bússola só servem num desafio aberto, antes da Dica 1 (senão a carta se perderia). */
+  freeHintUseful?: boolean;
 };
 
 /** Habilidades como cartas de baralho escuras com brilho (VISUAL 8.6). Usar = uma vez por episódio. */
-export function AbilityCards({ side, owned, used, disabled, onUse }: Props) {
+export function AbilityCards({ side, owned, used, disabled, onUse, freeHintUseful = true }: Props) {
   return (
     <section aria-label="Habilidades especiais" className="flex flex-col gap-2">
       <h2 className="font-heist text-xl tracking-wider text-paper">Habilidades</h2>
@@ -21,7 +23,9 @@ export function AbilityCards({ side, owned, used, disabled, onUse }: Props) {
           const info = ABILITY_INFO[id];
           const has = owned.includes(id);
           const spent = used.includes(id);
-          const usable = has && !spent && !disabled;
+          const hintCard = id === 'planoB' || id === 'bussola';
+          const waiting = hintCard && !freeHintUseful;
+          const usable = has && !spent && !disabled && !waiting;
           return (
             <li key={id}>
               <AnimatePresence mode="wait">
@@ -33,7 +37,13 @@ export function AbilityCards({ side, owned, used, disabled, onUse }: Props) {
                   transition={{ type: 'spring', stiffness: 260, damping: 16 }}
                   disabled={!usable}
                   onClick={() => onUse(id)}
-                  title={has ? info.text : 'Resolva desafios para ganhar'}
+                  title={
+                    !has
+                      ? 'Resolva desafios para ganhar'
+                      : waiting && !spent
+                        ? 'Use dentro de um desafio, antes de abrir a Dica 1'
+                        : info.text
+                  }
                   aria-label={
                     has
                       ? `${info.name}: ${info.text}${spent ? ' (já usada)' : ''}`
