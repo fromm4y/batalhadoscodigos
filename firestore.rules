@@ -144,6 +144,10 @@ service cloud.firestore {
         && request.resource.data.totalPoints >= 0
         && request.resource.data.totalPoints - resource.data.totalPoints >= -4
         && request.resource.data.totalPoints - resource.data.totalPoints <= 7;
+      allow update: if ownsClass(classId)
+        && changedOnly(['totalPoints'])
+        && request.resource.data.totalPoints is int
+        && request.resource.data.totalPoints >= 0;
       allow create, delete: if false;
 
       // ---------- ledger (histórico de pontos, RN-24) ----------
@@ -158,6 +162,12 @@ service cloud.firestore {
           && request.resource.data.delta is int
           && request.resource.data.delta >= -4
           && request.resource.data.delta <= 5;
+        // A Narradora lança pontos do confronto (bônus de lado, vitória no fim, empate) e ajustes manuais.
+        allow create: if ownsClass(classId)
+          && request.resource.data.keys().hasOnly(['sessionId', 'episodeId', 'delta', 'reason', 'at', 'by'])
+          && request.resource.data.by == request.auth.uid
+          && request.resource.data.at == request.time
+          && request.resource.data.delta is int;
         allow update, delete: if false;
       }
     }
@@ -183,13 +193,51 @@ service cloud.firestore {
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt', 'side', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt'])
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId'])
           && request.resource.data.connected is bool
+          // matchId: só para entrar sozinha contra a máquina, se ainda não tinha confronto
+          && (request.resource.data.get('matchId', null) == resource.data.get('matchId', null)
+            || (resource.data.get('matchId', null) == null && request.resource.data.get('matchId', null) == 'maq_' + teamId))
           && (request.resource.data.side == null || request.resource.data.side in ['red', 'blue'])
           && request.resource.data.progress.lockIndex is int
           && request.resource.data.progress.lockIndex >= resource.data.progress.lockIndex
           && request.resource.data.progress.lockIndex <= 3;
+        // A Narradora liga cada dupla ao confronto e lança pontos de confronto.
+        allow update: if isInstructor()
+          && sessionDoc(sessionId).instructorId == request.auth.uid
+          && changedOnly(['matchId', 'side', 'episodePoints']);
         allow create, delete: if false;
+      }
+
+      // ---------- sessions/{sessionId}/matches/{matchId} (cabo de guerra, SPEC 6.1) ----------
+      function inMatch(m) {
+        return isTeam() && request.auth.token.sessionId == sessionId
+          && (m.redTeamId == request.auth.token.teamId || m.blueTeamId == request.auth.token.teamId);
+      }
+      function validBar() {
+        return request.resource.data.bar is number
+          && request.resource.data.bar >= -100 && request.resource.data.bar <= 100;
+      }
+      match /matches/{matchId} {
+        allow read: if inMatch(resource.data)
+          || (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()));
+        allow create: if (isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid)
+          // dupla atrasada cria o próprio confronto contra a máquina
+          || (teamSessionOpen() && request.auth.token.sessionId == sessionId
+            && matchId == 'maq_' + request.auth.token.teamId
+            && inMatch(request.resource.data)
+            && request.resource.data.machineSide in ['red', 'blue']
+            && request.resource.data.bar == 0
+            && request.resource.data.winner == null);
+        // Participantes: puxões, efeitos, log, robô e vitória (o vencedor nunca muda depois de definido).
+        allow update: if teamSessionOpen() && inMatch(resource.data)
+          && changedOnly(['bar', 'effects', 'log', 'winner', 'resolvedAt', 'machine'])
+          && validBar()
+          && (resource.data.winner == null || request.resource.data.winner == resource.data.winner);
+        allow update: if isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid
+          && changedOnly(['vaultLeader', 'winner', 'resolvedAt', 'bar', 'redTeamId', 'blueTeamId', 'machineSide', 'machine'])
+          && validBar();
+        allow delete: if isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid;
       }
 
       // ---------- sessions/{sessionId}/firsts/{lockN} (bônus da 1ª dupla a abrir o cadeado N) ----------

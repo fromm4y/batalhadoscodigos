@@ -1,6 +1,6 @@
 import { doc, onSnapshot, serverTimestamp, updateDoc, type Timestamp } from 'firebase/firestore';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HalftoneBackground } from '@/components/comic';
 import { Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
@@ -14,6 +14,7 @@ import { PlanningScreen } from '@/features/game/PlanningScreen';
 import { PlayScreen } from '@/features/game/PlayScreen';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { getFirebase } from '@/lib/firebase';
+import { calibrate } from '@/lib/serverClock';
 import type { ClassDoc, Level, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
@@ -69,11 +70,21 @@ function Game({ claims }: { claims: TeamClaims }) {
   }, [open, claims.classId, claims.teamId]);
 
   // Estado da dupla nesta sessão (progresso, dicas, lado).
+  // O `lastSeenAt` gravado pelo servidor calibra o relógio local (SPEC 5.2).
+  const beatSent = useRef<{ sent: number; done: number } | null>(null);
   useEffect(() => {
     if (!open) return;
     return onSnapshot(
       doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId),
-      (snap) => setPlayer(snap.exists() ? (snap.data() as PlayerDoc) : null),
+      (snap) => {
+        const data = snap.exists() ? (snap.data() as PlayerDoc) : null;
+        setPlayer(data);
+        const b = beatSent.current;
+        if (data?.lastSeenAt && b && !snap.metadata.hasPendingWrites) {
+          calibrate(b.sent, b.done, data.lastSeenAt.toMillis());
+          beatSent.current = null;
+        }
+      },
       () => setPlayer(null),
     );
   }, [open, claims.sessionId, claims.teamId]);
@@ -97,8 +108,14 @@ function Game({ claims }: { claims: TeamClaims }) {
   useEffect(() => {
     if (!open) return;
     const ref = doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId);
-    const beat = (connected: boolean) =>
-      updateDoc(ref, { connected, lastSeenAt: serverTimestamp() }).catch(() => undefined);
+    const beat = (connected: boolean) => {
+      const sent = Date.now();
+      return updateDoc(ref, { connected, lastSeenAt: serverTimestamp() })
+        .then(() => {
+          beatSent.current = { sent, done: Date.now() };
+        })
+        .catch(() => undefined);
+    };
     void beat(true);
     const t = setInterval(() => void beat(true), GAME_RULES.presence.heartbeatSeconds * 1000);
     const bye = () => void beat(false);
