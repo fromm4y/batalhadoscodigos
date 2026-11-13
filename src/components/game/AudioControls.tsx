@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useAudio } from '@/audio/audioStore';
 import { playSfx } from '@/audio/engine';
 import { cn } from '@/components/comic';
@@ -30,10 +31,10 @@ export function AudioControls({ floating = false }: { floating?: boolean }) {
   const btn =
     'grid h-12 w-12 cursor-pointer place-items-center rounded-md border-[3px] border-ink bg-graphite-light text-2xl hover:glow-brass';
 
-  return (
+  const ui = (
     <div
       ref={box}
-      className={cn('relative flex gap-2', floating && 'fixed bottom-4 left-4 z-40')}
+      className={cn('flex gap-2', floating ? 'fixed bottom-4 left-4 z-40' : 'relative')}
       role="group"
       aria-label="Som"
     >
@@ -78,6 +79,8 @@ export function AudioControls({ floating = false }: { floating?: boolean }) {
       </AnimatePresence>
     </div>
   );
+  // Flutuante vai direto no <body>: um ancestral com `transform` faria o `fixed` sair da tela.
+  return floating ? createPortal(ui, document.body) : ui;
 }
 
 function Slider({

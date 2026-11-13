@@ -22,7 +22,15 @@ export function RobotTalk({
   }, [line]);
 
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex items-end gap-1">
+      <motion.div
+        key={`r${key}`}
+        className="shrink-0"
+        animate={reduce || !line ? {} : { y: [0, -10, 0, -5, 0], rotate: [0, -4, 3, 0] }}
+        transition={{ duration: 0.6 }}
+      >
+        <RobotFigure className="h-20 w-16" mood={mood} />
+      </motion.div>
       <AnimatePresence mode="wait">
         {line && (
           <motion.div
@@ -33,19 +41,12 @@ export function RobotTalk({
             transition={{ type: 'spring', stiffness: 380, damping: 18 }}
             aria-live="polite"
           >
-            <SpeechBubble who="robo" tail="left" className="max-w-none text-sm">
+            <SpeechBubble who="robo" tail="left" compact className="mb-8 max-w-none">
               {line.text}
             </SpeechBubble>
           </motion.div>
         )}
       </AnimatePresence>
-      <motion.div
-        key={`r${key}`}
-        animate={reduce || !line ? {} : { y: [0, -10, 0, -5, 0], rotate: [0, -4, 3, 0] }}
-        transition={{ duration: 0.6 }}
-      >
-        <RobotFigure className="h-24 w-20" mood={mood} />
-      </motion.div>
     </div>
   );
 }

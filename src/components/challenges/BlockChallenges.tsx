@@ -119,6 +119,20 @@ export function BlockBuildChallenge({
             {msg}
           </p>
         )}
+      </div>
+      {/* Botões embaixo do tear: no 1366×768 a coluna da esquerda fica livre para o programa. */}
+      <div className="flex flex-col gap-3">
+        <Loom
+          key={weave?.key ?? 0}
+          target={variant.target}
+          output={weave?.output ?? null}
+          playKey={weave?.key ?? 0}
+          onDone={(ok) => {
+            setBusy(false);
+            if (ok) onSolved();
+            else onWrong();
+          }}
+        />
         <div className="flex gap-3">
           <SubmitButton icon="🧵" onClick={tecer} disabled={locked || busy || nodes.length === 0}>
             Tecer!
@@ -137,17 +151,6 @@ export function BlockBuildChallenge({
           </button>
         </div>
       </div>
-      <Loom
-        key={weave?.key ?? 0}
-        target={variant.target}
-        output={weave?.output ?? null}
-        playKey={weave?.key ?? 0}
-        onDone={(ok) => {
-          setBusy(false);
-          if (ok) onSolved();
-          else onWrong();
-        }}
-      />
     </div>
   );
 }
@@ -194,6 +197,20 @@ export function BlockDebugChallenge({
           }}
           disabled={locked || busy}
         />
+      </div>
+      {/* Botões embaixo do tear: no 1366×768 a coluna da esquerda fica livre para o programa. */}
+      <div className="flex flex-col gap-3">
+        <Loom
+          key={weave?.key ?? 0}
+          target={variant.target}
+          output={weave?.output ?? null}
+          playKey={weave?.key ?? 0}
+          onDone={(ok) => {
+            setBusy(false);
+            if (ok) onSolved();
+            else onWrong();
+          }}
+        />
         <div className="flex gap-3">
           <SubmitButton icon="🧵" onClick={tecer} disabled={locked || busy}>
             Testar o tear
@@ -211,17 +228,6 @@ export function BlockDebugChallenge({
           </button>
         </div>
       </div>
-      <Loom
-        key={weave?.key ?? 0}
-        target={variant.target}
-        output={weave?.output ?? null}
-        playKey={weave?.key ?? 0}
-        onDone={(ok) => {
-          setBusy(false);
-          if (ok) onSolved();
-          else onWrong();
-        }}
-      />
     </div>
   );
 }

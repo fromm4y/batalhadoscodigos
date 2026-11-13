@@ -160,9 +160,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   return (
     <HalftoneBackground>
       <Dust count={8} />
-      <div className="relative flex min-h-screen flex-col">
+      <div className="relative flex h-screen flex-col overflow-hidden">
         {/* Topo: equipe, fase, timer e o cabo de guerra */}
-        <header className="flex h-16 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
+        <header className="flex h-14 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
           <p
             className={cn(
               'font-heist text-3xl tracking-[0.12em]',
@@ -182,7 +182,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </header>
 
         {match && (
-          <div className="border-b-4 border-ink bg-night/80 px-6 py-2">
+          <div className="border-b-4 border-ink bg-night/80 px-6 py-1">
             <TugBar
               bar={match.bar}
               redName={red ? team.cityName : (rival?.cityName ?? 'Robô')}
@@ -190,7 +190,10 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               hidden={disguised}
             />
             <p
-              className="mt-1 flex justify-center gap-4 font-type text-sm text-mist"
+              className={cn(
+                'flex justify-center gap-4 font-type text-sm text-mist',
+                (anchored || shielded || vaultAdvantage) && 'mt-1',
+              )}
               aria-live="polite"
             >
               {anchored && <span className="text-alert">⚓ Âncora: seus puxões valem metade!</span>}
@@ -208,9 +211,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </div>
         )}
 
-        <div className="grid flex-1 grid-cols-[300px_1fr] gap-5 p-5">
+        <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr] gap-4 px-5 py-2">
           {/* Esquerda: planta / mapa como trilha de progresso */}
-          <aside className="flex flex-col gap-3">
+          <aside className="flex min-h-0 flex-col gap-3 overflow-y-auto">
             <RouteMap
               theme={red ? 'bando' : 'piratas'}
               opened={player.progress.lockIndex}
@@ -261,7 +264,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </aside>
 
           {/* Centro: o desafio */}
-          <motion.section animate={shake} className="relative flex flex-col gap-3">
+          <motion.section animate={shake} className="relative flex min-h-0 flex-col gap-2 pt-3">
             {rivalWon ? (
               <WaitingPanel
                 text={
@@ -274,7 +277,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
             ) : challenge ? (
               <>
                 <div className="flex items-start gap-3">
-                  <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
+                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
                     <ComicArt
                       id={leaderArt}
                       alt={red ? 'O Professor' : 'A Capitã'}
@@ -286,54 +289,58 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     who={red ? 'professor' : 'capita'}
                     glitch={red}
                     tail="left"
+                    compact
                     className="max-w-none flex-1"
                   >
                     {clue ?? challenge.leaderLine}
                   </SpeechBubble>
                 </div>
-                <ChallengeFrame red={red}>
-                  <div className="mb-3 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-2">
-                    <h2 className="font-heist text-3xl tracking-wider">
-                      {slot === 'vault'
-                        ? '🔐'
-                        : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
-                      {challenge.title}
-                    </h2>
-                    <div className="flex items-center gap-3">
-                      <p className="font-type text-sm">{challenge.variant.prompt}</p>
-                      <ListenButton text={narrationText(challenge)} />
+                {/* Só o desafio rola, e só se não couber (rede de segurança para 1366×768). */}
+                <div data-challenge-scroll className="min-h-0 flex-1 overflow-y-auto pr-1">
+                  <ChallengeFrame red={red}>
+                    <div className="mb-2 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-1">
+                      <h2 className="font-heist text-2xl tracking-wider">
+                        {slot === 'vault'
+                          ? '🔐'
+                          : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
+                        {challenge.title}
+                      </h2>
+                      <div className="flex items-center gap-3">
+                        <p className="font-type text-sm">{challenge.variant.prompt}</p>
+                        <ListenButton text={narrationText(challenge)} />
+                      </div>
                     </div>
-                  </div>
-                  {usedHints > 0 && (
-                    <div className="mb-3 flex flex-col gap-1">
-                      <p className="border-l-4 border-brass bg-brass/20 px-3 py-1 font-bold">
-                        💡 Dica 1: {challenge.variant.hint1}
-                      </p>
-                      {usedHints > 1 && (
-                        <p className="border-l-4 border-alert bg-alert/20 px-3 py-1 font-bold">
-                          💡 Dica 2: {challenge.variant.hint2}
+                    {usedHints > 0 && (
+                      <div className="mb-3 flex flex-col gap-1">
+                        <p className="border-l-4 border-brass bg-brass/20 px-3 py-1 font-bold">
+                          💡 Dica 1: {challenge.variant.hint1}
                         </p>
-                      )}
-                    </div>
-                  )}
-                  <ChallengeView
-                    key={challenge.key}
-                    challenge={challenge}
-                    level={level}
-                    seed={ctx.teamId}
-                    heardTransmission={
-                      !needsTransmission(challenge) || player.progress.heardTransmission
-                    }
-                    locked={cooldown || busy || frozen > 0}
-                    onWrong={onWrong}
-                    onSolved={onSolved}
-                  />
-                  {cooldown && (
-                    <p role="status" className="mt-3 font-bold text-alert">
-                      Respirem fundo... dá para tentar de novo em instantes.
-                    </p>
-                  )}
-                </ChallengeFrame>
+                        {usedHints > 1 && (
+                          <p className="border-l-4 border-alert bg-alert/20 px-3 py-1 font-bold">
+                            💡 Dica 2: {challenge.variant.hint2}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    <ChallengeView
+                      key={challenge.key}
+                      challenge={challenge}
+                      level={level}
+                      seed={ctx.teamId}
+                      heardTransmission={
+                        !needsTransmission(challenge) || player.progress.heardTransmission
+                      }
+                      locked={cooldown || busy || frozen > 0}
+                      onWrong={onWrong}
+                      onSolved={onSolved}
+                    />
+                    {cooldown && (
+                      <p role="status" className="mt-3 font-bold text-alert">
+                        Respirem fundo... dá para tentar de novo em instantes.
+                      </p>
+                    )}
+                  </ChallengeFrame>
+                </div>
               </>
             ) : (
               <WaitingPanel
@@ -364,7 +371,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </div>
 
         {/* Rodapé: pontos e dicas */}
-        <footer className="flex h-20 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
+        <footer className="flex h-16 shrink-0 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
           <div className="flex items-center gap-4">
             <AudioControls />
             <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
@@ -441,13 +448,13 @@ function ChallengeFrame({ red, children }: { red: boolean; children: React.React
   if (red) {
     return (
       <div className="relative rounded-sm border-[3px] border-ink bg-[#a8834a] p-2 shadow-comic">
-        <div className="bg-aged p-5 text-ink">{children}</div>
+        <div className="bg-aged p-4 text-ink">{children}</div>
       </div>
     );
   }
   return (
-    <BrassFrame className="bg-graphite">
-      <div className="rounded-sm bg-aged p-5 text-ink">{children}</div>
+    <BrassFrame className="bg-graphite" tight>
+      <div className="rounded-sm bg-aged p-4 text-ink">{children}</div>
     </BrassFrame>
   );
 }

@@ -5,6 +5,9 @@ const ROW_H = 24;
 const PAD_X = 48;
 const PAD_TOP = 30;
 const PAD_BOTTOM = 18;
+/** Altura máxima do cartão na tela (px): cabe em 1366×768 com o resto do jogo. */
+const MAX_HEIGHT_PX = 280;
+const MAX_SCALE = 1.6;
 
 type PunchCardProps = {
   rows: number;
@@ -43,7 +46,8 @@ export function PunchCard({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className="h-auto w-full max-w-[30rem]"
+      className="h-auto w-full"
+      style={{ maxWidth: width * Math.min(MAX_SCALE, MAX_HEIGHT_PX / height) }}
       role="group"
       aria-label={label}
     >
