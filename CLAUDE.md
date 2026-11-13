@@ -109,3 +109,6 @@ firestore.rules
 - **(13/11) Botão de ajuda** se chama "🙋 Chamar a Narradora" (1 por dupla por sessão).
 - **(13/11) Congelar telas** desconta o tempo congelado: ao descongelar, `phaseStartedAt`, `autoEventAt` e o `nextAt` do robô andam pra frente.
 - **(13/11) Fase por dupla:** `players/{id}.phaseOverride` (dupla atrasada/adiantada); a fase efetiva é `phaseOverride ?? session.phase`.
+- **(13/11) Ranking (Etapa 6):** pelo `totalPoints` da temporada (`src/engine/ranking.ts`); empate divide a posição (1, 2, 2, 4). O aluno vê o pódio só no planejamento (passo "Ranking") e no fim (RN-25); projetor e painel mostram sempre.
+- **(13/11) Fim do episódio em 4 capítulos** (Resultado+extrato → Ranking → Revelação+carta do Álbum → "???" Transmissão interceptada), cada um cabe em 1366×768. Arte por convenção: `carta-{episodeId}` e `proximo-ep{N+1}`.
+- **(13/11) Projetor no fim:** a Narradora alterna Ranking/Gancho por botões discretos no canto (nada troca sozinho). Fundo do projetor: `telhado-museu`.
