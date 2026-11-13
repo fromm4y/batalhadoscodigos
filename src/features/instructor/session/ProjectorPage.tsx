@@ -72,7 +72,7 @@ export function ProjectorPage() {
             now={now}
           />
         ) : s.phase === 'end' ? (
-          <ProjectorEnd teams={teams.data} episode={episode} />
+          <ProjectorEnd teams={teams.data} players={players.data} episode={episode} />
         ) : (
           <>
             <p className="font-type text-3xl text-mist">

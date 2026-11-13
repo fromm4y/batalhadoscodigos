@@ -27,6 +27,8 @@ type SpeechBubbleProps = {
   /** Chiado de rádio (transmissões do Professor, Interferência). */
   glitch?: boolean;
   delay?: number;
+  /** Versão baixa (tela de jogo): menos espaço vertical, mesmo estilo. */
+  compact?: boolean;
   className?: string;
 };
 
@@ -44,6 +46,7 @@ export function SpeechBubble({
   shout = false,
   glitch = false,
   delay = 0,
+  compact = false,
   className,
 }: SpeechBubbleProps) {
   const info = who ? speakerInfo[who] : null;
@@ -53,7 +56,11 @@ export function SpeechBubble({
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 400, damping: 15, delay }}
       style={{ transformOrigin: tail === 'right' ? '85% 100%' : '15% 100%' }}
-      className={cn('relative mb-9 inline-block max-w-md text-ink', className)}
+      className={cn(
+        'relative inline-block max-w-md text-ink',
+        compact ? 'mb-6' : 'mb-9',
+        className,
+      )}
     >
       {info && (
         <figcaption
@@ -88,8 +95,11 @@ export function SpeechBubble({
           'relative z-[1]',
           shout
             ? 'px-10 py-6 font-comic text-2xl tracking-wide'
-            : 'rounded-[50%/50%] border-4 border-ink bg-aged px-10 py-6 font-body text-lg font-bold leading-snug shadow-comic',
-          info && 'pt-7',
+            : cn(
+                'rounded-[50%/50%] border-4 border-ink bg-aged font-body font-bold leading-snug shadow-comic',
+                compact ? 'px-8 py-2 text-base' : 'px-10 py-6 text-lg',
+              ),
+          info && (compact ? 'pt-5' : 'pt-7'),
         )}
       >
         <span className={cn('block', glitch && 'animate-glitch')}>{children}</span>
@@ -103,8 +113,9 @@ export function SpeechBubble({
       <svg
         aria-hidden
         className={cn(
-          'absolute z-[2] h-10 w-12',
-          shout ? '-bottom-[30px]' : '-bottom-[34px]',
+          'absolute z-[2]',
+          compact ? 'h-7 w-9' : 'h-10 w-12',
+          shout ? '-bottom-[30px]' : compact ? '-bottom-[23px]' : '-bottom-[34px]',
           tailPosition[tail],
         )}
         viewBox="0 0 48 40"

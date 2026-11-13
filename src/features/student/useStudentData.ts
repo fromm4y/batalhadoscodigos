@@ -1,7 +1,7 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { getFirebase } from '@/lib/firebase';
-import type { LedgerEntryDoc, TeamDoc } from '@/types/domain';
+import type { LedgerEntryDoc, PlayerDoc, TeamDoc } from '@/types/domain';
 
 type WithId<T> = T & { id: string };
 
@@ -44,4 +44,18 @@ export function useSessionLedger(
     );
   }, [classId, teamId, sessionId, enabled]);
   return enabled ? entries : [];
+}
+
+/** Pontos de hoje de todas as duplas: as regras só liberam na fase de fim (destaque da aula). */
+export function useEndPlayers(sessionId: string, enabled: boolean): PlayerDoc[] {
+  const [players, setPlayers] = useState<PlayerDoc[]>([]);
+  useEffect(() => {
+    if (!enabled) return;
+    return onSnapshot(
+      collection(getFirebase('student').db, 'sessions', sessionId, 'players'),
+      (snap) => setPlayers(snap.docs.map((d) => d.data() as PlayerDoc)),
+      () => setPlayers([]),
+    );
+  }, [sessionId, enabled]);
+  return enabled ? players : [];
 }

@@ -12,3 +12,4 @@ export { Dossier } from './Dossier';
 export { RouteMap, type RouteTheme } from './RouteMap';
 export { MuseumFacade } from './MuseumFacade';
 export { RobotFigure } from './RobotFigure';
+export { Confetti } from './Confetti';

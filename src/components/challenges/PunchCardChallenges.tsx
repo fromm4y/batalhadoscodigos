@@ -57,7 +57,7 @@ export function PunchCardReadChallenge({
             inputMode={letters ? 'text' : 'numeric'}
             autoComplete="off"
             spellCheck={false}
-            className="min-h-14 border-[3px] border-ink bg-white px-3 text-center font-heist text-4xl tracking-[0.3em] text-ink disabled:opacity-50"
+            className="min-h-14 w-full min-w-0 border-[3px] border-ink bg-white px-3 text-center font-heist text-4xl tracking-[0.3em] text-ink disabled:opacity-50"
           />
         </label>
         <SubmitButton disabled={!heard || locked || solved || !text.trim()} onClick={submit} />

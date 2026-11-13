@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { playSfx } from '@/audio/engine';
 import {
   ComicArt,
   ComicButton,
@@ -10,7 +11,8 @@ import {
   cn,
 } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
-import { BrassFrame, Spotlights, Stamp, Typewriter } from '@/components/scene';
+import { SessionHighlight } from '@/components/game/SessionHighlight';
+import { BrassFrame, Confetti, Spotlights, Stamp, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
 import { ledgerSum } from '@/engine/ranking';
 import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamDoc } from '@/types/domain';
@@ -24,6 +26,8 @@ type Props = {
   match: MatchDoc | null;
   classTeams: (TeamDoc & { id: string })[];
   ledger: (LedgerEntryDoc & { id: string })[];
+  /** pontos de hoje de todas as duplas (destaque da aula) */
+  sessionPlayers: PlayerDoc[];
 };
 
 const STEPS = ['result', 'ranking', 'reveal', 'hook'] as const;
@@ -40,7 +44,16 @@ const STEP_LABEL: Record<Step, string> = {
  * revelação histórica + carta do Álbum do Museu e o gancho "TRANSMISSÃO INTERCEPTADA".
  * Em capítulos, para cada parte caber inteira em 1366×768.
  */
-export function EndScreen({ episode, team, teamId, player, match, classTeams, ledger }: Props) {
+export function EndScreen({
+  episode,
+  team,
+  teamId,
+  player,
+  match,
+  classTeams,
+  ledger,
+  sessionPlayers,
+}: Props) {
   const [step, setStep] = useState<Step>('result');
   const next = STEPS[STEPS.indexOf(step) + 1];
 
@@ -90,10 +103,15 @@ export function EndScreen({ episode, team, teamId, player, match, classTeams, le
                 <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
                   RANKING DA TURMA
                 </h1>
+                <SessionHighlight
+                  teams={classTeams}
+                  players={sessionPlayers}
+                  highlightId={teamId}
+                />
                 <RankingPodium
                   teams={classTeams}
                   highlightId={teamId}
-                  maxRest={4}
+                  maxRest={3}
                   className="w-full max-w-3xl"
                 />
               </div>
@@ -153,6 +171,12 @@ function ResultChapter({
             text: 'Foi por pouco. Semana que vem tem revanche!',
           };
   const today = ledgerSum(ledger);
+  const resultKind = result?.title;
+  useEffect(() => {
+    if (!resultKind) return;
+    const t = setTimeout(() => playSfx(resultKind === 'QUASE!' ? 'defeat' : 'victory'), 250);
+    return () => clearTimeout(t);
+  }, [resultKind]);
 
   return (
     <div className="grid flex-1 grid-cols-[1fr_1fr] items-start gap-8">
@@ -181,6 +205,17 @@ function ResultChapter({
           <div className="absolute -top-6 right-0">
             <Onomatopoeia kind="boom" size={150} />
           </div>
+        )}
+        {(won || match?.winner === 'draw') && <Confetti count={won ? 80 : 40} />}
+        {result?.title === 'QUASE!' && (
+          <Stamp
+            text="REVANCHE!"
+            color="brass"
+            rotate={-8}
+            delay={1}
+            onDark
+            className="self-start text-4xl"
+          />
         )}
         <p className="mt-2 font-type text-lg text-mist">
           Cadeados abertos: {player.progress.lockIndex}/3 · Cofre:{' '}
@@ -244,7 +279,7 @@ function ResultChapter({
 function RevealChapter({ episode }: { episode: Episode }) {
   return (
     <div className="grid flex-1 grid-cols-[1fr_auto] items-start gap-6">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <h1 className="font-heist text-4xl tracking-[0.12em] text-paper text-glow-spot">
           O QUE ACONTECEU DE VERDADE
         </h1>
@@ -256,9 +291,9 @@ function RevealChapter({ episode }: { episode: Episode }) {
               tone="graphite"
               caption={p.caption ? undefined : 'Revelação'}
               delay={i * 0.3}
-              className="flex h-80 flex-col"
+              className="flex h-72 flex-col"
             >
-              <div className="h-40 overflow-hidden">
+              <div className="h-36 overflow-hidden">
                 <ComicArt id={p.art} alt={p.caption ?? 'Quadro da revelação'} />
               </div>
               <div className="flex-1 bg-aged p-3 text-ink">
@@ -268,7 +303,7 @@ function RevealChapter({ episode }: { episode: Episode }) {
             </ComicPanel>
           ))}
         </div>
-        <SpeechBubble who="narradora" tail="left" className="max-w-xl">
+        <SpeechBubble who="narradora" tail="left" compact className="max-w-xl">
           Olhos aqui: a Narradora vai contar a história verdadeira dessa invenção!
         </SpeechBubble>
       </div>

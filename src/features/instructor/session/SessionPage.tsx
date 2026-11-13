@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
 import { ComicButton, ComicPanel, cn } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
+import { SessionHighlight } from '@/components/game/SessionHighlight';
 import { SEASON } from '@/content/season';
 import { getFirebase } from '@/lib/firebase';
 import { useNow } from '@/lib/useNow';
@@ -243,6 +244,7 @@ export function SessionPage() {
           <MatchesPanel matches={matches.data} teams={teams.data} />
           {mine && <FeedPanel sessionId={sessionId} />}
           <ComicPanel caption="Ranking da turma" tone="graphite" className="pt-8">
+            <SessionHighlight teams={teams.data} players={players.data} className="mb-4" />
             <RankingPodium teams={teams.data} maxRest={10} />
           </ComicPanel>
         </div>

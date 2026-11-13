@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 import { useEffect, useRef, useState } from 'react';
 import { artUrl, Onomatopoeia, cn } from '@/components/comic';
 import type { MuseumEvent } from '@/content/types';
@@ -29,6 +30,7 @@ function loadAnswers(key: string, n: number): (boolean | null)[] {
  * O cadeado em andamento fica pausado embaixo.
  */
 export function MuseumEventOverlay({ event, startedAtMs, storageKey, onFinish }: Props) {
+  useSfxOnMount('alarm');
   useNow(250);
   const now = serverNow();
   const index = currentItem(event, startedAtMs, now);

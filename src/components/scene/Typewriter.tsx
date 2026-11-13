@@ -1,4 +1,5 @@
 import { useReducedMotion } from 'framer-motion';
+import { playSfx } from '@/audio/engine';
 import { useEffect, useState } from 'react';
 import { cn } from '@/components/comic';
 
@@ -24,7 +25,14 @@ export function Typewriter({ text, speed = 55, delay = 0, onDone, className }: T
       onDone?.();
       return;
     }
-    const t = setTimeout(() => setCount((c) => c + 1), count === 0 ? delay : speed);
+    const t = setTimeout(
+      () => {
+        // som de tecla (só nas letras, não nos espaços)
+        if (chars[count]?.trim()) playSfx('key');
+        setCount((c) => c + 1);
+      },
+      count === 0 ? delay : speed,
+    );
     return () => clearTimeout(t);
     // onDone muda a cada render do pai; só o progresso importa aqui.
     // eslint-disable-next-line react-hooks/exhaustive-deps

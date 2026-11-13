@@ -1,5 +1,10 @@
+import type { ResolvedChallenge } from '@/content/types';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { playSfx } from '@/audio/engine';
+import { AudioControls } from '@/components/game/AudioControls';
+import { ListenButton } from '@/components/game/ListenButton';
+import { RobotTalk } from '@/components/game/RobotTalk';
 import { ChallengeView } from '@/components/challenges/ChallengeView';
 import {
   ComicArt,
@@ -13,7 +18,7 @@ import {
 import { AbilityCards } from '@/components/game/AbilityCards';
 import { InterferenceOverlay } from '@/components/game/InterferenceOverlay';
 import { TugBar } from '@/components/game/TugBar';
-import { BrassFrame, Dust, RobotFigure, RouteMap, Typewriter } from '@/components/scene';
+import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
 import { resolveChallenge, type Slot } from '@/engine/challenges';
@@ -80,6 +85,14 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const [error, setError] = useState<string | null>(null);
   const shake = useAnimationControls();
 
+  // TCHÁ! a cada puxão da barra (de qualquer lado).
+  const bar = match?.bar ?? 0;
+  const lastBar = useRef(bar);
+  useEffect(() => {
+    if (lastBar.current !== bar) playSfx('pull');
+    lastBar.current = bar;
+  }, [bar]);
+
   useEffect(() => {
     if (!pop) return;
     const t = setTimeout(() => setPop(null), 1400);
@@ -106,6 +119,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   }
 
   function onWrong() {
+    playSfx('error');
     setPop({ kind: 'errou', key: Date.now() });
     void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
     setCooldown(true);
@@ -119,10 +133,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     void guard(async () => {
       if (slot === 'vault') {
         const v = await solveVault(ctx);
+        playSfx('vault');
         addFeed(ctx, 'vault', `${myName} resolveu o Cofre${v.won ? ' primeiro e venceu!' : '.'}`);
         setPop({ kind: 'boom', key: Date.now() });
       } else {
         const r = await openLock(ctx, slot);
+        playSfx('lock');
         addFeed(ctx, 'lock_open', `${myName} abriu o ${red ? 'cadeado' : 'defesa'} ${slot + 1}`);
         setPop(
           r.blocked
@@ -144,9 +160,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   return (
     <HalftoneBackground>
       <Dust count={8} />
-      <div className="relative flex min-h-screen flex-col">
+      <div className="relative flex h-screen flex-col overflow-hidden">
         {/* Topo: equipe, fase, timer e o cabo de guerra */}
-        <header className="flex h-16 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
+        <header className="flex h-14 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
           <p
             className={cn(
               'font-heist text-3xl tracking-[0.12em]',
@@ -166,7 +182,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </header>
 
         {match && (
-          <div className="border-b-4 border-ink bg-night/80 px-6 py-2">
+          <div className="border-b-4 border-ink bg-night/80 px-6 py-1">
             <TugBar
               bar={match.bar}
               redName={red ? team.cityName : (rival?.cityName ?? 'Robô')}
@@ -174,7 +190,10 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               hidden={disguised}
             />
             <p
-              className="mt-1 flex justify-center gap-4 font-type text-sm text-mist"
+              className={cn(
+                'flex justify-center gap-4 font-type text-sm text-mist',
+                (anchored || shielded || vaultAdvantage) && 'mt-1',
+              )}
               aria-live="polite"
             >
               {anchored && <span className="text-alert">⚓ Âncora: seus puxões valem metade!</span>}
@@ -192,9 +211,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </div>
         )}
 
-        <div className="grid flex-1 grid-cols-[300px_1fr] gap-5 p-5">
+        <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr] gap-4 px-5 py-2">
           {/* Esquerda: planta / mapa como trilha de progresso */}
-          <aside className="flex flex-col gap-3">
+          <aside className="flex min-h-0 flex-col gap-3 overflow-y-auto">
             <RouteMap
               theme={red ? 'bando' : 'piratas'}
               opened={player.progress.lockIndex}
@@ -211,6 +230,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                 used={player.abilities?.used ?? []}
                 disabled={busy || !!match.winner}
                 onUse={(id) => {
+                  playSfx(id);
                   setPop({
                     kind: id === 'interferencia' ? 'zzzt' : id === 'escudo' ? 'tcha' : 'custom',
                     key: Date.now(),
@@ -222,23 +242,16 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               />
             )}
             {match?.machineSide && (
-              <div className="flex items-end gap-2">
-                <RobotFigure
-                  className="h-24 w-20"
-                  mood={
-                    match.winner === match.machineSide
-                      ? 'feliz'
-                      : match.winner
-                        ? 'derrotado'
-                        : 'provocando'
-                  }
-                />
-                {lastLog && lastLog.side === match.machineSide && (
-                  <p className="mb-6 rounded-md border-2 border-ink bg-aged px-2 py-1 font-comic text-base leading-tight tracking-wide text-ink">
-                    {lastLog.text}
-                  </p>
-                )}
-              </div>
+              <RobotTalk
+                mood={
+                  match.winner === match.machineSide
+                    ? 'feliz'
+                    : match.winner
+                      ? 'derrotado'
+                      : 'provocando'
+                }
+                line={lastLog && lastLog.side === match.machineSide ? lastLog : null}
+              />
             )}
             {match && !match.machineSide && lastLog && (
               <p
@@ -251,7 +264,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </aside>
 
           {/* Centro: o desafio */}
-          <motion.section animate={shake} className="relative flex flex-col gap-3">
+          <motion.section animate={shake} className="relative flex min-h-0 flex-col gap-2 pt-3">
             {rivalWon ? (
               <WaitingPanel
                 text={
@@ -264,7 +277,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
             ) : challenge ? (
               <>
                 <div className="flex items-start gap-3">
-                  <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
+                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
                     <ComicArt
                       id={leaderArt}
                       alt={red ? 'O Professor' : 'A Capitã'}
@@ -276,51 +289,58 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     who={red ? 'professor' : 'capita'}
                     glitch={red}
                     tail="left"
+                    compact
                     className="max-w-none flex-1"
                   >
                     {clue ?? challenge.leaderLine}
                   </SpeechBubble>
                 </div>
-                <ChallengeFrame red={red}>
-                  <div className="mb-3 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-2">
-                    <h2 className="font-heist text-3xl tracking-wider">
-                      {slot === 'vault'
-                        ? '🔐'
-                        : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
-                      {challenge.title}
-                    </h2>
-                    <p className="font-type text-sm">{challenge.variant.prompt}</p>
-                  </div>
-                  {usedHints > 0 && (
-                    <div className="mb-3 flex flex-col gap-1">
-                      <p className="border-l-4 border-brass bg-brass/20 px-3 py-1 font-bold">
-                        💡 Dica 1: {challenge.variant.hint1}
-                      </p>
-                      {usedHints > 1 && (
-                        <p className="border-l-4 border-alert bg-alert/20 px-3 py-1 font-bold">
-                          💡 Dica 2: {challenge.variant.hint2}
-                        </p>
-                      )}
+                {/* Só o desafio rola, e só se não couber (rede de segurança para 1366×768). */}
+                <div data-challenge-scroll className="min-h-0 flex-1 overflow-y-auto pr-1">
+                  <ChallengeFrame red={red}>
+                    <div className="mb-2 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-1">
+                      <h2 className="font-heist text-2xl tracking-wider">
+                        {slot === 'vault'
+                          ? '🔐'
+                          : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
+                        {challenge.title}
+                      </h2>
+                      <div className="flex items-center gap-3">
+                        <p className="font-type text-sm">{challenge.variant.prompt}</p>
+                        <ListenButton text={narrationText(challenge)} />
+                      </div>
                     </div>
-                  )}
-                  <ChallengeView
-                    key={challenge.key}
-                    challenge={challenge}
-                    level={level}
-                    seed={ctx.teamId}
-                    heardTransmission={
-                      !needsTransmission(challenge) || player.progress.heardTransmission
-                    }
-                    locked={cooldown || busy || frozen > 0}
-                    onWrong={onWrong}
-                    onSolved={onSolved}
-                  />
-                  {cooldown && (
-                    <p role="status" className="mt-3 font-bold text-alert">
-                      Respirem fundo... dá para tentar de novo em instantes.
-                    </p>
-                  )}
-                </ChallengeFrame>
+                    {usedHints > 0 && (
+                      <div className="mb-3 flex flex-col gap-1">
+                        <p className="border-l-4 border-brass bg-brass/20 px-3 py-1 font-bold">
+                          💡 Dica 1: {challenge.variant.hint1}
+                        </p>
+                        {usedHints > 1 && (
+                          <p className="border-l-4 border-alert bg-alert/20 px-3 py-1 font-bold">
+                            💡 Dica 2: {challenge.variant.hint2}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    <ChallengeView
+                      key={challenge.key}
+                      challenge={challenge}
+                      level={level}
+                      seed={ctx.teamId}
+                      heardTransmission={
+                        !needsTransmission(challenge) || player.progress.heardTransmission
+                      }
+                      locked={cooldown || busy || frozen > 0}
+                      onWrong={onWrong}
+                      onSolved={onSolved}
+                    />
+                    {cooldown && (
+                      <p role="status" className="mt-3 font-bold text-alert">
+                        Respirem fundo... dá para tentar de novo em instantes.
+                      </p>
+                    )}
+                  </ChallengeFrame>
+                </div>
               </>
             ) : (
               <WaitingPanel
@@ -351,14 +371,17 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </div>
 
         {/* Rodapé: pontos e dicas */}
-        <footer className="flex h-20 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
-          <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
-            {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
-            <span className="ml-3 text-xl text-mist">
-              (hoje: {player.episodePoints >= 0 ? '+' : ''}
-              {player.episodePoints})
-            </span>
-          </p>
+        <footer className="flex h-16 shrink-0 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
+          <div className="flex items-center gap-4">
+            <AudioControls />
+            <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
+              {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
+              <span className="ml-3 text-xl text-mist">
+                (hoje: {player.episodePoints >= 0 ? '+' : ''}
+                {player.episodePoints})
+              </span>
+            </p>
+          </div>
           {challenge && (
             <div className="flex gap-3">
               <button
@@ -385,7 +408,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     key={tier}
                     type="button"
                     disabled={!available || busy}
-                    onClick={() => void guard(() => buyHint(ctx, challenge.key, tier, free))}
+                    onClick={() =>
+                      void guard(async () => {
+                        playSfx('hint');
+                        await buyHint(ctx, challenge.key, tier, free);
+                      })
+                    }
                     className={cn(
                       'flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink px-4 pt-1 font-heist text-xl tracking-wider disabled:cursor-not-allowed',
                       bought
@@ -420,13 +448,13 @@ function ChallengeFrame({ red, children }: { red: boolean; children: React.React
   if (red) {
     return (
       <div className="relative rounded-sm border-[3px] border-ink bg-[#a8834a] p-2 shadow-comic">
-        <div className="bg-aged p-5 text-ink">{children}</div>
+        <div className="bg-aged p-4 text-ink">{children}</div>
       </div>
     );
   }
   return (
-    <BrassFrame className="bg-graphite">
-      <div className="rounded-sm bg-aged p-5 text-ink">{children}</div>
+    <BrassFrame className="bg-graphite" tight>
+      <div className="rounded-sm bg-aged p-4 text-ink">{children}</div>
     </BrassFrame>
   );
 }
@@ -454,4 +482,12 @@ function WaitingPanel({ text, curiosities }: { text: string; curiosities: string
       )}
     </div>
   );
+}
+
+/** O que o "Ouvir" lê: título, enunciado e o texto do enigma (nunca a resposta). */
+function narrationText(c: ResolvedChallenge): string {
+  const parts = [c.title, c.variant.prompt];
+  if (c.type === 'riddle') parts.push(c.variant.text);
+  if (c.type === 'quiz') parts.push(...c.variant.questions.map((q) => q.q));
+  return parts.join('. ');
 }

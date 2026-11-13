@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 import { Avatar } from '@/components/avatar/Avatar';
 import { HalftoneBackground, Onomatopoeia, cn } from '@/components/comic';
 import { RobotFigure, Typewriter } from '@/components/scene';
@@ -17,6 +18,8 @@ export function VersusScreen({
   side: Side;
   rival: TeamDoc | null;
 }) {
+  useSfxOnMount('whoosh', 300);
+  useSfxOnMount('stamp', 900);
   const left: Fighter = side === 'red' ? { team: me, side: 'red' } : { team: rival, side: 'red' };
   const right: Fighter =
     side === 'blue' ? { team: me, side: 'blue' } : { team: rival, side: 'blue' };

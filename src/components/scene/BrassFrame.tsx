@@ -2,12 +2,22 @@ import type { ReactNode } from 'react';
 import { cn } from '@/components/comic';
 
 /** Moldura de vitrine com cantos de latão brilhando (invenções, Cofre, cartas). */
-export function BrassFrame({ children, className }: { children: ReactNode; className?: string }) {
+export function BrassFrame({
+  children,
+  className,
+  tight = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  /** moldura fina (tela de jogo, onde cada pixel de altura conta) */
+  tight?: boolean;
+}) {
   const corner = 'absolute h-7 w-7 border-brass';
   return (
     <div
       className={cn(
-        'relative border-2 border-brass/40 bg-[linear-gradient(160deg,rgb(255_244_194/0.07),transparent_40%)] p-4 glow-brass',
+        'relative border-2 border-brass/40 bg-[linear-gradient(160deg,rgb(255_244_194/0.07),transparent_40%)] glow-brass',
+        tight ? 'p-1.5' : 'p-4',
         className,
       )}
     >

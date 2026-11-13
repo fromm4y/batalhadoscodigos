@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 
 /** RN-45: balão gigante "TIRE O FONE!" em todas as telas enquanto a Narradora fala. */
 export function TransmissionOverlay() {
+  useSfxOnMount('static');
   return (
     <motion.div
       role="alertdialog"

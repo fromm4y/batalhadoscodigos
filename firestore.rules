@@ -188,7 +188,9 @@ service cloud.firestore {
       // ---------- sessions/{sessionId}/players/{teamId} ----------
       match /players/{teamId} {
         allow read: if (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()))
-          || (isTeam() && request.auth.token.sessionId == sessionId && request.auth.token.teamId == teamId);
+          || (isTeam() && request.auth.token.sessionId == sessionId && request.auth.token.teamId == teamId)
+          // Destaque da aula: no fim do episódio a turma vê os pontos de hoje de todas as duplas.
+          || (isTeam() && request.auth.token.sessionId == sessionId && sessionDoc(sessionId).phase == 'end');
         // A dupla marca presença, escolhe o lado e avança o próprio progresso (o cadeado nunca volta).
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId

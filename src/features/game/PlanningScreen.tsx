@@ -11,6 +11,7 @@ import {
 } from '@/components/comic';
 import { Dossier, RouteMap, Spotlights, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
+import { ListenButton } from '@/components/game/ListenButton';
 import { RankingPodium } from '@/components/game/RankingPodium';
 import { VersusScreen } from '@/components/game/VersusScreen';
 import type { GameMode, MatchDoc, PlayerDoc, Side, TeamDoc } from '@/types/domain';
@@ -134,7 +135,12 @@ export function PlanningScreen({
                   </ComicPanel>
                 ))}
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-3">
+                <ListenButton
+                  text={episode.intro.comic
+                    .map((p) => [p.caption, p.speech?.text].filter(Boolean).join('. '))
+                    .join('. ')}
+                />
                 <ComicButton variant="brass" icon="▶" onClick={() => setStep('dossier')}>
                   Ler o dossiê
                 </ComicButton>

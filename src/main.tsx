@@ -3,7 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { MotionConfig } from 'framer-motion';
 import { RouterProvider } from 'react-router';
 import { router } from './app/router';
+import { installAudioUnlock } from './audio/audioStore';
 import './index.css';
+
+installAudioUnlock();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
