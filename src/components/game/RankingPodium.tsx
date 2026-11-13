@@ -18,9 +18,9 @@ type Props = {
 };
 
 const PLACE = {
-  1: { h: 'h-40', hXl: 'h-64', bg: 'bg-brass glow-brass', medal: '🥇' },
-  2: { h: 'h-28', hXl: 'h-48', bg: 'bg-mist', medal: '🥈' },
-  3: { h: 'h-20', hXl: 'h-36', bg: 'bg-[#b87333]', medal: '🥉' },
+  1: { h: 'h-44', hXl: 'h-64', bg: 'bg-brass glow-brass', medal: '🥇' },
+  2: { h: 'h-36', hXl: 'h-48', bg: 'bg-mist', medal: '🥈' },
+  3: { h: 'h-28', hXl: 'h-36', bg: 'bg-[#b87333]', medal: '🥉' },
 } as const;
 
 /** Ranking da turma em pódio animado + lista (SPEC 9.2 e 9.4, RN-25). */
