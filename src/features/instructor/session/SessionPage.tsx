@@ -37,6 +37,22 @@ export function SessionPage() {
 
   if (session.loading) return <InstructorLayout title="Sessão">{null}</InstructorLayout>;
   const s = session.data;
+  if (!s && session.error) {
+    return (
+      <InstructorLayout title="Sem acesso à sessão">
+        <p
+          role="alert"
+          className="mb-4 max-w-2xl border-l-4 border-bando bg-bando/20 p-3 font-bold text-paper"
+        >
+          O banco recusou a leitura desta sessão. Confira se o arquivo firestore.rules mais recente
+          foi publicado no Firebase (Firestore → Regras) e recarregue a página.
+        </p>
+        <Link to="/instrutor/turmas" className="font-bold text-brass underline">
+          ← Voltar para as turmas
+        </Link>
+      </InstructorLayout>
+    );
+  }
   if (!s) {
     return (
       <InstructorLayout title="Sessão não encontrada">

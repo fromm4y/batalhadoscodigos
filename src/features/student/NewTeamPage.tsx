@@ -161,7 +161,8 @@ export function NewTeamPage() {
             {step === 0 && (
               <>
                 <p className="mb-4 font-type text-xl text-paper">
-                  Montem o visual da dupla. Testem os dois figurinos!
+                  Montem o visual da equipe (pode ser 1 ou 2 pessoas no computador). Testem os dois
+                  figurinos!
                 </p>
                 <AvatarBuilder value={avatar} onChange={setAvatar} />
               </>
@@ -169,6 +170,7 @@ export function NewTeamPage() {
             {step === 1 && (
               <NameCards
                 title="Escolham um codinome de cidade (Bando)"
+                hint="A cada aula vocês escolhem um lado. Quando jogarem no Bando, este é o nome que aparece."
                 names={CITY_NAMES}
                 taken={takenCities}
                 value={city}
@@ -179,6 +181,7 @@ export function NewTeamPage() {
             {step === 2 && (
               <NameCards
                 title="Escolham um nome pirata (Piratas)"
+                hint="E quando jogarem nos Piratas, aparece este. Os pontos somam na mesma ficha!"
                 names={PIRATE_NAMES}
                 taken={takenPirates}
                 value={pirate}
@@ -258,6 +261,7 @@ export function NewTeamPage() {
 
 function NameCards({
   title,
+  hint,
   names,
   taken,
   value,
@@ -265,6 +269,7 @@ function NameCards({
   tone,
 }: {
   title: string;
+  hint: string;
   names: readonly string[];
   taken: Set<string>;
   value: string | null;
@@ -275,12 +280,13 @@ function NameCards({
     <div>
       <h2
         className={cn(
-          'mb-4 font-heist text-4xl tracking-wider',
+          'mb-1 font-heist text-4xl tracking-wider',
           tone === 'red' ? 'text-bando text-glow-red' : 'text-piratas text-glow-blue',
         )}
       >
         {title}
       </h2>
+      <p className="mb-4 font-type text-lg text-mist">{hint}</p>
       <ul className="grid grid-cols-5 gap-3">
         {names.map((n, i) => {
           const isTaken = taken.has(n);
