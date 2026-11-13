@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { ComicButton, GameLogo, HalftoneBackground, SpeechBubble, cn } from '@/components/comic';
 import { Dust, Lasers, MuseumFacade, Spotlights } from '@/components/scene';
+import { artUrl } from '@/components/comic';
 import { GAME_RULES } from '@/config/gameRules';
 import { getFirebase } from '@/lib/firebase';
 import { joinSession } from './api';
@@ -52,7 +53,16 @@ export function EntrancePage() {
 
   return (
     <HalftoneBackground>
-      <MuseumFacade className="absolute inset-x-0 bottom-0 h-[50vh] w-full opacity-60" />
+      {artUrl('capa-entrada') ? (
+        <img
+          src={artUrl('capa-entrada')}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover opacity-45"
+        />
+      ) : (
+        <MuseumFacade className="absolute inset-x-0 bottom-0 h-[50vh] w-full opacity-60" />
+      )}
       <Spotlights />
       <Lasers lasers={[{ top: '82%', angle: 2 }]} />
       <Dust />

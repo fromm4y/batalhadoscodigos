@@ -10,7 +10,7 @@ export function RobotFigure({
   mood = 'provocando',
 }: {
   className?: string;
-  mood?: 'provocando' | 'derrotado';
+  mood?: 'provocando' | 'derrotado' | 'feliz';
 }) {
   const reduce = useReducedMotion();
   const url = artUrl(`robo-${mood}`);
@@ -18,7 +18,13 @@ export function RobotFigure({
     return (
       <motion.img
         src={url}
-        alt={mood === 'provocando' ? 'O Robô, provocando' : 'O Robô, derrotado e soltando fumaça'}
+        alt={
+          mood === 'provocando'
+            ? 'O Robô, provocando'
+            : mood === 'feliz'
+              ? 'O Robô, comemorando'
+              : 'O Robô, derrotado e soltando fumaça'
+        }
         className={`object-contain ${className ?? ''}`}
         animate={reduce ? undefined : { y: [0, -6, 0] }}
         transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
@@ -45,7 +51,7 @@ export function RobotFigure({
         />
         <rect x="45" y="50" width="110" height="90" rx="14" fill="#9aa3b8" />
         <rect x="58" y="64" width="84" height="56" rx="6" fill="#0B0D14" />
-        {mood === 'provocando' ? (
+        {mood !== 'derrotado' ? (
           <g
             stroke="#2BB673"
             strokeWidth="5"

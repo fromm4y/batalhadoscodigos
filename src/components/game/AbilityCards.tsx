@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { cn } from '@/components/comic';
+import { artUrl, cn } from '@/components/comic';
 import { ABILITY_INFO, SIDE_ABILITIES } from '@/engine/match';
 import type { AbilityId, Side } from '@/types/domain';
 
@@ -51,9 +51,13 @@ export function AbilityCards({ side, owned, used, disabled, onUse }: Props) {
                     spent && 'bg-graphite text-mist line-through opacity-50',
                   )}
                 >
-                  <span className="text-2xl" aria-hidden>
-                    {has ? info.icon : '🂠'}
-                  </span>
+                  {has && artUrl(id) ? (
+                    <img src={artUrl(id)} alt="" aria-hidden className="h-12 w-12 object-contain" />
+                  ) : (
+                    <span className="text-2xl" aria-hidden>
+                      {has ? info.icon : '🂠'}
+                    </span>
+                  )}
                   <span className="font-heist text-sm leading-tight tracking-wide">
                     {has ? info.name : '???'}
                   </span>

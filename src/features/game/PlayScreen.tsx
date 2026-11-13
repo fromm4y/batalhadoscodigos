@@ -217,7 +217,16 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
             )}
             {match?.machineSide && (
               <div className="flex items-end gap-2">
-                <RobotFigure className="h-24 w-20" />
+                <RobotFigure
+                  className="h-24 w-20"
+                  mood={
+                    match.winner === match.machineSide
+                      ? 'feliz'
+                      : match.winner
+                        ? 'derrotado'
+                        : 'provocando'
+                  }
+                />
                 {lastLog && lastLog.side === match.machineSide && (
                   <p className="mb-6 rounded-md border-2 border-ink bg-aged px-2 py-1 font-comic text-base leading-tight tracking-wide text-ink">
                     {lastLog.text}
