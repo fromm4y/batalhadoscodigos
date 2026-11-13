@@ -23,7 +23,7 @@
 1. **Todos os números de regra** (pontos, forças de puxão, tempos, chances, limites, volumes) ficam em **`src/config/gameRules.ts`**. Nunca hardcodar número de regra em componente/motor.
 2. **"Nada abre sem a Narradora" (RN-05):** fases só avançam por clique da instrutora. Tempos de fase são só **guia**; nada avança sozinho. Fora de sessão aberta, aluno vê _"A Narradora ainda não deu o sinal..."_.
 3. **Desafios espelhados:** os dois lados trabalham o **mesmo conceito com a mesma dificuldade**, com **ações opostas** (Bando quebra/lê/cria; Piratas protegem/escrevem/depuram). Vale para conteúdo e para habilidades.
-4. **Direitos de imagem:** usar só a **estética**. **PROIBIDO** usar nomes, logos, personagens, músicas ou imagens oficiais de _La Casa de Papel_ ou _One Piece_ (nada de Luffy, Jolly Roger oficial, máscara de Dalí, "Bella Ciao", etc.). Nenhum desses nomes aparece na UI, em assets ou em nomes de arquivo. Toda arte é **original**. Imagens de referência (séries, filmes, museus reais) servem só para inspirar: **nunca** entram no repositório.
+4. **Direitos de imagem:** usar só a **estética**. **PROIBIDO** usar logos, imagens, músicas ou a arte oficial de _La Casa de Papel_ ou _One Piece_ (nada de Jolly Roger oficial, máscara de Dalí, "Bella Ciao", etc.). **Exceção (decisão da May, 13/11):** os **nomes** dos personagens podem aparecer como **opção de nome de dupla** (`src/content/names.ts`), por ser atividade educacional. Os títulos das obras não aparecem na UI, e nenhum asset/arquivo usa esses nomes. Toda arte é **original**. Imagens de referência (séries, filmes, museus reais) servem só para inspirar: **nunca** entram no repositório.
 5. **Conteúdo dirigido por JSON:** o motor não conhece episódio nenhum. Episódio = `src/content/episodes/epN.json` + registro em `src/content/season.ts`.
 6. **LGPD:** nenhum dado pessoal de aluno (sem nome real, foto, e-mail, idade). Nomes de dupla só de listas fechadas (`src/content/names.ts`).
 7. **Barra do cabo de guerra:** alterada **sempre** por `runTransaction`. Timers sempre a partir de `serverTimestamp()` + offset de relógio estimado.
@@ -90,7 +90,10 @@ firestore.rules
 - **(10/11) Temporada** gerada automaticamente pela data (`2026-T4`), em `seasonFromDate`.
 - **(10/11 e 12/11) Áudio 100% sintetizado** via Web Audio: efeitos **e música de fundo** (sem arquivos, sem problema de licença).
 - **(12/11) Clima "HQ Noir" aprovado** pela May (protótipo `/prototipo`).
-- **(10/11) Ilustrações:** a May gera as imagens (lista em `docs/IMAGENS.md`). Código usa placeholder até a imagem existir. Avatares das duplas continuam em SVG próprio.
+- **(10/11) Ilustrações:** a May gera as imagens (lista em `docs/IMAGENS.md`). Código usa placeholder até a imagem existir.
+- **(13/11) Personagens-imagem das duplas:** 12 meninas + 12 meninos (`src/content/characters.ts`), cada um com arte `avatar-{id}-bando` e `avatar-{id}-piratas`. A dupla escolhe um; `avatar.character` guarda o id (a API só aceita ids da lista). Só aparecem os personagens com as duas artes; sem nenhum, vale o criador em SVG (que continua como opção "montar do meu jeito" e como reserva).
+- **(13/11) Abertura:** `/` começa com o museu no escuro + lanterna seguindo o mouse (`SplashScreen`); "Começar" leva ao código da sala. Quem já está numa missão pula a abertura.
+- **(13/11) Nomes em abas:** Bando = Personagens | Cidades do Brasil; Piratas = Personagens | Nomes piratas.
 - **(10/11) Seed:** `GET /api/setup` (um clique, idempotente) ou `npm run seed` criam escolas + admin. Lógica única em `api/_lib/seed.ts`.
 - **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). **firebase-admin 13** (o 14 puxa `jose` 6 em ESM e quebra no carregador da Vercel com `ERR_REQUIRE_ESM`; não atualizar sem testar com `node --no-experimental-require-module`). Funções em **Node 22.x**. TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.

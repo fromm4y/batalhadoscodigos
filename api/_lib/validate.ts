@@ -2,6 +2,7 @@
  * Validações e regras puras do servidor (sem Firebase): testáveis com Vitest.
  */
 import { GAME_RULES } from '../../src/config/gameRules.js';
+import { isCharacterId } from '../../src/content/characters.js';
 import { CITY_NAMES, PIRATE_NAMES } from '../../src/content/names.js';
 import type { AvatarConfig } from '../../src/types/domain.js';
 
@@ -29,7 +30,7 @@ export function isValidPin(pin: unknown): pin is string {
   return typeof pin === 'string' && new RegExp(`^\\d{${GAME_RULES.team.pinLength}}$`).test(pin);
 }
 
-const AVATAR_RANGES: Record<keyof AvatarConfig, [number, number]> = {
+const AVATAR_RANGES: Record<Exclude<keyof AvatarConfig, 'character'>, [number, number]> = {
   skin: [1, 6],
   hair: [1, 8],
   hairColor: [1, 5],
@@ -38,13 +39,16 @@ const AVATAR_RANGES: Record<keyof AvatarConfig, [number, number]> = {
   accessory: [0, 3],
 };
 
-/** Aceita só um AvatarConfig completo e dentro das faixas (seção 9.5). */
+/** Aceita só um AvatarConfig completo e dentro das faixas (seção 9.5), com personagem opcional da lista. */
 export function parseAvatar(raw: unknown): AvatarConfig | null {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
   const obj = raw as Record<string, unknown>;
-  const keys = Object.keys(AVATAR_RANGES) as (keyof AvatarConfig)[];
-  if (Object.keys(obj).length !== keys.length) return null;
-  const out: Record<string, number> = {};
+  const keys = Object.keys(AVATAR_RANGES) as (keyof typeof AVATAR_RANGES)[];
+  const hasCharacter = 'character' in obj;
+  if (Object.keys(obj).length !== keys.length + (hasCharacter ? 1 : 0)) return null;
+  if (hasCharacter && !isCharacterId(obj.character)) return null;
+  const out: Record<string, number | string> = {};
+  if (hasCharacter) out.character = obj.character as string;
   for (const k of keys) {
     const v = obj[k];
     const [min, max] = AVATAR_RANGES[k];

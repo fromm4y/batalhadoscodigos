@@ -8,6 +8,7 @@ import { artUrl } from '@/components/comic';
 import { GAME_RULES } from '@/config/gameRules';
 import { getFirebase } from '@/lib/firebase';
 import { joinSession } from './api';
+import { SplashScreen } from './SplashScreen';
 import { useStudentStore } from './studentStore';
 import { useTeamAuth } from './useTeamAuth';
 
@@ -24,6 +25,8 @@ export function EntrancePage() {
   const [busy, setBusy] = useState(false);
   const [shake, setShake] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Abertura com a lanterna; quem já está numa missão vai direto.
+  const [started, setStarted] = useState(false);
 
   function onType(raw: string) {
     setError(null);
@@ -50,6 +53,8 @@ export function EntrancePage() {
     setJoin(data);
     navigate('/dupla');
   }
+
+  if (!started && team.status !== 'team') return <SplashScreen onStart={() => setStarted(true)} />;
 
   return (
     <HalftoneBackground>

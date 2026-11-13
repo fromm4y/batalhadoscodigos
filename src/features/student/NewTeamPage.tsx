@@ -2,12 +2,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
+import { availableCharacters } from '@/components/avatar/availableCharacters';
+import { CharacterPicker } from '@/components/avatar/CharacterPicker';
 import { AvatarBuilder } from '@/components/avatar/AvatarBuilder';
 import { randomAvatar } from '@/components/avatar/avatarOptions';
 import { ComicButton, HalftoneBackground, SpeechBubble, cn } from '@/components/comic';
 import { Stamp } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
-import { CITY_NAMES, PIRATE_NAMES } from '@/content/names';
+import { NAME_GROUPS } from '@/content/names';
 import type { AvatarConfig } from '@/types/domain';
 import { createTeam, joinSession } from './api';
 import { NoSignalScreen } from './NoSignalScreen';
@@ -26,6 +28,9 @@ export function NewTeamPage() {
 
   const [step, setStep] = useState(0);
   const [avatar, setAvatar] = useState<AvatarConfig>(() => randomAvatar());
+  // Personagens-imagem quando a arte existe; senão (ou se a dupla preferir), o criador em SVG.
+  const hasCharacters = availableCharacters().length > 0;
+  const [custom, setCustom] = useState(!hasCharacters);
   const [city, setCity] = useState<string | null>(null);
   const [pirate, setPirate] = useState<string | null>(null);
   const [pin, setPin] = useState('');
@@ -114,7 +119,10 @@ export function NewTeamPage() {
     void finish(pin);
   }
 
-  const canNext = step === 0 || (step === 1 && !!city) || (step === 2 && !!pirate);
+  const canNext =
+    (step === 0 && (custom || !!avatar.character)) ||
+    (step === 1 && !!city) ||
+    (step === 2 && !!pirate);
 
   return (
     <HalftoneBackground>
@@ -160,18 +168,46 @@ export function NewTeamPage() {
           >
             {step === 0 && (
               <>
-                <p className="mb-4 font-type text-xl text-paper">
-                  Montem o visual da equipe (pode ser 1 ou 2 pessoas no computador). Testem os dois
-                  figurinos!
-                </p>
-                <AvatarBuilder value={avatar} onChange={setAvatar} />
+                {custom ? (
+                  <>
+                    <p className="mb-4 font-type text-xl text-paper">
+                      Montem o visual da equipe (pode ser 1 ou 2 pessoas no computador). Testem os
+                      dois figurinos!
+                    </p>
+                    <AvatarBuilder value={avatar} onChange={setAvatar} />
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-4 font-type text-xl text-paper">
+                      Quem vocês querem ser? O mesmo personagem troca de roupa quando jogarem no
+                      Bando ou nos Piratas.
+                    </p>
+                    <CharacterPicker value={avatar} onChange={setAvatar} />
+                  </>
+                )}
+                {hasCharacters && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Ao montar do próprio jeito, o personagem-imagem sai do avatar.
+                      if (!custom) {
+                        const { character: _c, ...svg } = avatar;
+                        setAvatar(svg);
+                      }
+                      setCustom((c) => !c);
+                    }}
+                    className="mt-4 min-h-11 cursor-pointer font-type text-lg text-brass underline underline-offset-4"
+                  >
+                    {custom ? '🖼️ Escolher um personagem pronto' : '✏️ Prefiro montar do meu jeito'}
+                  </button>
+                )}
               </>
             )}
             {step === 1 && (
               <NameCards
-                title="Escolham um codinome de cidade (Bando)"
+                title="Escolham um codinome (Bando)"
                 hint="A cada aula vocês escolhem um lado. Quando jogarem no Bando, este é o nome que aparece."
-                names={CITY_NAMES}
+                groups={NAME_GROUPS.red}
                 taken={takenCities}
                 value={city}
                 onPick={setCity}
@@ -182,7 +218,7 @@ export function NewTeamPage() {
               <NameCards
                 title="Escolham um nome pirata (Piratas)"
                 hint="E quando jogarem nos Piratas, aparece este. Os pontos somam na mesma ficha!"
-                names={PIRATE_NAMES}
+                groups={NAME_GROUPS.blue}
                 taken={takenPirates}
                 value={pirate}
                 onPick={setPirate}
@@ -262,7 +298,7 @@ export function NewTeamPage() {
 function NameCards({
   title,
   hint,
-  names,
+  groups,
   taken,
   value,
   onPick,
@@ -270,12 +306,20 @@ function NameCards({
 }: {
   title: string;
   hint: string;
-  names: readonly string[];
+  groups: readonly { label: string; names: readonly string[] }[];
   taken: Set<string>;
   value: string | null;
   onPick: (n: string) => void;
   tone: 'red' | 'blue';
 }) {
+  // Abre na aba do nome já escolhido (ao voltar um passo).
+  const [tab, setTab] = useState(() =>
+    Math.max(
+      0,
+      groups.findIndex((g) => !!value && g.names.includes(value)),
+    ),
+  );
+  const names = groups[tab]?.names ?? [];
   return (
     <div>
       <h2
@@ -286,8 +330,25 @@ function NameCards({
       >
         {title}
       </h2>
-      <p className="mb-4 font-type text-lg text-mist">{hint}</p>
-      <ul className="grid grid-cols-5 gap-3">
+      <p className="mb-3 font-type text-lg text-mist">{hint}</p>
+      <div role="tablist" aria-label="Tipo de nome" className="mb-4 flex gap-2">
+        {groups.map((g, i) => (
+          <button
+            key={g.label}
+            type="button"
+            role="tab"
+            aria-selected={tab === i}
+            onClick={() => setTab(i)}
+            className={cn(
+              'min-h-11 cursor-pointer border-[3px] border-ink px-4 pt-1 font-heist text-xl tracking-wider',
+              tab === i ? 'bg-brass text-ink' : 'bg-graphite-light text-paper',
+            )}
+          >
+            {g.label}
+          </button>
+        ))}
+      </div>
+      <ul key={tab} className="grid grid-cols-5 gap-3">
         {names.map((n, i) => {
           const isTaken = taken.has(n);
           const selected = value === n;
