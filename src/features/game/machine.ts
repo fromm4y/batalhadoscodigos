@@ -26,15 +26,24 @@ const MACHINE_ABILITIES: Record<Side, AbilityId[]> = {
   blue: ['ancora', 'escudo'],
 };
 
+export type MachineEnv = {
+  /** evento do museu acontecendo agora (RN-36) */
+  eventRunning: boolean;
+  /** telas congeladas pela Narradora (RN-46): o robô também espera */
+  frozen: boolean;
+};
+
 /** Um "tique" do robô: decide e grava o próximo passo, se for a hora. */
 export async function machineTick(
   sessionId: string,
   matchId: string,
   level: Level,
   phase: Phase,
+  env: MachineEnv = { eventRunning: false, frozen: false },
 ): Promise<void> {
+  if (env.frozen) return;
   if (phase !== 'locks' && phase !== 'vault') return;
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const ref = doc(db, 'sessions', sessionId, 'matches', matchId);
   const speed = speedFactor();
   await runTransaction(db, async (tx) => {
@@ -46,6 +55,25 @@ export async function machineTick(
     if (!side || !st || m.winner) return;
     const now = serverNow();
     const delay = (slot: 'lock' | 'vault') => Math.round(machineDelayMs(level, slot) / speed);
+
+    // RN-36: no evento do museu, o robô acerta 80% das vezes (puxão de 10).
+    if (env.eventRunning && !st.eventDone) {
+      const okEvent = Math.random() < GAME_RULES.museumEvent.machineSuccessChance;
+      const pull = okEvent ? applyPull(m, side, GAME_RULES.pull.museumEventOk, now) : null;
+      tx.update(ref, {
+        ...(pull ? { bar: pull.bar, effects: pull.effects } : {}),
+        machine: { ...st, eventDone: true },
+        log: pushLog(m.log, {
+          at: now,
+          side,
+          type: okEvent ? 'pull' : 'event_fail',
+          text: okEvent
+            ? 'Alarme analisado. Bip! Acertei os 3.'
+            : 'Erro de leitura no alarme... bzzt!',
+        }),
+      });
+      return;
+    }
 
     if (st.phase !== phase) {
       const nextAt =

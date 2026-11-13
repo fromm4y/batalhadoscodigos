@@ -1,9 +1,13 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   connectAuthEmulator,
-  getAuth,
   GoogleAuthProvider,
+  indexedDBLocalPersistence,
+  initializeAuth,
   signInWithCredential,
+  browserPopupRedirectResolver,
   type Auth,
 } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
@@ -26,22 +30,37 @@ export const isFirebaseConfigured = Object.values(config).every(
 );
 
 type FirebaseBundle = { app: FirebaseApp; auth: Auth; db: Firestore };
-let bundle: FirebaseBundle | null = null;
+
+/**
+ * Dois logins separados no mesmo navegador (para um não derrubar o outro):
+ * - `instructor`: login Google da Narradora, guardado no navegador (só sai clicando em "Sair").
+ * - `student`: login da dupla, guardado POR ABA (cada aba é uma dupla; recarregar mantém a dupla).
+ */
+export type FirebaseRole = 'instructor' | 'student';
+const bundles: Partial<Record<FirebaseRole, FirebaseBundle>> = {};
 
 /** Inicializa o Firebase sob demanda (o app abre mesmo sem config, p.ex. na página de teste). */
-export function getFirebase(): FirebaseBundle {
+export function getFirebase(role: FirebaseRole = 'instructor'): FirebaseBundle {
   if (!isFirebaseConfigured) {
     throw new Error(
       'Firebase não configurado: preencha as variáveis VITE_FIREBASE_* (.env.local).',
     );
   }
-  if (!bundle) {
-    const app = initializeApp(config);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    if (useEmulators) {
-      connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
-      connectFirestoreEmulator(db, '127.0.0.1', 8080);
+  const cached = bundles[role];
+  if (cached) return cached;
+  const app = role === 'instructor' ? initializeApp(config) : initializeApp(config, 'aluno');
+  const auth = initializeAuth(app, {
+    persistence:
+      role === 'instructor'
+        ? [indexedDBLocalPersistence, browserLocalPersistence]
+        : [browserSessionPersistence],
+    popupRedirectResolver: browserPopupRedirectResolver,
+  });
+  const db = getFirestore(app);
+  if (useEmulators) {
+    connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+    connectFirestoreEmulator(db, '127.0.0.1', 8080);
+    if (role === 'instructor') {
       // Atalho de teste (só emulador): entra como uma conta Google falsa, sem popup.
       window.__emuGoogleLogin = async (email: string) => {
         const token = JSON.stringify({
@@ -53,8 +72,9 @@ export function getFirebase(): FirebaseBundle {
         await signInWithCredential(auth, GoogleAuthProvider.credential(token));
       };
     }
-    bundle = { app, auth, db };
   }
+  const bundle = { app, auth, db };
+  bundles[role] = bundle;
   return bundle;
 }
 

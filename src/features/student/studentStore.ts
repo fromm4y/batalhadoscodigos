@@ -34,6 +34,6 @@ export const useStudentStore = create<StudentStore>((set) => ({
     set({ join: j });
   },
   async enter(customToken) {
-    await signInWithCustomToken(getFirebase().auth, customToken);
+    await signInWithCustomToken(getFirebase('student').auth, customToken);
   },
 }));

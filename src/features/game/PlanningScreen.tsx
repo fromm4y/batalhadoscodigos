@@ -5,6 +5,7 @@ import {
   ComicButton,
   ComicPanel,
   HalftoneBackground,
+  artUrl,
   SpeechBubble,
   cn,
 } from '@/components/comic';
@@ -183,7 +184,7 @@ export function PlanningScreen({
                         await onChooseSide(s).finally(() => setBusy(false));
                       }}
                       className={cn(
-                        'flex min-h-56 cursor-pointer flex-col items-center justify-center gap-2 rounded-hand border-4 border-ink p-6 text-center transition-all',
+                        'relative flex min-h-56 cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-hand border-4 border-ink p-6 text-center transition-all',
                         red ? 'bg-halftone-red' : 'bg-halftone-blue',
                         chosen
                           ? red
@@ -194,21 +195,33 @@ export function PlanningScreen({
                             : 'hover:scale-[1.02]',
                       )}
                     >
-                      <span className="text-5xl" aria-hidden>
+                      {artUrl(red ? 'lado-bando' : 'lado-piratas') && (
+                        <span aria-hidden className="absolute inset-0">
+                          <img
+                            src={artUrl(red ? 'lado-bando' : 'lado-piratas')}
+                            alt=""
+                            className="h-full w-full object-cover opacity-55"
+                          />
+                          <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                        </span>
+                      )}
+                      <span className="relative text-5xl" aria-hidden>
                         {SIDE_INFO[s].icon}
                       </span>
-                      <span className="font-heist text-6xl tracking-wider text-paper text-outline">
+                      <span className="relative font-heist text-6xl tracking-wider text-paper text-outline">
                         {SIDE_INFO[s].title}
                       </span>
-                      <span className="font-type text-xl text-paper">“{SIDE_INFO[s].motto}”</span>
-                      <span className="max-w-sm bg-black/50 p-2 text-base font-semibold text-paper">
+                      <span className="relative font-type text-xl text-paper">
+                        “{SIDE_INFO[s].motto}”
+                      </span>
+                      <span className="relative max-w-sm bg-black/50 p-2 text-base font-semibold text-paper">
                         {red ? episode.intro.red : episode.intro.blue}
                       </span>
-                      <span className="font-heist text-2xl tracking-wide text-paper">
+                      <span className="relative font-heist text-2xl tracking-wide text-paper">
                         Vocês serão: {red ? team.cityName : team.pirateName}
                       </span>
                       {chosen && (
-                        <span className="border-[3px] border-ink bg-brass px-3 pt-1 font-heist text-2xl tracking-widest text-ink">
+                        <span className="relative border-[3px] border-ink bg-brass px-3 pt-1 font-heist text-2xl tracking-widest text-ink">
                           ✔ ESCOLHIDO
                         </span>
                       )}

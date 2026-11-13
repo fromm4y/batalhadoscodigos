@@ -1,4 +1,5 @@
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { pickAutoEventAt } from '@/engine/museumEvent';
 import { useEffect, useState } from 'react';
 import { ComicButton, ComicPanel, cn } from '@/components/comic';
 import { GAME_RULES } from '@/config/gameRules';
@@ -12,6 +13,7 @@ import type { Level, Phase, PlayerDoc, SessionDoc } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
 import type { WithId } from '../data';
 import { formSessionMatches, markVaultLeaders, resolveOpenMatches } from './matchOps';
+import { undoMatches } from './sessionOps';
 
 const ORDER: Phase[] = ['lobby', 'planning', 'locks', 'vault', 'end'];
 const LABEL: Record<Phase, string> = {
@@ -116,7 +118,14 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
                     // RN-18: vantagem do Cofre antes de liberar; RN-20: resultado antes do fim.
                     if (next === 'vault') await markVaultLeaders(opsCtx);
                     if (next === 'end') await resolveOpenMatches(opsCtx);
-                    await updateDoc(ref, { phase: next, phaseStartedAt: serverTimestamp() });
+                    await updateDoc(ref, {
+                      phase: next,
+                      phaseStartedAt: serverTimestamp(),
+                      // RN-32: sorteia o horário do evento automático ao começar os cadeados.
+                      ...(next === 'locks' && session.museumEvent?.status === 'idle'
+                        ? { autoEventAt: Timestamp.fromMillis(pickAutoEventAt(Date.now())) }
+                        : {}),
+                    });
                     setConfirm(false);
                   })
                 }
@@ -154,6 +163,21 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
             >
               {session.matchesFormed ? 'Formar confrontos (novas duplas)' : 'Formar confrontos'}
             </ComicButton>
+            {session.matchesFormed && session.phase === 'planning' && (
+              <ComicButton
+                variant="paper"
+                icon="↺"
+                className="mt-2"
+                onClick={() =>
+                  void run(async () => {
+                    await undoMatches(sessionId);
+                    setInfo('Confrontos desfeitos: troque lados/pares e forme de novo.');
+                  })
+                }
+              >
+                Desfazer confrontos
+              </ComicButton>
+            )}
             {info && (
               <p role="status" className="mt-2 font-bold text-success">
                 {info}

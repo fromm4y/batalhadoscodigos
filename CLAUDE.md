@@ -104,3 +104,8 @@ firestore.rules
 - **(13/11) Robô:** roda no navegador da dupla (`src/features/game/machine.ts`), estado em `match.machine`. Interferência contra o robô atrasa o próximo desafio dele; Âncora/Escudo/Disfarce valem como efeito. Só no emulador: `localStorage['cacada.machineSpeed']` acelera o robô para testes.
 - **(13/11) Relógio do servidor:** `src/lib/serverClock.ts` calibrado pelo `lastSeenAt` da presença; efeitos (`until`) usam `serverNow()`.
 - **(12/11) Presença:** a dupla marca `connected/lastSeenAt` a cada `GAME_RULES.presence.heartbeatSeconds`; o painel considera desconectada após 2,5× esse tempo.
+- **(13/11) Login que não cai:** um app Firebase por papel (`getFirebase('instructor'|'student')`). Instrutora com persistência local (só sai pelo botão "Sair"); duplas com persistência **por aba** (cada aba é uma dupla, recarregar não desloga). Código de aluno/jogo usa sempre `getFirebase('student')`.
+- **(13/11) Evento automático (Etapa 5):** `autoEventAt` sorteado ao liberar os Cadeados; quem dispara é a aba do painel da Narradora (precisa ficar aberta). Acontece uma vez por sessão.
+- **(13/11) Botão de ajuda** se chama "🙋 Chamar a Narradora" (1 por dupla por sessão).
+- **(13/11) Congelar telas** desconta o tempo congelado: ao descongelar, `phaseStartedAt`, `autoEventAt` e o `nextAt` do robô andam pra frente.
+- **(13/11) Fase por dupla:** `players/{id}.phaseOverride` (dupla atrasada/adiantada); a fase efetiva é `phaseOverride ?? session.phase`.

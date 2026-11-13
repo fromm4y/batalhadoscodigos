@@ -1,4 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { FreezeOverlay } from '@/features/game/FreezeOverlay';
+import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { useParams } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
 import { GameLogo, HalftoneBackground } from '@/components/comic';
@@ -100,6 +102,12 @@ export function ProjectorPage() {
           </>
         )}
       </main>
+      <AnimatePresence>
+        {!finished && s.transmission?.active && <TransmissionOverlay />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!finished && s.freeze?.active && <FreezeOverlay message={s.freeze.message} />}
+      </AnimatePresence>
     </HalftoneBackground>
   );
 }

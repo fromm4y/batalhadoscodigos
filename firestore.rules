@@ -193,7 +193,7 @@ service cloud.firestore {
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId'])
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
           && request.resource.data.connected is bool
           // matchId: só para entrar sozinha contra a máquina, se ainda não tinha confronto
           && (request.resource.data.get('matchId', null) == resource.data.get('matchId', null)
@@ -205,7 +205,7 @@ service cloud.firestore {
         // A Narradora liga cada dupla ao confronto e lança pontos de confronto.
         allow update: if isInstructor()
           && sessionDoc(sessionId).instructorId == request.auth.uid
-          && changedOnly(['matchId', 'side', 'episodePoints']);
+          && changedOnly(['matchId', 'side', 'episodePoints', 'hints', 'abilities', 'phaseOverride']);
         allow create, delete: if false;
       }
 
@@ -238,6 +238,32 @@ service cloud.firestore {
           && changedOnly(['vaultLeader', 'winner', 'resolvedAt', 'bar', 'redTeamId', 'blueTeamId', 'machineSide', 'machine'])
           && validBar();
         allow delete: if isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid;
+      }
+
+      // ---------- chamados de ajuda (RN-30) e linha do tempo do painel ----------
+      function sessionOwner() {
+        return isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin());
+      }
+      match /helpRequests/{id} {
+        allow read: if sessionOwner()
+          || (isTeam() && request.auth.token.sessionId == sessionId && resource.data.teamId == request.auth.token.teamId);
+        allow create: if teamSessionOpen() && request.auth.token.sessionId == sessionId
+          && request.resource.data.keys().hasOnly(['teamId', 'challengeKey', 'createdAt', 'status'])
+          && request.resource.data.teamId == request.auth.token.teamId
+          && request.resource.data.status == 'open'
+          && request.resource.data.createdAt == request.time;
+        allow update: if sessionOwner() && changedOnly(['status']) && request.resource.data.status in ['open', 'done'];
+        allow delete: if false;
+      }
+      match /feed/{id} {
+        allow read: if sessionOwner();
+        allow create: if teamSessionOpen() && request.auth.token.sessionId == sessionId
+          && request.resource.data.keys().hasOnly(['teamId', 'type', 'payload', 'at'])
+          && request.resource.data.teamId == request.auth.token.teamId
+          && request.resource.data.type is string && request.resource.data.type.size() <= 20
+          && request.resource.data.payload.text is string && request.resource.data.payload.text.size() <= 200
+          && request.resource.data.at == request.time;
+        allow update, delete: if false;
       }
 
       // ---------- sessions/{sessionId}/firsts/{lockN} (bônus da 1ª dupla a abrir o cadeado N) ----------

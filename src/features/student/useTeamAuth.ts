@@ -13,7 +13,7 @@ export function useTeamAuth(): TeamAuthState {
   );
   useEffect(() => {
     if (!isFirebaseConfigured) return;
-    return onAuthStateChanged(getFirebase().auth, async (user) => {
+    return onAuthStateChanged(getFirebase('student').auth, async (user) => {
       if (!user) return setState({ status: 'none' });
       const { claims } = await user.getIdTokenResult();
       if (claims.role !== 'team') return setState({ status: 'none' });

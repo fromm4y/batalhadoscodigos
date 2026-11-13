@@ -3,6 +3,7 @@
  * pontos + ledger + total (RN-22, RN-24), dicas (RN-29), progresso dos cadeados (RN-27) e Cofre.
  */
 import {
+  addDoc,
   collection,
   doc,
   runTransaction,
@@ -101,7 +102,7 @@ async function readBoth(tx: Transaction, db: Firestore, c: GameCtx) {
 
 /** Resposta errada: −2 (7.6). */
 export async function registerWrongAnswer(c: GameCtx): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     writePoints(tx, db, c, team, player, [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }]);
@@ -115,7 +116,7 @@ export async function buyHint(
   tier: 1 | 2,
   free = false,
 ): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const used = player.hints?.[challengeKey] ?? 0;
@@ -145,7 +146,7 @@ export async function openLock(
   c: GameCtx,
   index: 0 | 1 | 2,
 ): Promise<{ first: boolean; ability: AbilityId | null; blocked: boolean }> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const firstRef = doc(db, 'sessions', c.sessionId, 'firsts', `lock${index + 1}`);
   return runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
@@ -206,7 +207,7 @@ export async function openLock(
  * a dupla vencedora ganha +5 na mesma transação.
  */
 export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   return runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
@@ -245,7 +246,7 @@ export async function activateAbility(
   id: AbilityId,
   challengeKey: string | null,
 ): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
@@ -287,14 +288,14 @@ export async function activateAbility(
 
 /** Escolha do modo (RN-11): contra pessoas ou contra a máquina. */
 export async function chooseMode(c: GameCtx, mode: GameMode): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { mode });
+  await updateDoc(refs(getFirebase('student').db, c).player, { mode });
 }
 
 /**
  * Dupla que chegou depois da formação (RN-07): cria o próprio confronto contra a máquina.
  */
 export async function joinLateAgainstMachine(c: GameCtx, side: Side): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const id = machineMatchId(c.teamId);
   await runTransaction(db, async (tx) => {
     const p = await tx.get(refs(db, c).player);
@@ -331,10 +332,95 @@ export function newMatchDoc(
 
 /** Escolha de lado na fase de planejamento (RN-11). */
 export async function chooseSide(c: GameCtx, side: Side): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { side });
+  await updateDoc(refs(getFirebase('student').db, c).player, { side });
 }
 
 /** A dupla ouviu a transmissão da Narradora (RN-45): libera o passo que dependia dela. */
 export async function markHeardTransmission(c: GameCtx): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { 'progress.heardTransmission': true });
+  await updateDoc(refs(getFirebase('student').db, c).player, {
+    'progress.heardTransmission': true,
+  });
+}
+
+/** Linha do tempo do painel (SPEC 9.3). Melhor esforço: nunca atrapalha o jogo. */
+export function addFeed(c: GameCtx, type: string, text: string): void {
+  void addDoc(collection(getFirebase('student').db, 'sessions', c.sessionId, 'feed'), {
+    teamId: c.teamId,
+    type,
+    payload: { text },
+    at: serverTimestamp(),
+  }).catch(() => undefined);
+}
+
+/**
+ * Fim do evento do museu para a dupla (RN-35): acertou os 3 → +1 ponto, puxão de 10 e conta
+ * como desafio resolvido (habilidades); errou → presa até `jailUntilMs`.
+ */
+export async function finishMuseumEvent(
+  c: GameCtx,
+  success: boolean,
+  jailUntilMs: number,
+): Promise<{ ability: AbilityId | null }> {
+  const { db } = getFirebase('student');
+  return runTransaction(db, async (tx) => {
+    const { team, player } = await readBoth(tx, db, c);
+    const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
+    const mSnap = mRef ? await tx.get(mRef) : null;
+    if (player.progress.eventResult !== 'pending') return { ability: null };
+    if (!success) {
+      writePoints(tx, db, c, team, player, [], {
+        'progress.eventResult': 'failed',
+        'progress.jailUntil': Timestamp.fromMillis(jailUntilMs),
+      });
+      return { ability: null };
+    }
+    const side = player.side ?? 'red';
+    let bar = 0;
+    if (mRef && mSnap?.exists()) {
+      const m = mSnap.data() as MatchDoc;
+      bar = m.bar;
+      if (!m.winner) {
+        const now = serverNow();
+        const r = applyPull(m, side, GAME_RULES.pull.museumEventOk, now);
+        bar = r.bar;
+        tx.update(mRef, {
+          bar: r.bar,
+          effects: r.effects,
+          log: pushLog(m.log, {
+            at: now,
+            side,
+            type: r.blocked ? 'blocked' : 'pull',
+            text: `${who(side)} desvendou o alarme e puxou ${r.applied}!`,
+          }),
+        });
+      }
+    }
+    const solved = player.solvedCount + 1;
+    const owned = player.abilities?.owned ?? [];
+    const ability = earnsAbility(solved, barFavorsRival(bar, side))
+      ? pickAbility(side, owned)
+      : null;
+    writePoints(tx, db, c, team, player, [{ reason: 'event_ok', delta: POINTS.event_ok }], {
+      'progress.eventResult': 'ok',
+      solvedCount: solved,
+      ...(ability ? { 'abilities.owned': [...owned, ability] } : {}),
+    });
+    return { ability };
+  });
+}
+
+/** "Chamar o Professor" (RN-30): uma vez por episódio, sem custo. */
+export async function callHelp(c: GameCtx, challengeKey: string): Promise<void> {
+  const { db } = getFirebase('student');
+  await runTransaction(db, async (tx) => {
+    const { player } = await readBoth(tx, db, c);
+    if (player.helpUsed) return;
+    tx.set(doc(collection(db, 'sessions', c.sessionId, 'helpRequests')), {
+      teamId: c.teamId,
+      challengeKey,
+      createdAt: serverTimestamp(),
+      status: 'open',
+    });
+    tx.update(refs(db, c).player, { helpUsed: true });
+  });
 }

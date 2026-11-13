@@ -102,7 +102,8 @@ export type SessionDoc = {
   phase: Phase;
   phaseStartedAt: Timestamp;
   matchesFormed: boolean;
-  freeze: { active: boolean; message: string };
+  /** `startedAtMs`: relógio do painel, para descontar o tempo congelado (RN-46) */
+  freeze: { active: boolean; message: string; startedAtMs?: number | null };
   transmission: { active: boolean; id: string; startedAt: Timestamp | null };
   museumEvent: {
     status: 'idle' | 'running' | 'done';
@@ -134,6 +135,8 @@ export type PlayerDoc = {
   };
   hints: Record<string, 0 | 1 | 2>;
   helpUsed: boolean;
+  /** RN-07: a Narradora adiantou/atrasou só esta dupla */
+  phaseOverride?: Phase | null;
   abilities: { owned: AbilityId[]; used: AbilityId[] };
   solvedCount: number;
   episodePoints: number;
@@ -158,6 +161,8 @@ export type MachineState = {
   nextAt: number | null;
   vaultSolved: boolean;
   usedAbilities: AbilityId[];
+  /** já participou do evento do museu */
+  eventDone?: boolean;
 };
 
 /** sessions/{id}/matches/{matchId} (SPEC 6.1) */
@@ -172,4 +177,18 @@ export type MatchDoc = {
   resolvedAt: Timestamp | null;
   log: MatchLogEntry[];
   machine: MachineState | null;
+};
+
+export type HelpRequestDoc = {
+  teamId: string;
+  challengeKey: string;
+  createdAt: Timestamp | null;
+  status: 'open' | 'done';
+};
+
+export type FeedDoc = {
+  teamId: string;
+  type: string;
+  payload: { text: string };
+  at: Timestamp | null;
 };
