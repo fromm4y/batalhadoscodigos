@@ -27,6 +27,13 @@ export const GAME_RULES = {
     end: 10,
   },
 
+  /** Etapa 8 (SPEC 14): a aula inteira cabe neste tempo, contando a entrada das duplas. */
+  lesson: {
+    totalMinutes: 50,
+    /** chegada, código e login das duplas (o lobby não tem tempo guia) */
+    entryMinutes: 3,
+  },
+
   bar: {
     min: -100,
     max: 100,

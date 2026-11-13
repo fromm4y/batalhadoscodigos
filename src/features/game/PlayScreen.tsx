@@ -229,6 +229,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                 owned={player.abilities?.owned ?? []}
                 used={player.abilities?.used ?? []}
                 disabled={busy || !!match.winner}
+                freeHintUseful={!!challenge && usedHints < 1}
                 onUse={(id) => {
                   playSfx(id);
                   setPop({
