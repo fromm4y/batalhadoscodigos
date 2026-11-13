@@ -40,6 +40,8 @@ export type AvatarConfig = {
   eyes: 1 | 2 | 3 | 4;
   mouth: 1 | 2 | 3 | 4;
   accessory: 0 | 1 | 2 | 3;
+  /** personagem-imagem escolhido (src/content/characters.ts); sem ele, vale o desenho acima */
+  character?: string;
 };
 
 // ---------- Documentos do Firestore (seção 6.1) ----------

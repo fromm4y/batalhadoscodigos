@@ -1,6 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import type { AvatarConfig, Side } from '@/types/domain';
+import { artUrl } from '@/components/comic/artRegistry';
+import { cn } from '@/components/comic/cn';
+import { characterArtId } from '@/content/characters';
 import { HAIR_COLORS, SKIN_TONES } from './avatarOptions';
 
 /**
@@ -335,6 +338,24 @@ export function Avatar({
   title = 'Avatar da dupla',
   decorative = false,
 }: AvatarProps) {
+  // Personagem-imagem (se a arte já existe); senão, o desenho em SVG.
+  const pic = avatar.character ? artUrl(characterArtId(avatar.character, side)) : undefined;
+  if (pic) {
+    return (
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.img
+          key={pic}
+          src={pic}
+          draggable={false}
+          initial={animateOutfit ? { opacity: 0, scale: 0.9 } : false}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          className={cn('object-contain object-bottom', className)}
+          {...(decorative ? { alt: '', 'aria-hidden': true } : { alt: title })}
+        />
+      </AnimatePresence>
+    );
+  }
   const skin = SKIN_TONES[avatar.skin - 1] ?? SKIN_TONES[0];
   const hair = HAIR_COLORS[avatar.hairColor - 1] ?? HAIR_COLORS[0];
   const hatOn = side === 'blue';
