@@ -10,6 +10,7 @@ import {
   cn,
 } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
+import { SessionHighlight } from '@/components/game/SessionHighlight';
 import { BrassFrame, Spotlights, Stamp, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
 import { ledgerSum } from '@/engine/ranking';
@@ -24,6 +25,8 @@ type Props = {
   match: MatchDoc | null;
   classTeams: (TeamDoc & { id: string })[];
   ledger: (LedgerEntryDoc & { id: string })[];
+  /** pontos de hoje de todas as duplas (destaque da aula) */
+  sessionPlayers: PlayerDoc[];
 };
 
 const STEPS = ['result', 'ranking', 'reveal', 'hook'] as const;
@@ -40,7 +43,16 @@ const STEP_LABEL: Record<Step, string> = {
  * revelação histórica + carta do Álbum do Museu e o gancho "TRANSMISSÃO INTERCEPTADA".
  * Em capítulos, para cada parte caber inteira em 1366×768.
  */
-export function EndScreen({ episode, team, teamId, player, match, classTeams, ledger }: Props) {
+export function EndScreen({
+  episode,
+  team,
+  teamId,
+  player,
+  match,
+  classTeams,
+  ledger,
+  sessionPlayers,
+}: Props) {
   const [step, setStep] = useState<Step>('result');
   const next = STEPS[STEPS.indexOf(step) + 1];
 
@@ -90,10 +102,15 @@ export function EndScreen({ episode, team, teamId, player, match, classTeams, le
                 <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
                   RANKING DA TURMA
                 </h1>
+                <SessionHighlight
+                  teams={classTeams}
+                  players={sessionPlayers}
+                  highlightId={teamId}
+                />
                 <RankingPodium
                   teams={classTeams}
                   highlightId={teamId}
-                  maxRest={4}
+                  maxRest={3}
                   className="w-full max-w-3xl"
                 />
               </div>

@@ -32,7 +32,7 @@ import { eventDurationMs, eventSucceeded, jailUntilMs } from '@/engine/museumEve
 import { useNow } from '@/lib/useNow';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
-import { useSessionLedger, useStudentClassTeams } from './useStudentData';
+import { useEndPlayers, useSessionLedger, useStudentClassTeams } from './useStudentData';
 import { useTeamAuth, type TeamClaims } from './useTeamAuth';
 
 /** `/jogo` — tela única do jogo, que muda conforme a fase da sessão (SPEC 9.2). */
@@ -245,6 +245,11 @@ function Game({ claims }: { claims: TeamClaims }) {
     claims.sessionId,
     open && phase === 'end',
   );
+  // Só com a fase da TURMA no fim: é ela que as regras conferem.
+  const endPlayers = useEndPlayers(
+    claims.sessionId,
+    open && session.phase === 'end',
+  );
 
   if (session === null) return <Waiting text="Conectando ao museu..." />;
   if (!open)
@@ -286,6 +291,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         match={matchId ? match : null}
         classTeams={classTeams}
         ledger={endLedger}
+        sessionPlayers={endPlayers}
       />
     );
   } else if (!player.side || (session.matchesFormed && !player.matchId)) {

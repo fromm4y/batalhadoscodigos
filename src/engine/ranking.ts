@@ -31,3 +31,18 @@ export function podiumOrder<T>(top: readonly T[]): { item: T; place: 1 | 2 | 3 }
   if (top[2] !== undefined) out.push({ item: top[2], place: 3 });
   return out;
 }
+
+/**
+ * Destaque da aula: a(s) dupla(s) que mais pontuaram NESTA sessão (`episodePoints`).
+ * Empate → todas aparecem. Ninguém pontuou → sem destaque.
+ */
+export function sessionHighlights<T extends { teamId: string; episodePoints: number }>(
+  players: readonly T[],
+): { teamIds: string[]; points: number } | null {
+  const best = Math.max(0, ...players.map((p) => p.episodePoints));
+  if (best <= 0) return null;
+  return {
+    teamIds: players.filter((p) => p.episodePoints === best).map((p) => p.teamId),
+    points: best,
+  };
+}

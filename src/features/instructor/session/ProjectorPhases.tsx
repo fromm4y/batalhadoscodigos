@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Avatar } from '@/components/avatar/Avatar';
 import { ComicArt, cn } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
+import { SessionHighlight } from '@/components/game/SessionHighlight';
 import { TugBar } from '@/components/game/TugBar';
 import { RobotFigure, Stamp, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
@@ -196,7 +197,15 @@ function Fighter({
 }
 
 /** `end` no projetor (SPEC 9.4): ranking final animado e o gancho. A Narradora alterna. */
-export function ProjectorEnd({ teams, episode }: { teams: Teams; episode: Episode | null }) {
+export function ProjectorEnd({
+  teams,
+  players,
+  episode,
+}: {
+  teams: Teams;
+  players: PlayerDoc[];
+  episode: Episode | null;
+}) {
   const [view, setView] = useState<'ranking' | 'hook'>('ranking');
   return (
     <div className="flex w-full flex-col items-center gap-6">
@@ -205,7 +214,8 @@ export function ProjectorEnd({ teams, episode }: { teams: Teams; episode: Episod
           <h1 className="font-heist text-8xl tracking-[0.12em] text-brass text-glow-brass">
             RANKING FINAL
           </h1>
-          <RankingPodium teams={teams} size="xl" maxRest={8} className="w-full max-w-6xl" />
+          <SessionHighlight teams={teams} players={players} size="xl" />
+          <RankingPodium teams={teams} size="xl" maxRest={4} className="w-full max-w-6xl" />
         </>
       ) : (
         <div className="grid w-full max-w-7xl grid-cols-[1.1fr_1fr] items-center gap-12">

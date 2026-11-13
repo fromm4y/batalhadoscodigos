@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ledgerSum, podiumOrder, rankTeams } from './ranking';
+import { ledgerSum, podiumOrder, rankTeams, sessionHighlights } from './ranking';
 
 const t = (id: string, cityName: string, totalPoints: number) => ({ id, cityName, totalPoints });
 
@@ -25,5 +25,22 @@ describe('ranking da turma', () => {
     expect(podiumOrder(['x', 'y', 'z']).map((p) => p.place)).toEqual([2, 1, 3]);
     expect(podiumOrder(['x']).map((p) => p.item)).toEqual(['x']);
     expect(podiumOrder(['x', 'y']).map((p) => p.place)).toEqual([2, 1]);
+  });
+});
+
+describe('destaque da aula', () => {
+  const p = (teamId: string, episodePoints: number) => ({ teamId, episodePoints });
+  it('quem mais pontuou hoje, mesmo atrás no total da temporada', () => {
+    expect(sessionHighlights([p('a', 4), p('b', 9), p('c', 2)])).toEqual({
+      teamIds: ['b'],
+      points: 9,
+    });
+  });
+  it('empate mostra todas', () => {
+    expect(sessionHighlights([p('a', 5), p('b', 5)])?.teamIds).toEqual(['a', 'b']);
+  });
+  it('ninguém pontuou → sem destaque', () => {
+    expect(sessionHighlights([p('a', 0)])).toBeNull();
+    expect(sessionHighlights([])).toBeNull();
   });
 });
