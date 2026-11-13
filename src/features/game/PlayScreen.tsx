@@ -1,5 +1,7 @@
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { playSfx } from '@/audio/engine';
+import { AudioControls } from '@/components/game/AudioControls';
 import { ChallengeView } from '@/components/challenges/ChallengeView';
 import {
   ComicArt,
@@ -80,6 +82,14 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const [error, setError] = useState<string | null>(null);
   const shake = useAnimationControls();
 
+  // TCHÁ! a cada puxão da barra (de qualquer lado).
+  const bar = match?.bar ?? 0;
+  const lastBar = useRef(bar);
+  useEffect(() => {
+    if (lastBar.current !== bar) playSfx('pull');
+    lastBar.current = bar;
+  }, [bar]);
+
   useEffect(() => {
     if (!pop) return;
     const t = setTimeout(() => setPop(null), 1400);
@@ -106,6 +116,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   }
 
   function onWrong() {
+    playSfx('error');
     setPop({ kind: 'errou', key: Date.now() });
     void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
     setCooldown(true);
@@ -119,10 +130,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     void guard(async () => {
       if (slot === 'vault') {
         const v = await solveVault(ctx);
+        playSfx('vault');
         addFeed(ctx, 'vault', `${myName} resolveu o Cofre${v.won ? ' primeiro e venceu!' : '.'}`);
         setPop({ kind: 'boom', key: Date.now() });
       } else {
         const r = await openLock(ctx, slot);
+        playSfx('lock');
         addFeed(ctx, 'lock_open', `${myName} abriu o ${red ? 'cadeado' : 'defesa'} ${slot + 1}`);
         setPop(
           r.blocked
@@ -211,6 +224,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                 used={player.abilities?.used ?? []}
                 disabled={busy || !!match.winner}
                 onUse={(id) => {
+                  playSfx(id);
                   setPop({
                     kind: id === 'interferencia' ? 'zzzt' : id === 'escudo' ? 'tcha' : 'custom',
                     key: Date.now(),
@@ -352,13 +366,16 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
 
         {/* Rodapé: pontos e dicas */}
         <footer className="flex h-20 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
-          <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
-            {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
-            <span className="ml-3 text-xl text-mist">
-              (hoje: {player.episodePoints >= 0 ? '+' : ''}
-              {player.episodePoints})
-            </span>
-          </p>
+          <div className="flex items-center gap-4">
+            <AudioControls />
+            <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
+              {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
+              <span className="ml-3 text-xl text-mist">
+                (hoje: {player.episodePoints >= 0 ? '+' : ''}
+                {player.episodePoints})
+              </span>
+            </p>
+          </div>
           {challenge && (
             <div className="flex gap-3">
               <button
@@ -385,7 +402,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     key={tier}
                     type="button"
                     disabled={!available || busy}
-                    onClick={() => void guard(() => buyHint(ctx, challenge.key, tier, free))}
+                    onClick={() =>
+                      void guard(async () => {
+                        playSfx('hint');
+                        await buyHint(ctx, challenge.key, tier, free);
+                      })
+                    }
                     className={cn(
                       'flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink px-4 pt-1 font-heist text-xl tracking-wider disabled:cursor-not-allowed',
                       bought

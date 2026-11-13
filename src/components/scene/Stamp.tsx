@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 import { cn } from '@/components/comic';
 
 /** Carimbo girado (CONFIDENCIAL, PRÓXIMA SEMANA...). Bate com "pancada". */
@@ -18,6 +19,7 @@ export function Stamp({
   /** sobre fundo escuro: sem `multiply` (que apagaria a tinta), com fundo noturno */
   onDark?: boolean;
 }) {
+  useSfxOnMount('stamp', delay * 1000 + 120);
   const c = {
     red: 'text-bando border-bando',
     blue: 'text-piratas border-piratas',

@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 import { Onomatopoeia } from '@/components/comic';
 
 /** Interferência: tela "chiando" por alguns segundos (overlay de prioridade alta, SPEC 9.2 item 7). */
 export function InterferenceOverlay({ secondsLeft }: { secondsLeft: number }) {
+  useSfxOnMount('interferencia');
   return (
     <motion.div
       role="alert"

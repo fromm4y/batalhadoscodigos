@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { playSfx } from '@/audio/engine';
 import {
   ComicArt,
   ComicButton,
@@ -170,6 +171,12 @@ function ResultChapter({
             text: 'Foi por pouco. Semana que vem tem revanche!',
           };
   const today = ledgerSum(ledger);
+  const resultKind = result?.title;
+  useEffect(() => {
+    if (!resultKind) return;
+    const t = setTimeout(() => playSfx(resultKind === 'QUASE!' ? 'defeat' : 'victory'), 250);
+    return () => clearTimeout(t);
+  }, [resultKind]);
 
   return (
     <div className="grid flex-1 grid-cols-[1fr_1fr] items-start gap-8">

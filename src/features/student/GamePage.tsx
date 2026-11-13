@@ -30,6 +30,8 @@ import { JailScreen } from '@/features/game/JailScreen';
 import { MuseumEventOverlay } from '@/features/game/MuseumEventOverlay';
 import { eventDurationMs, eventSucceeded, jailUntilMs } from '@/engine/museumEvent';
 import { useNow } from '@/lib/useNow';
+import { setMusic, type MusicTheme } from '@/audio/engine';
+import { AudioControls } from '@/components/game/AudioControls';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
 import { useEndPlayers, useSessionLedger, useStudentClassTeams } from './useStudentData';
@@ -246,10 +248,29 @@ function Game({ claims }: { claims: TeamClaims }) {
     open && phase === 'end',
   );
   // Só com a fase da TURMA no fim: é ela que as regras conferem.
-  const endPlayers = useEndPlayers(
-    claims.sessionId,
-    open && session.phase === 'end',
-  );
+  const endPlayers = useEndPlayers(claims.sessionId, open && session.phase === 'end');
+
+  // Trilha por contexto (SPEC 10); silêncio durante transmissão e telas congeladas (RN-45/46).
+  const theme: MusicTheme | null =
+    !open || transmissionOn || frozen
+      ? null
+      : phase === 'lobby'
+        ? 'lobby'
+        : phase === 'planning'
+          ? 'planning'
+          : phase === 'vault'
+            ? 'vault'
+            : phase === 'end'
+              ? 'end'
+              : player?.side === 'blue'
+                ? 'blue'
+                : player?.side === 'red'
+                  ? 'red'
+                  : 'planning';
+  useEffect(() => {
+    setMusic(theme);
+  }, [theme]);
+  useEffect(() => () => setMusic(null), []);
 
   if (session === null) return <Waiting text="Conectando ao museu..." />;
   if (!open)
@@ -258,6 +279,8 @@ function Game({ claims }: { claims: TeamClaims }) {
     return <Waiting text="Buscando a ficha da dupla..." />;
 
   let screen;
+  // A tela de jogo tem o controle de som no rodapé; as outras, flutuando no canto.
+  let playing = false;
   const effective = { ...session, phase: phase ?? session.phase };
   if (effective.phase === 'lobby') {
     screen = (
@@ -309,6 +332,7 @@ function Game({ claims }: { claims: TeamClaims }) {
       />
     );
   } else {
+    playing = true;
     screen = (
       <PlayScreen
         ctx={ctx}
@@ -325,6 +349,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   return (
     <>
       {screen}
+      {!playing && <AudioControls floating />}
       {/* Overlays, do menos para o mais importante (SPEC 9.2, item 7) */}
       <AnimatePresence>
         {jailed && <JailScreen key="jail" untilMs={jailMs} curiosities={episode.curiosities} />}

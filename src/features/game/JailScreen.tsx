@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
+import { useSfxOnMount } from '@/audio/useSfx';
 import { artUrl, SpeechBubble } from '@/components/comic';
 import { serverNow } from '@/lib/serverClock';
 import { useNow } from '@/lib/useNow';
 
 /** RN-35: prisão de 60 s depois de errar o alarme, com uma curiosidade do episódio. */
 export function JailScreen({ untilMs, curiosities }: { untilMs: number; curiosities: string[] }) {
+  useSfxOnMount('jail');
   useNow(500);
   const left = Math.max(0, Math.ceil((untilMs - serverNow()) / 1000));
   // curiosidade escolhida pelo horário da prisão (estável enquanto a tela está aberta)
