@@ -9,8 +9,10 @@ import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
 import {
+  addFeed,
   chooseMode,
   chooseSide,
+  finishMuseumEvent,
   joinLateAgainstMachine,
   markHeardTransmission,
   type GameCtx,
@@ -20,9 +22,14 @@ import { PlanningScreen } from '@/features/game/PlanningScreen';
 import { PlayScreen } from '@/features/game/PlayScreen';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { getFirebase } from '@/lib/firebase';
-import { calibrate } from '@/lib/serverClock';
+import { calibrate, serverNow } from '@/lib/serverClock';
 import type { ClassDoc, Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import { machineTick } from '@/features/game/machine';
+import { FreezeOverlay } from '@/features/game/FreezeOverlay';
+import { JailScreen } from '@/features/game/JailScreen';
+import { MuseumEventOverlay } from '@/features/game/MuseumEventOverlay';
+import { eventDurationMs, eventSucceeded, jailUntilMs } from '@/engine/museumEvent';
+import { useNow } from '@/lib/useNow';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
 import { useTeamAuth, type TeamClaims } from './useTeamAuth';
@@ -133,7 +140,17 @@ function Game({ claims }: { claims: TeamClaims }) {
   }, [open, rivalId, claims.classId]);
 
   // O Robô roda aqui, no navegador da dupla que joga contra ele (SPEC 5.2).
-  const phase = session && session !== 'missing' ? session.phase : null;
+  // RN-07: a Narradora pode adiantar/atrasar só esta dupla.
+  const phase = session && session !== 'missing' ? (player?.phaseOverride ?? session.phase) : null;
+  const frozen = session !== null && session !== 'missing' && session.freeze?.active === true;
+  useNow(1000);
+  const sNow = serverNow();
+  const eventStartMs =
+    session && session !== 'missing' && session.museumEvent?.status !== 'idle'
+      ? (session.museumEvent?.startedAt?.toMillis() ?? null)
+      : null;
+  const eventRunning =
+    !!episode && eventStartMs !== null && sNow < eventStartMs + eventDurationMs(episode.event);
   const runMachine = !!(
     matchId &&
     match?.machineSide &&
@@ -144,11 +161,13 @@ function Game({ claims }: { claims: TeamClaims }) {
   useEffect(() => {
     if (!runMachine || !matchId || !level || !phase) return;
     const tick = () =>
-      void machineTick(claims.sessionId, matchId, level, phase).catch(() => undefined);
+      void machineTick(claims.sessionId, matchId, level, phase, { eventRunning, frozen }).catch(
+        () => undefined,
+      );
     tick();
     const t = setInterval(tick, 1000);
     return () => clearInterval(t);
-  }, [runMachine, matchId, level, phase, claims.sessionId]);
+  }, [runMachine, matchId, level, phase, claims.sessionId, eventRunning, frozen]);
 
   const episodeId = session && session !== 'missing' ? session.episodeId : null;
   useEffect(() => {
@@ -197,7 +216,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   const waitingClue = (() => {
     if (!episode || !player || !level || !player.side || session === null || session === 'missing')
       return false;
-    const stage = currentStage(session.phase, player.progress);
+    const stage = currentStage(phase ?? session.phase, player.progress);
     if (stage.kind !== 'challenge' || player.progress.heardTransmission) return false;
     return needsTransmission(resolveChallenge(episode, player.side, level, stage.slot));
   })();
@@ -207,6 +226,15 @@ function Game({ claims }: { claims: TeamClaims }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transmissionOn, waitingClue]);
 
+  // Evento do museu (RN-32 a RN-35): só para quem está jogando os cadeados.
+  const inEvent =
+    eventStartMs !== null &&
+    !!player?.side &&
+    (phase === 'locks' || phase === 'vault') &&
+    player.progress.eventResult === 'pending';
+  const jailMs = player?.progress.jailUntil?.toMillis() ?? 0;
+  const jailed = jailMs > sNow;
+
   if (session === null) return <Waiting text="Conectando ao museu..." />;
   if (!open)
     return <NoSignalScreen detail="A missão desta sessão terminou. Esperem a próxima aula!" />;
@@ -214,7 +242,8 @@ function Game({ claims }: { claims: TeamClaims }) {
     return <Waiting text="Buscando a ficha da dupla..." />;
 
   let screen;
-  if (session.phase === 'lobby') {
+  const effective = { ...session, phase: phase ?? session.phase };
+  if (effective.phase === 'lobby') {
     screen = (
       <LobbyScreen
         team={team}
@@ -222,7 +251,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         curiosities={episode.curiosities}
       />
     );
-  } else if (session.phase === 'planning') {
+  } else if (effective.phase === 'planning') {
     screen = (
       <PlanningScreen
         episode={episode}
@@ -234,7 +263,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
-  } else if (session.phase === 'end') {
+  } else if (effective.phase === 'end') {
     screen = (
       <EndScreen episode={episode} team={team} player={player} match={matchId ? match : null} />
     );
@@ -258,7 +287,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         ctx={ctx}
         episode={episode}
         level={level}
-        session={session}
+        session={effective}
         team={team}
         player={player}
         match={matchId ? match : null}
@@ -269,7 +298,36 @@ function Game({ claims }: { claims: TeamClaims }) {
   return (
     <>
       {screen}
+      {/* Overlays, do menos para o mais importante (SPEC 9.2, item 7) */}
+      <AnimatePresence>
+        {jailed && <JailScreen key="jail" untilMs={jailMs} curiosities={episode.curiosities} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {inEvent && eventStartMs !== null && (
+          <MuseumEventOverlay
+            key="event"
+            event={episode.event}
+            startedAtMs={eventStartMs}
+            storageKey={`cacada.evento.${claims.sessionId}`}
+            onFinish={(answers) => {
+              const ok = eventSucceeded(episode.event, answers);
+              void finishMuseumEvent(ctx, ok, jailUntilMs(eventStartMs, episode.event))
+                .then(() =>
+                  addFeed(
+                    ctx,
+                    ok ? 'event_ok' : 'jail',
+                    `${player.side === 'blue' ? team.pirateName : team.cityName} ${ok ? 'desvendou o alarme!' : 'caiu no alarme falso e foi presa.'}`,
+                  ),
+                )
+                .catch(() => undefined);
+            }}
+          />
+        )}
+      </AnimatePresence>
       <AnimatePresence>{transmissionOn && <TransmissionOverlay />}</AnimatePresence>
+      <AnimatePresence>
+        {frozen && <FreezeOverlay message={session.freeze.message} />}
+      </AnimatePresence>
     </>
   );
 }

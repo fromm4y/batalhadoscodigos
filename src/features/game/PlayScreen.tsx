@@ -29,6 +29,8 @@ import {
   registerWrongAnswer,
   solveVault,
   activateAbility,
+  addFeed,
+  callHelp,
   type GameCtx,
 } from './actions';
 
@@ -67,6 +69,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const rivalWon = match?.winner === rivalSide;
   const vaultAdvantage = session.phase === 'vault' && match?.vaultLeader === side;
   const lastLog = match?.log.at(-1) ?? null;
+  const myName = red ? team.cityName : team.pirateName;
 
   const [cooldown, setCooldown] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -115,10 +118,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     setBusy(true);
     void guard(async () => {
       if (slot === 'vault') {
-        await solveVault(ctx);
+        const v = await solveVault(ctx);
+        addFeed(ctx, 'vault', `${myName} resolveu o Cofre${v.won ? ' primeiro e venceu!' : '.'}`);
         setPop({ kind: 'boom', key: Date.now() });
       } else {
         const r = await openLock(ctx, slot);
+        addFeed(ctx, 'lock_open', `${myName} abriu o ${red ? 'cadeado' : 'defesa'} ${slot + 1}`);
         setPop(
           r.blocked
             ? { kind: 'tcha', key: Date.now() }
@@ -212,6 +217,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     text: ABILITY_INFO[id].name.toUpperCase() + '!',
                   });
                   void guard(() => activateAbility(ctx, id, challenge?.key ?? null));
+                  addFeed(ctx, 'ability', `${myName} usou ${ABILITY_INFO[id].name}`);
                 }}
               />
             )}
@@ -355,6 +361,21 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </p>
           {challenge && (
             <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={player.helpUsed || busy}
+                onClick={() =>
+                  void guard(async () => {
+                    await callHelp(ctx, challenge.key);
+                    addFeed(ctx, 'help', `${myName} chamou ajuda em "${challenge.title}"`);
+                  })
+                }
+                title="Uma vez por episódio, sem custo"
+                className="flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink bg-graphite-light px-4 pt-1 font-heist text-xl tracking-wider text-paper hover:glow-brass disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                🙋{' '}
+                {player.helpUsed ? 'Ajuda a caminho' : 'Chamar a Narradora'}
+              </button>
               {([1, 2] as const).map((tier) => {
                 const bought = usedHints >= tier;
                 const available = nextHint(usedHints as 0 | 1 | 2) === tier;
