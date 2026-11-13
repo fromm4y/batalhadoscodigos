@@ -5,24 +5,13 @@ import { ComicButton, cn } from '@/components/comic';
 import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
 import { ABILITY_INFO } from '@/engine/match';
+import { LEDGER_LABEL } from '@/features/game/ledgerLabels';
 import { currentStage } from '@/engine/progress';
 import type { Level, Phase, PlayerDoc, TeamDoc } from '@/types/domain';
 import { useLedger, type WithId } from '../data';
 import type { Ctx } from './matchOps';
 import { giveAbility, giveFreeHint, givePoints, setPhaseOverride, setSide } from './sessionOps';
 
-const REASON: Record<string, string> = {
-  lock_open: 'Cadeado aberto',
-  lock_first: 'Primeira dupla no cadeado',
-  event_ok: 'Alarme desvendado',
-  vault_win: 'Vitória',
-  draw: 'Empate',
-  side_bonus: 'Bônus de lado vazio',
-  wrong_answer: 'Resposta errada',
-  hint_1: 'Dica 1',
-  hint_2: 'Dica 2',
-  manual: 'Ajuste da Narradora',
-};
 const PHASES: { id: Phase | 'turma'; label: string }[] = [
   { id: 'turma', label: 'Igual à turma' },
   { id: 'planning', label: 'Planejamento' },
@@ -249,7 +238,7 @@ export function TeamActionsDialog({ ctx, team, player, episode, level, onClose }
             <ol className="grid gap-1">
               {entries.map((e) => (
                 <li key={e.id} className="flex justify-between border-b border-ink/20 py-1 text-sm">
-                  <span>{REASON[e.reason] ?? e.reason}</span>
+                  <span>{LEDGER_LABEL[e.reason] ?? e.reason}</span>
                   <strong className={e.delta < 0 ? 'text-bando-dark' : 'text-success'}>
                     {e.delta > 0 ? '+' : ''}
                     {e.delta}

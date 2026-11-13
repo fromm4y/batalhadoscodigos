@@ -32,6 +32,7 @@ import { eventDurationMs, eventSucceeded, jailUntilMs } from '@/engine/museumEve
 import { useNow } from '@/lib/useNow';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
+import { useSessionLedger, useStudentClassTeams } from './useStudentData';
 import { useTeamAuth, type TeamClaims } from './useTeamAuth';
 
 /** `/jogo` — tela única do jogo, que muda conforme a fase da sessão (SPEC 9.2). */
@@ -235,6 +236,16 @@ function Game({ claims }: { claims: TeamClaims }) {
   const jailMs = player?.progress.jailUntil?.toMillis() ?? 0;
   const jailed = jailMs > sNow;
 
+  // RN-25: o ranking da turma só aparece no planejamento e no fim.
+  const rankingOn = open && (phase === 'planning' || phase === 'end');
+  const classTeams = useStudentClassTeams(claims.classId, rankingOn);
+  const endLedger = useSessionLedger(
+    claims.classId,
+    claims.teamId,
+    claims.sessionId,
+    open && phase === 'end',
+  );
+
   if (session === null) return <Waiting text="Conectando ao museu..." />;
   if (!open)
     return <NoSignalScreen detail="A missão desta sessão terminou. Esperem a próxima aula!" />;
@@ -259,13 +270,23 @@ function Game({ claims }: { claims: TeamClaims }) {
         player={player}
         match={matchId ? match : null}
         rival={rivalId ? rival : null}
+        classTeams={classTeams}
+        teamId={claims.teamId}
         onChooseSide={(s) => chooseSide(ctx, s)}
         onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
   } else if (effective.phase === 'end') {
     screen = (
-      <EndScreen episode={episode} team={team} player={player} match={matchId ? match : null} />
+      <EndScreen
+        episode={episode}
+        team={team}
+        teamId={claims.teamId}
+        player={player}
+        match={matchId ? match : null}
+        classTeams={classTeams}
+        ledger={endLedger}
+      />
     );
   } else if (!player.side || (session.matchesFormed && !player.matchId)) {
     // Chegou atrasada (RN-07): escolhe o lado e entra direto contra a máquina.
