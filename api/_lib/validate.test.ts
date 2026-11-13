@@ -83,6 +83,20 @@ describe('cadastro da dupla', () => {
     expect(parseAvatar(null)).toBeNull();
   });
 
+  it('aceita personagem-imagem só da lista fechada', () => {
+    expect(parseAvatar({ ...avatar, character: 'menina-03' })).toEqual({
+      ...avatar,
+      character: 'menina-03',
+    });
+    expect(parseAvatar({ ...avatar, character: 'menina-99' })).toBeNull();
+    expect(parseAvatar({ ...avatar, character: 'https://foto.com/x.png' })).toBeNull();
+  });
+
+  it('aceita nomes de personagem (decisão da May, 13/11)', () => {
+    expect(isCityName('Tóquio')).toBe(true);
+    expect(isPirateName('Luffy')).toBe(true);
+  });
+
   it('só aceita nomes das listas fechadas (RN-49)', () => {
     expect(isCityName('Recife')).toBe(true);
     expect(isCityName('Gotham')).toBe(false);
