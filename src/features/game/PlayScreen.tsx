@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { playSfx } from '@/audio/engine';
 import { AudioControls } from '@/components/game/AudioControls';
 import { ListenButton } from '@/components/game/ListenButton';
+import { RobotTalk } from '@/components/game/RobotTalk';
 import { ChallengeView } from '@/components/challenges/ChallengeView';
 import {
   ComicArt,
@@ -17,7 +18,7 @@ import {
 import { AbilityCards } from '@/components/game/AbilityCards';
 import { InterferenceOverlay } from '@/components/game/InterferenceOverlay';
 import { TugBar } from '@/components/game/TugBar';
-import { BrassFrame, Dust, RobotFigure, RouteMap, Typewriter } from '@/components/scene';
+import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
 import { resolveChallenge, type Slot } from '@/engine/challenges';
@@ -238,23 +239,16 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               />
             )}
             {match?.machineSide && (
-              <div className="flex items-end gap-2">
-                <RobotFigure
-                  className="h-24 w-20"
-                  mood={
-                    match.winner === match.machineSide
-                      ? 'feliz'
-                      : match.winner
-                        ? 'derrotado'
-                        : 'provocando'
-                  }
-                />
-                {lastLog && lastLog.side === match.machineSide && (
-                  <p className="mb-6 rounded-md border-2 border-ink bg-aged px-2 py-1 font-comic text-base leading-tight tracking-wide text-ink">
-                    {lastLog.text}
-                  </p>
-                )}
-              </div>
+              <RobotTalk
+                mood={
+                  match.winner === match.machineSide
+                    ? 'feliz'
+                    : match.winner
+                      ? 'derrotado'
+                      : 'provocando'
+                }
+                line={lastLog && lastLog.side === match.machineSide ? lastLog : null}
+              />
             )}
             {match && !match.machineSide && lastLog && (
               <p

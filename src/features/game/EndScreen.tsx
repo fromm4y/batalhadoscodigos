@@ -12,7 +12,7 @@ import {
 } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
 import { SessionHighlight } from '@/components/game/SessionHighlight';
-import { BrassFrame, Spotlights, Stamp, Typewriter } from '@/components/scene';
+import { BrassFrame, Confetti, Spotlights, Stamp, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
 import { ledgerSum } from '@/engine/ranking';
 import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamDoc } from '@/types/domain';
@@ -205,6 +205,17 @@ function ResultChapter({
           <div className="absolute -top-6 right-0">
             <Onomatopoeia kind="boom" size={150} />
           </div>
+        )}
+        {(won || match?.winner === 'draw') && <Confetti count={won ? 80 : 40} />}
+        {result?.title === 'QUASE!' && (
+          <Stamp
+            text="REVANCHE!"
+            color="brass"
+            rotate={-8}
+            delay={1}
+            onDark
+            className="self-start text-4xl"
+          />
         )}
         <p className="mt-2 font-type text-lg text-mist">
           Cadeados abertos: {player.progress.lockIndex}/3 · Cofre:{' '}
