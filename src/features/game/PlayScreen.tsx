@@ -373,8 +373,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                 title="Uma vez por episódio, sem custo"
                 className="flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink bg-graphite-light px-4 pt-1 font-heist text-xl tracking-wider text-paper hover:glow-brass disabled:cursor-not-allowed disabled:opacity-50"
               >
-                🙋{' '}
-                {player.helpUsed ? 'Ajuda a caminho' : 'Chamar a Narradora'}
+                🙋 {player.helpUsed ? 'Ajuda a caminho' : 'Chamar a Narradora'}
               </button>
               {([1, 2] as const).map((tier) => {
                 const bought = usedHints >= tier;

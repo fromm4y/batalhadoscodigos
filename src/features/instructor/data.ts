@@ -1,7 +1,9 @@
 import {
   collection,
   doc,
+  limit,
   onSnapshot,
+  orderBy,
   query,
   where,
   type DocumentData,
@@ -12,7 +14,10 @@ import { getFirebase } from '@/lib/firebase';
 import type {
   AllowedInstructorDoc,
   ClassDoc,
+  FeedDoc,
+  HelpRequestDoc,
   InstructorDoc,
+  LedgerEntryDoc,
   MatchDoc,
   PlayerDoc,
   SchoolDoc,
@@ -157,5 +162,32 @@ export function useSessionMatches(sessionId: string | null) {
   return useLiveQuery<MatchDoc>(
     () => (sessionId ? collection(db(), 'sessions', sessionId, 'matches') : null),
     `matches-${sessionId}`,
+  );
+}
+
+export function useHelpRequests(sessionId: string | null) {
+  return useLiveQuery<HelpRequestDoc>(
+    () => (sessionId ? collection(db(), 'sessions', sessionId, 'helpRequests') : null),
+    `help-${sessionId}`,
+  );
+}
+
+/** Últimos lances da sessão (linha do tempo do painel). */
+export function useFeed(sessionId: string | null) {
+  return useLiveQuery<FeedDoc>(
+    () =>
+      sessionId
+        ? query(collection(db(), 'sessions', sessionId, 'feed'), orderBy('at', 'desc'), limit(40))
+        : null,
+    `feed-${sessionId}`,
+  );
+}
+
+/** Extrato da dupla (todas as sessões; o painel filtra a atual). */
+export function useLedger(classId: string | null, teamId: string | null) {
+  return useLiveQuery<LedgerEntryDoc>(
+    () =>
+      classId && teamId ? collection(db(), 'classes', classId, 'teams', teamId, 'ledger') : null,
+    `ledger-${classId}-${teamId}`,
   );
 }

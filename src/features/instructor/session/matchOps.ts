@@ -18,14 +18,14 @@ import { newMatchDoc } from '@/features/game/actions';
 import { getFirebase } from '@/lib/firebase';
 import type { LedgerReason, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 
-type Ctx = { sessionId: string; session: SessionDoc; uid: string };
+export type Ctx = { sessionId: string; session: SessionDoc; uid: string };
 
 /** Lança pontos numa transação (ledger com `by: uid` da Narradora + total, RN-22/24). */
-async function awardPoints(
+export async function awardPoints(
   tx: Transaction,
   db: Firestore,
   c: Ctx,
-  awards: { teamId: string; reason: Exclude<LedgerReason, 'manual'>; delta: number }[],
+  awards: { teamId: string; reason: LedgerReason; delta: number }[],
 ) {
   const teamRefs = awards.map((a) => doc(db, 'classes', c.session.classId, 'teams', a.teamId));
   const playerRefs = awards.map((a) => doc(db, 'sessions', c.sessionId, 'players', a.teamId));
