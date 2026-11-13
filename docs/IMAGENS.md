@@ -31,12 +31,13 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 
 ## ✅ Status das entregas
 
-| id                                                                                                                                                                 | Situação                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| `tear-ciclos`, `ada-escrevendo`                                                                                                                                    | ✅ no jogo (margem branca cortada)                |
-| `capita-tensa`, `robo-provocando`, `robo-derrotado`                                                                                                                | ✅ no jogo (fundo xadrez removido)                |
-| `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`, `narradora-neutra`, `professor-neutro`, `professor-feliz`, `professor-tenso`, `capita-feliz` | ⏳ recebidas no chat, falta reenviar como arquivo |
-| demais                                                                                                                                                             | ⏳ a gerar                                        |
+| id                                                                                      | Situação                                          |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `tear-ciclos`, `ada-escrevendo`                                                         | ✅ no jogo (margem branca cortada)                |
+| `capita-tensa`, `robo-provocando`, `robo-derrotado`, `narradora-neutra`                 | ✅ no jogo (fundo xadrez removido)                |
+| `capita-navio`, `professor-sombra`, `vitrine-maquina`                                   | ✅ no jogo (margem branca cortada)                |
+| `museu-noite`, `professor-neutro`, `professor-feliz`, `professor-tenso`, `capita-feliz` | ⏳ recebidas no chat, falta reenviar como arquivo |
+| demais                                                                                  | ⏳ a gerar                                        |
 
 > **Dica para personagens:** em vez de pedir "fundo transparente" (o gerador costuma **desenhar** um xadrez falso), peça **fundo liso de uma cor só**, por exemplo _"plain solid flat dark navy background (#0B0D14), no pattern"_. Fica fácil de recortar e, como o jogo é escuro, às vezes nem precisa recortar.
 > **Formato:** `.webp` também serve para personagens (fica ~7× mais leve que PNG).
