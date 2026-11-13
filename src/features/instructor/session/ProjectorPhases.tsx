@@ -232,7 +232,8 @@ export function ProjectorEnd({ teams, episode }: { teams: Teams; episode: Episod
               color="brass"
               rotate={-10}
               delay={2}
-              className="absolute -bottom-8 -left-8 scale-150"
+              onDark
+              className="absolute -bottom-10 -left-10 text-6xl"
             />
           </div>
         </div>

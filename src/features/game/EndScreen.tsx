@@ -334,7 +334,8 @@ function HookChapter({ episode }: { episode: Episode }) {
           color="brass"
           rotate={-10}
           delay={2.2}
-          className="absolute -bottom-6 -left-6"
+          onDark
+          className="absolute -bottom-6 -left-6 text-4xl"
         />
       </div>
     </div>
