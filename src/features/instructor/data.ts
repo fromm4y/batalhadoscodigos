@@ -1,5 +1,6 @@
 import {
   collection,
+  doc,
   onSnapshot,
   query,
   where,
@@ -8,7 +9,15 @@ import {
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { getFirebase } from '@/lib/firebase';
-import type { AllowedInstructorDoc, ClassDoc, InstructorDoc, SchoolDoc } from '@/types/domain';
+import type {
+  AllowedInstructorDoc,
+  ClassDoc,
+  InstructorDoc,
+  PlayerDoc,
+  SchoolDoc,
+  SessionDoc,
+  TeamDoc,
+} from '@/types/domain';
 
 export type WithId<T> = T & { id: string };
 type Live<T> = { data: WithId<T>[]; loading: boolean; error: string | null };
@@ -78,5 +87,67 @@ export function useAllowlist(enabled: boolean) {
   return useLiveQuery<AllowedInstructorDoc>(
     () => (enabled ? collection(db(), 'allowedInstructors') : null),
     `allowlist-${enabled}`,
+  );
+}
+
+type LiveDoc<T> = { data: WithId<T> | null; loading: boolean; error: string | null };
+
+/** Escuta um documento em tempo real. */
+export function useLiveDoc<T>(path: string | null): LiveDoc<T> {
+  const [snap, setSnap] = useState<{
+    path: string;
+    data: WithId<T> | null;
+    error: string | null;
+  } | null>(null);
+  useEffect(() => {
+    if (!path) return;
+    return onSnapshot(
+      doc(getFirebase().db, path),
+      (d) =>
+        setSnap({ path, data: d.exists() ? { id: d.id, ...(d.data() as T) } : null, error: null }),
+      (err) => {
+        console.error('[firestore]', err);
+        setSnap({ path, data: null, error: 'Não consegui carregar.' });
+      },
+    );
+  }, [path]);
+  if (!path) return { data: null, loading: false, error: null };
+  if (!snap || snap.path !== path) return { data: null, loading: true, error: null };
+  return { data: snap.data, loading: false, error: snap.error };
+}
+
+export function useClass(classId: string | null) {
+  return useLiveDoc<ClassDoc>(classId ? `classes/${classId}` : null);
+}
+
+export function useClassTeams(classId: string | null) {
+  return useLiveQuery<TeamDoc>(
+    () => (classId ? collection(db(), 'classes', classId, 'teams') : null),
+    `teams-${classId}`,
+  );
+}
+
+/** Sessão aberta da turma (RN-04: no máximo uma). */
+export function useOpenSessions(uid: string, classId: string) {
+  return useLiveQuery<SessionDoc>(
+    () =>
+      query(
+        collection(db(), 'sessions'),
+        where('instructorId', '==', uid),
+        where('classId', '==', classId),
+        where('status', '==', 'open'),
+      ),
+    `open-sessions-${uid}-${classId}`,
+  );
+}
+
+export function useSession(sessionId: string | null) {
+  return useLiveDoc<SessionDoc>(sessionId ? `sessions/${sessionId}` : null);
+}
+
+export function useSessionPlayers(sessionId: string | null) {
+  return useLiveQuery<PlayerDoc>(
+    () => (sessionId ? collection(db(), 'sessions', sessionId, 'players') : null),
+    `players-${sessionId}`,
   );
 }

@@ -244,7 +244,7 @@ describe('turmas', () => {
     await assertFails(deleteDoc(doc(db, 'classes', 'turma-ana')));
   });
 
-  it('dupla (custom token) ainda não acessa nada nesta etapa', async () => {
+  it('dupla sem sessão válida não acessa turma nem escolas', async () => {
     const db = asTeam();
     await assertFails(getDoc(doc(db, 'classes', 'turma-ana')));
     await assertFails(getDocs(collection(db, 'schools')));

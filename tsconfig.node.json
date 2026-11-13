@@ -16,5 +16,5 @@
     "noUnusedParameters": true,
     "skipLibCheck": true
   },
-  "include": ["vite.config.ts", "vitest.rules.config.ts", "eslint.config.js", "scripts", "tests"]
+  "include": ["vite.config.ts", "vitest.emulator.config.ts", "eslint.config.js", "scripts", "tests"]
 }

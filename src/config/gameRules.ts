@@ -4,7 +4,7 @@
  * Nunca hardcodar estes valores em componentes ou no motor.
  */
 
-import type { Level } from '@/types/domain';
+import type { Level } from '../types/domain.js';
 
 export const GAME_RULES = {
   /** RN-02 [PADRÃO] */
@@ -124,7 +124,14 @@ export const GAME_RULES = {
     defaultSfxVolume: 0.7,
   },
 
+  presence: {
+    /** A dupla avisa que está conectada a cada N segundos (painel mostra "desconectada"). */
+    heartbeatSeconds: 30,
+  },
+
   ui: {
+    /** RN-10: troca a curiosidade da tela de espera a cada N segundos. */
+    curiosityRotateSeconds: 9,
     /** Seção 9.6: corpo mínimo do texto (px) por nível. */
     minBodyFontPx: { A: 18, B: 16, C: 16 } satisfies Record<Level, number>,
     minButtonHeightPx: 44,

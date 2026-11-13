@@ -32,6 +32,27 @@ service cloud.firestore {
     function onlyKeys(keys) {
       return request.resource.data.keys().hasOnly(keys);
     }
+    function changedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    // ---------- Duplas (custom token emitido pelas funções da Vercel) ----------
+    function isTeam() {
+      return signedIn() && request.auth.token.role == 'team';
+    }
+    function sessionDoc(sid) {
+      return get(/databases/$(database)/documents/sessions/$(sid)).data;
+    }
+    // O token da dupla só vale para a própria sessão, aberta e no prazo (SPEC 5.3).
+    function teamSessionOpen() {
+      return isTeam()
+        && sessionDoc(request.auth.token.sessionId).status == 'open'
+        && request.time < sessionDoc(request.auth.token.sessionId).expiresAt;
+    }
+    function ownsClass(classId) {
+      return isInstructor()
+        && get(/databases/$(database)/documents/classes/$(classId)).data.instructorId == request.auth.uid;
+    }
 
     // ---------- allowedInstructors/{email} ----------
     // Leitura do próprio e-mail (checagem no login) ou pela admin. Escrita só da admin.
@@ -88,7 +109,8 @@ service cloud.firestore {
 
     match /classes/{classId} {
       // RN-01 / 8.2: o instrutor só vê e edita as próprias turmas; a admin lê todas.
-      allow read: if isInstructor() && (resource.data.instructorId == request.auth.uid || isAdmin());
+      allow read: if (isInstructor() && (resource.data.instructorId == request.auth.uid || isAdmin()))
+        || (teamSessionOpen() && request.auth.token.classId == classId);
       allow create: if isInstructor()
         && request.resource.data.instructorId == request.auth.uid
         && request.resource.data.archived == false
@@ -100,6 +122,42 @@ service cloud.firestore {
         && request.resource.data.createdAt == resource.data.createdAt
         && validClass(request.resource.data);
       allow delete: if false; // turmas são arquivadas, nunca apagadas
+    }
+
+    // ---------- classes/{classId}/teams/{teamId} (dados públicos da dupla) ----------
+    // Criação, PIN e pontos passam pelas funções da Vercel. `private/*`: nenhum acesso de cliente.
+    match /classes/{classId}/teams/{teamId} {
+      allow read: if ownsClass(classId)
+        || isAdmin()
+        || (teamSessionOpen() && request.auth.token.classId == classId);
+      allow write: if false;
+    }
+
+    // ---------- sessions/{sessionId} ----------
+    match /sessions/{sessionId} {
+      // A dupla lê a própria sessão mesmo encerrada (para mostrar "A Narradora ainda não deu o sinal").
+      allow read: if (isInstructor() && (resource.data.instructorId == request.auth.uid || isAdmin()))
+        || (isTeam() && request.auth.token.sessionId == sessionId);
+      // Criada só pela função /api/session-open (código único). A dona controla o andamento.
+      allow create, delete: if false;
+      allow update: if isInstructor()
+        && resource.data.instructorId == request.auth.uid
+        && changedOnly(['status', 'phase', 'phaseStartedAt', 'matchesFormed', 'freeze', 'transmission', 'museumEvent', 'autoEventAt'])
+        && request.resource.data.status in ['open', 'finished']
+        && request.resource.data.phase in ['lobby', 'planning', 'locks', 'vault', 'end'];
+
+      // ---------- sessions/{sessionId}/players/{teamId} ----------
+      match /players/{teamId} {
+        allow read: if (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()))
+          || (isTeam() && request.auth.token.sessionId == sessionId && request.auth.token.teamId == teamId);
+        // Etapa 2: a dupla só marca presença. Progresso e pontos abrem nas próximas etapas.
+        allow update: if teamSessionOpen()
+          && request.auth.token.sessionId == sessionId
+          && request.auth.token.teamId == teamId
+          && changedOnly(['connected', 'lastSeenAt'])
+          && request.resource.data.connected is bool;
+        allow create, delete: if false;
+      }
     }
 
     // ---------- Todo o resto continua fechado ----------

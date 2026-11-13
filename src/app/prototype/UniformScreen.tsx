@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { AvatarPreview } from '@/components/avatar/AvatarPreview';
+import { Avatar } from '@/components/avatar/Avatar';
 import { ComicButton, Onomatopoeia } from '@/components/comic';
 import { Dossier, Dust, Spotlights, WantedPoster } from '@/components/scene';
 import type { AvatarConfig, Side } from '@/types/domain';
@@ -28,7 +28,7 @@ export function UniformScreen({ side, onNext }: { side: Side; onNext: () => void
             transition={{ duration: 0.5 }}
             className="relative z-[1]"
           >
-            <AvatarPreview
+            <Avatar
               avatar={avatar}
               side={dressed ? side : null}
               className="h-80 w-72 drop-shadow-[0_0_30px_rgb(255_244_194/0.25)]"
@@ -97,11 +97,7 @@ export function UniformScreen({ side, onNext }: { side: Side; onNext: () => void
           </Dossier>
         ) : (
           <WantedPoster name={MY_TEAM.pirate} reward={MY_TEAM.points} rotate={-2}>
-            <AvatarPreview
-              avatar={avatar}
-              side={dressed ? 'blue' : null}
-              className="h-full w-full"
-            />
+            <Avatar avatar={avatar} side={dressed ? 'blue' : null} className="h-full w-full" />
           </WantedPoster>
         )}
       </div>

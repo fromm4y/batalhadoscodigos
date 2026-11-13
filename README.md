@@ -13,6 +13,13 @@ npm run dev                  # http://localhost:5173  (kit visual: /teste-hq · 
 
 Scripts: `npm run build`, `npm run typecheck`, `npm run lint`, `npm test`, `npm run seed`.
 
+**Testar tudo localmente, sem Firebase real** (precisa de Java instalado):
+
+```bash
+npm run dev:emu     # app + API + emuladores com dados falsos
+npm run test:emu    # testes das regras do Firestore e das rotas da API
+```
+
 > As rotas `/api/*` só rodam na Vercel (ou com `npx vercel dev`).
 
 ---

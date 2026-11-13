@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { AvatarBuilder } from '@/components/avatar/AvatarBuilder';
+import { DEFAULT_AVATAR } from '@/components/avatar/avatarOptions';
 import { Link } from 'react-router';
 import {
   ComicButton,
@@ -42,6 +44,7 @@ export function ComicTestPage() {
   const [playKey, setPlayKey] = useState(0);
   const [hoverSide, setHoverSide] = useState<'red' | 'blue' | null>(null);
   const [opened, setOpened] = useState(1);
+  const [avatar, setAvatar] = useState(DEFAULT_AVATAR);
 
   const play = (k: Exclude<OnomatopoeiaKind, 'custom'>) => {
     setKind(k);
@@ -204,6 +207,10 @@ export function ComicTestPage() {
             </ul>
           </ComicPanel>
         </div>
+
+        <ComicPanel caption="Criador de avatar" tone="graphite" className="pt-8">
+          <AvatarBuilder value={avatar} onChange={setAvatar} />
+        </ComicPanel>
 
         <footer className="pb-4 text-center">
           <Link to="/" className="font-type text-mist underline underline-offset-4">

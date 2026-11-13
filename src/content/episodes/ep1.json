@@ -1,0 +1,631 @@
+{
+  "id": "ep1",
+  "number": 1,
+  "title": "Máquina Analítica",
+  "invention": {
+    "name": "Máquina Analítica",
+    "year": "1843",
+    "people": ["Ada Lovelace", "Charles Babbage"]
+  },
+  "intro": {
+    "comic": [
+      {
+        "caption": "Museu Nacional da Tecnologia. Meia-noite.",
+        "art": "museu-noite"
+      },
+      {
+        "caption": "Na vitrine principal, uma máquina de engrenagens que nunca foi terminada...",
+        "art": "vitrine-maquina"
+      },
+      {
+        "speech": {
+          "who": "professor",
+          "text": "O segredo dessa máquina está nos cartões. Peguem os cartões e a vitrine é nossa."
+        },
+        "art": "professor-sombra"
+      },
+      {
+        "speech": {
+          "who": "capita",
+          "text": "Esse é o tesouro que ensinou o mundo a programar. Ninguém encosta nele!"
+        },
+        "art": "capita-navio"
+      }
+    ],
+    "red": "Abra a vitrine e capture a Máquina Analítica antes que os Piratas tranquem tudo.",
+    "blue": "Proteja a Máquina Analítica e mantenha a vitrine trancada até o fim."
+  },
+  "dossier": [
+    "A Máquina Analítica foi projetada por Charles Babbage no século 19.",
+    "Ela recebia instruções por cartões perfurados, a mesma ideia do tear de Jacquard.",
+    "Em 1843, Ada Lovelace publicou notas com um algoritmo para essa máquina.",
+    "Por isso, Ada é lembrada como a primeira programadora da história."
+  ],
+  "curiosities": [
+    "Ada Lovelace era filha do poeta Lord Byron.",
+    "A Máquina Analítica nunca foi construída por completo na época.",
+    "O tear de Jacquard, de 1804, usava cartões perfurados para tecer desenhos.",
+    "A segunda terça-feira de outubro é o Dia de Ada Lovelace.",
+    "Ada chamava seu jeito de pensar de \"ciência poética\".",
+    "A máquina de Babbage foi projetada para funcionar a vapor."
+  ],
+  "sides": {
+    "red": {
+      "name": "Bando",
+      "locks": [
+        {
+          "key": "red-lock1",
+          "title": "Dossiê do alvo",
+          "leaderLine": "Antes de qualquer assalto, a gente estuda o alvo. Respondam o dossiê.",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista do Professor: o próximo segredo tem furos, mas não é peneira."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê da invenção: as respostas estão lá.",
+              "hint2": "A primeira programadora tinha um nome de 3 letras.",
+              "questions": [
+                {
+                  "q": "Quem escreveu o primeiro algoritmo para uma máquina?",
+                  "options": ["Ada Lovelace", "Alan Turing", "Steve Jobs"],
+                  "correct": 0
+                },
+                {
+                  "q": "Como a máquina recebia instruções?",
+                  "options": ["Cartões perfurados", "Teclado", "Tela de toque"],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem projetou a Máquina Analítica?",
+                  "options": ["Charles Babbage", "Bill Gates", "Santos Dumont"],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê: tem um ano e uma máquina de tecer.",
+              "hint2": "As notas de Ada são do século 19, e os cartões vieram de um tear.",
+              "questions": [
+                {
+                  "q": "Em que ano Ada publicou suas notas com o algoritmo?",
+                  "options": ["1843", "1943", "1993"],
+                  "correct": 0
+                },
+                {
+                  "q": "De onde veio a ideia dos cartões perfurados?",
+                  "options": ["Do tear de Jacquard", "De um relógio", "Da imprensa"],
+                  "correct": 0
+                },
+                {
+                  "q": "A Máquina Analítica foi construída por completo naquela época?",
+                  "options": ["Não", "Sim", "Só a parte do teclado"],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Pense no que Ada percebeu que ia além das contas.",
+              "hint2": "O algoritmo de Ada calculava uma sequência de números com nome de matemático.",
+              "questions": [
+                {
+                  "q": "O que o algoritmo de Ada calculava?",
+                  "options": ["Números de Bernoulli", "Previsão do tempo", "Órbitas de planetas"],
+                  "correct": 0
+                },
+                {
+                  "q": "O que Ada percebeu de diferente sobre a máquina?",
+                  "options": [
+                    "Que ela podia trabalhar com símbolos, não só números",
+                    "Que ela era muito rápida",
+                    "Que ela era barata"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Uma linguagem de programação recebeu o nome de Ada em...",
+                  "options": ["1980", "1880", "2020"],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "red-lock2",
+          "title": "A charada do cofre",
+          "leaderLine": "O guarda deixou uma charada no painel de segurança. Decifrem!",
+          "type": "riddle",
+          "reward": {
+            "clue": "Pista do Professor: agora leiam o cartão. Cada furo é um número."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Quem sou eu?",
+              "mode": "choice",
+              "text": "Tenho furos, mas não sou peneira. Dou ordens, mas não falo. Ensinei um tear a desenhar flores. Quem sou eu?",
+              "options": ["Cartão perfurado", "Teclado", "Peneira"],
+              "accept": ["cartao perfurado"],
+              "hint1": "Lembre como a máquina recebia instruções.",
+              "hint2": "É um cartão... com furos!"
+            },
+            "B": {
+              "prompt": "Digite a resposta da charada.",
+              "mode": "text",
+              "text": "Tenho furos, mas não sou peneira. Dou ordens, mas não falo. Ensinei um tear a desenhar flores. Quem sou eu?",
+              "accept": ["cartao perfurado", "cartoes perfurados", "o cartao perfurado"],
+              "hint1": "Lembre como a máquina recebia instruções.",
+              "hint2": "São duas palavras: CARTÃO + P..."
+            },
+            "C": {
+              "prompt": "Digite a resposta da charada.",
+              "mode": "text",
+              "text": "Sou filha de um poeta, mas troquei os versos pelos números. Escrevi um programa para uma máquina que ainda não existia. Quem sou eu?",
+              "accept": ["ada lovelace", "ada", "augusta ada", "augusta ada king", "ada byron"],
+              "hint1": "Ela é considerada a primeira programadora da história.",
+              "hint2": "O nome dela tem 3 letras e o sobrenome começa com L."
+            }
+          }
+        },
+        {
+          "key": "red-lock3",
+          "title": "A senha do cartão",
+          "leaderLine": "O cartão abre a vitrine. Leiam os furos... mas cuidado, ele está rasgado.",
+          "type": "punchCardRead",
+          "variants": {
+            "A": {
+              "prompt": "Cada coluna tem um furo. A linha do furo é o número. Digite a senha.",
+              "rows": 10,
+              "columns": [8, 4, 3],
+              "decode": "digits",
+              "answer": "843",
+              "spokenColumn": 2,
+              "hint1": "Comece pela coluna da esquerda e veja em que linha está o furo.",
+              "hint2": "As duas primeiras colunas formam 8 e 4."
+            },
+            "B": {
+              "prompt": "Cada coluna tem um furo. A linha do furo é o número. Digite a senha.",
+              "rows": 10,
+              "columns": [1, 8, 4, 3],
+              "decode": "digits",
+              "answer": "1843",
+              "spokenColumn": 3,
+              "hint1": "A senha é um ano importante para Ada.",
+              "hint2": "Começa com 1 8 4..."
+            },
+            "C": {
+              "prompt": "Os furos viram números, e os números viram letras (1=A, 2=B, 3=C...). Digite a senha.",
+              "rows": 10,
+              "columns": [1, 4, 1],
+              "decode": "letters",
+              "answer": "ADA",
+              "spokenColumn": 2,
+              "hint1": "Transforme cada número na letra do alfabeto.",
+              "hint2": "1 = A e 4 = D."
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "red-vault",
+        "title": "O Cofre: o programa da Ada",
+        "leaderLine": "O cofre só abre se o tear tecer o padrão certo. Programem o tear!",
+        "type": "blockBuild",
+        "variants": {
+          "A": {
+            "prompt": "Monte um programa que teça o padrão. Use no máximo 3 blocos.",
+            "palette": ["star", "dot", "repeat"],
+            "target": ["star", "dot", "star", "dot", "star", "dot"],
+            "maxBlocks": 3,
+            "hint1": "O padrão ★● se repete. Que bloco repete coisas?",
+            "hint2": "Repita 3 vezes [★ ●]."
+          },
+          "B": {
+            "prompt": "Monte um programa que teça o padrão. Use no máximo 4 blocos.",
+            "palette": ["star", "dot", "repeat"],
+            "target": [
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot"
+            ],
+            "maxBlocks": 4,
+            "hint1": "Ache o pedaço que se repete e conte quantas vezes.",
+            "hint2": "Repita 4 vezes [★ ★ ●]."
+          },
+          "C": {
+            "prompt": "Monte um programa que teça as 3 fileiras. Use no máximo 5 blocos.",
+            "palette": ["star", "dot", "line", "repeat"],
+            "target": [
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line",
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line",
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line"
+            ],
+            "maxBlocks": 5,
+            "hint1": "Dá para colocar uma repetição dentro de outra.",
+            "hint2": "Repita 3 vezes [ Repita 2 vezes [★ ●], ▬ ]."
+          }
+        }
+      }
+    },
+    "blue": {
+      "name": "Piratas",
+      "locks": [
+        {
+          "key": "blue-lock1",
+          "title": "Diário de bordo",
+          "leaderLine": "Todo pirata conhece o tesouro que protege. Completem o diário de bordo!",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista da Capitã: chegou uma mensagem numa garrafa, mas as letras estão bagunçadas."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê da invenção: as respostas estão lá.",
+              "hint2": "A primeira programadora tinha um nome de 3 letras.",
+              "questions": [
+                {
+                  "q": "Quem escreveu o primeiro algoritmo para uma máquina?",
+                  "options": ["Ada Lovelace", "Alan Turing", "Steve Jobs"],
+                  "correct": 0
+                },
+                {
+                  "q": "Como a máquina recebia instruções?",
+                  "options": ["Cartões perfurados", "Teclado", "Tela de toque"],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem projetou a Máquina Analítica?",
+                  "options": ["Charles Babbage", "Bill Gates", "Santos Dumont"],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê: tem um ano e uma máquina de tecer.",
+              "hint2": "As notas de Ada são do século 19, e os cartões vieram de um tear.",
+              "questions": [
+                {
+                  "q": "Em que ano Ada publicou suas notas com o algoritmo?",
+                  "options": ["1843", "1943", "1993"],
+                  "correct": 0
+                },
+                {
+                  "q": "De onde veio a ideia dos cartões perfurados?",
+                  "options": ["Do tear de Jacquard", "De um relógio", "Da imprensa"],
+                  "correct": 0
+                },
+                {
+                  "q": "A Máquina Analítica foi construída por completo naquela época?",
+                  "options": ["Não", "Sim", "Só a parte do teclado"],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Pense no que Ada percebeu que ia além das contas.",
+              "hint2": "O algoritmo de Ada calculava uma sequência de números com nome de matemático.",
+              "questions": [
+                {
+                  "q": "O que o algoritmo de Ada calculava?",
+                  "options": ["Números de Bernoulli", "Previsão do tempo", "Órbitas de planetas"],
+                  "correct": 0
+                },
+                {
+                  "q": "O que Ada percebeu de diferente sobre a máquina?",
+                  "options": [
+                    "Que ela podia trabalhar com símbolos, não só números",
+                    "Que ela era muito rápida",
+                    "Que ela era barata"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Uma linguagem de programação recebeu o nome de Ada em...",
+                  "options": ["1980", "1880", "2020"],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "blue-lock2",
+          "title": "Mensagem na garrafa",
+          "leaderLine": "A tempestade bagunçou a mensagem da garrafa. Arrumem as letras!",
+          "type": "anagram",
+          "reward": {
+            "clue": "Pista da Capitã: agora furem o cartão com a senha para trancar a vitrine."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Arrume as letras para descobrir a palavra secreta.",
+              "answer": "CARTÃO PERFURADO",
+              "mode": "perWordFirstFixed",
+              "hint1": "É o que a máquina usava para receber instruções.",
+              "hint2": "A primeira palavra é CARTÃO."
+            },
+            "B": {
+              "prompt": "Arrume as letras para descobrir a palavra secreta.",
+              "answer": "CARTÃO PERFURADO",
+              "mode": "perWord",
+              "hint1": "É o que a máquina usava para receber instruções.",
+              "hint2": "A primeira palavra é CARTÃO."
+            },
+            "C": {
+              "prompt": "Arrume as letras para descobrir o nome secreto.",
+              "answer": "ADA LOVELACE",
+              "mode": "whole",
+              "hint1": "É a primeira programadora da história.",
+              "hint2": "O primeiro nome tem 3 letras: A _ A."
+            }
+          }
+        },
+        {
+          "key": "blue-lock3",
+          "title": "Tranque o cartão",
+          "leaderLine": "Furem o cartão com a senha para trancar a vitrine... mas a garrafa molhou o último número!",
+          "type": "punchCardWrite",
+          "variants": {
+            "A": {
+              "prompt": "Fure um buraco por coluna para formar a senha.",
+              "rows": 10,
+              "target": [8, 4, 3],
+              "decode": "digits",
+              "shownTarget": "8 4 _",
+              "spokenColumn": 2,
+              "hint1": "Em cada coluna, fure a linha do número.",
+              "hint2": "Na 1ª coluna, fure a linha 8."
+            },
+            "B": {
+              "prompt": "Fure um buraco por coluna para formar a senha.",
+              "rows": 10,
+              "target": [1, 8, 4, 3],
+              "decode": "digits",
+              "shownTarget": "1 8 4 _",
+              "spokenColumn": 3,
+              "hint1": "Em cada coluna, fure a linha do número.",
+              "hint2": "A senha é um ano importante para Ada."
+            },
+            "C": {
+              "prompt": "Transforme as letras em números (A=1, B=2...) e fure o cartão.",
+              "rows": 10,
+              "target": [1, 4, 1],
+              "decode": "letters",
+              "shownTarget": "A D _",
+              "spokenColumn": 2,
+              "hint1": "A=1, B=2, C=3, D=4...",
+              "hint2": "A senha forma o nome da primeira programadora."
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "blue-vault",
+        "title": "O Cofre: conserte o tear",
+        "leaderLine": "O Bando sabotou o programa do tear! Achem o erro e consertem antes que o cofre abra.",
+        "type": "blockDebug",
+        "variants": {
+          "A": {
+            "prompt": "O tear deveria tecer o padrão, mas tem um bloco errado. Ache e conserte.",
+            "program": [
+              {
+                "type": "repeat",
+                "times": 3,
+                "body": [
+                  {
+                    "type": "weave",
+                    "symbol": "star"
+                  },
+                  {
+                    "type": "weave",
+                    "symbol": "star"
+                  }
+                ]
+              }
+            ],
+            "target": ["star", "dot", "star", "dot", "star", "dot"],
+            "editable": "symbols",
+            "hint1": "Compare o que o tear tece com o padrão: onde fica diferente?",
+            "hint2": "O segundo bloco dentro da repetição deveria ser ●."
+          },
+          "B": {
+            "prompt": "O tear deveria tecer o padrão, mas tem um erro. Ache e conserte.",
+            "program": [
+              {
+                "type": "repeat",
+                "times": 3,
+                "body": [
+                  {
+                    "type": "weave",
+                    "symbol": "star"
+                  },
+                  {
+                    "type": "weave",
+                    "symbol": "star"
+                  },
+                  {
+                    "type": "weave",
+                    "symbol": "dot"
+                  }
+                ]
+              }
+            ],
+            "target": [
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot",
+              "star",
+              "star",
+              "dot"
+            ],
+            "editable": "counts",
+            "hint1": "Os blocos estão certos. Conte quantas vezes o padrão aparece.",
+            "hint2": "A repetição deveria ser 4 vezes."
+          },
+          "C": {
+            "prompt": "O tear deveria tecer as 3 fileiras, mas tem um erro escondido. Ache e conserte.",
+            "program": [
+              {
+                "type": "repeat",
+                "times": 3,
+                "body": [
+                  {
+                    "type": "repeat",
+                    "times": 3,
+                    "body": [
+                      {
+                        "type": "weave",
+                        "symbol": "star"
+                      },
+                      {
+                        "type": "weave",
+                        "symbol": "dot"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "weave",
+                    "symbol": "line"
+                  }
+                ]
+              }
+            ],
+            "target": [
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line",
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line",
+              "star",
+              "dot",
+              "star",
+              "dot",
+              "line"
+            ],
+            "editable": "both",
+            "hint1": "Conte quantos ★● existem em cada fileira do padrão.",
+            "hint2": "A repetição de dentro deveria ser 2 vezes."
+          }
+        }
+      }
+    }
+  },
+  "event": {
+    "type": "alarmTrueFalse",
+    "title": "ALARME FALSO?",
+    "secondsPerItem": 15,
+    "items": [
+      {
+        "text": "Alguém está usando um celular para hackear a Máquina Analítica!",
+        "isReal": false,
+        "explanation": "Falso! Em 1843 não existia celular, e a máquina não tem conexão nenhuma."
+      },
+      {
+        "text": "Um tear na sala ao lado começou a tecer sozinho, seguindo cartões!",
+        "isReal": true,
+        "explanation": "Real! É assim que o tear de Jacquard funciona: ele segue os cartões perfurados."
+      },
+      {
+        "text": "A máquina foi ligada na tomada e está superaquecendo!",
+        "isReal": false,
+        "explanation": "Falso! A máquina de Babbage foi projetada para funcionar a vapor, não com eletricidade."
+      }
+    ]
+  },
+  "narratorScript": {
+    "opening": "Boa noite, equipes. O museu fecha à meia-noite... e hoje o alvo é a Máquina Analítica. Bando: vocês querem os cartões. Piratas: vocês protegem o tesouro. Escolham seus lados!",
+    "spokenClues": {
+      "A": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O último furo do cartão está na linha 3."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "O número que molhou é o 3."
+        }
+      ],
+      "B": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O último furo do cartão está na linha 3."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "O número que molhou é o 3."
+        }
+      ],
+      "C": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O último furo do cartão está na linha 1."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "A letra que molhou é a mesma da primeira: A."
+        }
+      ]
+    },
+    "revealLines": [
+      "Sabiam que a repetição que vocês usaram no tear já aparecia nas notas da Ada, em 1843?",
+      "Ela descrevia ciclos de operações: a máquina repetindo passos. É a mesma ideia de um loop na programação de hoje."
+    ],
+    "closing": "Uma mensagem cifrada foi interceptada no museu... e ninguém consegue ler. Semana que vem: a Máquina Enigma."
+  },
+  "reveal": [
+    {
+      "caption": "Em 1843, Ada Lovelace escreveu um algoritmo para uma máquina que nem existia ainda.",
+      "art": "ada-escrevendo"
+    },
+    {
+      "caption": "Nas notas, ela já falava em repetir ciclos de operações: o avô do loop!",
+      "art": "tear-ciclos"
+    },
+    {
+      "speech": {
+        "who": "narradora",
+        "text": "Hoje vocês programaram como a primeira programadora da história."
+      },
+      "art": "narradora"
+    }
+  ],
+  "nextHook": "Uma mensagem cifrada foi interceptada... Semana que vem: a Máquina Enigma. 🔐"
+}

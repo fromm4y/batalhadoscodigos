@@ -19,6 +19,7 @@
   --color-brass: #d4a537;
   --color-spotlight: #fff4c2;
   --color-success: #2bb673;
+  --color-alert: #ff8c00; /* avisos e "ERROU!" */
   --color-mist: #9aa3b8; /* texto secundário sobre o escuro (AA sobre noite/grafite) */
 
   --shadow-comic: 6px 6px 0 0 #000;

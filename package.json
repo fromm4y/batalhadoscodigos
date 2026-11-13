@@ -15,8 +15,8 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "seed": "tsx scripts/seed.ts",
-    "test:rules": "firebase emulators:exec --only firestore --project demo-cacada \"vitest run --config vitest.rules.config.ts\"",
-    "dev:emu": "firebase emulators:exec --only auth,firestore --project demo-cacada \"tsx scripts/seed-emulator.ts && vite --mode emulator\""
+    "dev:emu": "firebase emulators:exec --only auth,firestore --project demo-cacada \"tsx scripts/seed-emulator.ts && vite --mode emulator\"",
+    "test:emu": "firebase emulators:exec --only auth,firestore --project demo-cacada \"vitest run --config vitest.emulator.config.ts\""
   },
   "dependencies": {
     "firebase": "^13.2.0",
