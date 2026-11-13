@@ -38,7 +38,8 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 | `capa-entrada`, `lado-bando`, `lado-piratas`, `cofre-fechado`, `cofre-aberto`, `alarme-museu`, `cela-prisao`                                                                     | ✅ no jogo (cofre, alarme e cela aparecem nas Etapas 5–6) |
 | `interferencia`                                                                                                                                                                  | ✅ no jogo                                                |
 | `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`                                                                                                             | ✅ no jogo (margem branca cortada)                        |
-| `disfarce`, `planoB`, `ancora`, `escudo`, `bussola`, `carta-ep1`, `proximo-ep2`                                                                                                  | ⏳ a gerar (o jogo usa ícones enquanto isso)              |
+| `disfarce`, `planoB`, `ancora`, `escudo`, `bussola` (habilidades), `carta-ep1` (Álbum, fim do episódio), `proximo-ep2` (gancho)                                                  | ✅ no jogo                                                |
+| `telhado-museu` (extra: telhado do museu à noite)                                                                                                                                | ✅ fundo do projetor                                      |
 
 > **Dica para personagens:** em vez de pedir "fundo transparente" (o gerador costuma **desenhar** um xadrez falso), peça **fundo liso de uma cor só**, por exemplo _"plain solid flat dark navy background (#0B0D14), no pattern"_. Fica fácil de recortar e, como o jogo é escuro, às vezes nem precisa recortar.
 > **Formato:** `.webp` também serve para personagens (fica ~7× mais leve que PNG).

@@ -11,6 +11,7 @@ import {
 } from '@/components/comic';
 import { Dossier, RouteMap, Spotlights, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
+import { RankingPodium } from '@/components/game/RankingPodium';
 import { VersusScreen } from '@/components/game/VersusScreen';
 import type { GameMode, MatchDoc, PlayerDoc, Side, TeamDoc } from '@/types/domain';
 
@@ -23,9 +24,19 @@ type Props = {
   rival: TeamDoc | null;
   /** chegou depois da formação: escolhe o lado e entra contra a máquina */
   late?: boolean;
+  /** duplas da turma para o ranking (RN-25) */
+  classTeams?: (TeamDoc & { id: string })[];
+  teamId?: string;
   onChooseSide: (s: Side) => Promise<void>;
   onChooseMode: (m: GameMode) => Promise<void>;
 };
+
+const STEP_LABEL = {
+  comic: 'Abertura',
+  dossier: 'Dossiê',
+  ranking: 'Ranking',
+  side: 'Seu lado',
+} as const;
 
 const SIDE_INFO = {
   red: { title: 'BANDO', icon: '🎭', motto: 'Entrar. Pegar. Sumir.' },
@@ -43,10 +54,12 @@ export function PlanningScreen({
   match,
   rival,
   late,
+  classTeams = [],
+  teamId,
   onChooseSide,
   onChooseMode,
 }: Props) {
-  const [step, setStep] = useState<'comic' | 'dossier' | 'side'>(
+  const [step, setStep] = useState<'comic' | 'dossier' | 'ranking' | 'side'>(
     player.side || late ? 'side' : 'comic',
   );
   const [busy, setBusy] = useState(false);
@@ -64,7 +77,7 @@ export function PlanningScreen({
             Episódio {episode.number} · {episode.title}
           </p>
           <nav aria-label="Planejamento" className="flex gap-2">
-            {(['comic', 'dossier', 'side'] as const).map((s, i) => (
+            {(['comic', 'dossier', 'ranking', 'side'] as const).map((s, i) => (
               <button
                 key={s}
                 type="button"
@@ -75,7 +88,7 @@ export function PlanningScreen({
                   step === s ? 'bg-brass text-ink' : 'bg-graphite-light text-paper',
                 )}
               >
-                {i + 1}. {s === 'comic' ? 'Abertura' : s === 'dossier' ? 'Dossiê' : 'Seu lado'}
+                {i + 1}. {STEP_LABEL[s]}
               </button>
             ))}
           </nav>
@@ -151,10 +164,33 @@ export function PlanningScreen({
                 <SpeechBubble who="narradora" tail="left">
                   Leiam com atenção: as respostas dos primeiros desafios estão aqui! 👀
                 </SpeechBubble>
-                <ComicButton variant="red" size="lg" icon="⚡" onClick={() => setStep('side')}>
-                  Escolher meu lado
+                <ComicButton variant="brass" icon="▶" onClick={() => setStep('ranking')}>
+                  Ver o ranking
                 </ComicButton>
               </div>
+            </motion.section>
+          )}
+
+          {step === 'ranking' && (
+            <motion.section
+              key="ranking"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center gap-4"
+            >
+              <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
+                QUEM ESTÁ NA FRENTE?
+              </h1>
+              <RankingPodium
+                teams={classTeams}
+                highlightId={teamId}
+                maxRest={4}
+                className="w-full max-w-3xl"
+              />
+              <ComicButton variant="red" size="lg" icon="⚡" onClick={() => setStep('side')}>
+                Escolher meu lado
+              </ComicButton>
             </motion.section>
           )}
 

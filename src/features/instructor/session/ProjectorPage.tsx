@@ -1,35 +1,54 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FreezeOverlay } from '@/features/game/FreezeOverlay';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
-import { GameLogo, HalftoneBackground } from '@/components/comic';
+import { artUrl, GameLogo, HalftoneBackground } from '@/components/comic';
 import { Dust, Lasers, Spotlights, Typewriter } from '@/components/scene';
+import { loadEpisode } from '@/content/episodes';
 import { SEASON } from '@/content/season';
+import type { Episode } from '@/content/types';
 import { useNow } from '@/lib/useNow';
-import { useClassTeams, useSession, useSessionPlayers } from '../data';
+import { useClassTeams, useSession, useSessionMatches, useSessionPlayers } from '../data';
+import { ProjectorEnd, ProjectorMatches, ProjectorPlanning } from './ProjectorPhases';
 
 /**
  * `/projetor/:sessionId` — tela do projetor (SPEC 9.4), letras grandes para o fundo da sala.
- * Etapa 2: lobby (código gigante + duplas que já entraram). As demais fases chegam na Etapa 6.
+ * lobby: código gigante · planning: pódio + lados · locks/vault: confrontos ao vivo · end: ranking e gancho.
  */
 export function ProjectorPage() {
   const { sessionId = '' } = useParams();
   const session = useSession(sessionId);
   const teams = useClassTeams(session.data?.classId ?? null);
   const players = useSessionPlayers(sessionId);
-  const now = useNow(10_000);
+  const matches = useSessionMatches(sessionId);
+  const now = useNow(1000);
   const s = session.data;
+  const [episode, setEpisode] = useState<Episode | null>(null);
+  const episodeId = s?.episodeId ?? null;
+  useEffect(() => {
+    if (episodeId) void loadEpisode(episodeId).then(setEpisode);
+  }, [episodeId]);
 
   if (session.loading) return <HalftoneBackground>{null}</HalftoneBackground>;
   const finished = !s || s.status === 'finished' || s.expiresAt.toMillis() <= now;
-  const episode = s ? SEASON.find((e) => e.id === s.episodeId) : undefined;
+  const seasonEp = s ? SEASON.find((e) => e.id === s.episodeId) : undefined;
+  const roof = artUrl('telhado-museu');
   const teamById = new Map(teams.data.map((t) => [t.id, t]));
   const joined = players.data.map((p) => teamById.get(p.teamId)).filter((t) => !!t);
   const host = window.location.host;
 
   return (
     <HalftoneBackground>
+      {roof && (
+        <img
+          src={roof}
+          alt=""
+          aria-hidden
+          className="pointer-events-none fixed inset-0 h-full w-full object-cover opacity-25"
+        />
+      )}
       <Spotlights />
       <Lasers lasers={[{ top: '93%', angle: -1 }]} />
       <Dust />
@@ -42,17 +61,22 @@ export function ProjectorPage() {
               className="text-4xl text-paper text-glow-spot"
             />
           </>
-        ) : s.phase !== 'lobby' ? (
-          <>
-            <GameLogo size="md" />
-            <p className="font-type text-3xl text-mist">
-              A tela desta fase chega na Etapa 6 da construção.
-            </p>
-          </>
+        ) : s.phase === 'planning' ? (
+          <ProjectorPlanning teams={teams.data} players={players.data} />
+        ) : s.phase === 'locks' || s.phase === 'vault' ? (
+          <ProjectorMatches
+            session={s}
+            teams={teams.data}
+            players={players.data}
+            matches={matches.data}
+            now={now}
+          />
+        ) : s.phase === 'end' ? (
+          <ProjectorEnd teams={teams.data} episode={episode} />
         ) : (
           <>
             <p className="font-type text-3xl text-mist">
-              {episode ? `Episódio ${episode.number}: ${episode.title}` : ''}
+              {seasonEp ? `Episódio ${seasonEp.number}: ${seasonEp.title}` : ''}
             </p>
             <div className="flex items-center gap-16">
               <div>
