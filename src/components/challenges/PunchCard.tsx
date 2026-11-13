@@ -1,9 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion';
 
 const COL_W = 64;
-const ROW_H = 30;
+const ROW_H = 24;
 const PAD_X = 48;
-const PAD_TOP = 34;
+const PAD_TOP = 30;
 const PAD_BOTTOM = 18;
 
 type PunchCardProps = {
@@ -43,7 +43,7 @@ export function PunchCard({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className="h-auto w-full max-w-[34rem]"
+      className="h-auto w-full max-w-[30rem]"
       role="group"
       aria-label={label}
     >
