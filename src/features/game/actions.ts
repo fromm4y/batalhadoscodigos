@@ -101,7 +101,7 @@ async function readBoth(tx: Transaction, db: Firestore, c: GameCtx) {
 
 /** Resposta errada: −2 (7.6). */
 export async function registerWrongAnswer(c: GameCtx): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     writePoints(tx, db, c, team, player, [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }]);
@@ -115,7 +115,7 @@ export async function buyHint(
   tier: 1 | 2,
   free = false,
 ): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const used = player.hints?.[challengeKey] ?? 0;
@@ -145,7 +145,7 @@ export async function openLock(
   c: GameCtx,
   index: 0 | 1 | 2,
 ): Promise<{ first: boolean; ability: AbilityId | null; blocked: boolean }> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const firstRef = doc(db, 'sessions', c.sessionId, 'firsts', `lock${index + 1}`);
   return runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
@@ -206,7 +206,7 @@ export async function openLock(
  * a dupla vencedora ganha +5 na mesma transação.
  */
 export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   return runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
@@ -245,7 +245,7 @@ export async function activateAbility(
   id: AbilityId,
   challengeKey: string | null,
 ): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
     const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
@@ -287,14 +287,14 @@ export async function activateAbility(
 
 /** Escolha do modo (RN-11): contra pessoas ou contra a máquina. */
 export async function chooseMode(c: GameCtx, mode: GameMode): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { mode });
+  await updateDoc(refs(getFirebase('student').db, c).player, { mode });
 }
 
 /**
  * Dupla que chegou depois da formação (RN-07): cria o próprio confronto contra a máquina.
  */
 export async function joinLateAgainstMachine(c: GameCtx, side: Side): Promise<void> {
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const id = machineMatchId(c.teamId);
   await runTransaction(db, async (tx) => {
     const p = await tx.get(refs(db, c).player);
@@ -331,10 +331,12 @@ export function newMatchDoc(
 
 /** Escolha de lado na fase de planejamento (RN-11). */
 export async function chooseSide(c: GameCtx, side: Side): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { side });
+  await updateDoc(refs(getFirebase('student').db, c).player, { side });
 }
 
 /** A dupla ouviu a transmissão da Narradora (RN-45): libera o passo que dependia dela. */
 export async function markHeardTransmission(c: GameCtx): Promise<void> {
-  await updateDoc(refs(getFirebase().db, c).player, { 'progress.heardTransmission': true });
+  await updateDoc(refs(getFirebase('student').db, c).player, {
+    'progress.heardTransmission': true,
+  });
 }

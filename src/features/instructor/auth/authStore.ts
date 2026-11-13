@@ -28,6 +28,23 @@ type AuthStore = {
 
 let started = false;
 
+async function upsertProfile(db: ReturnType<typeof getFirebase>['db'], profile: InstructorProfile) {
+  try {
+    const ref = doc(db, 'instructors', profile.uid);
+    const existing = await getDoc(ref);
+    if (!existing.exists()) {
+      await setDoc(ref, { ...profile, createdAt: serverTimestamp() });
+    } else {
+      const cur = existing.data() as InstructorProfile;
+      if (cur.role !== profile.role || cur.displayName !== profile.displayName) {
+        await updateDoc(ref, { role: profile.role, displayName: profile.displayName });
+      }
+    }
+  } catch (err) {
+    console.warn('[auth] perfil', err);
+  }
+}
+
 /**
  * Login das instrutoras (SPEC 5.3): Google → confere a allowlist → cria/atualiza `instructors/{uid}`.
  * Fora da allowlist: mostra "Peça acesso à administradora" e faz logout.
@@ -37,7 +54,18 @@ export const useAuthStore = create<AuthStore>((set) => {
     const { auth, db } = getFirebase();
     const email = normalizeEmail(user.email ?? '');
     try {
-      const allowed = await getDoc(doc(db, 'allowedInstructors', email));
+      // Tenta algumas vezes: uma falha rápida de internet não pode deslogar a Narradora.
+      let allowed;
+      for (let attempt = 1; ; attempt++) {
+        try {
+          allowed = await getDoc(doc(db, 'allowedInstructors', email));
+          break;
+        } catch (err) {
+          console.warn('[auth] tentativa', attempt, err);
+          if (attempt >= 4) throw err;
+          await new Promise((r) => setTimeout(r, attempt * 1500));
+        }
+      }
       const data = allowed.data() as AllowedInstructorDoc | undefined;
       if (!data || !data.active) {
         await fbSignOut(auth);
@@ -50,16 +78,8 @@ export const useAuthStore = create<AuthStore>((set) => {
         displayName: user.displayName ?? email,
         role: data.role,
       };
-      const ref = doc(db, 'instructors', user.uid);
-      const existing = await getDoc(ref);
-      if (!existing.exists()) {
-        await setDoc(ref, { ...profile, createdAt: serverTimestamp() });
-      } else {
-        const cur = existing.data() as InstructorProfile;
-        if (cur.role !== profile.role || cur.displayName !== profile.displayName) {
-          await updateDoc(ref, { role: profile.role, displayName: profile.displayName });
-        }
-      }
+      // O perfil (instructors/{uid}) é atualizado em segundo plano: não segura a entrada.
+      void upsertProfile(db, profile);
       set({ state: { status: 'ready', profile } });
     } catch (err) {
       console.error('[auth]', err);

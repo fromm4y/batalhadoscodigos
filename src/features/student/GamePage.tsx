@@ -44,7 +44,7 @@ function Game({ claims }: { claims: TeamClaims }) {
 
   // Sessão em tempo real (fase, encerramento).
   useEffect(() => {
-    const { db } = getFirebase();
+    const { db } = getFirebase('student');
     return onSnapshot(
       doc(db, 'sessions', claims.sessionId),
       (snap) => setSession(snap.exists() ? (snap.data() as SessionDoc) : 'missing'),
@@ -68,7 +68,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   // Dados da dupla (só enquanto a sessão está aberta: as regras exigem).
   useEffect(() => {
     if (!open) return;
-    const { db } = getFirebase();
+    const { db } = getFirebase('student');
     return onSnapshot(
       doc(db, 'classes', claims.classId, 'teams', claims.teamId),
       (snap) => setTeam(snap.exists() ? (snap.data() as TeamDoc) : null),
@@ -82,7 +82,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   useEffect(() => {
     if (!open) return;
     return onSnapshot(
-      doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId),
+      doc(getFirebase('student').db, 'sessions', claims.sessionId, 'players', claims.teamId),
       (snap) => {
         const data = snap.exists() ? (snap.data() as PlayerDoc) : null;
         setPlayer(data);
@@ -99,7 +99,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   // Nível da turma define a variante dos desafios e o tamanho mínimo da letra (18 px no nível A).
   useEffect(() => {
     if (!open) return;
-    return onSnapshot(doc(getFirebase().db, 'classes', claims.classId), (snap) => {
+    return onSnapshot(doc(getFirebase('student').db, 'classes', claims.classId), (snap) => {
       const lv = (snap.data() as ClassDoc | undefined)?.level ?? null;
       setLevel(lv);
       if (lv) document.documentElement.dataset.level = lv;
@@ -112,7 +112,7 @@ function Game({ claims }: { claims: TeamClaims }) {
   useEffect(() => {
     if (!open || !matchId) return;
     return onSnapshot(
-      doc(getFirebase().db, 'sessions', claims.sessionId, 'matches', matchId),
+      doc(getFirebase('student').db, 'sessions', claims.sessionId, 'matches', matchId),
       (snap) => setMatch(snap.exists() ? (snap.data() as MatchDoc) : null),
       () => setMatch(null),
     );
@@ -126,8 +126,9 @@ function Game({ claims }: { claims: TeamClaims }) {
   const [rival, setRival] = useState<TeamDoc | null>(null);
   useEffect(() => {
     if (!open || !rivalId) return;
-    return onSnapshot(doc(getFirebase().db, 'classes', claims.classId, 'teams', rivalId), (snap) =>
-      setRival(snap.exists() ? (snap.data() as TeamDoc) : null),
+    return onSnapshot(
+      doc(getFirebase('student').db, 'classes', claims.classId, 'teams', rivalId),
+      (snap) => setRival(snap.exists() ? (snap.data() as TeamDoc) : null),
     );
   }, [open, rivalId, claims.classId]);
 
@@ -157,7 +158,13 @@ function Game({ claims }: { claims: TeamClaims }) {
   // Presença: avisa que está conectada (o painel da Narradora mostra quem caiu).
   useEffect(() => {
     if (!open) return;
-    const ref = doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId);
+    const ref = doc(
+      getFirebase('student').db,
+      'sessions',
+      claims.sessionId,
+      'players',
+      claims.teamId,
+    );
     const beat = (connected: boolean) => {
       const sent = Date.now();
       return updateDoc(ref, { connected, lastSeenAt: serverTimestamp() })

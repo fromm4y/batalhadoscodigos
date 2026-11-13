@@ -34,7 +34,7 @@ export async function machineTick(
   phase: Phase,
 ): Promise<void> {
   if (phase !== 'locks' && phase !== 'vault') return;
-  const { db } = getFirebase();
+  const { db } = getFirebase('student');
   const ref = doc(db, 'sessions', sessionId, 'matches', matchId);
   const speed = speedFactor();
   await runTransaction(db, async (tx) => {

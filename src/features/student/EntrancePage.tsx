@@ -68,7 +68,10 @@ export function EntrancePage() {
               <ComicButton variant="red" size="lg" icon="▶" onClick={() => navigate('/jogo')}>
                 Voltar para o jogo
               </ComicButton>
-              <ComicButton variant="graphite" onClick={() => void signOut(getFirebase().auth)}>
+              <ComicButton
+                variant="graphite"
+                onClick={() => void signOut(getFirebase('student').auth)}
+              >
                 Trocar de dupla
               </ComicButton>
             </div>
