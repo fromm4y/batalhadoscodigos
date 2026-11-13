@@ -279,7 +279,7 @@ function ResultChapter({
 function RevealChapter({ episode }: { episode: Episode }) {
   return (
     <div className="grid flex-1 grid-cols-[1fr_auto] items-start gap-6">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <h1 className="font-heist text-4xl tracking-[0.12em] text-paper text-glow-spot">
           O QUE ACONTECEU DE VERDADE
         </h1>
@@ -291,9 +291,9 @@ function RevealChapter({ episode }: { episode: Episode }) {
               tone="graphite"
               caption={p.caption ? undefined : 'Revelação'}
               delay={i * 0.3}
-              className="flex h-80 flex-col"
+              className="flex h-72 flex-col"
             >
-              <div className="h-40 overflow-hidden">
+              <div className="h-36 overflow-hidden">
                 <ComicArt id={p.art} alt={p.caption ?? 'Quadro da revelação'} />
               </div>
               <div className="flex-1 bg-aged p-3 text-ink">
@@ -303,7 +303,7 @@ function RevealChapter({ episode }: { episode: Episode }) {
             </ComicPanel>
           ))}
         </div>
-        <SpeechBubble who="narradora" tail="left" className="max-w-xl">
+        <SpeechBubble who="narradora" tail="left" compact className="max-w-xl">
           Olhos aqui: a Narradora vai contar a história verdadeira dessa invenção!
         </SpeechBubble>
       </div>
