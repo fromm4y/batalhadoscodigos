@@ -58,11 +58,13 @@ function getGraph(): Graph | null {
   return graph;
 }
 
+let ducked = false;
+
 function applyLevels() {
   if (!graph) return;
   const t = graph.ctx.currentTime;
   graph.master.gain.setTargetAtTime(levels.muted ? 0 : 1, t, 0.03);
-  graph.music.gain.setTargetAtTime(levels.music * 0.6, t, 0.05);
+  graph.music.gain.setTargetAtTime(levels.music * 0.6 * (ducked ? 0.25 : 1), t, 0.1);
   graph.sfx.gain.setTargetAtTime(levels.sfx, t, 0.02);
 }
 
@@ -75,6 +77,12 @@ export function unlockAudio() {
 
 export function isAudioUnlocked(): boolean {
   return !!graph && graph.ctx.state === 'running';
+}
+
+/** Abaixa a música enquanto a narração fala. */
+export function duckMusic(on: boolean) {
+  ducked = on;
+  applyLevels();
 }
 
 export function setLevels(next: { music: number; sfx: number; muted: boolean }) {

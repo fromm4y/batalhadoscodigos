@@ -1,7 +1,9 @@
+import type { ResolvedChallenge } from '@/content/types';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { playSfx } from '@/audio/engine';
 import { AudioControls } from '@/components/game/AudioControls';
+import { ListenButton } from '@/components/game/ListenButton';
 import { ChallengeView } from '@/components/challenges/ChallengeView';
 import {
   ComicArt,
@@ -303,7 +305,10 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                         : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
                       {challenge.title}
                     </h2>
-                    <p className="font-type text-sm">{challenge.variant.prompt}</p>
+                    <div className="flex items-center gap-3">
+                      <p className="font-type text-sm">{challenge.variant.prompt}</p>
+                      <ListenButton text={narrationText(challenge)} />
+                    </div>
                   </div>
                   {usedHints > 0 && (
                     <div className="mb-3 flex flex-col gap-1">
@@ -476,4 +481,12 @@ function WaitingPanel({ text, curiosities }: { text: string; curiosities: string
       )}
     </div>
   );
+}
+
+/** O que o "Ouvir" lê: título, enunciado e o texto do enigma (nunca a resposta). */
+function narrationText(c: ResolvedChallenge): string {
+  const parts = [c.title, c.variant.prompt];
+  if (c.type === 'riddle') parts.push(c.variant.text);
+  if (c.type === 'quiz') parts.push(...c.variant.questions.map((q) => q.q));
+  return parts.join('. ');
 }
