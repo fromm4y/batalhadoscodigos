@@ -15,10 +15,11 @@ const byId = new Map<string, string>(
   ]),
 );
 
-export function hasArt(id: string): boolean {
-  return byId.has(id);
+/** Busca a ilustração pelo id; se não houver, tenta a versão `-neutra`/`-neutro` do personagem. */
+export function artUrl(id: string): string | undefined {
+  return byId.get(id) ?? byId.get(`${id}-neutra`) ?? byId.get(`${id}-neutro`);
 }
 
-export function artUrl(id: string): string | undefined {
-  return byId.get(id);
+export function hasArt(id: string): boolean {
+  return artUrl(id) !== undefined;
 }
