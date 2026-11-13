@@ -13,6 +13,7 @@ import type {
   AllowedInstructorDoc,
   ClassDoc,
   InstructorDoc,
+  MatchDoc,
   PlayerDoc,
   SchoolDoc,
   SessionDoc,
@@ -149,5 +150,12 @@ export function useSessionPlayers(sessionId: string | null) {
   return useLiveQuery<PlayerDoc>(
     () => (sessionId ? collection(db(), 'sessions', sessionId, 'players') : null),
     `players-${sessionId}`,
+  );
+}
+
+export function useSessionMatches(sessionId: string | null) {
+  return useLiveQuery<MatchDoc>(
+    () => (sessionId ? collection(db(), 'sessions', sessionId, 'matches') : null),
+    `matches-${sessionId}`,
   );
 }

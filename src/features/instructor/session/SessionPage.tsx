@@ -8,7 +8,8 @@ import { SEASON } from '@/content/season';
 import { getFirebase } from '@/lib/firebase';
 import { useNow } from '@/lib/useNow';
 import { useProfile } from '../auth/authStore';
-import { useClass, useClassTeams, useSession, useSessionPlayers } from '../data';
+import { useClass, useClassTeams, useSession, useSessionMatches, useSessionPlayers } from '../data';
+import { MatchesPanel } from './MatchesPanel';
 import { InstructorLayout } from '../InstructorLayout';
 import { isOnline } from '../presence';
 import { SessionControls } from './SessionControls';
@@ -32,6 +33,7 @@ export function SessionPage() {
   const cls = useClass(session.data?.classId ?? null);
   const teams = useClassTeams(session.data?.classId ?? null);
   const players = useSessionPlayers(sessionId);
+  const matches = useSessionMatches(sessionId);
   const now = useNow(5000);
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -142,55 +144,60 @@ export function SessionPage() {
           )}
         </div>
 
-        <ComicPanel
-          caption={`Duplas na sessão · ${onlineCount} conectadas`}
-          tone="graphite"
-          className="pt-8"
-        >
-          {joined.length === 0 ? (
-            <p className="font-type text-mist">
-              Ninguém entrou ainda. Mostre o código no projetor!
-            </p>
-          ) : (
-            <ul className="grid grid-cols-2 gap-3">
-              {joined.map(({ p, t }) => {
-                const online = isOnline(p.connected, p.lastSeenAt?.toMillis() ?? null, now);
-                return (
-                  <li
-                    key={t.id}
-                    className="flex items-center gap-3 rounded-md border-2 border-graphite-light bg-night/60 p-2"
-                  >
-                    <Avatar avatar={t.avatar} className="h-14 w-12" decorative />
-                    <div className="flex-1">
-                      <p className="font-heist text-xl leading-none tracking-wider">{t.cityName}</p>
-                      <p className="text-sm text-mist">
-                        {p.side === 'red'
-                          ? '🎭 Bando'
-                          : p.side === 'blue'
-                            ? '⚓ Piratas'
-                            : 'sem lado'}
-                        {' · '}
-                        {p.progress.vaultSolvedAt
-                          ? 'Cofre ✔'
-                          : `${p.progress.lockIndex}/3 cadeados`}
-                        {' · '}
-                        {p.episodePoints} pts
-                      </p>
-                    </div>
-                    <span
-                      className={cn(
-                        'border-2 border-ink px-2 pt-0.5 font-heist text-base tracking-wider',
-                        online ? 'bg-success text-ink' : 'bg-graphite-light text-mist',
-                      )}
+        <div className="flex flex-col gap-6">
+          <ComicPanel
+            caption={`Duplas na sessão · ${onlineCount} conectadas`}
+            tone="graphite"
+            className="pt-8"
+          >
+            {joined.length === 0 ? (
+              <p className="font-type text-mist">
+                Ninguém entrou ainda. Mostre o código no projetor!
+              </p>
+            ) : (
+              <ul className="grid grid-cols-2 gap-3">
+                {joined.map(({ p, t }) => {
+                  const online = isOnline(p.connected, p.lastSeenAt?.toMillis() ?? null, now);
+                  return (
+                    <li
+                      key={t.id}
+                      className="flex items-center gap-3 rounded-md border-2 border-graphite-light bg-night/60 p-2"
                     >
-                      {online ? '● on-line' : '○ desconectada'}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </ComicPanel>
+                      <Avatar avatar={t.avatar} className="h-14 w-12" decorative />
+                      <div className="flex-1">
+                        <p className="font-heist text-xl leading-none tracking-wider">
+                          {t.cityName}
+                        </p>
+                        <p className="text-sm text-mist">
+                          {p.side === 'red'
+                            ? '🎭 Bando'
+                            : p.side === 'blue'
+                              ? '⚓ Piratas'
+                              : 'sem lado'}
+                          {' · '}
+                          {p.progress.vaultSolvedAt
+                            ? 'Cofre ✔'
+                            : `${p.progress.lockIndex}/3 cadeados`}
+                          {' · '}
+                          {p.episodePoints} pts
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          'border-2 border-ink px-2 pt-0.5 font-heist text-base tracking-wider',
+                          online ? 'bg-success text-ink' : 'bg-graphite-light text-mist',
+                        )}
+                      >
+                        {online ? '● on-line' : '○ desconectada'}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </ComicPanel>
+          <MatchesPanel matches={matches.data} teams={teams.data} />
+        </div>
       </div>
 
       <AnimatePresence>

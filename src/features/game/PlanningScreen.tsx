@@ -10,13 +10,20 @@ import {
 } from '@/components/comic';
 import { Dossier, RouteMap, Spotlights, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
-import type { PlayerDoc, Side, TeamDoc } from '@/types/domain';
+import { VersusScreen } from '@/components/game/VersusScreen';
+import type { GameMode, MatchDoc, PlayerDoc, Side, TeamDoc } from '@/types/domain';
 
 type Props = {
   episode: Episode;
   team: TeamDoc;
   player: PlayerDoc;
+  /** confronto já formado → mostra o VERSUS */
+  match: MatchDoc | null;
+  rival: TeamDoc | null;
+  /** chegou depois da formação: escolhe o lado e entra contra a máquina */
+  late?: boolean;
   onChooseSide: (s: Side) => Promise<void>;
+  onChooseMode: (m: GameMode) => Promise<void>;
 };
 
 const SIDE_INFO = {
@@ -26,11 +33,26 @@ const SIDE_INFO = {
 
 /**
  * Fase `planning` (SPEC 7.3 e VISUAL 8.1–8.5): abertura em HQ do episódio, dossiê da invenção
- * e escolha do lado. O modo (pessoas/máquina) e o VERSUS chegam na Etapa 4.
+ * escolha do lado e do modo (RN-11). Depois de "Formar confrontos", mostra o VERSUS.
  */
-export function PlanningScreen({ episode, team, player, onChooseSide }: Props) {
-  const [step, setStep] = useState<'comic' | 'dossier' | 'side'>(player.side ? 'side' : 'comic');
+export function PlanningScreen({
+  episode,
+  team,
+  player,
+  match,
+  rival,
+  late,
+  onChooseSide,
+  onChooseMode,
+}: Props) {
+  const [step, setStep] = useState<'comic' | 'dossier' | 'side'>(
+    player.side || late ? 'side' : 'comic',
+  );
   const [busy, setBusy] = useState(false);
+
+  if (match && player.side) {
+    return <VersusScreen me={team} side={player.side} rival={match.machineSide ? null : rival} />;
+  }
 
   return (
     <HalftoneBackground>
@@ -194,18 +216,39 @@ export function PlanningScreen({ episode, team, player, onChooseSide }: Props) {
                   );
                 })}
               </div>
-              {player.side && (
+              {late && (
+                <p className="text-center font-type text-lg text-brass">
+                  Vocês chegaram com o jogo andando: escolham o lado e enfrentem o Robô! 🤖
+                </p>
+              )}
+              {player.side && !late && (
                 <div className="grid grid-cols-[1fr_1fr] items-center gap-6">
                   <RouteMap theme={player.side === 'red' ? 'bando' : 'piratas'} opened={0} />
                   <div className="flex flex-col gap-3">
+                    <p className="font-heist text-3xl tracking-wider text-paper">CONTRA QUEM?</p>
+                    <div className="flex gap-3" role="group" aria-label="Modo de jogo">
+                      {(
+                        [
+                          ['pessoas', '👥 Contra pessoas'],
+                          ['maquina', '🤖 Contra a máquina'],
+                        ] as const
+                      ).map(([m, label]) => (
+                        <ComicButton
+                          key={m}
+                          variant={(player.mode ?? 'pessoas') === m ? 'brass' : 'graphite'}
+                          aria-pressed={(player.mode ?? 'pessoas') === m}
+                          onClick={() => void onChooseMode(m)}
+                        >
+                          {label}
+                        </ComicButton>
+                      ))}
+                    </div>
                     <Typewriter
-                      text="Lado escolhido! Aguardando a Narradora liberar os cadeados..."
+                      text="Aguardando a Narradora formar os confrontos..."
                       speed={40}
                       className="text-xl text-brass text-glow-brass"
                     />
-                    <p className="font-type text-mist">
-                      Dá para trocar de lado até a Narradora começar.
-                    </p>
+                    <p className="font-type text-mist">Dá para trocar de lado e de modo até lá.</p>
                   </div>
                 </div>
               )}

@@ -8,14 +8,21 @@ import { loadEpisode } from '@/content/episodes';
 import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
-import { chooseSide, markHeardTransmission, type GameCtx } from '@/features/game/actions';
+import {
+  chooseMode,
+  chooseSide,
+  joinLateAgainstMachine,
+  markHeardTransmission,
+  type GameCtx,
+} from '@/features/game/actions';
 import { EndScreen } from '@/features/game/EndScreen';
 import { PlanningScreen } from '@/features/game/PlanningScreen';
 import { PlayScreen } from '@/features/game/PlayScreen';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { getFirebase } from '@/lib/firebase';
 import { calibrate } from '@/lib/serverClock';
-import type { ClassDoc, Level, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import type { ClassDoc, Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import { machineTick } from '@/features/game/machine';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
 import { useTeamAuth, type TeamClaims } from './useTeamAuth';
@@ -99,6 +106,49 @@ function Game({ claims }: { claims: TeamClaims }) {
     });
   }, [open, claims.classId]);
 
+  // Confronto (cabo de guerra) e dupla rival, em tempo real.
+  const matchId = player?.matchId ?? null;
+  const [match, setMatch] = useState<MatchDoc | null>(null);
+  useEffect(() => {
+    if (!open || !matchId) return;
+    return onSnapshot(
+      doc(getFirebase().db, 'sessions', claims.sessionId, 'matches', matchId),
+      (snap) => setMatch(snap.exists() ? (snap.data() as MatchDoc) : null),
+      () => setMatch(null),
+    );
+  }, [open, matchId, claims.sessionId]);
+  const rivalId =
+    match && matchId && player?.side
+      ? player.side === 'red'
+        ? match.blueTeamId
+        : match.redTeamId
+      : null;
+  const [rival, setRival] = useState<TeamDoc | null>(null);
+  useEffect(() => {
+    if (!open || !rivalId) return;
+    return onSnapshot(doc(getFirebase().db, 'classes', claims.classId, 'teams', rivalId), (snap) =>
+      setRival(snap.exists() ? (snap.data() as TeamDoc) : null),
+    );
+  }, [open, rivalId, claims.classId]);
+
+  // O Robô roda aqui, no navegador da dupla que joga contra ele (SPEC 5.2).
+  const phase = session && session !== 'missing' ? session.phase : null;
+  const runMachine = !!(
+    matchId &&
+    match?.machineSide &&
+    !match.winner &&
+    level &&
+    (phase === 'locks' || phase === 'vault')
+  );
+  useEffect(() => {
+    if (!runMachine || !matchId || !level || !phase) return;
+    const tick = () =>
+      void machineTick(claims.sessionId, matchId, level, phase).catch(() => undefined);
+    tick();
+    const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  }, [runMachine, matchId, level, phase, claims.sessionId]);
+
   const episodeId = session && session !== 'missing' ? session.episodeId : null;
   useEffect(() => {
     if (episodeId) void loadEpisode(episodeId).then(setEpisode);
@@ -171,19 +221,28 @@ function Game({ claims }: { claims: TeamClaims }) {
         episode={episode}
         team={team}
         player={player}
+        match={matchId ? match : null}
+        rival={rivalId ? rival : null}
         onChooseSide={(s) => chooseSide(ctx, s)}
+        onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
   } else if (session.phase === 'end') {
-    screen = <EndScreen episode={episode} team={team} player={player} />;
-  } else if (!player.side) {
-    // Chegou atrasada (RN-07): escolhe o lado e entra direto nos desafios.
+    screen = (
+      <EndScreen episode={episode} team={team} player={player} match={matchId ? match : null} />
+    );
+  } else if (!player.side || (session.matchesFormed && !player.matchId)) {
+    // Chegou atrasada (RN-07): escolhe o lado e entra direto contra a máquina.
     screen = (
       <PlanningScreen
         episode={episode}
         team={team}
         player={player}
-        onChooseSide={(s) => chooseSide(ctx, s)}
+        match={null}
+        rival={null}
+        late
+        onChooseSide={(s) => joinLateAgainstMachine(ctx, s)}
+        onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
   } else {
@@ -195,6 +254,8 @@ function Game({ claims }: { claims: TeamClaims }) {
         session={session}
         team={team}
         player={player}
+        match={matchId ? match : null}
+        rival={rivalId ? rival : null}
       />
     );
   }

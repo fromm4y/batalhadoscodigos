@@ -240,7 +240,7 @@ export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
  * Usa uma habilidade (uma vez por episódio, RN-39). Efeitos de atrapalhar/proteger vão para o
  * confronto; contra a máquina, a Interferência atrasa o robô (RN-40). Plano B/Bússola: Dica 1 grátis.
  */
-export async function useAbility(
+export async function activateAbility(
   c: GameCtx,
   id: AbilityId,
   challengeKey: string | null,

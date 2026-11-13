@@ -7,7 +7,7 @@ import {
 } from '@/components/comic';
 import { Spotlights, Stamp, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
-import type { PlayerDoc, TeamDoc } from '@/types/domain';
+import type { MatchDoc, PlayerDoc, TeamDoc } from '@/types/domain';
 
 /**
  * Fase `end` (versão da Etapa 3): pontos do episódio, revelação histórica e gancho.
@@ -17,12 +17,34 @@ export function EndScreen({
   episode,
   team,
   player,
+  match,
 }: {
   episode: Episode;
   team: TeamDoc;
   player: PlayerDoc;
+  match: MatchDoc | null;
 }) {
   const red = player.side !== 'blue';
+  // RN-53: resultado do confronto em quadro gigante.
+  const result = !match?.winner
+    ? null
+    : match.winner === 'draw'
+      ? {
+          title: 'EMPATE!',
+          kind: 'brass' as const,
+          text: 'Ninguém cedeu um centímetro. +2 para cada lado!',
+        }
+      : match.winner === player.side
+        ? {
+            title: 'VITÓRIA!',
+            kind: 'success' as const,
+            text: red ? 'A vitrine é de vocês!' : 'O tesouro está a salvo!',
+          }
+        : {
+            title: 'QUASE!',
+            kind: 'alert' as const,
+            text: 'Foi por pouco. Semana que vem tem revanche!',
+          };
   return (
     <HalftoneBackground>
       <Spotlights intensity={0.14} />
@@ -30,9 +52,20 @@ export function EndScreen({
         <div className="flex items-center justify-between gap-6">
           <div>
             <p className="font-type text-mist">Fim do episódio {episode.number}</p>
-            <h1 className="font-heist text-6xl tracking-[0.1em] text-paper text-glow-spot">
-              MISSÃO ENCERRADA
-            </h1>
+            {result ? (
+              <>
+                <h1
+                  className={`font-comic text-8xl leading-none tracking-wide text-outline-thick ${result.kind === 'success' ? 'text-success' : result.kind === 'brass' ? 'text-brass' : 'text-alert'}`}
+                >
+                  {result.title}
+                </h1>
+                <p className="font-type text-xl text-paper">{result.text}</p>
+              </>
+            ) : (
+              <h1 className="font-heist text-6xl tracking-[0.1em] text-paper text-glow-spot">
+                MISSÃO ENCERRADA
+              </h1>
+            )}
             <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
               {red ? '🪙' : '💰'} {player.episodePoints >= 0 ? '+' : ''}
               {player.episodePoints} pontos hoje · total {team.totalPoints}
@@ -42,7 +75,9 @@ export function EndScreen({
               {player.progress.vaultSolvedAt ? 'aberto ✔' : 'fechado'}
             </p>
           </div>
-          {player.progress.vaultSolvedAt && <Onomatopoeia kind="boom" size={190} />}
+          {(match?.winner === player.side || (!match && player.progress.vaultSolvedAt)) && (
+            <Onomatopoeia kind="boom" size={190} />
+          )}
         </div>
         <div className="grid grid-cols-3 gap-5">
           {episode.reveal.map((p, i) => (

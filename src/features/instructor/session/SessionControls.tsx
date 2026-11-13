@@ -9,7 +9,9 @@ import { currentStage, needsTransmission, spokenClueFor } from '@/engine/progres
 import { getFirebase } from '@/lib/firebase';
 import { useNow } from '@/lib/useNow';
 import type { Level, Phase, PlayerDoc, SessionDoc } from '@/types/domain';
+import { useProfile } from '../auth/authStore';
 import type { WithId } from '../data';
+import { formSessionMatches, markVaultLeaders, resolveOpenMatches } from './matchOps';
 
 const ORDER: Phase[] = ['lobby', 'planning', 'locks', 'vault', 'end'];
 const LABEL: Record<Phase, string> = {
@@ -32,6 +34,9 @@ type Props = {
  * e transmissão da Narradora (RN-45). O painel completo chega na Etapa 5.
  */
 export function SessionControls({ sessionId, session, level, players }: Props) {
+  const profile = useProfile()!;
+  const opsCtx = { sessionId, session, uid: profile.uid };
+  const [info, setInfo] = useState<string | null>(null);
   const [episode, setEpisode] = useState<Episode | null>(null);
   const [confirm, setConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -108,6 +113,9 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
                 icon="✔"
                 onClick={() =>
                   void run(async () => {
+                    // RN-18: vantagem do Cofre antes de liberar; RN-20: resultado antes do fim.
+                    if (next === 'vault') await markVaultLeaders(opsCtx);
+                    if (next === 'end') await resolveOpenMatches(opsCtx);
                     await updateDoc(ref, { phase: next, phaseStartedAt: serverTimestamp() });
                     setConfirm(false);
                   })
@@ -124,6 +132,35 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
               Liberar próxima fase: {LABEL[next]}
             </ComicButton>
           ))}
+        {(session.phase === 'planning' || session.phase === 'locks') && (
+          <div className="mt-4 border-t-2 border-dashed border-graphite-light pt-3">
+            <p className="mb-2 font-type text-sm text-mist">
+              {players.filter((p) => p.side).length}/{players.length} duplas escolheram lado ·{' '}
+              {players.filter((p) => p.matchId).length} já em confronto
+            </p>
+            <ComicButton
+              variant={session.matchesFormed ? 'graphite' : 'red'}
+              icon="⚔️"
+              onClick={() =>
+                void run(async () => {
+                  const r = await formSessionMatches(opsCtx);
+                  setInfo(
+                    r.matches
+                      ? `${r.matches} confronto(s) formado(s)${r.bonus ? `, ${r.bonus} dupla(s) com bônus de lado vazio` : ''}.`
+                      : 'Todas as duplas já estão em confronto.',
+                  );
+                })
+              }
+            >
+              {session.matchesFormed ? 'Formar confrontos (novas duplas)' : 'Formar confrontos'}
+            </ComicButton>
+            {info && (
+              <p role="status" className="mt-2 font-bold text-success">
+                {info}
+              </p>
+            )}
+          </div>
+        )}
       </ComicPanel>
 
       <ComicPanel
