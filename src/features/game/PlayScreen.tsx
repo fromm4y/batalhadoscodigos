@@ -10,15 +10,27 @@ import {
   hasArt,
   type OnomatopoeiaKind,
 } from '@/components/comic';
-import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
+import { AbilityCards } from '@/components/game/AbilityCards';
+import { InterferenceOverlay } from '@/components/game/InterferenceOverlay';
+import { TugBar } from '@/components/game/TugBar';
+import { BrassFrame, Dust, RobotFigure, RouteMap, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
 import { resolveChallenge, type Slot } from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
+import { ABILITY_INFO, hasEffect, other } from '@/engine/match';
 import { nextHint } from '@/engine/scoring';
+import { clockOffset } from '@/lib/serverClock';
 import { useNow } from '@/lib/useNow';
-import type { Level, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
-import { buyHint, openLock, registerWrongAnswer, solveVault, type GameCtx } from './actions';
+import type { Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import {
+  buyHint,
+  openLock,
+  registerWrongAnswer,
+  solveVault,
+  activateAbility,
+  type GameCtx,
+} from './actions';
 
 type Props = {
   ctx: GameCtx;
@@ -27,12 +39,14 @@ type Props = {
   session: SessionDoc;
   team: TeamDoc;
   player: PlayerDoc;
+  match: MatchDoc | null;
+  rival: TeamDoc | null;
 };
 
 const PHASE_TITLE = { locks: 'OS CADEADOS', vault: 'O COFRE' } as const;
 
 /** Fases `locks` e `vault`: layout fixo do jogo (SPEC 9.2, item 6; VISUAL 8.6). */
-export function PlayScreen({ ctx, episode, level, session, team, player }: Props) {
+export function PlayScreen({ ctx, episode, level, session, team, player, match, rival }: Props) {
   const side = player.side ?? 'red';
   const red = side === 'red';
   const stage = currentStage(session.phase, player.progress);
@@ -40,10 +54,25 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
   const challenge = slot !== null ? resolveChallenge(episode, side, level, slot) : null;
   const usedHints = (challenge && player.hints?.[challenge.key]) || 0;
   const now = useNow(1000);
+  const sNow = now + clockOffset();
+  const effects = match?.effects ?? [];
+  const frozenUntil = effects.find(
+    (e) => e.kind === 'freeze' && e.target === side && e.until > sNow,
+  );
+  const frozen = frozenUntil?.kind === 'freeze' ? Math.ceil((frozenUntil.until - sNow) / 1000) : 0;
+  const disguised = hasEffect(effects, 'disguise', side, sNow);
+  const anchored = hasEffect(effects, 'anchor', side, sNow);
+  const shielded = hasEffect(effects, 'shield', side, sNow);
+  const rivalSide = other(side);
+  const rivalWon = match?.winner === rivalSide;
+  const vaultAdvantage = session.phase === 'vault' && match?.vaultLeader === side;
+  const lastLog = match?.log.at(-1) ?? null;
 
   const [cooldown, setCooldown] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [pop, setPop] = useState<{ kind: OnomatopoeiaKind; key: number } | null>(null);
+  const [pop, setPop] = useState<{ kind: OnomatopoeiaKind; key: number; text?: string } | null>(
+    null,
+  );
   const [clue, setClue] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const shake = useAnimationControls();
@@ -89,8 +118,18 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
         await solveVault(ctx);
         setPop({ kind: 'boom', key: Date.now() });
       } else {
-        await openLock(ctx, slot);
-        setPop({ kind: 'click', key: Date.now() });
+        const r = await openLock(ctx, slot);
+        setPop(
+          r.blocked
+            ? { kind: 'tcha', key: Date.now() }
+            : r.ability
+              ? {
+                  kind: 'custom',
+                  key: Date.now(),
+                  text: `+ ${ABILITY_INFO[r.ability].name.toUpperCase()}!`,
+                }
+              : { kind: 'click', key: Date.now() },
+        );
         const reward = episode.sides[side].locks[slot].reward?.clue;
         setClue(reward ?? null);
       }
@@ -101,7 +140,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
     <HalftoneBackground>
       <Dust count={8} />
       <div className="relative flex min-h-screen flex-col">
-        {/* Topo: fase, timer e equipe (o cabo de guerra entra na Etapa 4) */}
+        {/* Topo: equipe, fase, timer e o cabo de guerra */}
         <header className="flex h-16 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
           <p
             className={cn(
@@ -121,6 +160,33 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
           </p>
         </header>
 
+        {match && (
+          <div className="border-b-4 border-ink bg-night/80 px-6 py-2">
+            <TugBar
+              bar={match.bar}
+              redName={red ? team.cityName : (rival?.cityName ?? 'Robô')}
+              blueName={red ? (rival?.pirateName ?? 'Robô') : team.pirateName}
+              hidden={disguised}
+            />
+            <p
+              className="mt-1 flex justify-center gap-4 font-type text-sm text-mist"
+              aria-live="polite"
+            >
+              {anchored && <span className="text-alert">⚓ Âncora: seus puxões valem metade!</span>}
+              {shielded && (
+                <span className="text-alert">
+                  🛡️ Escudo do rival: seu próximo puxão será anulado!
+                </span>
+              )}
+              {vaultAdvantage && (
+                <span className="text-brass">
+                  ⭐ Vocês estavam na frente: Dica 1 grátis no Cofre!
+                </span>
+              )}
+            </p>
+          </div>
+        )}
+
         <div className="grid flex-1 grid-cols-[300px_1fr] gap-5 p-5">
           {/* Esquerda: planta / mapa como trilha de progresso */}
           <aside className="flex flex-col gap-3">
@@ -133,14 +199,54 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
             <p className="font-type text-sm text-mist">
               {red ? 'A rota acende a cada cadeado aberto.' : 'Cada defesa montada acende no mapa.'}
             </p>
-            <p className="mt-auto font-type text-xs text-mist">
-              As habilidades especiais chegam na Etapa 4.
-            </p>
+            {match && (
+              <AbilityCards
+                side={side}
+                owned={player.abilities?.owned ?? []}
+                used={player.abilities?.used ?? []}
+                disabled={busy || !!match.winner}
+                onUse={(id) => {
+                  setPop({
+                    kind: id === 'interferencia' ? 'zzzt' : id === 'escudo' ? 'tcha' : 'custom',
+                    key: Date.now(),
+                    text: ABILITY_INFO[id].name.toUpperCase() + '!',
+                  });
+                  void guard(() => activateAbility(ctx, id, challenge?.key ?? null));
+                }}
+              />
+            )}
+            {match?.machineSide && (
+              <div className="flex items-end gap-2">
+                <RobotFigure className="h-24 w-20" />
+                {lastLog && lastLog.side === match.machineSide && (
+                  <p className="mb-6 rounded-md border-2 border-ink bg-aged px-2 py-1 font-comic text-base leading-tight tracking-wide text-ink">
+                    {lastLog.text}
+                  </p>
+                )}
+              </div>
+            )}
+            {match && !match.machineSide && lastLog && (
+              <p
+                className="rounded-md border-2 border-graphite-light bg-night/60 px-2 py-1 font-type text-xs text-mist"
+                aria-live="polite"
+              >
+                📻 {lastLog.text}
+              </p>
+            )}
           </aside>
 
           {/* Centro: o desafio */}
           <motion.section animate={shake} className="relative flex flex-col gap-3">
-            {challenge ? (
+            {rivalWon ? (
+              <WaitingPanel
+                text={
+                  match?.machineSide
+                    ? 'O Robô abriu o Cofre primeiro... QUASE!'
+                    : 'O rival abriu o Cofre primeiro... QUASE!'
+                }
+                curiosities={episode.curiosities}
+              />
+            ) : challenge ? (
               <>
                 <div className="flex items-start gap-3">
                   <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
@@ -190,7 +296,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
                     heardTransmission={
                       !needsTransmission(challenge) || player.progress.heardTransmission
                     }
-                    locked={cooldown || busy}
+                    locked={cooldown || busy || frozen > 0}
                     onWrong={onWrong}
                     onSolved={onSolved}
                   />
@@ -222,7 +328,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
                   className="pointer-events-none absolute inset-0 z-20 grid place-items-center"
                   exit={{ opacity: 0 }}
                 >
-                  <Onomatopoeia kind={pop.kind} playKey={pop.key} size={240} />
+                  <Onomatopoeia kind={pop.kind} text={pop.text} playKey={pop.key} size={240} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -243,12 +349,14 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
               {([1, 2] as const).map((tier) => {
                 const bought = usedHints >= tier;
                 const available = nextHint(usedHints as 0 | 1 | 2) === tier;
+                // RN-18: quem estava na frente ao abrir o Cofre ganha a Dica 1 grátis.
+                const free = tier === 1 && vaultAdvantage && slot === 'vault';
                 return (
                   <button
                     key={tier}
                     type="button"
                     disabled={!available || busy}
-                    onClick={() => void guard(() => buyHint(ctx, challenge.key, tier))}
+                    onClick={() => void guard(() => buyHint(ctx, challenge.key, tier, free))}
                     className={cn(
                       'flex min-h-12 cursor-pointer items-center gap-2 rounded-md border-[3px] border-ink px-4 pt-1 font-heist text-xl tracking-wider disabled:cursor-not-allowed',
                       bought
@@ -261,7 +369,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
                     {bought ? '📭' : '💌'} Dica {tier}{' '}
                     {bought
                       ? '(aberta)'
-                      : `(${tier === 1 ? GAME_RULES.points.hint1 : GAME_RULES.points.hint2})`}
+                      : free
+                        ? '(grátis ⭐)'
+                        : `(${tier === 1 ? GAME_RULES.points.hint1 : GAME_RULES.points.hint2})`}
                   </button>
                 );
               })}
@@ -269,6 +379,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player }: Props
           )}
         </footer>
       </div>
+      <AnimatePresence>
+        {frozen > 0 && <InterferenceOverlay secondsLeft={frozen} />}
+      </AnimatePresence>
     </HalftoneBackground>
   );
 }

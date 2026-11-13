@@ -94,6 +94,11 @@ export const GAME_RULES = {
     machineUseChance: 0.3,
   },
 
+  match: {
+    /** quantos eventos o `log` do confronto guarda (SPEC 6.1) */
+    logSize: 30,
+  },
+
   /** RN-42 [PADRÃO]: tempo (s) que a máquina leva por desafio, por nível. */
   machineSolveSeconds: {
     A: { lock: [150, 210], vault: [300, 420] },

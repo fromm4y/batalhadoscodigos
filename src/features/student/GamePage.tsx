@@ -1,6 +1,6 @@
 import { doc, onSnapshot, serverTimestamp, updateDoc, type Timestamp } from 'firebase/firestore';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HalftoneBackground } from '@/components/comic';
 import { Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
@@ -8,13 +8,21 @@ import { loadEpisode } from '@/content/episodes';
 import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
-import { chooseSide, markHeardTransmission, type GameCtx } from '@/features/game/actions';
+import {
+  chooseMode,
+  chooseSide,
+  joinLateAgainstMachine,
+  markHeardTransmission,
+  type GameCtx,
+} from '@/features/game/actions';
 import { EndScreen } from '@/features/game/EndScreen';
 import { PlanningScreen } from '@/features/game/PlanningScreen';
 import { PlayScreen } from '@/features/game/PlayScreen';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { getFirebase } from '@/lib/firebase';
-import type { ClassDoc, Level, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import { calibrate } from '@/lib/serverClock';
+import type { ClassDoc, Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import { machineTick } from '@/features/game/machine';
 import { LobbyScreen } from './LobbyScreen';
 import { NoSignalScreen } from './NoSignalScreen';
 import { useTeamAuth, type TeamClaims } from './useTeamAuth';
@@ -69,11 +77,21 @@ function Game({ claims }: { claims: TeamClaims }) {
   }, [open, claims.classId, claims.teamId]);
 
   // Estado da dupla nesta sessão (progresso, dicas, lado).
+  // O `lastSeenAt` gravado pelo servidor calibra o relógio local (SPEC 5.2).
+  const beatSent = useRef<{ sent: number; done: number } | null>(null);
   useEffect(() => {
     if (!open) return;
     return onSnapshot(
       doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId),
-      (snap) => setPlayer(snap.exists() ? (snap.data() as PlayerDoc) : null),
+      (snap) => {
+        const data = snap.exists() ? (snap.data() as PlayerDoc) : null;
+        setPlayer(data);
+        const b = beatSent.current;
+        if (data?.lastSeenAt && b && !snap.metadata.hasPendingWrites) {
+          calibrate(b.sent, b.done, data.lastSeenAt.toMillis());
+          beatSent.current = null;
+        }
+      },
       () => setPlayer(null),
     );
   }, [open, claims.sessionId, claims.teamId]);
@@ -88,6 +106,49 @@ function Game({ claims }: { claims: TeamClaims }) {
     });
   }, [open, claims.classId]);
 
+  // Confronto (cabo de guerra) e dupla rival, em tempo real.
+  const matchId = player?.matchId ?? null;
+  const [match, setMatch] = useState<MatchDoc | null>(null);
+  useEffect(() => {
+    if (!open || !matchId) return;
+    return onSnapshot(
+      doc(getFirebase().db, 'sessions', claims.sessionId, 'matches', matchId),
+      (snap) => setMatch(snap.exists() ? (snap.data() as MatchDoc) : null),
+      () => setMatch(null),
+    );
+  }, [open, matchId, claims.sessionId]);
+  const rivalId =
+    match && matchId && player?.side
+      ? player.side === 'red'
+        ? match.blueTeamId
+        : match.redTeamId
+      : null;
+  const [rival, setRival] = useState<TeamDoc | null>(null);
+  useEffect(() => {
+    if (!open || !rivalId) return;
+    return onSnapshot(doc(getFirebase().db, 'classes', claims.classId, 'teams', rivalId), (snap) =>
+      setRival(snap.exists() ? (snap.data() as TeamDoc) : null),
+    );
+  }, [open, rivalId, claims.classId]);
+
+  // O Robô roda aqui, no navegador da dupla que joga contra ele (SPEC 5.2).
+  const phase = session && session !== 'missing' ? session.phase : null;
+  const runMachine = !!(
+    matchId &&
+    match?.machineSide &&
+    !match.winner &&
+    level &&
+    (phase === 'locks' || phase === 'vault')
+  );
+  useEffect(() => {
+    if (!runMachine || !matchId || !level || !phase) return;
+    const tick = () =>
+      void machineTick(claims.sessionId, matchId, level, phase).catch(() => undefined);
+    tick();
+    const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  }, [runMachine, matchId, level, phase, claims.sessionId]);
+
   const episodeId = session && session !== 'missing' ? session.episodeId : null;
   useEffect(() => {
     if (episodeId) void loadEpisode(episodeId).then(setEpisode);
@@ -97,8 +158,14 @@ function Game({ claims }: { claims: TeamClaims }) {
   useEffect(() => {
     if (!open) return;
     const ref = doc(getFirebase().db, 'sessions', claims.sessionId, 'players', claims.teamId);
-    const beat = (connected: boolean) =>
-      updateDoc(ref, { connected, lastSeenAt: serverTimestamp() }).catch(() => undefined);
+    const beat = (connected: boolean) => {
+      const sent = Date.now();
+      return updateDoc(ref, { connected, lastSeenAt: serverTimestamp() })
+        .then(() => {
+          beatSent.current = { sent, done: Date.now() };
+        })
+        .catch(() => undefined);
+    };
     void beat(true);
     const t = setInterval(() => void beat(true), GAME_RULES.presence.heartbeatSeconds * 1000);
     const bye = () => void beat(false);
@@ -154,19 +221,28 @@ function Game({ claims }: { claims: TeamClaims }) {
         episode={episode}
         team={team}
         player={player}
+        match={matchId ? match : null}
+        rival={rivalId ? rival : null}
         onChooseSide={(s) => chooseSide(ctx, s)}
+        onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
   } else if (session.phase === 'end') {
-    screen = <EndScreen episode={episode} team={team} player={player} />;
-  } else if (!player.side) {
-    // Chegou atrasada (RN-07): escolhe o lado e entra direto nos desafios.
+    screen = (
+      <EndScreen episode={episode} team={team} player={player} match={matchId ? match : null} />
+    );
+  } else if (!player.side || (session.matchesFormed && !player.matchId)) {
+    // Chegou atrasada (RN-07): escolhe o lado e entra direto contra a máquina.
     screen = (
       <PlanningScreen
         episode={episode}
         team={team}
         player={player}
-        onChooseSide={(s) => chooseSide(ctx, s)}
+        match={null}
+        rival={null}
+        late
+        onChooseSide={(s) => joinLateAgainstMachine(ctx, s)}
+        onChooseMode={(m) => chooseMode(ctx, m)}
       />
     );
   } else {
@@ -178,6 +254,8 @@ function Game({ claims }: { claims: TeamClaims }) {
         session={session}
         team={team}
         player={player}
+        match={matchId ? match : null}
+        rival={rivalId ? rival : null}
       />
     );
   }

@@ -119,6 +119,8 @@ export type PlayerDoc = {
   teamId: string;
   uid: string;
   side: Side | null;
+  /** modo escolhido no planejamento (RN-11) */
+  mode?: GameMode | null;
   matchId: string | null;
   connected: boolean;
   lastSeenAt: Timestamp | null;
@@ -136,4 +138,38 @@ export type PlayerDoc = {
   solvedCount: number;
   episodePoints: number;
   finishedAt: Timestamp | null;
+};
+
+/** Efeito de habilidade ativo num confronto (seção 7.9). `target` = lado afetado. */
+export type ActiveEffect =
+  | { kind: 'freeze'; target: Side; until: number } // Interferência: tela congelada
+  | { kind: 'anchor'; target: Side; until: number } // Âncora: puxões valem metade
+  | { kind: 'disguise'; target: Side; until: number } // Disfarce: não vê a barra
+  | { kind: 'shield'; target: Side }; // Escudo: anula o próximo puxão de `target`
+
+export type MatchLogEntry = { at: number; side: Side; type: string; text: string };
+
+/** Progresso do robô (só em confrontos contra a máquina; roda no navegador da dupla, SPEC 5.2). */
+export type MachineState = {
+  lockIndex: number;
+  /** fase em que `nextAt` foi sorteado */
+  phase: Phase | null;
+  /** hora (servidor, ms) em que o robô resolve o próximo desafio */
+  nextAt: number | null;
+  vaultSolved: boolean;
+  usedAbilities: AbilityId[];
+};
+
+/** sessions/{id}/matches/{matchId} (SPEC 6.1) */
+export type MatchDoc = {
+  redTeamId: string | null;
+  blueTeamId: string | null;
+  machineSide: Side | null;
+  bar: number;
+  effects: ActiveEffect[];
+  vaultLeader: Side | null;
+  winner: Side | 'draw' | null;
+  resolvedAt: Timestamp | null;
+  log: MatchLogEntry[];
+  machine: MachineState | null;
 };
