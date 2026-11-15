@@ -26,6 +26,7 @@ import { calibrate, serverNow } from '@/lib/serverClock';
 import type { ClassDoc, Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import { machineTick } from '@/features/game/machine';
 import { FreezeOverlay } from '@/features/game/FreezeOverlay';
+import { useMuseumEventElection } from '@/features/game/museumElection';
 import { JailScreen } from '@/features/game/JailScreen';
 import { MuseumEventOverlay } from '@/features/game/MuseumEventOverlay';
 import { eventDurationMs, eventSucceeded, jailUntilMs } from '@/engine/museumEvent';
@@ -237,6 +238,9 @@ function Game({ claims }: { claims: TeamClaims }) {
     player.progress.eventResult === 'pending';
   const jailMs = player?.progress.jailUntil?.toMillis() ?? 0;
   const jailed = jailMs > sNow;
+
+  // SPEC-02 A1: a dupla também participa da eleição do alarme automático.
+  useMuseumEventElection('student', claims.sessionId, open ? session : null);
 
   // RN-25: o ranking da turma só aparece no planejamento e no fim.
   const rankingOn = open && (phase === 'planning' || phase === 'end');

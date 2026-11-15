@@ -85,6 +85,11 @@ export const GAME_RULES = {
     jailSeconds: 60,
     /** RN-36 [PADRÃO]: chance de a máquina acertar o evento. */
     machineSuccessChance: 0.8,
+    /**
+     * SPEC-02 A1: todo cliente conectado (duplas, painel, projetor) confere a cada N s se já é
+     * hora do evento automático; o primeiro que vencer a transação dispara.
+     */
+    electionCheckSeconds: 5,
   },
 
   abilities: {
@@ -134,6 +139,11 @@ export const GAME_RULES = {
     /** Seção 10 [PADRÃO] */
     defaultMusicVolume: 0.3,
     defaultSfxVolume: 0.7,
+  },
+
+  /** SPEC-02 A3 [PADRÃO]: a limpeza apaga sessões que venceram há mais de N dias. */
+  cleanup: {
+    olderThanDays: 30,
   },
 
   presence: {
