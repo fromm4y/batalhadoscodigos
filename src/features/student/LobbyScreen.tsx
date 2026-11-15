@@ -45,7 +45,7 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
                 <Dossier
                   title={`Ficha: codinome ${team.cityName}`}
                   rotate={-2}
-                  className="w-[24rem]"
+                  className="w-full max-w-[24rem]"
                 >
                   <div className="flex items-center gap-4">
                     <Avatar avatar={team.avatar} side="red" className="h-36 w-32" />

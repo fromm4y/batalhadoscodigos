@@ -36,8 +36,8 @@ export function TeamSelectPage() {
   return (
     <HalftoneBackground>
       <Spotlights intensity={0.08} />
-      <main className="relative mx-auto max-w-6xl p-8">
-        <header className="mb-8 flex items-end justify-between gap-6">
+      <main className="relative mx-auto max-w-6xl p-4 sm:p-8">
+        <header className="mb-8 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-type text-mist">Sessão {join.code}</p>
             <h1 className="font-heist text-6xl tracking-[0.1em] text-paper text-glow-spot">

@@ -61,12 +61,12 @@ export function EndScreen({
   return (
     <HalftoneBackground>
       <Spotlights intensity={step === 'hook' ? 0.05 : 0.14} />
-      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-8 py-6">
-        <header className="flex items-center justify-between">
+      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-4 py-6 sm:px-8">
+        <header className="flex flex-wrap items-center justify-between gap-3">
           <p className="font-type text-mist">
             Fim do episódio {episode.number} · {episode.title}
           </p>
-          <nav aria-label="Fim do episódio" className="flex gap-2">
+          <nav aria-label="Fim do episódio" className="flex flex-wrap gap-2">
             {STEPS.map((s, i) => (
               <button
                 key={s}
@@ -101,7 +101,7 @@ export function EndScreen({
             )}
             {step === 'ranking' && (
               <div className="flex flex-col items-center gap-4">
-                <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
+                <h1 className="font-heist text-4xl tracking-[0.12em] sm:text-5xl text-brass text-glow-brass">
                   RANKING DA TURMA
                 </h1>
                 <SessionHighlight

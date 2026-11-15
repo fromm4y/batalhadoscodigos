@@ -126,7 +126,7 @@ export function NewTeamPage() {
 
   return (
     <HalftoneBackground>
-      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 p-8">
+      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 p-4 sm:p-8">
         <header className="flex flex-wrap items-center justify-between gap-6">
           <h1 className="font-heist text-5xl tracking-[0.1em] text-paper text-glow-spot">
             NOVA DUPLA

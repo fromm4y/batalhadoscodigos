@@ -160,21 +160,24 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   return (
     <HalftoneBackground>
       <Dust count={8} />
-      <div className="relative flex h-screen flex-col overflow-hidden">
+      <div className="relative flex min-h-screen flex-col lg:h-screen lg:overflow-hidden">
         {/* Topo: equipe, fase, timer e o cabo de guerra */}
-        <header className="flex h-14 items-center justify-between gap-4 border-b-4 border-ink bg-graphite px-6">
+        <header className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b-4 border-ink bg-graphite px-3 py-1 sm:px-6 lg:h-14 lg:py-0">
           <p
             className={cn(
-              'font-heist text-3xl tracking-[0.12em]',
+              'font-heist text-2xl tracking-[0.12em] sm:text-3xl',
               red ? 'text-bando text-glow-red' : 'text-piratas text-glow-blue',
             )}
           >
             {red ? '🎭' : '⚓'} {red ? team.cityName : team.pirateName}
           </p>
-          <p className="font-heist text-3xl tracking-[0.15em] text-paper">
+          <p className="hidden font-heist text-3xl tracking-[0.15em] text-paper md:block">
             {PHASE_TITLE[session.phase as 'locks' | 'vault']}
           </p>
-          <p className="font-heist text-3xl tracking-wider text-brass" aria-label="Tempo da fase">
+          <p
+            className="font-heist text-2xl tracking-wider text-brass sm:text-3xl"
+            aria-label="Tempo da fase"
+          >
             ⏱ {String(Math.floor(elapsed / 60)).padStart(2, '0')}:
             {String(elapsed % 60).padStart(2, '0')}
             <span className="text-xl text-mist"> / {guide}:00</span>
@@ -182,7 +185,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </header>
 
         {match && (
-          <div className="border-b-4 border-ink bg-night/80 px-6 py-1">
+          <div className="border-b-4 border-ink bg-night/80 px-3 py-1 sm:px-6">
             <TugBar
               bar={match.bar}
               redName={red ? team.cityName : (rival?.cityName ?? 'Robô')}
@@ -213,7 +216,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
 
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 px-3 py-2 sm:px-5 lg:grid-cols-[280px_1fr]">
           {/* Esquerda: planta / mapa como trilha de progresso */}
-          <aside className="flex min-h-0 flex-col gap-3 overflow-y-auto">
+          <aside className="order-2 flex min-h-0 flex-col gap-3 lg:order-none lg:overflow-y-auto">
             <RouteMap
               theme={red ? 'bando' : 'piratas'}
               opened={player.progress.lockIndex}
@@ -297,7 +300,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                   </SpeechBubble>
                 </div>
                 {/* Só o desafio rola, e só se não couber (rede de segurança para 1366×768). */}
-                <div data-challenge-scroll className="min-h-0 flex-1 overflow-y-auto pr-1">
+                <div data-challenge-scroll className="min-h-0 flex-1 pr-1 lg:overflow-y-auto">
                   <ChallengeFrame red={red}>
                     <div className="mb-2 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-1">
                       <h2 className="font-heist text-2xl tracking-wider">
@@ -372,10 +375,10 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         </div>
 
         {/* Rodapé: pontos e dicas */}
-        <footer className="flex h-16 shrink-0 items-center justify-between gap-4 border-t-4 border-ink bg-graphite px-6">
+        <footer className="flex min-h-16 shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t-4 border-ink bg-graphite px-3 py-2 sm:px-6 lg:h-16 lg:py-0">
           <div className="flex items-center gap-4">
             <AudioControls />
-            <p className="font-heist text-3xl tracking-wider text-brass text-glow-brass">
+            <p className="font-heist text-2xl tracking-wider text-brass text-glow-brass sm:text-3xl">
               {red ? `🪙 ${team.totalPoints} barras de ouro` : `💰 Recompensa: ${team.totalPoints}`}
               <span className="ml-3 text-xl text-mist">
                 (hoje: {player.episodePoints >= 0 ? '+' : ''}
