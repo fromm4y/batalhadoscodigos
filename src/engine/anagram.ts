@@ -3,6 +3,7 @@
  * mostra a mesma ordem para a mesma dupla.
  */
 import type { AnagramVariant } from '@/content/types';
+import { seededRng as rng, shuffle } from './shuffle';
 
 export type Tile = { id: string; char: string; word: number };
 export type AnagramLayout = {
@@ -13,25 +14,6 @@ export type AnagramLayout = {
   /** peças para arrastar/clicar; `word` = palavra onde a peça pode entrar (-1 = qualquer) */
   tray: Tile[];
 };
-
-function rng(seed: string) {
-  let h = 2166136261;
-  for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
-  return () => {
-    h = Math.imul(h ^ (h >>> 15), 2246822507);
-    h = Math.imul(h ^ (h >>> 13), 3266489909);
-    return ((h ^= h >>> 16) >>> 0) / 4294967296;
-  };
-}
-
-function shuffle<T>(arr: T[], rand: () => number): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j]!, a[i]!];
-  }
-  return a;
-}
 
 /** Embaralha garantindo que não fique igual ao original (quando dá). */
 function scramble<T>(arr: T[], rand: () => number, same: (a: T[]) => boolean): T[] {

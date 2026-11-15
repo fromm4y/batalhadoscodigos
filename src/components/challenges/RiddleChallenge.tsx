@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { RiddleVariant } from '@/content/types';
 import { checkRiddle } from '@/engine/challenges';
+import { optionOrder } from '@/engine/shuffle';
 import { AnswerButton, SubmitButton, type ChallengeBaseProps } from './common';
 
 /** riddle: charada de escolha ou de texto livre (respostas normalizadas, RN-28). */
@@ -9,7 +10,10 @@ export function RiddleChallenge({
   locked,
   onWrong,
   onSolved,
-}: ChallengeBaseProps & { variant: RiddleVariant }) {
+  seed,
+}: ChallengeBaseProps & { variant: RiddleVariant; seed: string }) {
+  const opts = variant.options ?? [];
+  const order = optionOrder(opts.length, `${seed}:charada`);
   const [text, setText] = useState('');
   const [right, setRight] = useState<string | null>(null);
 
@@ -27,17 +31,19 @@ export function RiddleChallenge({
       </blockquote>
       {variant.mode === 'choice' ? (
         <div className="flex flex-col gap-3">
-          {(variant.options ?? []).map((opt, i) => (
-            <AnswerButton
-              key={opt}
-              letter={String.fromCharCode(65 + i)}
-              onClick={() => submit(opt)}
-              disabled={locked}
-              state={right === opt ? 'right' : 'idle'}
-            >
-              {opt}
-            </AnswerButton>
-          ))}
+          {order
+            .map((i) => opts[i]!)
+            .map((opt, pos) => (
+              <AnswerButton
+                key={opt}
+                letter={String.fromCharCode(65 + pos)}
+                onClick={() => submit(opt)}
+                disabled={locked}
+                state={right === opt ? 'right' : 'idle'}
+              >
+                {opt}
+              </AnswerButton>
+            ))}
         </div>
       ) : (
         <form

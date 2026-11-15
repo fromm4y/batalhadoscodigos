@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { QuizVariant } from '@/content/types';
 import { checkQuiz } from '@/engine/challenges';
+import { optionOrder } from '@/engine/shuffle';
 import { AnswerButton, type ChallengeBaseProps } from './common';
 
 /** quiz: perguntas em sequência; erro = −2 e a pergunta continua; acertar todas abre (11.2). */
@@ -10,7 +11,8 @@ export function QuizChallenge({
   locked,
   onWrong,
   onSolved,
-}: ChallengeBaseProps & { variant: QuizVariant }) {
+  seed,
+}: ChallengeBaseProps & { variant: QuizVariant; seed: string }) {
   const [index, setIndex] = useState(0);
   const [right, setRight] = useState<number | null>(null);
   const q = variant.questions[index];
@@ -51,15 +53,16 @@ export function QuizChallenge({
           <p className="font-body text-xl font-extrabold">
             {index + 1}. {q.q}
           </p>
-          {q.options.map((opt, i) => (
+          {/* Ordem própria de cada dupla (pedido da May): "é a A!" não ajuda o vizinho. */}
+          {optionOrder(q.options.length, `${seed}:${index}`).map((i, pos) => (
             <AnswerButton
-              key={opt}
-              letter={String.fromCharCode(65 + i)}
+              key={q.options[i]}
+              letter={String.fromCharCode(65 + pos)}
               onClick={() => answer(i)}
               disabled={locked}
               state={right === i ? 'right' : 'idle'}
             >
-              {opt}
+              {q.options[i]}
             </AnswerButton>
           ))}
         </motion.div>
