@@ -63,6 +63,69 @@ export type BlockDebugVariant = Base & {
   editable: 'symbols' | 'counts' | 'both';
 };
 
+/** Ep. 2 — cifra de deslocamento A–Z, sem acentos (SPEC-03 §1). */
+export type CipherVariant = Base & {
+  mode: 'decode' | 'encode' | 'crack' | 'verify';
+  /** chave (1–25) */
+  shift: number;
+  /** preset: disco já girado e travado na chave; free: a dupla gira */
+  wheel: 'preset' | 'free';
+  /** decode/crack: texto cifrado · encode: texto original */
+  text?: string;
+  /** resposta esperada (não existe em verify) */
+  answer?: string;
+  /** verify: mensagens cifradas; a correta é options[correct] */
+  options?: string[];
+  correct?: number;
+  /** crack nível C: palavra que sabemos estar no começo */
+  crib?: string;
+  /** a chave só chega pela transmissão (RN-45) */
+  spokenKey?: boolean;
+};
+
+/** Ep. 3 — painel do ENIAC: módulos "+3", "x2", "-1" ligados em sequência (SPEC-03 §2). */
+export type WiringVariant = Base & {
+  mode: 'build' | 'debug';
+  start: number;
+  modules: string[];
+  /** quantos módulos entram no circuito (pode sobrar módulo pegadinha) */
+  slots: number;
+  target: number;
+  /** debug: ordem sabotada inicial */
+  chain?: string[];
+  /** a entrada só chega pela transmissão */
+  startSpoken?: boolean;
+};
+
+/** Ep. 4 — console da Apollo: escolher tarefas (SPEC-03 §3). */
+export type PriorityTask = { id: string; label: string; cost?: number; value?: number };
+export type PriorityVariant = Base & {
+  mode: 'select' | 'budget';
+  tasks: PriorityTask[];
+  pick?: number;
+  pickSpoken?: boolean;
+  correct?: string[];
+  capacity?: number;
+  capacityLabel?: string;
+  valueLabel?: string;
+  optimalValue?: number;
+};
+
+/** Ep. 5 — jogo da velha (SPEC-03 §4.2). Tabuleiro: 9 caracteres "X", "O" ou ".". */
+export type BoardChoiceVariant = Base & {
+  board: string;
+  you: 'X';
+  spokenMove: { cell: number; symbol: 'O' };
+  answer: number;
+};
+
+/** Ep. 5 — árvore de jogadas / minimax (SPEC-03 §4.3). */
+export type GameTreeVariant = Base & {
+  depth: 2 | 3;
+  tree: Record<string, number[] | Record<string, number[]>>;
+  answer: string;
+};
+
 export type VariantByType = {
   quiz: QuizVariant;
   riddle: RiddleVariant;
@@ -71,6 +134,11 @@ export type VariantByType = {
   punchCardWrite: PunchCardWriteVariant;
   blockBuild: BlockBuildVariant;
   blockDebug: BlockDebugVariant;
+  cipher: CipherVariant;
+  wiring: WiringVariant;
+  priority: PriorityVariant;
+  boardChoice: BoardChoiceVariant;
+  gameTree: GameTreeVariant;
 };
 export type ChallengeType = keyof VariantByType;
 
@@ -116,17 +184,47 @@ export type SideContent = {
   vault: Challenge;
 };
 
-export type Episode = {
+/** Carta do Álbum do Museu (SPEC-02 Parte B/C). */
+export type EpisodeCard = {
+  title: string;
+  year: string;
+  people: string[];
+  facts: string[];
+  art: string;
+};
+
+type EpisodeBase = {
   id: string;
   number: number;
   title: string;
   invention: { name: string; year: string; people: string[] };
-  intro: { comic: ComicPanelContent[]; red: string; blue: string };
   dossier: string[];
   curiosities: string[];
-  sides: { red: SideContent; blue: SideContent };
   event: MuseumEvent;
   narratorScript: NarratorScript;
   reveal: ComicPanelContent[];
-  nextHook: string;
+  /**
+   * Gancho que APONTA PARA O EPISÓDIO SEGUINTE da ordem longa (ep N descreve o ep N+1).
+   * A tela final escolhe o teaser pelo próximo episódio da temporada ativa (`teaserFor`).
+   */
+  teaser: { line: string; art: string };
+  /** "Anteriormente na Caçada..." do episódio seguinte */
+  recapOfThis: string[];
+  card: EpisodeCard;
 };
+
+/** Episódio Bando × Piratas (Ep. 1 a 4). */
+export type Episode = EpisodeBase & {
+  mode?: 'versus';
+  intro: { comic: ComicPanelContent[]; red: string; blue: string };
+  sides: { red: SideContent; blue: SideContent };
+};
+
+/** Ep. 5 — a turma inteira contra a máquina (SPEC-03 §4). */
+export type CoopEpisode = EpisodeBase & {
+  mode: 'coop';
+  intro: { comic: ComicPanelContent[]; coop: string };
+  coop: { locks: [Challenge, Challenge, Challenge]; vault: Challenge };
+};
+
+export type AnyEpisode = Episode | CoopEpisode;

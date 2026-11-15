@@ -5,10 +5,7 @@
   "invention": {
     "name": "Computador de Orientação da Apollo",
     "year": "1969",
-    "people": [
-      "Margaret Hamilton",
-      "Equipe do MIT"
-    ]
+    "people": ["Margaret Hamilton", "Equipe do MIT"]
   },
   "intro": {
     "comic": [
@@ -72,29 +69,17 @@
               "questions": [
                 {
                   "q": "Em que ano o ser humano pisou na Lua pela primeira vez?",
-                  "options": [
-                    "1969",
-                    "1869",
-                    "2019"
-                  ],
+                  "options": ["1969", "1869", "2019"],
                   "correct": 0
                 },
                 {
                   "q": "Quem liderou o time de software da Apollo?",
-                  "options": [
-                    "Margaret Hamilton",
-                    "Ada Lovelace",
-                    "Alan Turing"
-                  ],
+                  "options": ["Margaret Hamilton", "Ada Lovelace", "Alan Turing"],
                   "correct": 0
                 },
                 {
                   "q": "O computador da Apollo ajudava a...",
-                  "options": [
-                    "Pousar a nave na Lua",
-                    "Fazer pipoca",
-                    "Tocar música"
-                  ],
+                  "options": ["Pousar a nave na Lua", "Fazer pipoca", "Tocar música"],
                   "correct": 0
                 }
               ]
@@ -106,11 +91,7 @@
               "questions": [
                 {
                   "q": "Que números de alarme apareceram no pouso da Apollo 11?",
-                  "options": [
-                    "1202 e 1201",
-                    "404 e 500",
-                    "007 e 911"
-                  ],
+                  "options": ["1202 e 1201", "404 e 500", "007 e 911"],
                   "correct": 0
                 },
                 {
@@ -124,11 +105,7 @@
                 },
                 {
                   "q": "Margaret Hamilton trabalhava em qual instituição?",
-                  "options": [
-                    "MIT",
-                    "Bletchley Park",
-                    "Museu do Louvre"
-                  ],
+                  "options": ["MIT", "Bletchley Park", "Museu do Louvre"],
                   "correct": 0
                 }
               ]
@@ -140,20 +117,12 @@
               "questions": [
                 {
                   "q": "Comparado a um celular de hoje, o computador da Apollo tinha...",
-                  "options": [
-                    "Muito menos memória",
-                    "Mais memória",
-                    "A mesma memória"
-                  ],
+                  "options": ["Muito menos memória", "Mais memória", "A mesma memória"],
                   "correct": 0
                 },
                 {
                   "q": "Margaret Hamilton ajudou a popularizar o termo...",
-                  "options": [
-                    "Engenharia de software",
-                    "Inteligência artificial",
-                    "Internet"
-                  ],
+                  "options": ["Engenharia de software", "Inteligência artificial", "Internet"],
                   "correct": 0
                 },
                 {
@@ -182,14 +151,8 @@
               "prompt": "Quem sou eu?",
               "mode": "choice",
               "text": "Eu toco quando algo dá errado. No pouso da Apollo 11, eu pisquei com o número 1202. Quem sou eu?",
-              "options": [
-                "Alarme",
-                "Campainha de bicicleta",
-                "Despertador de Natal"
-              ],
-              "accept": [
-                "alarme"
-              ],
+              "options": ["Alarme", "Campainha de bicicleta", "Despertador de Natal"],
+              "accept": ["alarme"],
               "hint1": "Ele avisa quando algo dá errado.",
               "hint2": "Começa com A e tem 6 letras."
             },
@@ -197,12 +160,7 @@
               "prompt": "Digite a resposta da charada.",
               "mode": "text",
               "text": "Eu toco quando algo dá errado. No pouso da Apollo 11, eu pisquei com o número 1202. Quem sou eu?",
-              "accept": [
-                "alarme",
-                "o alarme",
-                "um alarme",
-                "alarmes"
-              ],
+              "accept": ["alarme", "o alarme", "um alarme", "alarmes"],
               "hint1": "Ele avisa quando algo dá errado.",
               "hint2": "Começa com A e tem 6 letras."
             },
@@ -210,14 +168,7 @@
               "prompt": "Digite a resposta da charada.",
               "mode": "text",
               "text": "Ninguém consegue pegar em mim, mas sem mim a nave não pousava. Margaret Hamilton e sua equipe escreveram linhas e mais linhas de mim. Quem sou eu?",
-              "accept": [
-                "software",
-                "o software",
-                "programa",
-                "o programa",
-                "codigo",
-                "o codigo"
-              ],
+              "accept": ["software", "o software", "programa", "o programa", "codigo", "o codigo"],
               "hint1": "Não é uma peça: é feito de instruções.",
               "hint2": "Em inglês começa com SOFT..."
             }
@@ -256,10 +207,7 @@
                   "label": "Dançar no salão"
                 }
               ],
-              "correct": [
-                "lasers",
-                "vitrine"
-              ],
+              "correct": ["lasers", "vitrine"],
               "hint1": "Quais tarefas são necessárias para pegar a invenção?",
               "hint2": "Lasers e vitrine."
             },
@@ -294,11 +242,7 @@
                   "label": "Escolher música para a fuga"
                 }
               ],
-              "correct": [
-                "lasers",
-                "vitrine",
-                "saida"
-              ],
+              "correct": ["lasers", "vitrine", "saida"],
               "hint1": "Sem qual delas o assalto falha?",
               "hint2": "Lasers, vitrine e saída."
             },
@@ -337,11 +281,7 @@
                   "label": "Escolher música para a fuga"
                 }
               ],
-              "correct": [
-                "lasers",
-                "vitrine",
-                "saida"
-              ],
+              "correct": ["lasers", "vitrine", "saida"],
               "hint1": "Sem qual delas o assalto falha?",
               "hint2": "Lasers, vitrine e saída."
             }
@@ -520,29 +460,17 @@
               "questions": [
                 {
                   "q": "Em que ano o ser humano pisou na Lua pela primeira vez?",
-                  "options": [
-                    "1969",
-                    "1869",
-                    "2019"
-                  ],
+                  "options": ["1969", "1869", "2019"],
                   "correct": 0
                 },
                 {
                   "q": "Quem liderou o time de software da Apollo?",
-                  "options": [
-                    "Margaret Hamilton",
-                    "Ada Lovelace",
-                    "Alan Turing"
-                  ],
+                  "options": ["Margaret Hamilton", "Ada Lovelace", "Alan Turing"],
                   "correct": 0
                 },
                 {
                   "q": "O computador da Apollo ajudava a...",
-                  "options": [
-                    "Pousar a nave na Lua",
-                    "Fazer pipoca",
-                    "Tocar música"
-                  ],
+                  "options": ["Pousar a nave na Lua", "Fazer pipoca", "Tocar música"],
                   "correct": 0
                 }
               ]
@@ -554,11 +482,7 @@
               "questions": [
                 {
                   "q": "Que números de alarme apareceram no pouso da Apollo 11?",
-                  "options": [
-                    "1202 e 1201",
-                    "404 e 500",
-                    "007 e 911"
-                  ],
+                  "options": ["1202 e 1201", "404 e 500", "007 e 911"],
                   "correct": 0
                 },
                 {
@@ -572,11 +496,7 @@
                 },
                 {
                   "q": "Margaret Hamilton trabalhava em qual instituição?",
-                  "options": [
-                    "MIT",
-                    "Bletchley Park",
-                    "Museu do Louvre"
-                  ],
+                  "options": ["MIT", "Bletchley Park", "Museu do Louvre"],
                   "correct": 0
                 }
               ]
@@ -588,20 +508,12 @@
               "questions": [
                 {
                   "q": "Comparado a um celular de hoje, o computador da Apollo tinha...",
-                  "options": [
-                    "Muito menos memória",
-                    "Mais memória",
-                    "A mesma memória"
-                  ],
+                  "options": ["Muito menos memória", "Mais memória", "A mesma memória"],
                   "correct": 0
                 },
                 {
                   "q": "Margaret Hamilton ajudou a popularizar o termo...",
-                  "options": [
-                    "Engenharia de software",
-                    "Inteligência artificial",
-                    "Internet"
-                  ],
+                  "options": ["Engenharia de software", "Inteligência artificial", "Internet"],
                   "correct": 0
                 },
                 {
@@ -682,10 +594,7 @@
                   "label": "Contar piadas"
                 }
               ],
-              "correct": [
-                "radar",
-                "motores"
-              ],
+              "correct": ["radar", "motores"],
               "hint1": "O que é preciso para pousar com segurança?",
               "hint2": "Radar e motores."
             },
@@ -720,11 +629,7 @@
                   "label": "Luz decorativa do painel"
                 }
               ],
-              "correct": [
-                "radar",
-                "motores",
-                "altitude"
-              ],
+              "correct": ["radar", "motores", "altitude"],
               "hint1": "O que é preciso para pousar com segurança?",
               "hint2": "Radar, motores e altitude."
             },
@@ -763,11 +668,7 @@
                   "label": "Luz decorativa do painel"
                 }
               ],
-              "correct": [
-                "radar",
-                "motores",
-                "altitude"
-              ],
+              "correct": ["radar", "motores", "altitude"],
               "hint1": "O que é preciso para pousar com segurança?",
               "hint2": "Radar, motores e altitude."
             }
@@ -1018,9 +919,7 @@
   "card": {
     "title": "Computador da Apollo 11",
     "year": "1969",
-    "people": [
-      "Margaret Hamilton"
-    ],
+    "people": ["Margaret Hamilton"],
     "facts": [
       "Ajudou a pousar na Lua",
       "Tinha muito pouca memória",

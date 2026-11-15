@@ -17,6 +17,7 @@ import type { Episode } from '@/content/types';
 import { ledgerSum } from '@/engine/ranking';
 import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamDoc } from '@/types/domain';
 import { LEDGER_LABEL } from './ledgerLabels';
+import { useEpisodeHook } from './useEpisodeHook';
 
 type Props = {
   episode: Episode;
@@ -325,14 +326,14 @@ function AlbumCard({ episode }: { episode: Episode }) {
       <p className="font-comic text-3xl tracking-wide text-brass text-outline">CARTA NOVA!</p>
       <BrassFrame className="w-full bg-night p-2">
         <div className="aspect-[600/840] w-full overflow-hidden">
-          <ComicArt id={`carta-${episode.id}`} alt={`Carta do Álbum: ${episode.invention.name}`} />
+          <ComicArt id={episode.card.art} alt={`Carta do Álbum: ${episode.card.title}`} />
         </div>
         <figcaption className="mt-2 text-center">
           <span className="block font-heist text-2xl leading-none tracking-wider text-paper">
-            {episode.invention.name}
+            {episode.card.title}
           </span>
           <span className="font-type text-sm text-brass">
-            {episode.invention.year} · Ep. {episode.number}
+            {episode.card.year} · Ep. {episode.number}
           </span>
         </figcaption>
       </BrassFrame>
@@ -343,6 +344,9 @@ function AlbumCard({ episode }: { episode: Episode }) {
 
 /** Cliffhanger obrigatório (VISUAL 8.7): transmissão interceptada + silhueta da próxima invenção. */
 function HookChapter({ episode }: { episode: Episode }) {
+  const hook = useEpisodeHook('student', episode.id);
+  if (!hook) return <div className="flex-1" />;
+  const end = hook.kind === 'seasonEnd';
   return (
     <div className="relative grid flex-1 grid-cols-[1.1fr_1fr] items-center gap-8 rounded-hand border-4 border-ink bg-noir p-8">
       <div className="flex flex-col gap-4">
@@ -350,22 +354,14 @@ function HookChapter({ episode }: { episode: Episode }) {
           TRANSMISSÃO INTERCEPTADA
         </p>
         <p className="font-type text-sm text-mist">sinal fraco · origem desconhecida · 00:00</p>
-        <Typewriter
-          text={episode.nextHook}
-          speed={45}
-          delay={800}
-          className="text-2xl text-paper"
-        />
+        <Typewriter text={hook.line} speed={45} delay={800} className="text-2xl text-paper" />
       </div>
       <div className="relative">
         <div className="aspect-[16/9] overflow-hidden rounded-sm border-[3px] border-ink brightness-90">
-          <ComicArt
-            id={`proximo-ep${episode.number + 1}`}
-            alt="Um objeto misterioso coberto por um pano, sob um holofote"
-          />
+          <ComicArt id={hook.art} alt="Um objeto misterioso coberto por um pano, sob um holofote" />
         </div>
         <Stamp
-          text="PRÓXIMA SEMANA"
+          text={end ? 'FIM DA TEMPORADA' : 'PRÓXIMA SEMANA'}
           color="brass"
           rotate={-10}
           delay={2.2}

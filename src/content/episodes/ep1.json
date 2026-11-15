@@ -627,5 +627,23 @@
       "art": "narradora"
     }
   ],
-  "nextHook": "Uma mensagem cifrada foi interceptada... Semana que vem: a Máquina Enigma. 🔐"
+  "teaser": {
+    "line": "Uma máquina de guardar segredos... a mais famosa da Segunda Guerra.",
+    "art": "teaser-ep1"
+  },
+  "recapOfThis": [
+    "Na semana passada, a Máquina Analítica estava na vitrine.",
+    "O Bando leu os cartões, os Piratas trancaram a vitrine."
+  ],
+  "card": {
+    "title": "Máquina Analítica",
+    "year": "1843",
+    "people": ["Ada Lovelace", "Charles Babbage"],
+    "facts": [
+      "Recebia instruções por cartões perfurados",
+      "Ada escreveu o primeiro algoritmo para ela",
+      "Nunca foi construída por completo na época"
+    ],
+    "art": "card-ep1"
+  }
 }

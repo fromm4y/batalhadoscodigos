@@ -85,6 +85,14 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // ---------- config/season (SPEC-02 Parte B): ordem da temporada ----------
+    match /config/season {
+      allow read: if isInstructor() || isTeam();
+      allow write: if isAdmin()
+        && onlyKeys(['order', 'updatedAt', 'by'])
+        && request.resource.data.order in ['long', 'short'];
+    }
+
     // ---------- schools/{schoolId} ----------
     match /schools/{schoolId} {
       allow read: if isInstructor();

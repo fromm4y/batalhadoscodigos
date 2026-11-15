@@ -5,11 +5,7 @@
   "invention": {
     "name": "Máquina Enigma",
     "year": "Segunda Guerra Mundial (1939–1945)",
-    "people": [
-      "Alan Turing",
-      "Matemáticos poloneses",
-      "Equipes de Bletchley Park"
-    ]
+    "people": ["Alan Turing", "Matemáticos poloneses", "Equipes de Bletchley Park"]
   },
   "intro": {
     "comic": [
@@ -82,11 +78,7 @@
                 },
                 {
                   "q": "Quem ajudou a quebrar os códigos da Enigma?",
-                  "options": [
-                    "Alan Turing",
-                    "Santos Dumont",
-                    "Ada Lovelace"
-                  ],
+                  "options": ["Alan Turing", "Santos Dumont", "Ada Lovelace"],
                   "correct": 0
                 },
                 {
@@ -107,29 +99,17 @@
               "questions": [
                 {
                   "q": "Onde Turing trabalhou quebrando códigos?",
-                  "options": [
-                    "Em Bletchley Park, na Inglaterra",
-                    "Na NASA",
-                    "No Google"
-                  ],
+                  "options": ["Em Bletchley Park, na Inglaterra", "Na NASA", "No Google"],
                   "correct": 0
                 },
                 {
                   "q": "Como se chamava a máquina que Turing projetou para ajudar a quebrar a Enigma?",
-                  "options": [
-                    "Bombe",
-                    "Calculadora Turbo",
-                    "Tear de Jacquard"
-                  ],
+                  "options": ["Bombe", "Calculadora Turbo", "Tear de Jacquard"],
                   "correct": 0
                 },
                 {
                   "q": "De quanto em quanto tempo a configuração da Enigma mudava?",
-                  "options": [
-                    "Todo dia",
-                    "Uma vez por ano",
-                    "Nunca mudava"
-                  ],
+                  "options": ["Todo dia", "Uma vez por ano", "Nunca mudava"],
                   "correct": 0
                 }
               ]
@@ -321,11 +301,7 @@
                 },
                 {
                   "q": "Quem ajudou a quebrar os códigos da Enigma?",
-                  "options": [
-                    "Alan Turing",
-                    "Santos Dumont",
-                    "Ada Lovelace"
-                  ],
+                  "options": ["Alan Turing", "Santos Dumont", "Ada Lovelace"],
                   "correct": 0
                 },
                 {
@@ -346,29 +322,17 @@
               "questions": [
                 {
                   "q": "Onde Turing trabalhou quebrando códigos?",
-                  "options": [
-                    "Em Bletchley Park, na Inglaterra",
-                    "Na NASA",
-                    "No Google"
-                  ],
+                  "options": ["Em Bletchley Park, na Inglaterra", "Na NASA", "No Google"],
                   "correct": 0
                 },
                 {
                   "q": "Como se chamava a máquina que Turing projetou para ajudar a quebrar a Enigma?",
-                  "options": [
-                    "Bombe",
-                    "Calculadora Turbo",
-                    "Tear de Jacquard"
-                  ],
+                  "options": ["Bombe", "Calculadora Turbo", "Tear de Jacquard"],
                   "correct": 0
                 },
                 {
                   "q": "De quanto em quanto tempo a configuração da Enigma mudava?",
-                  "options": [
-                    "Todo dia",
-                    "Uma vez por ano",
-                    "Nunca mudava"
-                  ],
+                  "options": ["Todo dia", "Uma vez por ano", "Nunca mudava"],
                   "correct": 0
                 }
               ]
@@ -502,11 +466,7 @@
             "prompt": "A chave do dia é 3. Decifre as mensagens e escolha a única que faz sentido.",
             "mode": "verify",
             "shift": 3,
-            "options": [
-              "R WHVRXUR HVWD VHJXUR",
-              "HAHXBL HV HTHUOLJLY",
-              "M HUFDUZQ MNDUG"
-            ],
+            "options": ["R WHVRXUR HVWD VHJXUR", "HAHXBL HV HTHUOLJLY", "M HUFDUZQ MNDUG"],
             "correct": 0,
             "wheel": "free",
             "hint1": "Use o disco com a chave 3 em cada mensagem.",
@@ -636,9 +596,7 @@
   "card": {
     "title": "Máquina Enigma",
     "year": "1939–1945",
-    "people": [
-      "Alan Turing"
-    ],
+    "people": ["Alan Turing"],
     "facts": [
       "Cifrava mensagens trocando letras",
       "A configuração mudava todo dia",

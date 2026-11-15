@@ -94,11 +94,7 @@
                 },
                 {
                   "q": "O ENIAC era do tamanho de...",
-                  "options": [
-                    "Uma sala inteira",
-                    "Um celular",
-                    "Uma caneta"
-                  ],
+                  "options": ["Uma sala inteira", "Um celular", "Uma caneta"],
                   "correct": 0
                 }
               ]
@@ -110,11 +106,7 @@
               "questions": [
                 {
                   "q": "Em que ano o ENIAC ficou pronto?",
-                  "options": [
-                    "1945",
-                    "1845",
-                    "2005"
-                  ],
+                  "options": ["1945", "1845", "2005"],
                   "correct": 0
                 },
                 {
@@ -128,11 +120,7 @@
                 },
                 {
                   "q": "Que peça o ENIAC usava aos milhares?",
-                  "options": [
-                    "Válvulas",
-                    "Chips de celular",
-                    "Pilhas"
-                  ],
+                  "options": ["Válvulas", "Chips de celular", "Pilhas"],
                   "correct": 0
                 }
               ]
@@ -144,11 +132,7 @@
               "questions": [
                 {
                   "q": "O ENIAC fazia contas em qual sistema?",
-                  "options": [
-                    "Decimal",
-                    "Binário",
-                    "Algarismos romanos"
-                  ],
+                  "options": ["Decimal", "Binário", "Algarismos romanos"],
                   "correct": 0
                 },
                 {
@@ -162,11 +146,7 @@
                 },
                 {
                   "q": "Qual destas pessoas foi uma das programadoras do ENIAC?",
-                  "options": [
-                    "Jean Jennings Bartik",
-                    "Marie Curie",
-                    "Frida Kahlo"
-                  ],
+                  "options": ["Jean Jennings Bartik", "Marie Curie", "Frida Kahlo"],
                   "correct": 0
                 }
               ]
@@ -186,14 +166,8 @@
               "prompt": "Quem sou eu?",
               "mode": "choice",
               "text": "Sou enorme, ocupo uma sala inteira, tenho milhares de válvulas e faço contas num piscar de olhos. Quem sou eu?",
-              "options": [
-                "ENIAC",
-                "Geladeira",
-                "Elevador"
-              ],
-              "accept": [
-                "eniac"
-              ],
+              "options": ["ENIAC", "Geladeira", "Elevador"],
+              "accept": ["eniac"],
               "hint1": "É a máquina deste episódio.",
               "hint2": "O nome dela tem 5 letras: E N I..."
             },
@@ -201,10 +175,7 @@
               "prompt": "Digite a resposta da charada.",
               "mode": "text",
               "text": "Sou enorme, ocupo uma sala inteira, tenho milhares de válvulas e faço contas num piscar de olhos. Quem sou eu?",
-              "accept": [
-                "eniac",
-                "o eniac"
-              ],
+              "accept": ["eniac", "o eniac"],
               "hint1": "É a máquina deste episódio.",
               "hint2": "O nome dela tem 5 letras: E N I..."
             },
@@ -212,12 +183,7 @@
               "prompt": "Digite a resposta da charada.",
               "mode": "text",
               "text": "Sou de vidro, esquento, acendo e apago. O ENIAC tinha milhares de mim, e quando um de nós queimava, alguém precisava me trocar. Quem sou eu?",
-              "accept": [
-                "valvula",
-                "valvulas",
-                "a valvula",
-                "valvula termionica"
-              ],
+              "accept": ["valvula", "valvulas", "a valvula", "valvula termionica"],
               "hint1": "É uma peça do ENIAC que aparece no dossiê.",
               "hint2": "Começa com V e tem 7 letras."
             }
@@ -233,10 +199,7 @@
               "prompt": "Escute o número de entrada. Ligue os 2 módulos na ordem certa para chegar a 10.",
               "mode": "build",
               "start": 2,
-              "modules": [
-                "+3",
-                "x2"
-              ],
+              "modules": ["+3", "x2"],
               "slots": 2,
               "target": 10,
               "hint1": "Teste as duas ordens possíveis.",
@@ -247,11 +210,7 @@
               "prompt": "Escute o número de entrada. Ligue os 3 módulos na ordem certa para chegar a 13.",
               "mode": "build",
               "start": 4,
-              "modules": [
-                "+1",
-                "x3",
-                "-2"
-              ],
+              "modules": ["+1", "x3", "-2"],
               "slots": 3,
               "target": 13,
               "hint1": "Experimente começar pelo +1.",
@@ -262,12 +221,7 @@
               "prompt": "Escute o número de entrada. Ligue os 4 módulos na ordem certa para chegar a 29.",
               "mode": "build",
               "start": 3,
-              "modules": [
-                "x2",
-                "+4",
-                "x3",
-                "-1"
-              ],
+              "modules": ["x2", "+4", "x3", "-1"],
               "slots": 4,
               "target": 29,
               "hint1": "O último módulo é o −1.",
@@ -287,11 +241,7 @@
             "prompt": "Ligue os 3 módulos na ordem certa para chegar a 13.",
             "mode": "build",
             "start": 1,
-            "modules": [
-              "+2",
-              "x4",
-              "+1"
-            ],
+            "modules": ["+2", "x4", "+1"],
             "slots": 3,
             "target": 13,
             "hint1": "Faça a conta passo a passo depois de cada módulo.",
@@ -301,12 +251,7 @@
             "prompt": "Use 3 dos 4 módulos para chegar a 18. Um deles sobra!",
             "mode": "build",
             "start": 2,
-            "modules": [
-              "+3",
-              "x2",
-              "x3",
-              "-1"
-            ],
+            "modules": ["+3", "x2", "x3", "-1"],
             "slots": 3,
             "target": 18,
             "hint1": "Um módulo é uma pegadinha e não deve ser usado.",
@@ -316,13 +261,7 @@
             "prompt": "Use 4 dos 5 módulos para chegar a 46. Um deles sobra!",
             "mode": "build",
             "start": 3,
-            "modules": [
-              "+2",
-              "x3",
-              "-1",
-              "x2",
-              "+5"
-            ],
+            "modules": ["+2", "x3", "-1", "x2", "+5"],
             "slots": 4,
             "target": 46,
             "hint1": "Pense de trás para frente: que número vira 46 multiplicando por 2?",
@@ -368,11 +307,7 @@
                 },
                 {
                   "q": "O ENIAC era do tamanho de...",
-                  "options": [
-                    "Uma sala inteira",
-                    "Um celular",
-                    "Uma caneta"
-                  ],
+                  "options": ["Uma sala inteira", "Um celular", "Uma caneta"],
                   "correct": 0
                 }
               ]
@@ -384,11 +319,7 @@
               "questions": [
                 {
                   "q": "Em que ano o ENIAC ficou pronto?",
-                  "options": [
-                    "1945",
-                    "1845",
-                    "2005"
-                  ],
+                  "options": ["1945", "1845", "2005"],
                   "correct": 0
                 },
                 {
@@ -402,11 +333,7 @@
                 },
                 {
                   "q": "Que peça o ENIAC usava aos milhares?",
-                  "options": [
-                    "Válvulas",
-                    "Chips de celular",
-                    "Pilhas"
-                  ],
+                  "options": ["Válvulas", "Chips de celular", "Pilhas"],
                   "correct": 0
                 }
               ]
@@ -418,11 +345,7 @@
               "questions": [
                 {
                   "q": "O ENIAC fazia contas em qual sistema?",
-                  "options": [
-                    "Decimal",
-                    "Binário",
-                    "Algarismos romanos"
-                  ],
+                  "options": ["Decimal", "Binário", "Algarismos romanos"],
                   "correct": 0
                 },
                 {
@@ -436,11 +359,7 @@
                 },
                 {
                   "q": "Qual destas pessoas foi uma das programadoras do ENIAC?",
-                  "options": [
-                    "Jean Jennings Bartik",
-                    "Marie Curie",
-                    "Frida Kahlo"
-                  ],
+                  "options": ["Jean Jennings Bartik", "Marie Curie", "Frida Kahlo"],
                   "correct": 0
                 }
               ]
@@ -489,16 +408,10 @@
               "prompt": "Escute o número de entrada. O painel deveria dar 10, mas está errado. Troque os cabos de lugar.",
               "mode": "debug",
               "start": 2,
-              "modules": [
-                "+3",
-                "x2"
-              ],
+              "modules": ["+3", "x2"],
               "slots": 2,
               "target": 10,
-              "chain": [
-                "x2",
-                "+3"
-              ],
+              "chain": ["x2", "+3"],
               "hint1": "Faça a conta com os módulos na ordem atual.",
               "hint2": "Os dois módulos estão invertidos.",
               "startSpoken": true
@@ -507,18 +420,10 @@
               "prompt": "Escute o número de entrada. O painel deveria dar 13. Ache os cabos trocados.",
               "mode": "debug",
               "start": 4,
-              "modules": [
-                "+1",
-                "x3",
-                "-2"
-              ],
+              "modules": ["+1", "x3", "-2"],
               "slots": 3,
               "target": 13,
-              "chain": [
-                "x3",
-                "+1",
-                "-2"
-              ],
+              "chain": ["x3", "+1", "-2"],
               "hint1": "Faça a conta passo a passo.",
               "hint2": "Os dois primeiros módulos estão invertidos.",
               "startSpoken": true
@@ -527,20 +432,10 @@
               "prompt": "Escute o número de entrada. O painel deveria dar 29. Ache os cabos trocados.",
               "mode": "debug",
               "start": 3,
-              "modules": [
-                "x2",
-                "+4",
-                "x3",
-                "-1"
-              ],
+              "modules": ["x2", "+4", "x3", "-1"],
               "slots": 4,
               "target": 29,
-              "chain": [
-                "+4",
-                "x2",
-                "x3",
-                "-1"
-              ],
+              "chain": ["+4", "x2", "x3", "-1"],
               "hint1": "Faça a conta passo a passo.",
               "hint2": "Os dois primeiros módulos estão invertidos.",
               "startSpoken": true
@@ -558,18 +453,10 @@
             "prompt": "O painel deveria dar 13. Troque os cabos de lugar até dar certo.",
             "mode": "debug",
             "start": 1,
-            "modules": [
-              "+2",
-              "x4",
-              "+1"
-            ],
+            "modules": ["+2", "x4", "+1"],
             "slots": 3,
             "target": 13,
-            "chain": [
-              "x4",
-              "+2",
-              "+1"
-            ],
+            "chain": ["x4", "+2", "+1"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           },
@@ -577,19 +464,10 @@
             "prompt": "O painel deveria dar 18. Ache o erro e conserte.",
             "mode": "debug",
             "start": 2,
-            "modules": [
-              "+3",
-              "x2",
-              "x3",
-              "-1"
-            ],
+            "modules": ["+3", "x2", "x3", "-1"],
             "slots": 3,
             "target": 18,
-            "chain": [
-              "+3",
-              "x3",
-              "x2"
-            ],
+            "chain": ["+3", "x3", "x2"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           },
@@ -597,21 +475,10 @@
             "prompt": "O painel deveria dar 46. Ache o erro e conserte.",
             "mode": "debug",
             "start": 3,
-            "modules": [
-              "+2",
-              "x3",
-              "-1",
-              "x2",
-              "+5"
-            ],
+            "modules": ["+2", "x3", "-1", "x2", "+5"],
             "slots": 4,
             "target": 46,
-            "chain": [
-              "x3",
-              "+5",
-              "-1",
-              "x2"
-            ],
+            "chain": ["x3", "+5", "-1", "x2"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           }
@@ -709,9 +576,7 @@
   "card": {
     "title": "ENIAC",
     "year": "1945",
-    "people": [
-      "As seis programadoras do ENIAC"
-    ],
+    "people": ["As seis programadoras do ENIAC"],
     "facts": [
       "Ocupava uma sala inteira",
       "Era programado com cabos e chaves",

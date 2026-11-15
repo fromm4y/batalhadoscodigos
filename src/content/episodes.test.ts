@@ -1,0 +1,149 @@
+/**
+ * Conteúdo dos episódios: formato válido e respostas conferidas (SPEC-03 §7).
+ * Se algum destes testes falhar depois de mexer num JSON, o conteúdo ficou errado.
+ */
+import { describe, expect, it } from 'vitest';
+import { bestMoves, forkMoves, placeMove, threats } from '@/engine/boardGames';
+import { decodeText, shiftText } from '@/engine/cipher';
+import { bestBudgetValue } from '@/engine/priority';
+import { runChain, wiringSolutions } from '@/engine/wiring';
+import { normalizeAnswer } from '@/engine/answers';
+import ep1 from './episodes/ep1.json';
+import ep2 from './episodes/ep2.json';
+import ep3 from './episodes/ep3.json';
+import ep4 from './episodes/ep4.json';
+import ep5 from './episodes/ep5.json';
+import { SEASON } from './season';
+import type {
+  AnyEpisode,
+  BoardChoiceVariant,
+  Challenge,
+  CipherVariant,
+  GameTreeVariant,
+  PriorityVariant,
+  WiringVariant,
+} from './types';
+import { validateEpisode } from './validateEpisode';
+
+const ALL = { ep1, ep2, ep3, ep4, ep5 } as unknown as Record<string, AnyEpisode>;
+
+function challengesOf(e: AnyEpisode): Challenge[] {
+  if (e.mode === 'coop') return [...e.coop.locks, e.coop.vault];
+  return [...e.sides.red.locks, e.sides.red.vault, ...e.sides.blue.locks, e.sides.blue.vault];
+}
+function variantsOf<V>(e: AnyEpisode, type: Challenge['type']): { tag: string; v: V }[] {
+  return challengesOf(e)
+    .filter((c) => c.type === type)
+    .flatMap((c) =>
+      (['A', 'B', 'C'] as const).map((lv) => ({
+        tag: `${e.id} ${c.key} ${lv}`,
+        v: c.variants[lv] as V,
+      })),
+    );
+}
+
+describe('formato dos episódios', () => {
+  it.each(Object.keys(ALL))('%s valida contra os tipos', (id) => {
+    expect(validateEpisode(ALL[id])).toEqual([]);
+  });
+  it('todo episódio da temporada tem JSON', () => {
+    for (const s of SEASON) expect(ALL[s.id], s.id).toBeDefined();
+  });
+  it('o validador pega erros', () => {
+    expect(validateEpisode({})).not.toEqual([]);
+    const broken = structuredClone(ep2) as unknown as {
+      sides: { red: { locks: { type: string }[] } };
+    };
+    broken.sides.red.locks[1]!.type = 'xadrez';
+    expect(validateEpisode(broken).join()).toMatch(/tipo desconhecido/);
+  });
+});
+
+describe('cipher (Ep. 2)', () => {
+  const vs = Object.values(ALL).flatMap((e) => variantsOf<CipherVariant>(e, 'cipher'));
+  it('decode/crack: shift(answer) = text · encode: shift(text) = answer', () => {
+    expect(vs.length).toBeGreaterThan(0);
+    for (const { tag, v } of vs) {
+      if (v.mode === 'decode' || v.mode === 'crack')
+        expect(shiftText(v.answer!, v.shift), tag).toBe(v.text);
+      if (v.mode === 'encode') expect(shiftText(v.text!, v.shift), tag).toBe(v.answer);
+      if (v.crib)
+        expect(normalizeAnswer(v.answer!).startsWith(normalizeAnswer(v.crib)), tag).toBe(true);
+    }
+  });
+  it('verify: só a opção correta vira palavras com a chave do dia', () => {
+    // Dicionário do episódio: palavras de todos os textos do Ep. 2 + as mensagens certas.
+    const words = new Set(
+      normalizeAnswer(JSON.stringify(ep2))
+        .toUpperCase()
+        .split(/[^A-Z]+/)
+        .filter(Boolean),
+    );
+    // Palavras curtas e as das mensagens certas, que no episódio só aparecem cifradas.
+    const extra = 'O A E AO DA DO NA NO DE EM UM ESTA TESOURO SEGURO NAVIO PARTE MEIO DIA';
+    for (const w of `${extra} GUARDEM MAQUINA SALA DOIS`.split(' ')) words.add(w);
+    for (const { tag, v } of vs.filter((x) => x.v.mode === 'verify')) {
+      v.options!.forEach((opt, i) => {
+        const plain = decodeText(opt, v.shift).split(' ');
+        const real = plain.every((w) => words.has(w));
+        expect(real, `${tag} opção ${i}: ${plain.join(' ')}`).toBe(i === v.correct);
+      });
+    }
+  });
+});
+
+describe('wiring (Ep. 3)', () => {
+  const vs = Object.values(ALL).flatMap((e) => variantsOf<WiringVariant>(e, 'wiring'));
+  it('existe exatamente UMA ordem que chega no alvo; em debug, a ordem sabotada não chega', () => {
+    expect(vs.length).toBeGreaterThan(0);
+    for (const { tag, v } of vs) {
+      expect(wiringSolutions(v.start, v.modules, v.slots, v.target), tag).toHaveLength(1);
+      if (v.mode === 'debug') expect(runChain(v.start, v.chain!), tag).not.toBe(v.target);
+    }
+  });
+});
+
+describe('priority (Ep. 4)', () => {
+  const vs = Object.values(ALL).flatMap((e) => variantsOf<PriorityVariant>(e, 'priority'));
+  it('budget: a força bruta confirma optimalValue · select: correct tem pick itens', () => {
+    expect(vs.length).toBeGreaterThan(0);
+    for (const { tag, v } of vs) {
+      if (v.mode === 'budget')
+        expect(bestBudgetValue(v.tasks, v.capacity!), tag).toBe(v.optimalValue);
+      else {
+        expect(v.correct!.length, tag).toBe(v.pick);
+        for (const id of v.correct!)
+          expect(
+            v.tasks.some((t) => t.id === id),
+            `${tag} ${id}`,
+          ).toBe(true);
+      }
+    }
+  });
+});
+
+describe('boardChoice e gameTree (Ep. 5)', () => {
+  it('jogo da velha: A e B = única casa que bloqueia; C = única armadilha dupla', () => {
+    for (const { tag, v } of variantsOf<BoardChoiceVariant>(
+      ep5 as unknown as AnyEpisode,
+      'boardChoice',
+    )) {
+      const board = placeMove(v.board, v.spokenMove.cell, 'O');
+      const level = tag.slice(-1);
+      if (level === 'C') expect(forkMoves(board), tag).toEqual([v.answer]);
+      else expect(threats(board, 'O'), tag).toEqual([v.answer]);
+    }
+  });
+  it('minimax confirma a resposta como única melhor jogada', () => {
+    for (const { tag, v } of variantsOf<GameTreeVariant>(ep5 as unknown as AnyEpisode, 'gameTree'))
+      expect(bestMoves(v.tree), tag).toEqual([v.answer]);
+  });
+});
+
+describe('Ep. 1 continua no formato novo (SPEC-02 Parte B)', () => {
+  it('tem recap, carta e gancho', () => {
+    expect(ep1.recapOfThis).toHaveLength(2);
+    expect(ep1.card.art).toBe('card-ep1');
+    expect(ep1.teaser.art).toBe('teaser-ep1');
+  });
+});
