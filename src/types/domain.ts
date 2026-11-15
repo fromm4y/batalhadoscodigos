@@ -74,6 +74,8 @@ export type ClassDoc = {
   season: string;
   archived: boolean;
   createdAt: Timestamp;
+  /** SPEC-02 A4: quando a temporada da turma foi encerrada (dados apagados) */
+  seasonClosedAt?: Timestamp;
 };
 
 export type TeamDoc = {

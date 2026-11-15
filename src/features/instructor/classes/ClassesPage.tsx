@@ -6,6 +6,7 @@ import type { ClassDoc } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
 import { useAllClasses, useInstructors, useMyClasses, useSchools, type WithId } from '../data';
 import { InstructorLayout } from '../InstructorLayout';
+import { CleanupPanel } from '../lifecycle/CleanupPanel';
 import { ClassCard } from './ClassCard';
 import { ClassFormDialog } from './ClassFormDialog';
 
@@ -33,8 +34,10 @@ export function ClassesPage() {
   }, [schools.data]);
 
   const myVisible = mine.data.filter((c) => showArchived || !c.archived).sort(byName);
-  const archivedCount = mine.data.filter((c) => c.archived).length;
-  const others = all.data.filter((c) => c.instructorId !== profile.uid && !c.archived).sort(byName);
+  const archivedCount = (isAdmin ? all.data : mine.data).filter((c) => c.archived).length;
+  const others = all.data
+    .filter((c) => c.instructorId !== profile.uid && (showArchived || !c.archived))
+    .sort(byName);
   const ownerLabel = (uid: string) => {
     const i = instructors.data.find((x) => x.id === uid);
     return i ? `${i.displayName} (${i.email})` : 'Narradora';
@@ -134,11 +137,16 @@ export function ClassesPage() {
                 cls={c}
                 schoolName={schoolName(c.schoolId)}
                 ownerLabel={ownerLabel(c.instructorId)}
+                onToggleArchive={() => void toggleArchive(c)}
               />
             ))}
           </div>
         </section>
       )}
+
+      <div className="mt-12 max-w-2xl">
+        <CleanupPanel isAdmin={isAdmin} />
+      </div>
 
       <ClassFormDialog
         open={dialogOpen}

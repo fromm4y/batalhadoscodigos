@@ -5,11 +5,14 @@ import { Avatar } from '@/components/avatar/Avatar';
 import { ComicButton, ComicPanel, SpeechBubble, cn } from '@/components/comic';
 import { GAME_RULES } from '@/config/gameRules';
 import { SEASON } from '@/content/season';
+import { doc, updateDoc } from 'firebase/firestore';
 import { postAsInstructor } from '@/lib/api';
+import { getFirebase } from '@/lib/firebase';
 import type { TeamDoc } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
 import { useClass, useClassTeams, useOpenSessions, useSchools, type WithId } from '../data';
 import { InstructorLayout } from '../InstructorLayout';
+import { SeasonCloseDialog } from '../lifecycle/SeasonCloseDialog';
 
 /** `/instrutor/turmas/:classId` — duplas (avatares, pontos, reset de PIN) + ranking + "Abrir sessão". */
 export function ClassDetailPage() {
@@ -27,6 +30,7 @@ export function ClassDetailPage() {
   const [msg, setMsg] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [resetting, setResetting] = useState<WithId<TeamDoc> | null>(null);
   const [now] = useState(() => Date.now());
+  const [closing, setClosing] = useState(false);
 
   if (cls.loading) return <InstructorLayout title="Turma">{null}</InstructorLayout>;
   if (!cls.data) {
@@ -41,6 +45,23 @@ export function ClassDetailPage() {
 
   const c = cls.data;
   const mine = c.instructorId === profile.uid;
+  // Turma arquivada é somente leitura (SPEC-02 A2); a dona ou a admin podem desarquivar.
+  const canManage = mine || profile.role === 'admin';
+  const active = mine && !c.archived;
+
+  async function toggleArchive() {
+    setMsg(null);
+    try {
+      await updateDoc(doc(getFirebase().db, 'classes', classId), { archived: !c.archived });
+      setMsg({
+        kind: 'ok',
+        text: c.archived ? 'Turma reativada.' : 'Turma arquivada (somente leitura).',
+      });
+    } catch (err) {
+      console.error('[turma]', err);
+      setMsg({ kind: 'error', text: 'Não consegui atualizar a turma. Tente de novo.' });
+    }
+  }
   const schoolName = schools.data.find((s) => s.id === c.schoolId)?.name ?? '';
   const ranking = [...teams.data].sort(
     (a, b) => b.totalPoints - a.totalPoints || a.cityName.localeCompare(b.cityName),
@@ -79,6 +100,19 @@ export function ClassDetailPage() {
         · temporada {c.season}
         {!mine && ' · (somente leitura)'}
       </p>
+      {c.archived && (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-l-4 border-brass bg-brass/15 p-3">
+          <p className="font-bold text-paper">
+            🗄️ Turma arquivada: somente leitura, sem abrir sessão
+            {c.seasonClosedAt ? ' (temporada encerrada: duplas e pontos foram apagados)' : ''}.
+          </p>
+          {canManage && (
+            <ComicButton variant="brass" icon="↺" onClick={() => void toggleArchive()}>
+              Desarquivar
+            </ComicButton>
+          )}
+        </div>
+      )}
 
       {msg && (
         <p
@@ -94,7 +128,7 @@ export function ClassDetailPage() {
 
       <div className="grid grid-cols-[1.5fr_1fr] gap-8">
         <div className="flex flex-col gap-8">
-          {mine && (
+          {active && (
             <ComicPanel
               caption="Sessão de hoje"
               tone={open ? 'red' : 'graphite'}
@@ -188,7 +222,7 @@ export function ClassDetailPage() {
                     <p className="font-type text-sm text-mist">
                       {t.totalPoints} pts · {t.episodesPlayed} ep.
                     </p>
-                    {mine && (
+                    {active && (
                       <button
                         type="button"
                         onClick={() => setResetting(t)}
@@ -204,37 +238,55 @@ export function ClassDetailPage() {
           </section>
         </div>
 
-        <ComicPanel caption="Ranking da temporada" tone="graphite" className="self-start pt-8">
-          {ranking.length === 0 ? (
-            <p className="font-type text-mist">O ranking aparece quando as duplas pontuarem.</p>
-          ) : (
-            <ol className="grid gap-2">
-              {ranking.map((t, i) => (
-                <li key={t.id} className="flex items-center gap-3">
-                  <span
-                    className={cn(
-                      'grid h-10 w-10 place-items-center rounded-full border-[3px] border-ink font-heist text-2xl',
-                      i === 0
-                        ? 'bg-brass text-ink glow-brass'
-                        : i === 1
-                          ? 'bg-mist text-ink'
-                          : i === 2
-                            ? 'bg-[#b87333] text-ink'
-                            : 'bg-graphite-light text-paper',
-                    )}
-                  >
-                    {i + 1}
-                  </span>
-                  <Avatar avatar={t.avatar} className="h-10 w-9" decorative />
-                  <span className="flex-1 font-bold">{t.cityName}</span>
-                  <span className="font-heist text-2xl tracking-wider text-brass">
-                    {t.totalPoints}
-                  </span>
-                </li>
-              ))}
-            </ol>
+        <div className="flex flex-col gap-8 self-start">
+          <ComicPanel caption="Ranking da temporada" tone="graphite" className="pt-8">
+            {ranking.length === 0 ? (
+              <p className="font-type text-mist">O ranking aparece quando as duplas pontuarem.</p>
+            ) : (
+              <ol className="grid gap-2">
+                {ranking.map((t, i) => (
+                  <li key={t.id} className="flex items-center gap-3">
+                    <span
+                      className={cn(
+                        'grid h-10 w-10 place-items-center rounded-full border-[3px] border-ink font-heist text-2xl',
+                        i === 0
+                          ? 'bg-brass text-ink glow-brass'
+                          : i === 1
+                            ? 'bg-mist text-ink'
+                            : i === 2
+                              ? 'bg-[#b87333] text-ink'
+                              : 'bg-graphite-light text-paper',
+                      )}
+                    >
+                      {i + 1}
+                    </span>
+                    <Avatar avatar={t.avatar} className="h-10 w-9" decorative />
+                    <span className="flex-1 font-bold">{t.cityName}</span>
+                    <span className="font-heist text-2xl tracking-wider text-brass">
+                      {t.totalPoints}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </ComicPanel>
+          {canManage && !c.archived && (
+            <ComicPanel caption="Fim de ano" tone="graphite" className="pt-8">
+              <p className="mb-3 font-type text-mist">
+                Arquivar deixa a turma somente leitura (dá para desfazer). Encerrar a temporada
+                guarda o ranking e apaga duplas, pontos e sessões (LGPD), sem volta.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <ComicButton variant="paper" icon="🗄️" onClick={() => void toggleArchive()}>
+                  Arquivar turma
+                </ComicButton>
+                <ComicButton variant="red" icon="🏁" onClick={() => setClosing(true)}>
+                  Encerrar temporada
+                </ComicButton>
+              </div>
+            </ComicPanel>
           )}
-        </ComicPanel>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -269,6 +321,18 @@ export function ClassDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+      {closing && (
+        <SeasonCloseDialog
+          classId={classId}
+          cls={c}
+          schoolName={schoolName}
+          teams={teams.data}
+          onClose={(done) => {
+            setClosing(false);
+            if (done) setMsg({ kind: 'ok', text: done });
+          }}
+        />
+      )}
     </InstructorLayout>
   );
 }
