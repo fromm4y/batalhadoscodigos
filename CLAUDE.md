@@ -1,18 +1,18 @@
 # CLAUDE.md — A Grande Caçada aos Códigos
 
-> **Fontes da verdade: `SPEC.md` + `VISUAL.md`** (o VISUAL.md **substitui a seção 9.6** do SPEC e detalha o fluxo do aluno da 9.2).
+> **Fontes da verdade: `SPEC.md` + `VISUAL.md` + `SPEC-02-PLATAFORMA.md` + `SPEC-03-EPISODIOS.md`** (o VISUAL.md **substitui a seção 9.6** do SPEC; o SPEC-02 traz as melhorias pós-MVP em partes A–F; o SPEC-03 traz os Ep. 2–5). Situação atual: `docs/STATUS.md`.
 > Este arquivo é só o resumo das regras que valem SEMPRE. Em caso de conflito, valem o VISUAL.md (arte/fluxo) e o SPEC.md (o resto). Em caso de dúvida, **perguntar à May antes de inventar**.
 
 ## Como trabalhar
 
-- Seguir o **plano da seção 14** do SPEC, **uma etapa por vez**. Ao fim de cada etapa: rodar os critérios de aceite, relatar e **PARAR** até a May confirmar.
+- Plano do SPEC (seção 14) **concluído**. Agora a ordem é (15/11): SPEC-02 A+B → Ep. 2 → SPEC-02 C → Ep. 3 → Ep. 4 → SPEC-02 D+E → Ep. 5 → SPEC-02 F. **Um item por vez**: no fim, rodar testes e aceite, atualizar `docs/STATUS.md` e `docs/IMAGENS.md`, dizer o que testar e **PARAR** até a May confirmar.
 - Etapas pequenas, **commits em português**, mensagens claras (ex.: `feat: cria componente SpeechBubble`).
-- Branch de trabalho: `claude/epic-galileo-ghdqav`. Não criar PR sem pedido explícito.
+- Branch de trabalho: `claude/epic-galileo-ghdqav`. **Um PR no fim de cada item** (combinado com a May em 15/11); ela testa e faz o merge.
 - Se uma decisão **[PADRÃO]** parecer ruim na prática, avisar e sugerir alternativa (não mudar sozinho).
 
 ## Stack (não trocar sem pedir)
 
-- **Front:** React 18 + Vite + TypeScript, React Router, Zustand, Framer Motion, Howler.js, Tailwind CSS.
+- **Front:** React 18 + Vite + TypeScript, React Router, Zustand, Framer Motion, Tailwind CSS. Som 100% Web Audio (sem Howler). Certificados (SPEC-02 E): `html-to-image` + `jsPDF`.
 - **Back:** Firebase Auth (Google p/ instrutores, **custom token** p/ duplas) + Firestore (tempo real via `onSnapshot`).
 - **Funções:** Vercel Serverless Functions em `api/*` com `firebase-admin`. **Não usar Cloud Functions** (plano Spark).
 - **Qualidade:** TypeScript **estrito**, sem `any` desnecessário; ESLint + Prettier; Vitest para o motor.
@@ -24,12 +24,25 @@
 2. **"Nada abre sem a Narradora" (RN-05):** fases só avançam por clique da instrutora. Tempos de fase são só **guia**; nada avança sozinho. Fora de sessão aberta, aluno vê _"A Narradora ainda não deu o sinal..."_.
 3. **Desafios espelhados:** os dois lados trabalham o **mesmo conceito com a mesma dificuldade**, com **ações opostas** (Bando quebra/lê/cria; Piratas protegem/escrevem/depuram). Vale para conteúdo e para habilidades.
 4. **Direitos de imagem:** usar só a **estética**. **PROIBIDO** usar logos, imagens, músicas ou a arte oficial de _La Casa de Papel_ ou _One Piece_ (nada de Jolly Roger oficial, máscara de Dalí, "Bella Ciao", etc.). **Exceção (decisão da May, 13/11):** os **nomes** dos personagens podem aparecer como **opção de nome de dupla** (`src/content/names.ts`), por ser atividade educacional. Os títulos das obras não aparecem na UI, e nenhum asset/arquivo usa esses nomes. Toda arte é **original**. Imagens de referência (séries, filmes, museus reais) servem só para inspirar: **nunca** entram no repositório.
-5. **Conteúdo dirigido por JSON:** o motor não conhece episódio nenhum. Episódio = `src/content/episodes/epN.json` + registro em `src/content/season.ts`.
-6. **LGPD:** nenhum dado pessoal de aluno (sem nome real, foto, e-mail, idade). Nomes de dupla só de listas fechadas (`src/content/names.ts`).
+5. **Conteúdo dirigido por JSON:** o motor não conhece episódio nenhum. Episódio = `src/content/episodes/epN.json` + registro em `src/content/season.ts` e no loader (`episodes/index.ts`). Todo JSON passa no `validateEpisode` e nos testes de conteúdo (`src/content/episodes.test.ts`, SPEC-03 §7). **Se um teste de conteúdo falhar, avisar a May antes de mudar o JSON.**
+6. **LGPD:** nenhum dado pessoal de aluno (sem nome real, foto, e-mail, idade). Nomes de dupla só de listas fechadas (`src/content/names.ts`); personagem só da lista (`characters.ts`). Certificado **sem nome de aluno** (duas linhas "Nome:" em branco). Relatório e CSV **anonimizados por padrão** (`Dupla 01`...). Limpeza de sessões e "Encerrar temporada" apagam dados; ações registradas em `auditLog` (sem dado de aluno). Pesquisa acadêmica exige comitê de ética e termos (o sistema não substitui).
 7. **Barra do cabo de guerra:** alterada **sempre** por `runTransaction`. Timers sempre a partir de `serverTimestamp()` + offset de relógio estimado.
 8. **Pontos:** todo ponto gera entrada no `ledger`; `totalPoints` atualizado na mesma transação; total **nunca < 0**.
 9. **Anti-trapaça MVP:** nunca logar respostas no console nem deixá-las em texto puro no HTML; build minificado.
 10. **Toda a interface em português do Brasil.** Microcopy curta, divertida, **sem humilhar** quem erra.
+
+## Conteúdo novo (SPEC-02 e SPEC-03, 15/11)
+
+- **Tipos de desafio novos** (`src/content/types.ts`, motor puro em `src/engine/`): `cipher` (Ep. 2, disco de cifra: decode/encode/crack/verify, `spokenKey`), `wiring` (Ep. 3, módulos "+3"/"x2"/"-1" em sequência, build/debug, `startSpoken`; uma única ordem certa), `priority` (Ep. 4, select com `pickSpoken` / budget com ótimo por força bruta, qualquer combinação ótima vale), `boardChoice` (Ep. 5, jogo da velha com a jogada falada) e `gameTree` (Ep. 5, minimax).
+- **Campos novos em todo episódio:** `teaser` (descreve o episódio SEGUINTE da ordem longa), `recapOfThis` ("Anteriormente" do episódio seguinte), `card` (carta do Álbum). Arte: `card-epN`, `teaser-epN`.
+- **Temporada:** ordens `long` (ep1–5) e `short` (ep1, ep2, ep4, ep5) em `season.ts`; a admin escolhe (`config/season`). O gancho do fim usa `hookFor`: o teaser que aponta para o próximo episódio da ordem ativa; sem próximo = encerramento da temporada.
+- **Modo `coop` (Ep. 5):** sem lados; a turma vira "A Aliança"; um confronto `matches/coop` com barra Turma × Máquina; puxão = `15 / duplas conectadas`; turma vence se metade das duplas abrir o Cofre antes da máquina; Reforço manda uma Dica 1 grátis; fim da temporada com ranking, medalhas e certificados.
+- **Alarme e máquina do coop:** disparados por **eleição por transação** em qualquer cliente conectado (não depende mais do painel aberto).
+- **Álbum do Museu** (`/album`): carta por episódio (ganha, dourada se venceu, futura trancada, perdida se faltou — não recupera). **Anteriormente na Caçada** no começo do planejamento (a partir do Ep. 2), com números reais da aula anterior.
+- **Ficha que evolui** (níveis por episódios jogados) e **selos** (sem pontos). **Certificado** da temporada (PNG por dupla, PDF da turma).
+- **Relatório da turma:** `sessions/{id}/attempts` a cada envio; resumo agregado em `classes/{id}/reports/{episodeId}` sobrevive à limpeza.
+- **Desafios espelhados sem respostas compartilhadas** (pedido da May, 15/11): a mesma lógica e dificuldade, mas **nenhuma resposta de um lado aparece na tela do outro**, e as alternativas aparecem embaralhadas (por dupla e desafio), para ninguém "passar cola" sem querer.
+- **Cabo de guerra:** a cor de quem está ganhando cresce sobre a do outro (pedido da May, 15/11).
 
 ## Direção de arte v2 — "HQ Noir de assalto" (VISUAL.md)
 
@@ -93,7 +106,7 @@ firestore.rules
 - **(10/11) Ilustrações:** a May gera as imagens (lista em `docs/IMAGENS.md`). Código usa placeholder até a imagem existir.
 - **(13/11) Personagens-imagem das duplas:** 12 meninas + 12 meninos (`src/content/characters.ts`), cada um com arte `avatar-{id}-bando` e `avatar-{id}-piratas`. A dupla escolhe um; `avatar.character` guarda o id (a API só aceita ids da lista). Só aparecem os personagens com as duas artes; sem nenhum, vale o criador em SVG (que continua como opção "montar do meu jeito" e como reserva).
 - **(13/11) Abertura:** `/` começa com o museu no escuro + lanterna seguindo o mouse (`SplashScreen`); "Começar" leva ao código da sala. Quem já está numa missão pula a abertura.
-- **(13/11) Nomes em abas:** Bando = Personagens | Cidades do Brasil; Piratas = Personagens | Nomes piratas.
+- **(13/11) Nomes em abas:** Bando = Personagens | Cidades do Brasil; Piratas = Personagens | Nomes piratas. **(15/11) A May manteve** os nomes dos personagens (o SPEC-02 A1 pedia para tirar: decisão dela prevalece).
 - **(10/11) Seed:** `GET /api/setup` (um clique, idempotente) ou `npm run seed` criam escolas + admin. Lógica única em `api/_lib/seed.ts`.
 - **Versões:** React 18 (SPEC) → por isso **React Router 7** (o 8 exige React 19). **firebase-admin 13** (o 14 puxa `jose` 6 em ESM e quebra no carregador da Vercel com `ERR_REQUIRE_ESM`; não atualizar sem testar com `node --no-experimental-require-module`). Funções em **Node 22.x**. TypeScript 6 (o typescript-eslint ainda não suporta o 7). Tailwind v4 (tokens em `src/index.css`, bloco `@theme`).
 - **Regras do Firestore:** começam "nega tudo"; cada coleção abre na etapa em que é usada.
@@ -108,16 +121,18 @@ firestore.rules
 - **(13/11) Relógio do servidor:** `src/lib/serverClock.ts` calibrado pelo `lastSeenAt` da presença; efeitos (`until`) usam `serverNow()`.
 - **(12/11) Presença:** a dupla marca `connected/lastSeenAt` a cada `GAME_RULES.presence.heartbeatSeconds`; o painel considera desconectada após 2,5× esse tempo.
 - **(13/11) Login que não cai:** um app Firebase por papel (`getFirebase('instructor'|'student')`). Instrutora com persistência local (só sai pelo botão "Sair"); duplas com persistência **por aba** (cada aba é uma dupla, recarregar não desloga). Código de aluno/jogo usa sempre `getFirebase('student')`.
-- **(13/11) Evento automático (Etapa 5):** `autoEventAt` sorteado ao liberar os Cadeados; quem dispara é a aba do painel da Narradora (precisa ficar aberta). Acontece uma vez por sessão.
+- **(13/11 → 15/11) Evento automático:** `autoEventAt` sorteado ao liberar os Cadeados. Desde 15/11 (SPEC-02 A1) dispara por **eleição por transação** (`src/features/game/museumElection.ts`): duplas, painel e projetor conferem a cada `electionCheckSeconds`; as regras deixam a dupla só fazer idle→running automático depois do horário. Acontece uma vez por sessão.
 - **(13/11) Botão de ajuda** se chama "🙋 Chamar a Narradora" (1 por dupla por sessão).
 - **(13/11) Congelar telas** desconta o tempo congelado: ao descongelar, `phaseStartedAt`, `autoEventAt` e o `nextAt` do robô andam pra frente.
 - **(13/11) Fase por dupla:** `players/{id}.phaseOverride` (dupla atrasada/adiantada); a fase efetiva é `phaseOverride ?? session.phase`.
 - **(13/11) Ranking (Etapa 6):** pelo `totalPoints` da temporada (`src/engine/ranking.ts`); empate divide a posição (1, 2, 2, 4). O aluno vê o pódio só no planejamento (passo "Ranking") e no fim (RN-25); projetor e painel mostram sempre.
-- **(13/11) Fim do episódio em 4 capítulos** (Resultado+extrato → Ranking → Revelação+carta do Álbum → "???" Transmissão interceptada), cada um cabe em 1366×768. Arte por convenção: `carta-{episodeId}` e `proximo-ep{N+1}`.
+- **(13/11) Fim do episódio em 4 capítulos** (Resultado+extrato → Ranking → Revelação+carta do Álbum → "???" Transmissão interceptada), cada um cabe em 1366×768. Arte: `episode.card.art` (`card-epN`) e o `teaser.art` escolhido por `hookFor` (`teaser-epN`).
 - **(13/11) Projetor no fim:** a Narradora alterna Ranking/Gancho por botões discretos no canto (nada troca sozinho). Fundo do projetor: `telhado-museu`.
 - **(13/11) Destaque da aula** (pedido da May): ao lado do ranking da temporada, a(s) dupla(s) com mais `episodePoints` na sessão (`sessionHighlights`). Para o aluno ver, as regras liberam ler `players` da própria sessão **só na fase `end`**.
-- **(13/11) Áudio (Etapa 7):** `src/audio/engine.ts` (Web Audio sintetizado: efeitos + música por fase: lobby, planning, red, blue, vault, end). Preferências (música, efeitos, mudo) em `localStorage['cacada.audio']` via `useAudio`. Música para em transmissão e telas congeladas. O Howler continua instalado, mas não é usado.
+- **(13/11) Áudio (Etapa 7):** `src/audio/engine.ts` (Web Audio sintetizado: efeitos + música por fase: lobby, planning, red, blue, vault, end). Preferências (música, efeitos, mudo) em `localStorage['cacada.audio']` via `useAudio`. Música para em transmissão e telas congeladas.
 - **(13/11) Narração:** botão "🔊 Ouvir" (Web Speech, voz pt-BR) nos desafios e na abertura; some sem voz pt-BR; abaixa a música enquanto fala; nunca lê respostas.
+- **(15/11) Fim de ano (SPEC-02 A2–A4):** turma arquivada é somente leitura (regras: só desarquivar; a admin também arquiva). `POST /api/admin-cleanup` apaga sessões vencidas há mais de `GAME_RULES.cleanup.olderThanDays` (Narradora: as próprias; admin: todas). `POST /api/season-close` exige o nome da turma, apaga duplas/ledger/PINs/sessões e arquiva (o CSV do ranking é baixado antes, no navegador). Tudo vai para `auditLog` (só a admin lê). Lógica em `api/_lib/dataLifecycle.ts`.
+- **(15/11) Personagens recebidos:** 7 completos (`menina-01..04`, `menino-01..03`) + 3 metades esperando o par. Recorte do fundo e da marca d'água por script; o personagem só aparece com as duas versões.
 - **(13/11) Classes conflitantes:** o `cn` só junta strings (sem tailwind-merge). Nunca passar duas classes da mesma propriedade (ex.: `relative` + `fixed`); usar ternário ou uma prop (`compact`, `tight`, `onDark`).
 - **(13/11) Ensaio geral (Etapa 8, aprovado no teste):** aula real de 43 min (entrada 3 + planejamento 5 + cadeados 20 + Cofre 12 + fim 3) com 3 duplas, painel e projetor, robô em velocidade real, sem erro no console, memória estável (~40–55 MB por tela). O orçamento fica protegido por teste (`src/engine/lessonTiming.ts`: tempos guia + entrada ≤ `GAME_RULES.lesson.totalMinutes`; pior caso do robô cabe nos tempos guia). Roteiro prático para a Narradora: `docs/ROTEIRO-DA-AULA.md`.
 - **(13/11) Pista falada:** dupla que chega ao cadeado da pista depois da transmissão fica esperando; o painel mostra "N dupla(s) aguardando" e a Narradora transmite de novo (está no roteiro).

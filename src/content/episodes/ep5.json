@@ -6,10 +6,7 @@
   "invention": {
     "name": "Deep Blue",
     "year": "1997",
-    "people": [
-      "Equipe da IBM",
-      "Garry Kasparov"
-    ]
+    "people": ["Equipe da IBM", "Garry Kasparov"]
   },
   "intro": {
     "comic": [
@@ -70,29 +67,17 @@
             "questions": [
               {
                 "q": "Que jogo o Deep Blue jogava?",
-                "options": [
-                  "Xadrez",
-                  "Futebol",
-                  "Amarelinha"
-                ],
+                "options": ["Xadrez", "Futebol", "Amarelinha"],
                 "correct": 0
               },
               {
                 "q": "Quem o Deep Blue venceu em 1997?",
-                "options": [
-                  "Garry Kasparov, campeão mundial de xadrez",
-                  "Pelé",
-                  "Alan Turing"
-                ],
+                "options": ["Garry Kasparov, campeão mundial de xadrez", "Pelé", "Alan Turing"],
                 "correct": 0
               },
               {
                 "q": "Qual empresa criou o Deep Blue?",
-                "options": [
-                  "IBM",
-                  "NASA",
-                  "Uma fábrica de brinquedos"
-                ],
+                "options": ["IBM", "NASA", "Uma fábrica de brinquedos"],
                 "correct": 0
               }
             ]
@@ -104,20 +89,12 @@
             "questions": [
               {
                 "q": "Em que ano o Deep Blue venceu Kasparov numa partida completa?",
-                "options": [
-                  "1997",
-                  "1897",
-                  "2017"
-                ],
+                "options": ["1997", "1897", "2017"],
                 "correct": 0
               },
               {
                 "q": "No primeiro duelo, em 1996, quem venceu?",
-                "options": [
-                  "Kasparov",
-                  "Deep Blue",
-                  "Ninguém, empatou tudo"
-                ],
+                "options": ["Kasparov", "Deep Blue", "Ninguém, empatou tudo"],
                 "correct": 0
               },
               {
@@ -138,11 +115,7 @@
             "questions": [
               {
                 "q": "Aproximadamente quantas posições por segundo o Deep Blue analisava?",
-                "options": [
-                  "Cerca de 200 milhões",
-                  "Cerca de 20",
-                  "Cerca de 2 mil"
-                ],
+                "options": ["Cerca de 200 milhões", "Cerca de 20", "Cerca de 2 mil"],
                 "correct": 0
               },
               {
@@ -180,14 +153,8 @@
             "prompt": "Quem sou eu?",
             "mode": "choice",
             "text": "No tabuleiro de xadrez, eu ando em L e pulo por cima das outras peças. Quem sou eu?",
-            "options": [
-              "Cavalo",
-              "Rei",
-              "Peão"
-            ],
-            "accept": [
-              "cavalo"
-            ],
+            "options": ["Cavalo", "Rei", "Peão"],
+            "accept": ["cavalo"],
             "hint1": "É a única peça que pula as outras.",
             "hint2": "Tem forma de um animal."
           },
@@ -195,10 +162,7 @@
             "prompt": "Digite a resposta da charada.",
             "mode": "text",
             "text": "No tabuleiro de xadrez, eu ando em L e pulo por cima das outras peças. Quem sou eu?",
-            "accept": [
-              "cavalo",
-              "o cavalo"
-            ],
+            "accept": ["cavalo", "o cavalo"],
             "hint1": "É a única peça que pula as outras.",
             "hint2": "Tem forma de um animal."
           },
@@ -206,12 +170,7 @@
             "prompt": "Digite a resposta da charada.",
             "mode": "text",
             "text": "Sou a peça mais poderosa do xadrez: ando em linha reta ou na diagonal, quantas casas eu quiser. Quem sou eu?",
-            "accept": [
-              "rainha",
-              "dama",
-              "a rainha",
-              "a dama"
-            ],
+            "accept": ["rainha", "dama", "a rainha", "a dama"],
             "hint1": "Não é o rei, mas é da família real.",
             "hint2": "Também é chamada de dama."
           }
@@ -272,14 +231,8 @@
           "prompt": "Escolha sua jogada. Depois, a máquina responde com o número MENOR. Qual jogada garante o maior número no fim?",
           "depth": 2,
           "tree": {
-            "Jogada 1": [
-              3,
-              7
-            ],
-            "Jogada 2": [
-              5,
-              6
-            ]
+            "Jogada 1": [3, 7],
+            "Jogada 2": [5, 6]
           },
           "answer": "Jogada 2",
           "hint1": "Para cada jogada, veja qual número a máquina vai escolher.",
@@ -289,18 +242,9 @@
           "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
           "depth": 2,
           "tree": {
-            "Jogada 1": [
-              8,
-              2
-            ],
-            "Jogada 2": [
-              4,
-              5
-            ],
-            "Jogada 3": [
-              9,
-              1
-            ]
+            "Jogada 1": [8, 2],
+            "Jogada 2": [4, 5],
+            "Jogada 3": [9, 1]
           },
           "answer": "Jogada 2",
           "hint1": "Não se deixe enganar pelos números grandes: a máquina não vai deixar você pegá-los.",
@@ -311,34 +255,16 @@
           "depth": 3,
           "tree": {
             "Jogada 1": {
-              "R1": [
-                6,
-                9
-              ],
-              "R2": [
-                3,
-                8
-              ]
+              "R1": [6, 9],
+              "R2": [3, 8]
             },
             "Jogada 2": {
-              "R1": [
-                5,
-                4
-              ],
-              "R2": [
-                7,
-                6
-              ]
+              "R1": [5, 4],
+              "R2": [7, 6]
             },
             "Jogada 3": {
-              "R1": [
-                2,
-                10
-              ],
-              "R2": [
-                4,
-                5
-              ]
+              "R1": [2, 10],
+              "R2": [4, 5]
             }
           },
           "answer": "Jogada 1",
@@ -419,15 +345,11 @@
     "line": "A temporada termina... mas o museu ainda guarda segredos.",
     "art": "teaser-ep5"
   },
-  "recapOfThis": [
-    "Na última aula, a turma se uniu contra o Deep Blue."
-  ],
+  "recapOfThis": ["Na última aula, a turma se uniu contra o Deep Blue."],
   "card": {
     "title": "Deep Blue",
     "year": "1997",
-    "people": [
-      "Equipe da IBM"
-    ],
+    "people": ["Equipe da IBM"],
     "facts": [
       "Venceu o campeão mundial de xadrez",
       "Analisava milhões de jogadas por segundo",

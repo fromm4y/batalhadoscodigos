@@ -1,4 +1,6 @@
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { CleanupPanel } from '../lifecycle/CleanupPanel';
+import { SeasonOrderPanel } from './SeasonOrderPanel';
 import { useState } from 'react';
 import { ComicButton, ComicPanel, cn } from '@/components/comic';
 import { getFirebase } from '@/lib/firebase';
@@ -212,9 +214,12 @@ export function AdminPage() {
               <p className="font-type text-mist">Nenhuma escola. Abra /api/setup uma vez.</p>
             )}
           </ComicPanel>
+          <SeasonOrderPanel uid={profile.uid} />
+          <CleanupPanel isAdmin />
           <ComicPanel caption="Fim de temporada" tone="graphite" className="pt-8">
             <p className="font-type text-mist">
-              Arquivar turmas e apagar sessões antigas (LGPD) chega numa próxima etapa.
+              Para arquivar uma turma ou encerrar a temporada dela (exportar o ranking e apagar
+              duplas, pontos e sessões), abra a página da turma.
             </p>
           </ComicPanel>
         </div>

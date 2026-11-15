@@ -20,9 +20,13 @@ type Props = ChallengeBaseProps & {
 export function ChallengeView({ challenge, level, seed, heardTransmission, ...base }: Props) {
   switch (challenge.type) {
     case 'quiz':
-      return <QuizChallenge variant={challenge.variant} {...base} />;
+      return (
+        <QuizChallenge variant={challenge.variant} seed={`${seed}:${challenge.key}`} {...base} />
+      );
     case 'riddle':
-      return <RiddleChallenge variant={challenge.variant} {...base} />;
+      return (
+        <RiddleChallenge variant={challenge.variant} seed={`${seed}:${challenge.key}`} {...base} />
+      );
     case 'anagram':
       return <AnagramChallenge variant={challenge.variant} seed={seed} {...base} />;
     case 'punchCardRead':

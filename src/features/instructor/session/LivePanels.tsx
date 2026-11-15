@@ -6,6 +6,7 @@ import { eventDurationMs } from '@/engine/museumEvent';
 import { useNow } from '@/lib/useNow';
 import type { Level, SessionDoc, TeamDoc } from '@/types/domain';
 import { useFeed, useHelpRequests, type WithId } from '../data';
+import { useMuseumEventElection } from '@/features/game/museumElection';
 import { markHelpDone, markMuseumEventDone, setFreeze, triggerMuseumEvent } from './sessionOps';
 
 const fmt = (ms: number) => {
@@ -30,11 +31,11 @@ export function EventFreezePanel({
   const startedAt = ev?.startedAt?.toMillis() ?? null;
   const frozen = session.freeze?.active === true;
 
-  // Disparo automático (RN-32) e encerramento do evento. Pausa enquanto as telas estão congeladas.
+  // Disparo automático (RN-32): eleição entre todos os clientes conectados (SPEC-02 A1).
+  useMuseumEventElection('instructor', sessionId, session);
+  // O painel marca o fim do evento (só para o status do painel; o jogo usa o horário).
   useEffect(() => {
     if (frozen || session.phase !== 'locks') return;
-    if (ev?.status === 'idle' && autoAt && now >= autoAt)
-      void triggerMuseumEvent(sessionId, 'auto');
     if (
       ev?.status === 'running' &&
       startedAt &&
@@ -43,7 +44,7 @@ export function EventFreezePanel({
     ) {
       void markMuseumEventDone(sessionId, session);
     }
-  }, [now, frozen, session, sessionId, ev?.status, autoAt, startedAt, episode]);
+  }, [now, frozen, session, sessionId, ev?.status, startedAt, episode]);
 
   async function run(fn: () => Promise<unknown>) {
     setError(null);

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEpisodeHook } from '@/features/game/useEpisodeHook';
 import { useState } from 'react';
 import { Avatar } from '@/components/avatar/Avatar';
 import { ComicArt, cn } from '@/components/comic';
@@ -207,9 +208,10 @@ export function ProjectorEnd({
   episode: Episode | null;
 }) {
   const [view, setView] = useState<'ranking' | 'hook'>('ranking');
+  const hook = useEpisodeHook('instructor', episode?.id ?? 'ep1');
   return (
     <div className="flex w-full flex-col items-center gap-6">
-      {view === 'ranking' || !episode ? (
+      {view === 'ranking' || !episode || !hook ? (
         <>
           <h1 className="font-heist text-8xl tracking-[0.12em] text-brass text-glow-brass">
             RANKING FINAL
@@ -223,22 +225,17 @@ export function ProjectorEnd({
             <p className="font-heist text-7xl leading-none tracking-[0.18em] text-bando text-glow-red animate-glitch">
               TRANSMISSÃO INTERCEPTADA
             </p>
-            <Typewriter
-              text={episode.nextHook}
-              speed={45}
-              delay={600}
-              className="text-4xl text-paper"
-            />
+            <Typewriter text={hook.line} speed={45} delay={600} className="text-4xl text-paper" />
           </div>
           <div className="relative">
             <div className="aspect-[16/9] overflow-hidden rounded-sm border-4 border-ink">
               <ComicArt
-                id={`proximo-ep${episode.number + 1}`}
+                id={hook.art}
                 alt="Um objeto misterioso coberto por um pano, sob um holofote"
               />
             </div>
             <Stamp
-              text="PRÓXIMA SEMANA"
+              text={hook.kind === 'seasonEnd' ? 'FIM DA TEMPORADA' : 'PRÓXIMA SEMANA'}
               color="brass"
               rotate={-10}
               delay={2}

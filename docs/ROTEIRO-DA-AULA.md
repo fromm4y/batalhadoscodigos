@@ -9,7 +9,7 @@
 - [ ] Abrir o site em cada computador e deixar na tela de abertura (o museu no escuro).
 - [ ] **Seu computador:** entrar em `/instrutor` com o Google, abrir a turma e clicar em **Abrir sessão**.
 - [ ] Clicar em **Abrir tela do projetor** (no painel) numa segunda janela e arrastar para o telão.
-- [ ] Deixar a **aba do painel aberta a aula inteira**: é ela que dispara o alarme automático do museu.
+- [ ] O alarme automático do museu dispara sozinho, mesmo com o painel fechado (qualquer tela conectada dispara).
 - [ ] Testar o som num computador: botão 🔊 no canto e o 🎚️ para ajustar música e efeitos.
 
 ## Linha do tempo

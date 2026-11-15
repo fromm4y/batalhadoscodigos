@@ -77,23 +77,24 @@ export function ClassCard({
           >
             Abrir ▸
           </Link>
-          {!readOnly && (
-            <>
-              <button
-                type="button"
-                onClick={onEdit}
-                className="min-h-11 cursor-pointer border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider hover:bg-brass"
-              >
-                ✎ Editar
-              </button>
-              <button
-                type="button"
-                onClick={onToggleArchive}
-                className="min-h-11 cursor-pointer border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider hover:bg-brass"
-              >
-                {cls.archived ? '↺ Reativar' : '🗄️ Arquivar'}
-              </button>
-            </>
+          {/* Turma arquivada é somente leitura (SPEC-02 A2): editar some; arquivar/reativar fica. */}
+          {!readOnly && !cls.archived && (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="min-h-11 cursor-pointer border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider hover:bg-brass"
+            >
+              ✎ Editar
+            </button>
+          )}
+          {onToggleArchive && (
+            <button
+              type="button"
+              onClick={onToggleArchive}
+              className="min-h-11 cursor-pointer border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider hover:bg-brass"
+            >
+              {cls.archived ? '↺ Reativar' : '🗄️ Arquivar'}
+            </button>
           )}
         </div>
         {cls.archived && (

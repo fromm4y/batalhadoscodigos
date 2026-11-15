@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { useMuseumEventElection } from '@/features/game/museumElection';
 import { FreezeOverlay } from '@/features/game/FreezeOverlay';
 import { TransmissionOverlay } from '@/features/game/TransmissionOverlay';
 import { useEffect, useState } from 'react';
@@ -25,6 +26,8 @@ export function ProjectorPage() {
   const matches = useSessionMatches(sessionId);
   const now = useNow(1000);
   const s = session.data;
+  // O projetor também participa da eleição do alarme automático (SPEC-02 A1).
+  useMuseumEventElection('instructor', sessionId, s && s.status === 'open' ? s : null);
   const [episode, setEpisode] = useState<Episode | null>(null);
   const episodeId = s?.episodeId ?? null;
   useEffect(() => {

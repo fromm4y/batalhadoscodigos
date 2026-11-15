@@ -85,6 +85,20 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // ---------- auditLog (SPEC-02 A4): só as funções gravam; a admin lê ----------
+    match /auditLog/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ---------- config/season (SPEC-02 Parte B): ordem da temporada ----------
+    match /config/season {
+      allow read: if isInstructor() || isTeam();
+      allow write: if isAdmin()
+        && onlyKeys(['order', 'updatedAt', 'by'])
+        && request.resource.data.order in ['long', 'short'];
+    }
+
     // ---------- schools/{schoolId} ----------
     match /schools/{schoolId} {
       allow read: if isInstructor();
@@ -97,7 +111,7 @@ service cloud.firestore {
 
     // ---------- classes/{classId} ----------
     function validClass(d) {
-      return d.keys().hasOnly(['schoolId', 'instructorId', 'name', 'grade', 'level', 'shift', 'season', 'archived', 'createdAt'])
+      return d.keys().hasOnly(['schoolId', 'instructorId', 'name', 'grade', 'level', 'shift', 'season', 'archived', 'createdAt', 'seasonClosedAt'])
         && d.schoolId is string && exists(/databases/$(database)/documents/schools/$(d.schoolId))
         && d.name is string && d.name.size() >= 1 && d.name.size() <= 30
         && d.grade in [4, 5, 6, 7, 8, 9]
@@ -116,11 +130,17 @@ service cloud.firestore {
         && request.resource.data.archived == false
         && request.resource.data.createdAt == request.time
         && validClass(request.resource.data);
-      allow update: if isInstructor()
-        && resource.data.instructorId == request.auth.uid
-        && request.resource.data.instructorId == request.auth.uid
-        && request.resource.data.createdAt == resource.data.createdAt
-        && validClass(request.resource.data);
+      // Turma ativa: a dona edita. Arquivar/desarquivar: a dona ou a admin, mexendo só no `archived`.
+      // Turma arquivada é somente leitura (SPEC-02 A2): a única mudança aceita é desarquivar.
+      allow update: if isInstructor() && (
+        (resource.data.archived == false
+          && resource.data.instructorId == request.auth.uid
+          && request.resource.data.instructorId == request.auth.uid
+          && request.resource.data.createdAt == resource.data.createdAt
+          && validClass(request.resource.data))
+        || ((resource.data.instructorId == request.auth.uid || isAdmin())
+          && changedOnly(['archived'])
+          && request.resource.data.archived is bool));
       allow delete: if false; // turmas são arquivadas, nunca apagadas
     }
 
@@ -184,6 +204,21 @@ service cloud.firestore {
         && changedOnly(['status', 'phase', 'phaseStartedAt', 'matchesFormed', 'freeze', 'transmission', 'museumEvent', 'autoEventAt'])
         && request.resource.data.status in ['open', 'finished']
         && request.resource.data.phase in ['lobby', 'planning', 'locks', 'vault', 'end'];
+      // SPEC-02 A1: a dupla também pode disparar o evento automático (eleição por transação),
+      // e SÓ isso: de "idle" para "running" pelo automático, depois do horário sorteado,
+      // nos cadeados e com as telas descongeladas.
+      allow update: if teamSessionOpen()
+        && request.auth.token.sessionId == sessionId
+        && changedOnly(['museumEvent'])
+        && resource.data.phase == 'locks'
+        && resource.data.museumEvent.status == 'idle'
+        && resource.data.get('freeze', {'active': false}).active != true
+        && resource.data.autoEventAt != null
+        && request.time >= resource.data.autoEventAt
+        && request.resource.data.museumEvent.keys().hasOnly(['status', 'startedAt', 'triggeredBy'])
+        && request.resource.data.museumEvent.status == 'running'
+        && request.resource.data.museumEvent.startedAt == request.time
+        && request.resource.data.museumEvent.triggeredBy == 'auto';
 
       // ---------- sessions/{sessionId}/players/{teamId} ----------
       match /players/{teamId} {

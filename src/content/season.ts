@@ -13,6 +13,57 @@ export const SEASON: SeasonEntry[] = [
   { id: 'ep5', number: 5, title: 'Deep Blue', available: false },
 ];
 
+/**
+ * SPEC-02 Parte B: duas ordens prontas; a admin escolhe no painel (doc `config/season`).
+ * Longa (até 18/12) tem os 5 episódios; curta (até 11/12) pula o ENIAC.
+ */
+export type SeasonOrder = 'long' | 'short';
+export const SEASON_ORDERS: Record<SeasonOrder, string[]> = {
+  long: ['ep1', 'ep2', 'ep3', 'ep4', 'ep5'],
+  short: ['ep1', 'ep2', 'ep4', 'ep5'],
+};
+export const SEASON_ORDER_LABEL: Record<SeasonOrder, string> = {
+  long: 'Longa (5 episódios, até 18/12)',
+  short: 'Curta (4 episódios, até 11/12, sem o ENIAC)',
+};
+export const DEFAULT_SEASON_ORDER: SeasonOrder = 'long';
+
+export function isSeasonOrder(v: unknown): v is SeasonOrder {
+  return v === 'long' || v === 'short';
+}
+
+/** Episódios da temporada ativa, na ordem. */
+export function seasonEpisodes(order: SeasonOrder): SeasonEntry[] {
+  return SEASON_ORDERS[order]
+    .map((id) => SEASON.find((e) => e.id === id))
+    .filter((e): e is SeasonEntry => !!e);
+}
+
+/** Próximo episódio da temporada ativa (null = este é o último). */
+export function nextInSeason(order: SeasonOrder, episodeId: string): string | null {
+  const list = SEASON_ORDERS[order];
+  const i = list.indexOf(episodeId);
+  return i >= 0 && i < list.length - 1 ? list[i + 1]! : null;
+}
+
+/**
+ * Gancho do fim do episódio. O `teaser` de cada JSON descreve o episódio SEGUINTE da ordem longa
+ * (o do Ep. 3 fala da Apollo), então o gancho para o episódio N mora no JSON do episódio N−1.
+ * Assim, na temporada curta, o fim do Ep. 2 mostra o gancho da Apollo (que está no JSON do Ep. 3).
+ * Sem próximo episódio: encerramento da temporada (teaser do próprio episódio final).
+ */
+export function hookFor(
+  order: SeasonOrder,
+  episodeId: string,
+):
+  { kind: 'next'; nextId: string; teaserFrom: string } | { kind: 'seasonEnd'; teaserFrom: string } {
+  const nextId = nextInSeason(order, episodeId);
+  if (!nextId) return { kind: 'seasonEnd', teaserFrom: episodeId };
+  const next = SEASON.find((e) => e.id === nextId)!;
+  const prevLong = SEASON.find((e) => e.number === next.number - 1);
+  return { kind: 'next', nextId, teaserFrom: prevLong?.id ?? episodeId };
+}
+
 /** Temporada gerada automaticamente pela data (decisão da May): "2026-T4" = 4º trimestre. */
 export function seasonFromDate(date: Date): string {
   const quarter = Math.floor(date.getMonth() / 3) + 1;

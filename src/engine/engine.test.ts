@@ -131,9 +131,10 @@ describe('anagrama', () => {
     const a = buildAnagram(v.variant, 'dupla-1');
     const b = buildAnagram(v.variant, 'dupla-1');
     expect(a).toEqual(b);
-    expect(a.words).toEqual([6, 9]);
-    expect(Object.values(a.fixed)).toEqual(['C', 'P']);
-    expect(a.tray.length).toBe(13);
+    // CHARLES BABBAGE (Piratas reescrito em 15/11 para não repetir a resposta do Bando)
+    expect(a.words).toEqual([7, 7]);
+    expect(Object.values(a.fixed)).toEqual(['C', 'B']);
+    expect(a.tray.length).toBe(12);
     expect(a.tray.every((t) => t.word === 0 || t.word === 1)).toBe(true);
   });
 });
@@ -205,10 +206,11 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
             case 'blockDebug': {
               // o programa original (com erro) NÃO gera o alvo
               expect(checkBlockDebug(ch.variant, ch.variant.program).ok).toBe(false);
+              // Piratas com padrões próprios (15/11): nenhuma resposta igual à do Bando.
               const fixed: Record<Level, Program> = {
-                A: [rep(3, [w('star'), w('dot')])],
-                B: [rep(4, [w('star'), w('star'), w('dot')])],
-                C: [rep(3, [rep(2, [w('star'), w('dot')]), w('line')])],
+                A: [rep(3, [w('dot'), w('line')])],
+                B: [rep(5, [w('dot'), w('dot'), w('star')])],
+                C: [rep(2, [rep(3, [w('dot'), w('star')]), w('line')])],
               };
               expect(checkBlockDebug(ch.variant, fixed[level]).ok).toBe(true);
               break;
@@ -224,5 +226,21 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
       const keys = ep1.narratorScript.spokenClues[level].map((c) => c.challengeKey);
       expect(keys).toEqual(['red-lock3', 'blue-lock3']);
     }
+  });
+});
+
+describe('alternativas embaralhadas por dupla (pedido da May, 15/11)', () => {
+  it('é uma permutação, sempre igual para a mesma dupla', async () => {
+    const { optionOrder } = await import('./shuffle');
+    const a = optionOrder(3, 'dupla-1:red-lock1:0');
+    expect([...a].sort()).toEqual([0, 1, 2]);
+    expect(optionOrder(3, 'dupla-1:red-lock1:0')).toEqual(a);
+  });
+  it('em várias duplas, a resposta certa (índice 0) não fica sempre em primeiro', async () => {
+    const { optionOrder } = await import('./shuffle');
+    const firstPos = Array.from({ length: 30 }, (_, i) =>
+      optionOrder(3, `dupla-${i}:q`).indexOf(0),
+    );
+    expect(new Set(firstPos).size).toBe(3);
   });
 });
