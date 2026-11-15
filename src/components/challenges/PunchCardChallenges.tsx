@@ -26,7 +26,7 @@ export function PunchCardReadChallenge({
   }
 
   return (
-    <div className="grid grid-cols-[1fr_auto] items-start gap-6">
+    <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-[1fr_auto]">
       <div className="flex flex-col gap-2">
         <PunchCard
           rows={variant.rows}
@@ -86,7 +86,7 @@ export function PunchCardWriteChallenge({
   }
 
   return (
-    <div className="grid grid-cols-[1fr_auto] items-start gap-6">
+    <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-[1fr_auto]">
       <div className="flex flex-col gap-2">
         <PunchCard
           rows={variant.rows}

@@ -127,7 +127,7 @@ export function NewTeamPage() {
   return (
     <HalftoneBackground>
       <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 p-8">
-        <header className="flex items-center justify-between gap-6">
+        <header className="flex flex-wrap items-center justify-between gap-6">
           <h1 className="font-heist text-5xl tracking-[0.1em] text-paper text-glow-spot">
             NOVA DUPLA
           </h1>
@@ -226,7 +226,7 @@ export function NewTeamPage() {
               />
             )}
             {step === 3 && (
-              <div className="grid grid-cols-[1fr_auto] items-center gap-10">
+              <div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-[1fr_auto]">
                 <div className="flex flex-col items-center gap-3">
                   <Avatar avatar={avatar} side="red" className="h-48 w-40" />
                   <p className="font-heist text-4xl tracking-wider text-bando text-glow-red">
@@ -348,7 +348,7 @@ function NameCards({
           </button>
         ))}
       </div>
-      <ul key={tab} className="grid grid-cols-5 gap-3">
+      <ul key={tab} className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {names.map((n, i) => {
           const isTaken = taken.has(n);
           const selected = value === n;

@@ -114,7 +114,7 @@ export function SessionPage() {
           {error}
         </p>
       )}
-      <div className="grid grid-cols-[1fr_1.4fr] gap-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.4fr]">
         <div className="flex flex-col gap-6">
           <ComicPanel
             caption={finished ? 'Sessão encerrada' : 'Código da sessão'}
@@ -176,7 +176,7 @@ export function SessionPage() {
                 Ninguém entrou ainda. Mostre o código no projetor!
               </p>
             ) : (
-              <ul className="grid grid-cols-2 gap-3">
+              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {joined.map(({ p, t }) => {
                   const online = isOnline(p.connected, p.lastSeenAt?.toMillis() ?? null, now);
                   const flags = teamFlags(

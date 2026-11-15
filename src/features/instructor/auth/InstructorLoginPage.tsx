@@ -20,7 +20,7 @@ export function InstructorLoginPage() {
       <Spotlights />
       <Lasers lasers={[{ top: '88%', angle: -2 }]} />
       <Dust />
-      <main className="relative mx-auto grid min-h-screen max-w-5xl grid-cols-[1fr_1.1fr] items-center gap-12 p-10">
+      <main className="relative mx-auto grid min-h-screen max-w-5xl grid-cols-1 items-center gap-8 p-4 md:grid-cols-[1fr_1.1fr] md:gap-12 md:p-10">
         <div className="flex flex-col items-center gap-6">
           <GameLogo size="md" />
           <p className="font-type text-xl text-mist">Sala de controle da Narradora</p>

@@ -7,7 +7,9 @@ import { getFirebase } from '@/lib/firebase';
 import { isValidEmail, normalizeEmail } from '@/lib/email';
 import type { Role } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
-import { useAllowlist, useSchools } from '../data';
+import { useAllClasses, useAllowlist, useSchools } from '../data';
+import { StatCards } from '../StatCards';
+import { useSeasonOrder } from '@/features/game/useEpisodeHook';
 import { InstructorLayout } from '../InstructorLayout';
 
 const ROLE_LABEL: Record<Role, string> = { admin: 'Administradora', instructor: 'Narradora' };
@@ -17,6 +19,8 @@ export function AdminPage() {
   const profile = useProfile()!;
   const allowlist = useAllowlist(true);
   const schools = useSchools();
+  const classes = useAllClasses(true);
+  const order = useSeasonOrder('instructor');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<Role>('instructor');
   const [feedback, setFeedback] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
@@ -84,7 +88,35 @@ export function AdminPage() {
 
   return (
     <InstructorLayout title="Administração">
-      <div className="grid grid-cols-[1.6fr_1fr] gap-8">
+      <StatCards
+        className="mb-8"
+        stats={[
+          {
+            icon: '🎙️',
+            label: 'Narradoras ativas',
+            value: allowlist.data.filter((a) => a.active).length,
+          },
+          {
+            icon: '🏫',
+            label: 'Escolas ativas',
+            value: `${schools.data.filter((x) => x.active).length}/${schools.data.length}`,
+            tone: 'blue',
+          },
+          {
+            icon: '🗂️',
+            label: 'Turmas ativas',
+            value: classes.data.filter((c) => !c.archived).length,
+            tone: 'red',
+          },
+          {
+            icon: '🗓️',
+            label: 'Temporada',
+            value: order === 'long' ? 'Longa · 5 ep.' : 'Curta · 4 ep.',
+            tone: 'green',
+          },
+        ]}
+      />
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.4fr_1fr]">
         <ComicPanel caption="Quem pode ser Narradora" tone="graphite" className="pt-8">
           <form
             className="mb-5 flex flex-wrap items-end gap-3"
@@ -188,42 +220,62 @@ export function AdminPage() {
         </ComicPanel>
 
         <div className="flex flex-col gap-8">
-          <ComicPanel caption="Escolas" tone="graphite" className="pt-8">
-            <ul className="grid gap-2">
-              {[...schools.data]
-                .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
-                .map((s) => (
-                  <li key={s.id} className="flex items-center justify-between gap-2">
-                    <span className={cn('font-bold', !s.active && 'line-through opacity-60')}>
-                      {s.name}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => void toggleSchool(s.id, !s.active)}
-                      className={cn(
-                        'min-h-11 cursor-pointer border-[3px] border-ink px-3 pt-1 font-heist text-lg tracking-wider',
-                        s.active ? 'bg-success text-ink' : 'bg-graphite-light text-paper',
-                      )}
-                    >
-                      {s.active ? '✔ Ativa' : '✖ Inativa'}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-            {schools.data.length === 0 && !schools.loading && (
-              <p className="font-type text-mist">Nenhuma escola. Abra /api/setup uma vez.</p>
-            )}
-          </ComicPanel>
           <SeasonOrderPanel uid={profile.uid} />
           <CleanupPanel isAdmin />
-          <ComicPanel caption="Fim de temporada" tone="graphite" className="pt-8">
-            <p className="font-type text-mist">
-              Para arquivar uma turma ou encerrar a temporada dela (exportar o ranking e apagar
-              duplas, pontos e sessões), abra a página da turma.
-            </p>
-          </ComicPanel>
+          <p className="font-type text-sm text-mist">
+            🏁 Para arquivar uma turma ou encerrar a temporada dela, abra a página da turma.
+          </p>
         </div>
       </div>
+
+      <ComicPanel
+        caption={`Escolas (${schools.data.length})`}
+        tone="graphite"
+        className="mt-8 pt-8"
+      >
+        <p className="mb-3 font-type text-sm text-mist">
+          Escola inativa some da lista ao criar turma (as turmas que já existem continuam).
+        </p>
+        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+          {[...schools.data]
+            .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+            .map((x) => (
+              <li
+                key={x.id}
+                className={cn(
+                  'flex items-center justify-between gap-2 rounded-sm border-2 px-3 py-1',
+                  x.active
+                    ? 'border-success/50 bg-success/10'
+                    : 'border-graphite-light bg-night/40',
+                )}
+              >
+                <span
+                  className={cn(
+                    'min-w-0 text-sm font-bold',
+                    !x.active && 'line-through opacity-60',
+                  )}
+                >
+                  {x.name}
+                </span>
+                <button
+                  type="button"
+                  aria-pressed={x.active}
+                  aria-label={`${x.name}: ${x.active ? 'ativa (clique para desativar)' : 'inativa (clique para ativar)'}`}
+                  onClick={() => void toggleSchool(x.id, !x.active)}
+                  className={cn(
+                    'min-h-11 min-w-11 shrink-0 cursor-pointer border-[3px] border-ink px-2 pt-1 font-heist text-base tracking-wider',
+                    x.active ? 'bg-success text-ink' : 'bg-graphite-light text-paper',
+                  )}
+                >
+                  {x.active ? '✔' : '✖'}
+                </button>
+              </li>
+            ))}
+        </ul>
+        {schools.data.length === 0 && !schools.loading && (
+          <p className="font-type text-mist">Nenhuma escola. Abra /api/setup uma vez.</p>
+        )}
+      </ComicPanel>
     </InstructorLayout>
   );
 }

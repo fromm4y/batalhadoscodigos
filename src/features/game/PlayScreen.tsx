@@ -211,7 +211,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           </div>
         )}
 
-        <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr] gap-4 px-5 py-2">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 px-3 py-2 sm:px-5 lg:grid-cols-[280px_1fr]">
           {/* Esquerda: planta / mapa como trilha de progresso */}
           <aside className="flex min-h-0 flex-col gap-3 overflow-y-auto">
             <RouteMap

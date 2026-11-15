@@ -21,7 +21,7 @@ export function AvatarBuilder({ value, onChange }: Props) {
     onChange({ ...value, [k]: v });
 
   return (
-    <div className="grid grid-cols-[300px_1fr] gap-8">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-[300px_1fr]">
       <div className="flex flex-col items-center gap-4">
         <div className="relative grid h-80 w-72 place-items-center rounded-hand border-4 border-ink bg-graphite-dots shadow-comic">
           <div
@@ -100,7 +100,7 @@ export function AvatarBuilder({ value, onChange }: Props) {
             />
           ))}
         </Row>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Row title="Olhos">
             {EYES_LABELS.map((label, i) => (
               <Thumb

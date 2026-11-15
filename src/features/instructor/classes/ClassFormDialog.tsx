@@ -186,7 +186,7 @@ function ClassForm({ onClose, uid, schools, editing }: Props) {
           )}
         </fieldset>
 
-        <div className="grid grid-cols-[1fr_auto] gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_auto]">
           <label className="grid gap-1">
             <span className="font-type text-sm uppercase">Nome da turma</span>
             <input

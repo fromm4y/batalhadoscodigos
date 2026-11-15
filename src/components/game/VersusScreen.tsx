@@ -25,7 +25,7 @@ export function VersusScreen({
     side === 'blue' ? { team: me, side: 'blue' } : { team: rival, side: 'blue' };
   return (
     <HalftoneBackground>
-      <main className="relative grid min-h-screen grid-cols-[1fr_auto_1fr] items-center overflow-hidden bg-black/60 px-10">
+      <main className="relative grid min-h-screen grid-cols-1 items-center gap-6 overflow-hidden bg-black/60 px-4 py-8 md:grid-cols-[1fr_auto_1fr] md:px-10">
         <FighterView f={left} mine={side === 'red'} delay={0.1} />
         <div className="grid place-items-center">
           <Onomatopoeia kind="custom" text="VS" size={220} rotate={-6} />

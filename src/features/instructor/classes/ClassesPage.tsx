@@ -106,7 +106,7 @@ export function ClassesPage() {
           </SpeechBubble>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {myVisible.map((c, i) => (
             <ClassCard
               key={c.id}
@@ -129,7 +129,7 @@ export function ClassesPage() {
             Turmas das outras Narradoras
           </h2>
           <p className="mb-4 font-type text-mist">Somente leitura (visão da administradora).</p>
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {others.map((c, i) => (
               <ClassCard
                 key={c.id}

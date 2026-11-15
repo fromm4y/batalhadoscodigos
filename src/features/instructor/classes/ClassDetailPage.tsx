@@ -13,6 +13,7 @@ import { useProfile } from '../auth/authStore';
 import { useClass, useClassTeams, useOpenSessions, useSchools, type WithId } from '../data';
 import { InstructorLayout } from '../InstructorLayout';
 import { SeasonCloseDialog } from '../lifecycle/SeasonCloseDialog';
+import { StatCards } from '../StatCards';
 
 /** `/instrutor/turmas/:classId` — duplas (avatares, pontos, reset de PIN) + ranking + "Abrir sessão". */
 export function ClassDetailPage() {
@@ -126,7 +127,30 @@ export function ClassDetailPage() {
         </p>
       )}
 
-      <div className="grid grid-cols-[1.5fr_1fr] gap-8">
+      <StatCards
+        className="mb-8"
+        stats={[
+          {
+            icon: '👥',
+            label: 'Duplas',
+            value: `${teams.data.length}/${GAME_RULES.maxTeamsPerClass}`,
+          },
+          {
+            icon: '🪙',
+            label: 'Pontos da turma',
+            value: teams.data.reduce((sum, t) => sum + t.totalPoints, 0),
+            tone: 'red',
+          },
+          {
+            icon: '🎬',
+            label: 'Episódios jogados',
+            value: Math.max(0, ...teams.data.map((t) => t.episodesPlayed)),
+            tone: 'blue',
+          },
+          { icon: '🎚️', label: 'Nível', value: c.level, tone: 'green' },
+        ]}
+      />
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.5fr_1fr]">
         <div className="flex flex-col gap-8">
           {active && (
             <ComicPanel
@@ -136,7 +160,7 @@ export function ClassDetailPage() {
               className="pt-8"
             >
               {open ? (
-                <div className="flex items-center justify-between gap-6">
+                <div className="flex flex-wrap items-center justify-between gap-6">
                   <div>
                     <p className="font-type text-sm uppercase">Sessão aberta · código</p>
                     <p className="font-heist text-7xl leading-none tracking-[0.2em] text-paper">
@@ -164,12 +188,12 @@ export function ClassDetailPage() {
                 <p className="font-type text-mist">Turma arquivada. Reative para abrir sessões.</p>
               ) : (
                 <div className="flex flex-wrap items-end gap-4">
-                  <label className="grid flex-1 gap-1">
+                  <label className="grid min-w-0 basis-full gap-1 sm:flex-1 sm:basis-auto">
                     <span className="font-type text-sm text-mist uppercase">Episódio</span>
                     <select
                       value={episodeId}
                       onChange={(e) => setEpisodeId(e.target.value)}
-                      className="min-h-11 border-[3px] border-ink bg-paper px-3 font-body text-lg font-bold text-ink"
+                      className="min-h-11 w-full min-w-0 border-[3px] border-ink bg-paper px-3 font-body text-lg font-bold text-ink"
                     >
                       {SEASON.map((e) => (
                         <option key={e.id} value={e.id} disabled={!e.available}>
@@ -188,6 +212,14 @@ export function ClassDetailPage() {
                   >
                     {busy ? 'Abrindo...' : 'Abrir sessão'}
                   </ComicButton>
+                  <a
+                    href={`/instrutor/roteiro/${episodeId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="grid min-h-11 place-items-center border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider text-ink hover:glow-brass"
+                  >
+                    📜 Roteiro deste episódio
+                  </a>
                 </div>
               )}
             </ComicPanel>
@@ -202,7 +234,7 @@ export function ClassDetailPage() {
                 Nenhuma dupla ainda. Elas se cadastram sozinhas quando você abrir a primeira sessão!
               </SpeechBubble>
             ) : (
-              <ul className="grid grid-cols-3 gap-4">
+              <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
                 {teams.data.map((t) => (
                   <li
                     key={t.id}
@@ -226,7 +258,8 @@ export function ClassDetailPage() {
                       <button
                         type="button"
                         onClick={() => setResetting(t)}
-                        className="mt-1 min-h-11 cursor-pointer border-2 border-mist/60 px-3 pt-1 font-heist text-lg tracking-wider text-mist hover:border-paper hover:text-paper"
+                        title="Apaga o PIN: no próximo login a dupla cria um novo"
+                        className="mt-1 min-h-11 cursor-pointer px-2 pt-1 font-heist text-base tracking-wider text-mist underline decoration-dotted underline-offset-4 hover:text-paper"
                       >
                         🔑 Resetar PIN
                       </button>
