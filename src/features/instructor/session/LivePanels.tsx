@@ -130,6 +130,15 @@ export function ScriptPanel({ episode, level }: { episode: Episode | null; level
   const s = episode.narratorScript;
   return (
     <ComicPanel caption="Roteiro da Narradora" tone="paper" className="pt-8">
+      <a
+        href={`/instrutor/roteiro/${episode.id}`}
+        target="_blank"
+        rel="noreferrer"
+        className="mb-2 inline-grid min-h-11 place-items-center border-[3px] border-ink bg-brass px-3 pt-1 font-heist text-xl tracking-wider text-ink hover:glow-brass"
+      >
+        📜 Roteiro completo em nova aba
+      </a>
+      <br />
       <button
         type="button"
         aria-expanded={open}
@@ -189,7 +198,7 @@ export function HelpPanel({ sessionId, teams }: { sessionId: string; teams: With
       <ComicPanel caption={`🙋 Chamados de ajuda · ${open.length}`} tone="paper" className="pt-8">
         <ul className="grid gap-2" aria-live="assertive">
           {open.map((h) => (
-            <li key={h.id} className="flex items-center justify-between gap-3 text-ink">
+            <li key={h.id} className="flex flex-wrap items-center justify-between gap-3 text-ink">
               <span className="font-bold">
                 {name(h.teamId)} <span className="font-type text-sm">({h.challengeKey})</span>
               </span>

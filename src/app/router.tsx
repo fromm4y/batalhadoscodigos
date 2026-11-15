@@ -7,6 +7,7 @@ import { InstructorLoginPage } from '@/features/instructor/auth/InstructorLoginP
 import { RequireInstructor } from '@/features/instructor/auth/RequireInstructor';
 import { ClassDetailPage } from '@/features/instructor/classes/ClassDetailPage';
 import { ClassesPage } from '@/features/instructor/classes/ClassesPage';
+import { ScriptPage } from '@/features/instructor/script/ScriptPage';
 import { ProjectorPage } from '@/features/instructor/session/ProjectorPage';
 import { SessionPage } from '@/features/instructor/session/SessionPage';
 import { EntrancePage } from '@/features/student/EntrancePage';
@@ -52,6 +53,14 @@ export const router = createBrowserRouter([
     element: (
       <RequireInstructor>
         <ProjectorPage />
+      </RequireInstructor>
+    ),
+  },
+  {
+    path: '/instrutor/roteiro/:episodeId',
+    element: (
+      <RequireInstructor>
+        <ScriptPage />
       </RequireInstructor>
     ),
   },
