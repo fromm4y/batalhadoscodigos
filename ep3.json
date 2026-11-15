@@ -1,0 +1,722 @@
+{
+  "id": "ep3",
+  "number": 3,
+  "title": "ENIAC",
+  "invention": {
+    "name": "ENIAC",
+    "year": "1945",
+    "people": [
+      "Kathleen McNulty",
+      "Jean Jennings",
+      "Betty Snyder",
+      "Marlyn Wescoff",
+      "Frances Bilas",
+      "Ruth Lichterman"
+    ]
+  },
+  "intro": {
+    "comic": [
+      {
+        "caption": "Museu Nacional da Tecnologia. Duas da manhã.",
+        "art": "ep3-salao-escuro"
+      },
+      {
+        "caption": "Um salão inteiro ocupado por armários de metal... e milhares de válvulas que começam a acender.",
+        "art": "ep3-eniac-acendendo"
+      },
+      {
+        "speech": {
+          "who": "professor",
+          "text": "Esse gigante faz contas mais rápido que qualquer pessoa. Quem religar os cabos, leva o prêmio."
+        },
+        "art": "ep3-professor-cabos"
+      },
+      {
+        "speech": {
+          "who": "capita",
+          "text": "Ele foi programado por seis mulheres brilhantes. A gente não vai deixar ninguém bagunçar esses cabos!"
+        },
+        "art": "ep3-capita-painel"
+      }
+    ],
+    "red": "Religue os cabos do ENIAC na ordem certa e abra o cofre.",
+    "blue": "Ache as sabotagens nos cabos e mantenha o cofre trancado."
+  },
+  "dossier": [
+    "O ENIAC ficou pronto em 1945 e foi um dos primeiros computadores eletrônicos de uso geral.",
+    "Ele ocupava uma sala inteira e usava milhares de válvulas.",
+    "Para programar, era preciso ligar cabos e virar chaves, como numa central telefônica.",
+    "Seis mulheres foram as primeiras programadoras do ENIAC."
+  ],
+  "curiosities": [
+    "O ENIAC pesava cerca de 27 toneladas.",
+    "As programadoras do ENIAC só foram reconhecidas décadas depois.",
+    "O ENIAC fazia contas em decimal, e não em binário como os computadores de hoje.",
+    "Quando uma válvula queimava, era preciso achar qual era e trocá-la.",
+    "Achar e corrigir erros num programa se chama depuração. Em inglês: debugging.",
+    "Uma das programadoras, Betty Snyder Holberton, depois ajudou a criar linguagens de programação."
+  ],
+  "sides": {
+    "red": {
+      "name": "Bando",
+      "locks": [
+        {
+          "key": "red-lock1",
+          "title": "Dossiê do alvo",
+          "leaderLine": "O alvo de hoje é um gigante: 30 toneladas de válvulas. Estudem o dossiê.",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista do Professor: o guarda deixou outra charada no painel."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê: as respostas estão lá.",
+              "hint2": "Ele era enorme e foi programado por seis mulheres.",
+              "questions": [
+                {
+                  "q": "Para que servia o ENIAC?",
+                  "options": [
+                    "Para fazer cálculos muito rápido",
+                    "Para tecer tecido",
+                    "Para mandar e-mails"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem programava o ENIAC?",
+                  "options": [
+                    "Um grupo de seis mulheres",
+                    "Robôs",
+                    "Ninguém, ele se programava sozinho"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "O ENIAC era do tamanho de...",
+                  "options": [
+                    "Uma sala inteira",
+                    "Um celular",
+                    "Uma caneta"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê: tem um ano e uma peça de vidro.",
+              "hint2": "1945, cabos e válvulas.",
+              "questions": [
+                {
+                  "q": "Em que ano o ENIAC ficou pronto?",
+                  "options": [
+                    "1945",
+                    "1845",
+                    "2005"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Como o ENIAC era programado?",
+                  "options": [
+                    "Ligando cabos e virando chaves",
+                    "Com mouse e teclado",
+                    "Por comando de voz"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Que peça o ENIAC usava aos milhares?",
+                  "options": [
+                    "Válvulas",
+                    "Chips de celular",
+                    "Pilhas"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Pense na diferença entre o ENIAC e os computadores de hoje.",
+              "hint2": "O ENIAC era decimal, não binário.",
+              "questions": [
+                {
+                  "q": "O ENIAC fazia contas em qual sistema?",
+                  "options": [
+                    "Decimal",
+                    "Binário",
+                    "Algarismos romanos"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Para que o ENIAC foi construído no começo?",
+                  "options": [
+                    "Calcular tabelas de tiro de artilharia",
+                    "Jogar xadrez",
+                    "Prever o tempo"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Qual destas pessoas foi uma das programadoras do ENIAC?",
+                  "options": [
+                    "Jean Jennings Bartik",
+                    "Marie Curie",
+                    "Frida Kahlo"
+                  ],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "red-lock2",
+          "title": "A charada do gigante",
+          "leaderLine": "Mais uma charada no painel de segurança. Decifrem!",
+          "type": "riddle",
+          "reward": {
+            "clue": "Pista do Professor: agora liguem os cabos. Mas o número de entrada só vem pelo rádio."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Quem sou eu?",
+              "mode": "choice",
+              "text": "Sou enorme, ocupo uma sala inteira, tenho milhares de válvulas e faço contas num piscar de olhos. Quem sou eu?",
+              "options": [
+                "ENIAC",
+                "Geladeira",
+                "Elevador"
+              ],
+              "accept": [
+                "eniac"
+              ],
+              "hint1": "É a máquina deste episódio.",
+              "hint2": "O nome dela tem 5 letras: E N I..."
+            },
+            "B": {
+              "prompt": "Digite a resposta da charada.",
+              "mode": "text",
+              "text": "Sou enorme, ocupo uma sala inteira, tenho milhares de válvulas e faço contas num piscar de olhos. Quem sou eu?",
+              "accept": [
+                "eniac",
+                "o eniac"
+              ],
+              "hint1": "É a máquina deste episódio.",
+              "hint2": "O nome dela tem 5 letras: E N I..."
+            },
+            "C": {
+              "prompt": "Digite a resposta da charada.",
+              "mode": "text",
+              "text": "Sou de vidro, esquento, acendo e apago. O ENIAC tinha milhares de mim, e quando um de nós queimava, alguém precisava me trocar. Quem sou eu?",
+              "accept": [
+                "valvula",
+                "valvulas",
+                "a valvula",
+                "valvula termionica"
+              ],
+              "hint1": "É uma peça do ENIAC que aparece no dossiê.",
+              "hint2": "Começa com V e tem 7 letras."
+            }
+          }
+        },
+        {
+          "key": "red-lock3",
+          "title": "Religue o painel",
+          "leaderLine": "Liguem os módulos na ordem certa para chegar ao número da vitrine. A entrada vem pela transmissão!",
+          "type": "wiring",
+          "variants": {
+            "A": {
+              "prompt": "Escute o número de entrada. Ligue os 2 módulos na ordem certa para chegar a 10.",
+              "mode": "build",
+              "start": 2,
+              "modules": [
+                "+3",
+                "x2"
+              ],
+              "slots": 2,
+              "target": 10,
+              "hint1": "Teste as duas ordens possíveis.",
+              "hint2": "Primeiro some, depois multiplique.",
+              "startSpoken": true
+            },
+            "B": {
+              "prompt": "Escute o número de entrada. Ligue os 3 módulos na ordem certa para chegar a 13.",
+              "mode": "build",
+              "start": 4,
+              "modules": [
+                "+1",
+                "x3",
+                "-2"
+              ],
+              "slots": 3,
+              "target": 13,
+              "hint1": "Experimente começar pelo +1.",
+              "hint2": "+1, depois ×3, depois −2.",
+              "startSpoken": true
+            },
+            "C": {
+              "prompt": "Escute o número de entrada. Ligue os 4 módulos na ordem certa para chegar a 29.",
+              "mode": "build",
+              "start": 3,
+              "modules": [
+                "x2",
+                "+4",
+                "x3",
+                "-1"
+              ],
+              "slots": 4,
+              "target": 29,
+              "hint1": "O último módulo é o −1.",
+              "hint2": "×2, +4, ×3, −1.",
+              "startSpoken": true
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "red-vault",
+        "title": "O Cofre: o cálculo final",
+        "leaderLine": "O cofre só abre com o número exato. Programem o ENIAC como as programadoras: cabo por cabo!",
+        "type": "wiring",
+        "variants": {
+          "A": {
+            "prompt": "Ligue os 3 módulos na ordem certa para chegar a 13.",
+            "mode": "build",
+            "start": 1,
+            "modules": [
+              "+2",
+              "x4",
+              "+1"
+            ],
+            "slots": 3,
+            "target": 13,
+            "hint1": "Faça a conta passo a passo depois de cada módulo.",
+            "hint2": "+2, depois ×4, depois +1."
+          },
+          "B": {
+            "prompt": "Use 3 dos 4 módulos para chegar a 18. Um deles sobra!",
+            "mode": "build",
+            "start": 2,
+            "modules": [
+              "+3",
+              "x2",
+              "x3",
+              "-1"
+            ],
+            "slots": 3,
+            "target": 18,
+            "hint1": "Um módulo é uma pegadinha e não deve ser usado.",
+            "hint2": "×3, +3, ×2 (o −1 sobra)."
+          },
+          "C": {
+            "prompt": "Use 4 dos 5 módulos para chegar a 46. Um deles sobra!",
+            "mode": "build",
+            "start": 3,
+            "modules": [
+              "+2",
+              "x3",
+              "-1",
+              "x2",
+              "+5"
+            ],
+            "slots": 4,
+            "target": 46,
+            "hint1": "Pense de trás para frente: que número vira 46 multiplicando por 2?",
+            "hint2": "+5, ×3, −1, ×2 (o +2 sobra)."
+          }
+        }
+      }
+    },
+    "blue": {
+      "name": "Piratas",
+      "locks": [
+        {
+          "key": "blue-lock1",
+          "title": "Diário de bordo",
+          "leaderLine": "Hoje o tesouro é o maior computador da época. Completem o diário!",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista da Capitã: chegou uma garrafa com letras bagunçadas."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê: as respostas estão lá.",
+              "hint2": "Ele era enorme e foi programado por seis mulheres.",
+              "questions": [
+                {
+                  "q": "Para que servia o ENIAC?",
+                  "options": [
+                    "Para fazer cálculos muito rápido",
+                    "Para tecer tecido",
+                    "Para mandar e-mails"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem programava o ENIAC?",
+                  "options": [
+                    "Um grupo de seis mulheres",
+                    "Robôs",
+                    "Ninguém, ele se programava sozinho"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "O ENIAC era do tamanho de...",
+                  "options": [
+                    "Uma sala inteira",
+                    "Um celular",
+                    "Uma caneta"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê: tem um ano e uma peça de vidro.",
+              "hint2": "1945, cabos e válvulas.",
+              "questions": [
+                {
+                  "q": "Em que ano o ENIAC ficou pronto?",
+                  "options": [
+                    "1945",
+                    "1845",
+                    "2005"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Como o ENIAC era programado?",
+                  "options": [
+                    "Ligando cabos e virando chaves",
+                    "Com mouse e teclado",
+                    "Por comando de voz"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Que peça o ENIAC usava aos milhares?",
+                  "options": [
+                    "Válvulas",
+                    "Chips de celular",
+                    "Pilhas"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Pense na diferença entre o ENIAC e os computadores de hoje.",
+              "hint2": "O ENIAC era decimal, não binário.",
+              "questions": [
+                {
+                  "q": "O ENIAC fazia contas em qual sistema?",
+                  "options": [
+                    "Decimal",
+                    "Binário",
+                    "Algarismos romanos"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Para que o ENIAC foi construído no começo?",
+                  "options": [
+                    "Calcular tabelas de tiro de artilharia",
+                    "Jogar xadrez",
+                    "Prever o tempo"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Qual destas pessoas foi uma das programadoras do ENIAC?",
+                  "options": [
+                    "Jean Jennings Bartik",
+                    "Marie Curie",
+                    "Frida Kahlo"
+                  ],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "blue-lock2",
+          "title": "Mensagem na garrafa",
+          "leaderLine": "A tempestade bagunçou a mensagem de novo. Arrumem as letras!",
+          "type": "anagram",
+          "reward": {
+            "clue": "Pista da Capitã: o Bando sabotou os cabos! E o número de entrada só vem pelo rádio."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Arrume as letras para descobrir a palavra secreta.",
+              "answer": "VÁLVULA",
+              "mode": "perWordFirstFixed",
+              "hint1": "É uma peça de vidro que o ENIAC tinha aos milhares.",
+              "hint2": "Começa com V A L..."
+            },
+            "B": {
+              "prompt": "Arrume as letras para descobrir a palavra secreta.",
+              "answer": "PROGRAMADORAS",
+              "mode": "perWord",
+              "hint1": "Quem fazia o ENIAC funcionar?",
+              "hint2": "Eram seis... PROGRA..."
+            },
+            "C": {
+              "prompt": "Arrume as letras para descobrir o nome secreto.",
+              "answer": "JEAN JENNINGS",
+              "mode": "whole",
+              "hint1": "É uma das programadoras do ENIAC.",
+              "hint2": "Primeiro nome: J E A N."
+            }
+          }
+        },
+        {
+          "key": "blue-lock3",
+          "title": "Ache a sabotagem",
+          "leaderLine": "O Bando trocou os cabos de lugar! Achem o erro e consertem. A entrada vem pela transmissão.",
+          "type": "wiring",
+          "variants": {
+            "A": {
+              "prompt": "Escute o número de entrada. O painel deveria dar 10, mas está errado. Troque os cabos de lugar.",
+              "mode": "debug",
+              "start": 2,
+              "modules": [
+                "+3",
+                "x2"
+              ],
+              "slots": 2,
+              "target": 10,
+              "chain": [
+                "x2",
+                "+3"
+              ],
+              "hint1": "Faça a conta com os módulos na ordem atual.",
+              "hint2": "Os dois módulos estão invertidos.",
+              "startSpoken": true
+            },
+            "B": {
+              "prompt": "Escute o número de entrada. O painel deveria dar 13. Ache os cabos trocados.",
+              "mode": "debug",
+              "start": 4,
+              "modules": [
+                "+1",
+                "x3",
+                "-2"
+              ],
+              "slots": 3,
+              "target": 13,
+              "chain": [
+                "x3",
+                "+1",
+                "-2"
+              ],
+              "hint1": "Faça a conta passo a passo.",
+              "hint2": "Os dois primeiros módulos estão invertidos.",
+              "startSpoken": true
+            },
+            "C": {
+              "prompt": "Escute o número de entrada. O painel deveria dar 29. Ache os cabos trocados.",
+              "mode": "debug",
+              "start": 3,
+              "modules": [
+                "x2",
+                "+4",
+                "x3",
+                "-1"
+              ],
+              "slots": 4,
+              "target": 29,
+              "chain": [
+                "+4",
+                "x2",
+                "x3",
+                "-1"
+              ],
+              "hint1": "Faça a conta passo a passo.",
+              "hint2": "Os dois primeiros módulos estão invertidos.",
+              "startSpoken": true
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "blue-vault",
+        "title": "O Cofre: conserte o cálculo",
+        "leaderLine": "O Bando bagunçou o cálculo do cofre. Consertem antes que ele abra!",
+        "type": "wiring",
+        "variants": {
+          "A": {
+            "prompt": "O painel deveria dar 13. Troque os cabos de lugar até dar certo.",
+            "mode": "debug",
+            "start": 1,
+            "modules": [
+              "+2",
+              "x4",
+              "+1"
+            ],
+            "slots": 3,
+            "target": 13,
+            "chain": [
+              "x4",
+              "+2",
+              "+1"
+            ],
+            "hint1": "Faça a conta com os módulos na ordem atual.",
+            "hint2": "Os dois primeiros módulos estão invertidos."
+          },
+          "B": {
+            "prompt": "O painel deveria dar 18. Ache o erro e conserte.",
+            "mode": "debug",
+            "start": 2,
+            "modules": [
+              "+3",
+              "x2",
+              "x3",
+              "-1"
+            ],
+            "slots": 3,
+            "target": 18,
+            "chain": [
+              "+3",
+              "x3",
+              "x2"
+            ],
+            "hint1": "Faça a conta com os módulos na ordem atual.",
+            "hint2": "Os dois primeiros módulos estão invertidos."
+          },
+          "C": {
+            "prompt": "O painel deveria dar 46. Ache o erro e conserte.",
+            "mode": "debug",
+            "start": 3,
+            "modules": [
+              "+2",
+              "x3",
+              "-1",
+              "x2",
+              "+5"
+            ],
+            "slots": 4,
+            "target": 46,
+            "chain": [
+              "x3",
+              "+5",
+              "-1",
+              "x2"
+            ],
+            "hint1": "Faça a conta com os módulos na ordem atual.",
+            "hint2": "Os dois primeiros módulos estão invertidos."
+          }
+        }
+      }
+    }
+  },
+  "event": {
+    "type": "alarmTrueFalse",
+    "title": "ALARME FALSO?",
+    "secondsPerItem": 15,
+    "items": [
+      {
+        "text": "O primeiro \"bug\" da história, uma mariposa, foi achado dentro do ENIAC!",
+        "isReal": false,
+        "explanation": "Falso! A famosa mariposa foi achada em 1947 em outro computador, o Harvard Mark II."
+      },
+      {
+        "text": "O ENIAC pesava mais de 20 toneladas!",
+        "isReal": true,
+        "explanation": "Real! Ele pesava cerca de 27 toneladas."
+      },
+      {
+        "text": "As programadoras do ENIAC foram tratadas como heroínas na época!",
+        "isReal": false,
+        "explanation": "Falso! Elas só foram reconhecidas muitas décadas depois."
+      }
+    ]
+  },
+  "narratorScript": {
+    "opening": "Duas da manhã. O salão do ENIAC está acendendo sozinho. Bando: religuem os cabos. Piratas: achem as sabotagens. Escolham seus lados!",
+    "spokenClues": {
+      "A": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O número de entrada é 2."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "O número de entrada é 2."
+        }
+      ],
+      "B": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O número de entrada é 4."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "O número de entrada é 4."
+        }
+      ],
+      "C": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "O número de entrada é 3."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "O número de entrada é 3."
+        }
+      ]
+    },
+    "revealLines": [
+      "Sabiam que o que vocês fizeram tem nome? Achar e corrigir erros é depurar, ou fazer debugging.",
+      "As programadoras do ENIAC faziam isso cabo por cabo, sem tela e sem manual. E por muito tempo ninguém lembrou os nomes delas."
+    ],
+    "closing": "Desliguem as válvulas. Semana que vem, a próxima vitrine se abre."
+  },
+  "reveal": [
+    {
+      "caption": "Em 1945, seis mulheres programaram o ENIAC ligando cabos e virando chaves.",
+      "art": "ep3-programadoras"
+    },
+    {
+      "caption": "Elas só foram reconhecidas décadas depois. Hoje, são lembradas como pioneiras da programação.",
+      "art": "ep3-reconhecimento"
+    },
+    {
+      "speech": {
+        "who": "narradora",
+        "text": "Hoje vocês programaram e depuraram como as primeiras programadoras!"
+      },
+      "art": "narradora"
+    }
+  ],
+  "teaser": {
+    "line": "Um alarme dispara... a 384 mil quilômetros daqui.",
+    "art": "teaser-ep3"
+  },
+  "recapOfThis": [
+    "Na semana passada, o gigante ENIAC acendeu no museu.",
+    "O Bando religou os cabos, os Piratas acharam as sabotagens."
+  ],
+  "card": {
+    "title": "ENIAC",
+    "year": "1945",
+    "people": [
+      "As seis programadoras do ENIAC"
+    ],
+    "facts": [
+      "Ocupava uma sala inteira",
+      "Era programado com cabos e chaves",
+      "Calculava em decimal"
+    ],
+    "art": "card-ep3"
+  }
+}

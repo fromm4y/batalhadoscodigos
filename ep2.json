@@ -1,0 +1,649 @@
+{
+  "id": "ep2",
+  "number": 2,
+  "title": "Máquina Enigma",
+  "invention": {
+    "name": "Máquina Enigma",
+    "year": "Segunda Guerra Mundial (1939–1945)",
+    "people": [
+      "Alan Turing",
+      "Matemáticos poloneses",
+      "Equipes de Bletchley Park"
+    ]
+  },
+  "intro": {
+    "comic": [
+      {
+        "caption": "Museu Nacional da Tecnologia. Uma da manhã.",
+        "art": "ep2-sala-guerra"
+      },
+      {
+        "caption": "Numa caixa de madeira, uma máquina parecida com uma máquina de escrever... cheia de rotores.",
+        "art": "ep2-enigma-vitrine"
+      },
+      {
+        "speech": {
+          "who": "professor",
+          "text": "Quem controla os códigos controla tudo. Hoje a gente quebra a Enigma."
+        },
+        "art": "ep2-professor-radio"
+      },
+      {
+        "speech": {
+          "who": "capita",
+          "text": "Rádio ligado, mensagens cifradas. Nenhum segredo sai deste navio!"
+        },
+        "art": "ep2-capita-radio"
+      }
+    ],
+    "red": "Intercepte as mensagens, quebre os códigos e capture a Enigma.",
+    "blue": "Cifre as mensagens do navio e não deixe o Bando ler nenhum segredo."
+  },
+  "dossier": [
+    "A Enigma era uma máquina usada para cifrar mensagens secretas na Segunda Guerra Mundial.",
+    "Ela trocava cada letra por outra, e a configuração mudava todo dia.",
+    "Em Bletchley Park, na Inglaterra, Alan Turing e muitas equipes trabalharam para decifrá-la.",
+    "Turing projetou a Bombe, uma máquina que ajudava a testar combinações muito rápido."
+  ],
+  "curiosities": [
+    "Matemáticos poloneses quebraram versões da Enigma antes mesmo da guerra começar.",
+    "Milhares de mulheres trabalharam em Bletchley Park decifrando mensagens.",
+    "A Enigma nunca cifrava uma letra como ela mesma, e isso ajudou a quebrá-la.",
+    "Alan Turing também é considerado um dos pais da computação e da inteligência artificial.",
+    "O Prêmio Turing é chamado de \"Nobel da computação\".",
+    "A cifra de deslocamento que vocês usaram é bem mais antiga: é conhecida como Cifra de César."
+  ],
+  "sides": {
+    "red": {
+      "name": "Bando",
+      "locks": [
+        {
+          "key": "red-lock1",
+          "title": "Dossiê do alvo",
+          "leaderLine": "Antes do assalto, estudem o alvo: a máquina que guardava os segredos da guerra.",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista do Professor: interceptamos uma palavra cifrada. Usem o disco de cifra."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê: as respostas estão lá.",
+              "hint2": "A Enigma servia para esconder mensagens, e Turing ajudou a decifrá-las.",
+              "questions": [
+                {
+                  "q": "Para que servia a máquina Enigma?",
+                  "options": [
+                    "Para cifrar mensagens secretas",
+                    "Para fazer contas de padaria",
+                    "Para tocar música"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem ajudou a quebrar os códigos da Enigma?",
+                  "options": [
+                    "Alan Turing",
+                    "Santos Dumont",
+                    "Ada Lovelace"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Em que guerra a Enigma foi usada?",
+                  "options": [
+                    "Na Segunda Guerra Mundial",
+                    "Na Guerra dos Farrapos",
+                    "Em nenhuma guerra"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Releia o dossiê: tem um lugar na Inglaterra e uma máquina com nome de bomba.",
+              "hint2": "Bletchley Park, a Bombe e mudanças diárias.",
+              "questions": [
+                {
+                  "q": "Onde Turing trabalhou quebrando códigos?",
+                  "options": [
+                    "Em Bletchley Park, na Inglaterra",
+                    "Na NASA",
+                    "No Google"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Como se chamava a máquina que Turing projetou para ajudar a quebrar a Enigma?",
+                  "options": [
+                    "Bombe",
+                    "Calculadora Turbo",
+                    "Tear de Jacquard"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "De quanto em quanto tempo a configuração da Enigma mudava?",
+                  "options": [
+                    "Todo dia",
+                    "Uma vez por ano",
+                    "Nunca mudava"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do dossiê.",
+              "hint1": "Pense em como alguém adivinharia parte de uma mensagem.",
+              "hint2": "A Enigma nunca trocava uma letra por ela mesma.",
+              "questions": [
+                {
+                  "q": "Qual falha da Enigma ajudou a quebrá-la?",
+                  "options": [
+                    "Ela nunca cifrava uma letra como ela mesma",
+                    "Ela só usava números",
+                    "Ela só tinha 3 letras"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Os decifradores usavam \"cribs\". O que era um crib?",
+                  "options": [
+                    "Um trecho que provavelmente estava na mensagem",
+                    "Uma peça da máquina",
+                    "Um tipo de espião"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem quebrou versões da Enigma pela primeira vez, antes da guerra?",
+                  "options": [
+                    "Matemáticos poloneses",
+                    "Engenheiros americanos",
+                    "A própria Ada Lovelace"
+                  ],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "red-lock2",
+          "title": "A palavra interceptada",
+          "leaderLine": "Essa palavra foi cifrada. Girem o disco e descubram o que está escrito.",
+          "type": "cipher",
+          "reward": {
+            "clue": "Pista do Professor: a chave da próxima mensagem só vai chegar pelo rádio."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Cada letra andou 1 casa para a frente no alfabeto. Volte 1 casa e descubra a palavra.",
+              "mode": "decode",
+              "shift": 1,
+              "text": "UVSJOH",
+              "answer": "TURING",
+              "wheel": "preset",
+              "hint1": "U virou T, V virou U...",
+              "hint2": "A palavra é o sobrenome de quem quebrou a Enigma."
+            },
+            "B": {
+              "prompt": "A chave é 3: cada letra andou 3 casas. Use o disco para voltar.",
+              "mode": "decode",
+              "shift": 3,
+              "text": "HQLJPD",
+              "answer": "ENIGMA",
+              "wheel": "free",
+              "hint1": "Gire o disco 3 casas e leia as letras de dentro.",
+              "hint2": "É o nome da máquina deste episódio."
+            },
+            "C": {
+              "prompt": "A chave é 5. Decifre o nome do lugar secreto.",
+              "mode": "decode",
+              "shift": 5,
+              "text": "GQJYHMQJD",
+              "answer": "BLETCHLEY",
+              "wheel": "free",
+              "hint1": "Volte 5 casas em cada letra.",
+              "hint2": "É onde Turing trabalhava: B L E T..."
+            }
+          }
+        },
+        {
+          "key": "red-lock3",
+          "title": "A chave pelo rádio",
+          "leaderLine": "A mensagem chegou, mas a chave vem só pela transmissão. Fiquem atentos!",
+          "type": "cipher",
+          "variants": {
+            "A": {
+              "prompt": "Escute a chave na transmissão e decifre a palavra.",
+              "mode": "decode",
+              "shift": 2,
+              "text": "EQFKIQ",
+              "answer": "CODIGO",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Volte 2 casas em cada letra."
+            },
+            "B": {
+              "prompt": "Escute a chave na transmissão e decifre a palavra.",
+              "mode": "decode",
+              "shift": 4,
+              "text": "QEUYMRE",
+              "answer": "MAQUINA",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Volte 4 casas em cada letra."
+            },
+            "C": {
+              "prompt": "Escute a chave na transmissão e decifre a palavra.",
+              "mode": "decode",
+              "shift": 7,
+              "text": "IVTIL",
+              "answer": "BOMBE",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Volte 7 casas. É o nome da máquina de Turing."
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "red-vault",
+        "title": "O Cofre: quebre o código",
+        "leaderLine": "Agora sem chave nenhuma. Façam como Turing: testem até a mensagem fazer sentido!",
+        "type": "cipher",
+        "variants": {
+          "A": {
+            "prompt": "Ninguém sabe a chave. Gire o disco até a mensagem fazer sentido e digite o que ela diz.",
+            "mode": "crack",
+            "shift": 4,
+            "text": "QYWIY WIKYVS",
+            "answer": "MUSEU SEGURO",
+            "wheel": "free",
+            "hint1": "Tente todas as voltas do disco: uma delas vai formar palavras.",
+            "hint2": "A chave é 4. A primeira palavra é MUSEU."
+          },
+          "B": {
+            "prompt": "Ninguém sabe a chave. Descubra a chave e digite a mensagem decifrada.",
+            "mode": "crack",
+            "shift": 6,
+            "text": "G INGBK SAJG ZUJU JOG",
+            "answer": "A CHAVE MUDA TODO DIA",
+            "wheel": "free",
+            "hint1": "A primeira palavra tem só uma letra: qual letra sozinha faz sentido?",
+            "hint2": "G virou A: a chave é 6."
+          },
+          "C": {
+            "prompt": "Ninguém sabe a chave, mas vocês têm um crib: a mensagem começa com TURING. Quebre o código e digite a mensagem.",
+            "mode": "crack",
+            "shift": 11,
+            "text": "EFCTYR BFPMCZF Z NZOTRZ",
+            "answer": "TURING QUEBROU O CODIGO",
+            "wheel": "free",
+            "crib": "TURING",
+            "hint1": "Compare a primeira palavra cifrada com TURING: quantas casas o T andou?",
+            "hint2": "T virou E: a chave é 11."
+          }
+        }
+      }
+    },
+    "blue": {
+      "name": "Piratas",
+      "locks": [
+        {
+          "key": "blue-lock1",
+          "title": "Diário de bordo",
+          "leaderLine": "Todo pirata precisa saber o que protege. Completem o diário de bordo!",
+          "type": "quiz",
+          "reward": {
+            "clue": "Pista da Capitã: precisamos mandar uma palavra secreta. Cifrem com o disco!"
+          },
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê: as respostas estão lá.",
+              "hint2": "A Enigma servia para esconder mensagens, e Turing ajudou a decifrá-las.",
+              "questions": [
+                {
+                  "q": "Para que servia a máquina Enigma?",
+                  "options": [
+                    "Para cifrar mensagens secretas",
+                    "Para fazer contas de padaria",
+                    "Para tocar música"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem ajudou a quebrar os códigos da Enigma?",
+                  "options": [
+                    "Alan Turing",
+                    "Santos Dumont",
+                    "Ada Lovelace"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Em que guerra a Enigma foi usada?",
+                  "options": [
+                    "Na Segunda Guerra Mundial",
+                    "Na Guerra dos Farrapos",
+                    "Em nenhuma guerra"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê: tem um lugar na Inglaterra e uma máquina com nome de bomba.",
+              "hint2": "Bletchley Park, a Bombe e mudanças diárias.",
+              "questions": [
+                {
+                  "q": "Onde Turing trabalhou quebrando códigos?",
+                  "options": [
+                    "Em Bletchley Park, na Inglaterra",
+                    "Na NASA",
+                    "No Google"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Como se chamava a máquina que Turing projetou para ajudar a quebrar a Enigma?",
+                  "options": [
+                    "Bombe",
+                    "Calculadora Turbo",
+                    "Tear de Jacquard"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "De quanto em quanto tempo a configuração da Enigma mudava?",
+                  "options": [
+                    "Todo dia",
+                    "Uma vez por ano",
+                    "Nunca mudava"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Pense em como alguém adivinharia parte de uma mensagem.",
+              "hint2": "A Enigma nunca trocava uma letra por ela mesma.",
+              "questions": [
+                {
+                  "q": "Qual falha da Enigma ajudou a quebrá-la?",
+                  "options": [
+                    "Ela nunca cifrava uma letra como ela mesma",
+                    "Ela só usava números",
+                    "Ela só tinha 3 letras"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Os decifradores usavam \"cribs\". O que era um crib?",
+                  "options": [
+                    "Um trecho que provavelmente estava na mensagem",
+                    "Uma peça da máquina",
+                    "Um tipo de espião"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem quebrou versões da Enigma pela primeira vez, antes da guerra?",
+                  "options": [
+                    "Matemáticos poloneses",
+                    "Engenheiros americanos",
+                    "A própria Ada Lovelace"
+                  ],
+                  "correct": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "blue-lock2",
+          "title": "A palavra secreta",
+          "leaderLine": "Cifrem a palavra antes que o Bando intercepte!",
+          "type": "cipher",
+          "reward": {
+            "clue": "Pista da Capitã: a chave da próxima mensagem vai chegar pelo rádio."
+          },
+          "variants": {
+            "A": {
+              "prompt": "Ande 1 casa para a frente com cada letra e escreva a palavra cifrada.",
+              "mode": "encode",
+              "shift": 1,
+              "text": "ALAN",
+              "answer": "BMBO",
+              "wheel": "preset",
+              "hint1": "A vira B, L vira M...",
+              "hint2": "Comece com B M..."
+            },
+            "B": {
+              "prompt": "A chave é 3: ande 3 casas com cada letra.",
+              "mode": "encode",
+              "shift": 3,
+              "text": "CODIGO",
+              "answer": "FRGLJR",
+              "wheel": "free",
+              "hint1": "Gire o disco 3 casas e leia as letras de fora.",
+              "hint2": "C vira F, O vira R..."
+            },
+            "C": {
+              "prompt": "A chave é 5: cifre a palavra.",
+              "mode": "encode",
+              "shift": 5,
+              "text": "SEGREDO",
+              "answer": "XJLWJIT",
+              "wheel": "free",
+              "hint1": "Ande 5 casas em cada letra.",
+              "hint2": "S vira X, E vira J..."
+            }
+          }
+        },
+        {
+          "key": "blue-lock3",
+          "title": "A chave pelo rádio",
+          "leaderLine": "Vamos cifrar o alarme do navio, mas a chave só chega pela transmissão!",
+          "type": "cipher",
+          "variants": {
+            "A": {
+              "prompt": "Escute a chave na transmissão e cifre a palavra.",
+              "mode": "encode",
+              "shift": 2,
+              "text": "CODIGO",
+              "answer": "EQFKIQ",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Ande 2 casas em cada letra."
+            },
+            "B": {
+              "prompt": "Escute a chave na transmissão e cifre a palavra.",
+              "mode": "encode",
+              "shift": 4,
+              "text": "MAQUINA",
+              "answer": "QEUYMRE",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Ande 4 casas em cada letra."
+            },
+            "C": {
+              "prompt": "Escute a chave na transmissão e cifre a palavra.",
+              "mode": "encode",
+              "shift": 7,
+              "text": "BOMBE",
+              "answer": "IVTIL",
+              "wheel": "free",
+              "spokenKey": true,
+              "hint1": "A chave é o número que a Narradora falou.",
+              "hint2": "Ande 7 casas em cada letra."
+            }
+          }
+        }
+      ],
+      "vault": {
+        "key": "blue-vault",
+        "title": "O Cofre: qual mensagem é nossa?",
+        "leaderLine": "O Bando mandou mensagens falsas no rádio! Só uma foi cifrada com a nossa chave do dia.",
+        "type": "cipher",
+        "variants": {
+          "A": {
+            "prompt": "A chave do dia é 3. Decifre as mensagens e escolha a única que faz sentido.",
+            "mode": "verify",
+            "shift": 3,
+            "options": [
+              "R WHVRXUR HVWD VHJXUR",
+              "HAHXBL HV HTHUOLJLY",
+              "M HUFDUZQ MNDUG"
+            ],
+            "correct": 0,
+            "wheel": "free",
+            "hint1": "Use o disco com a chave 3 em cada mensagem.",
+            "hint2": "A verdadeira fala do tesouro."
+          },
+          "B": {
+            "prompt": "A chave do dia é 5. Decifre e escolha a mensagem verdadeira.",
+            "mode": "verify",
+            "shift": 5,
+            "options": [
+              "T SFANT UFWYJ FT RJNT INF",
+              "Q EQHTG GUVC XCBKQ",
+              "J LJYRCJ BDVRD",
+              "C POBRC RSGWGHWI"
+            ],
+            "correct": 0,
+            "wheel": "free",
+            "hint1": "Só uma vai virar palavras com a chave 5.",
+            "hint2": "A verdadeira fala do navio."
+          },
+          "C": {
+            "prompt": "A chave do dia é 9. Decifre e escolha a mensagem verdadeira.",
+            "mode": "verify",
+            "shift": 9,
+            "options": [
+              "PDJAMNV J VJZDRWJ WJ BJUJ MXRB",
+              "E WIRLE QYHSY LSNI",
+              "JETEI FQHQ E SEDLUI",
+              "J HVKV ZNOV ZMMVYJ"
+            ],
+            "correct": 0,
+            "wheel": "free",
+            "hint1": "As falsas foram cifradas com outras chaves: com 9 elas viram letras sem sentido.",
+            "hint2": "A verdadeira manda guardar a máquina."
+          }
+        }
+      }
+    }
+  },
+  "event": {
+    "type": "alarmTrueFalse",
+    "title": "ALARME FALSO?",
+    "secondsPerItem": 15,
+    "items": [
+      {
+        "text": "A Enigma nunca trocava uma letra por ela mesma!",
+        "isReal": true,
+        "explanation": "Real! Essa falha ajudou os decifradores a eliminar muitas possibilidades."
+      },
+      {
+        "text": "Os alemães mudavam a configuração da Enigma só uma vez por ano!",
+        "isReal": false,
+        "explanation": "Falso! A configuração mudava todo dia, por isso era tão difícil."
+      },
+      {
+        "text": "Matemáticos poloneses quebraram a Enigma antes de Turing!",
+        "isReal": true,
+        "explanation": "Real! Eles abriram o caminho, e depois compartilharam o que sabiam com os ingleses."
+      }
+    ]
+  },
+  "narratorScript": {
+    "opening": "Uma da manhã no museu. No rádio, só mensagens cifradas. Bando: vocês querem ler os segredos. Piratas: vocês precisam escondê-los. Escolham seus lados!",
+    "spokenClues": {
+      "A": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "A chave da mensagem é 2."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "A chave para cifrar é 2."
+        }
+      ],
+      "B": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "A chave da mensagem é 4."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "A chave para cifrar é 4."
+        }
+      ],
+      "C": [
+        {
+          "challengeKey": "red-lock3",
+          "say": "A chave da mensagem é 7."
+        },
+        {
+          "challengeKey": "blue-lock3",
+          "say": "A chave para cifrar é 7."
+        }
+      ]
+    },
+    "revealLines": [
+      "Sabiam que vocês fizeram o mesmo que os decifradores de Bletchley Park? Eles testavam possibilidades até a mensagem fazer sentido.",
+      "E usavam cribs: palavras que provavelmente estavam na mensagem, como uma previsão do tempo. Foi assim que a Enigma caiu."
+    ],
+    "closing": "Fechem os rádios. Semana que vem, a próxima vitrine se abre."
+  },
+  "reveal": [
+    {
+      "caption": "Em Bletchley Park, milhares de pessoas trabalhavam em segredo para decifrar mensagens.",
+      "art": "ep2-bletchley"
+    },
+    {
+      "caption": "Alan Turing projetou a Bombe, que testava combinações da Enigma muito rápido.",
+      "art": "ep2-bombe"
+    },
+    {
+      "speech": {
+        "who": "narradora",
+        "text": "Hoje vocês quebraram códigos como os decifradores da guerra!"
+      },
+      "art": "narradora"
+    }
+  ],
+  "teaser": {
+    "line": "Uma máquina com milhares de válvulas acende sozinha no museu...",
+    "art": "teaser-ep2"
+  },
+  "recapOfThis": [
+    "Na semana passada, a Máquina Enigma escondia segredos com letras trocadas.",
+    "O Bando quebrou códigos, os Piratas cifraram mensagens."
+  ],
+  "card": {
+    "title": "Máquina Enigma",
+    "year": "1939–1945",
+    "people": [
+      "Alan Turing"
+    ],
+    "facts": [
+      "Cifrava mensagens trocando letras",
+      "A configuração mudava todo dia",
+      "Turing criou a Bombe para quebrá-la"
+    ],
+    "art": "card-ep2"
+  }
+}
