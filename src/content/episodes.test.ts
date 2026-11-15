@@ -147,3 +147,85 @@ describe('Ep. 1 continua no formato novo (SPEC-02 Parte B)', () => {
     expect(ep1.teaser.art).toBe('teaser-ep1');
   });
 });
+
+/**
+ * Pedido da May (15/11): os dois lados trabalham a mesma lógica, mas NENHUMA resposta de um lado
+ * pode aparecer como resposta (ou texto na tela) do outro, no mesmo nível. Assim, quem ouvir a
+ * dupla do lado oposto falando não ganha a resposta.
+ */
+describe('lados espelhados sem respostas compartilhadas', () => {
+  const norm = (x: unknown) => normalizeAnswer(typeof x === 'string' ? x : JSON.stringify(x));
+  function answersAndScreen(c: Challenge, lv: 'A' | 'B' | 'C') {
+    const answers: string[] = [];
+    const screen: string[] = [];
+    const v = c.variants[lv] as unknown as Record<string, unknown>;
+    switch (c.type) {
+      case 'quiz':
+        for (const q of v.questions as { q: string; options: string[]; correct: number }[]) {
+          answers.push(q.options[q.correct]!);
+          screen.push(q.q);
+        }
+        break;
+      case 'riddle':
+        answers.push(...(v.accept as string[]));
+        screen.push(v.text as string);
+        break;
+      case 'anagram':
+        answers.push(v.answer as string);
+        break;
+      case 'punchCardRead':
+        answers.push(v.answer as string);
+        screen.push(JSON.stringify(v.columns));
+        break;
+      case 'punchCardWrite':
+        answers.push(JSON.stringify(v.target));
+        screen.push(v.shownTarget as string);
+        break;
+      case 'blockBuild':
+      case 'blockDebug':
+        answers.push(JSON.stringify(v.target));
+        break;
+      case 'cipher':
+        if (v.answer) answers.push(v.answer as string);
+        if (v.text) screen.push(v.text as string);
+        if (v.options) screen.push(...(v.options as string[]));
+        break;
+      case 'wiring':
+        answers.push(`${String(v.start)}>${String(v.target)}`);
+        break;
+      case 'priority':
+        answers.push(JSON.stringify(v.correct ?? v.optimalValue));
+        break;
+    }
+    return { answers: answers.map(norm), screen: screen.map(norm) };
+  }
+  for (const id of ['ep1', 'ep2', 'ep3', 'ep4']) {
+    it(id, () => {
+      const e = ALL[id] as Extract<AnyEpisode, { sides: unknown }>;
+      const red = [...e.sides.red.locks, e.sides.red.vault];
+      const blue = [...e.sides.blue.locks, e.sides.blue.vault];
+      for (const lv of ['A', 'B', 'C'] as const)
+        red.forEach((rc, i) => {
+          const r = answersAndScreen(rc, lv);
+          const b = answersAndScreen(blue[i]!, lv);
+          const tag = `${id} nível ${lv} desafio ${i + 1}`;
+          expect(
+            r.answers.filter((a) => b.answers.includes(a)),
+            `${tag}: mesma resposta`,
+          ).toEqual([]);
+          expect(
+            r.answers.filter((a) => b.screen.includes(a)),
+            `${tag}: resposta do Bando na tela dos Piratas`,
+          ).toEqual([]);
+          expect(
+            b.answers.filter((a) => r.screen.includes(a)),
+            `${tag}: resposta dos Piratas na tela do Bando`,
+          ).toEqual([]);
+          expect(
+            r.screen.filter((q) => rc.type === 'quiz' && b.screen.includes(q)),
+            `${tag}: pergunta igual`,
+          ).toEqual([]);
+        });
+    });
+  }
+});

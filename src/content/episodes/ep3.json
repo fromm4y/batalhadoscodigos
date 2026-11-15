@@ -285,36 +285,6 @@
             "A": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
               "hint1": "Releia o dossiê: as respostas estão lá.",
-              "hint2": "Ele era enorme e foi programado por seis mulheres.",
-              "questions": [
-                {
-                  "q": "Para que servia o ENIAC?",
-                  "options": [
-                    "Para fazer cálculos muito rápido",
-                    "Para tecer tecido",
-                    "Para mandar e-mails"
-                  ],
-                  "correct": 0
-                },
-                {
-                  "q": "Quem programava o ENIAC?",
-                  "options": [
-                    "Um grupo de seis mulheres",
-                    "Robôs",
-                    "Ninguém, ele se programava sozinho"
-                  ],
-                  "correct": 0
-                },
-                {
-                  "q": "O ENIAC era do tamanho de...",
-                  "options": ["Uma sala inteira", "Um celular", "Uma caneta"],
-                  "correct": 0
-                }
-              ]
-            },
-            "B": {
-              "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Releia o dossiê: tem um ano e uma peça de vidro.",
               "hint2": "1945, cabos e válvulas.",
               "questions": [
                 {
@@ -323,43 +293,69 @@
                   "correct": 0
                 },
                 {
-                  "q": "Como o ENIAC era programado?",
+                  "q": "Como se programava o ENIAC?",
                   "options": [
                     "Ligando cabos e virando chaves",
-                    "Com mouse e teclado",
-                    "Por comando de voz"
+                    "Falando com ele",
+                    "Com mouse e teclado"
                   ],
                   "correct": 0
                 },
                 {
-                  "q": "Que peça o ENIAC usava aos milhares?",
-                  "options": ["Válvulas", "Chips de celular", "Pilhas"],
+                  "q": "Que peças o ENIAC usava aos milhares?",
+                  "options": ["Válvulas", "Pilhas", "Chips de celular"],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Releia o dossiê e as curiosidades.",
+              "hint2": "27 toneladas, seis mulheres e trocar a válvula queimada.",
+              "questions": [
+                {
+                  "q": "Quanto pesava o ENIAC, mais ou menos?",
+                  "options": ["27 toneladas", "27 quilos", "2 quilos"],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem foram as primeiras programadoras do ENIAC?",
+                  "options": ["Seis mulheres", "Seis robôs", "Ninguém, ele se programava sozinho"],
+                  "correct": 0
+                },
+                {
+                  "q": "O que era preciso fazer quando uma válvula queimava?",
+                  "options": [
+                    "Achar qual era e trocá-la",
+                    "Desligar o computador para sempre",
+                    "Nada, ele funcionava igual"
+                  ],
                   "correct": 0
                 }
               ]
             },
             "C": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Pense na diferença entre o ENIAC e os computadores de hoje.",
-              "hint2": "O ENIAC era decimal, não binário.",
+              "hint1": "As curiosidades do episódio têm as respostas.",
+              "hint2": "Depuração, Betty Snyder Holberton e décadas depois.",
               "questions": [
                 {
-                  "q": "O ENIAC fazia contas em qual sistema?",
-                  "options": ["Decimal", "Binário", "Algarismos romanos"],
+                  "q": "Como se chama achar e corrigir erros num programa?",
+                  "options": ["Depuração (em inglês, debugging)", "Compilação", "Digitação"],
                   "correct": 0
                 },
                 {
-                  "q": "Para que o ENIAC foi construído no começo?",
+                  "q": "Qual programadora do ENIAC depois ajudou a criar linguagens de programação?",
+                  "options": ["Betty Snyder Holberton", "Marie Curie", "Ada Lovelace"],
+                  "correct": 0
+                },
+                {
+                  "q": "Quando as programadoras do ENIAC foram reconhecidas?",
                   "options": [
-                    "Calcular tabelas de tiro de artilharia",
-                    "Jogar xadrez",
-                    "Prever o tempo"
+                    "Só décadas depois",
+                    "No mesmo dia",
+                    "Elas nunca trabalharam no ENIAC"
                   ],
-                  "correct": 0
-                },
-                {
-                  "q": "Qual destas pessoas foi uma das programadoras do ENIAC?",
-                  "options": ["Jean Jennings Bartik", "Marie Curie", "Frida Kahlo"],
                   "correct": 0
                 }
               ]
@@ -405,37 +401,37 @@
           "type": "wiring",
           "variants": {
             "A": {
-              "prompt": "Escute o número de entrada. O painel deveria dar 10, mas está errado. Troque os cabos de lugar.",
+              "prompt": "Escute o número de entrada. O painel deveria dar 15, mas está errado. Troque os cabos de lugar.",
               "mode": "debug",
-              "start": 2,
-              "modules": ["+3", "x2"],
+              "start": 3,
+              "modules": ["+2", "x3"],
               "slots": 2,
-              "target": 10,
-              "chain": ["x2", "+3"],
+              "target": 15,
+              "chain": ["x3", "+2"],
               "hint1": "Faça a conta com os módulos na ordem atual.",
               "hint2": "Os dois módulos estão invertidos.",
               "startSpoken": true
             },
             "B": {
-              "prompt": "Escute o número de entrada. O painel deveria dar 13. Ache os cabos trocados.",
+              "prompt": "Escute o número de entrada. O painel deveria dar 11. Ache os cabos trocados.",
               "mode": "debug",
-              "start": 4,
-              "modules": ["+1", "x3", "-2"],
+              "start": 5,
+              "modules": ["+2", "x2", "-3"],
               "slots": 3,
-              "target": 13,
-              "chain": ["x3", "+1", "-2"],
+              "target": 11,
+              "chain": ["x2", "+2", "-3"],
               "hint1": "Faça a conta passo a passo.",
               "hint2": "Os dois primeiros módulos estão invertidos.",
               "startSpoken": true
             },
             "C": {
-              "prompt": "Escute o número de entrada. O painel deveria dar 29. Ache os cabos trocados.",
+              "prompt": "Escute o número de entrada. O painel deveria dar 26. Ache os cabos trocados.",
               "mode": "debug",
-              "start": 3,
-              "modules": ["x2", "+4", "x3", "-1"],
+              "start": 2,
+              "modules": ["+2", "x3", "+1", "x2"],
               "slots": 4,
-              "target": 29,
-              "chain": ["+4", "x2", "x3", "-1"],
+              "target": 26,
+              "chain": ["x3", "+2", "+1", "x2"],
               "hint1": "Faça a conta passo a passo.",
               "hint2": "Os dois primeiros módulos estão invertidos.",
               "startSpoken": true
@@ -450,35 +446,35 @@
         "type": "wiring",
         "variants": {
           "A": {
-            "prompt": "O painel deveria dar 13. Troque os cabos de lugar até dar certo.",
+            "prompt": "O painel deveria dar 11. Troque os cabos de lugar até dar certo.",
             "mode": "debug",
-            "start": 1,
-            "modules": ["+2", "x4", "+1"],
+            "start": 2,
+            "modules": ["+1", "x3", "+2"],
             "slots": 3,
-            "target": 13,
-            "chain": ["x4", "+2", "+1"],
+            "target": 11,
+            "chain": ["x3", "+1", "+2"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           },
           "B": {
-            "prompt": "O painel deveria dar 18. Ache o erro e conserte.",
+            "prompt": "O painel deveria dar 28. Ache o erro e conserte.",
             "mode": "debug",
-            "start": 2,
-            "modules": ["+3", "x2", "x3", "-1"],
+            "start": 3,
+            "modules": ["+1", "x2", "x4", "-2"],
             "slots": 3,
-            "target": 18,
-            "chain": ["+3", "x3", "x2"],
+            "target": 28,
+            "chain": ["+1", "x2", "x4"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           },
           "C": {
-            "prompt": "O painel deveria dar 46. Ache o erro e conserte.",
+            "prompt": "O painel deveria dar 44. Ache o erro e conserte.",
             "mode": "debug",
-            "start": 3,
-            "modules": ["+2", "x3", "-1", "x2", "+5"],
+            "start": 4,
+            "modules": ["+2", "x3", "+4", "x2", "+1"],
             "slots": 4,
-            "target": 46,
-            "chain": ["x3", "+5", "-1", "x2"],
+            "target": 44,
+            "chain": ["x3", "+2", "+4", "x2"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
           }
@@ -518,7 +514,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "O número de entrada é 2."
+          "say": "O número de entrada é 3."
         }
       ],
       "B": [
@@ -528,7 +524,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "O número de entrada é 4."
+          "say": "O número de entrada é 5."
         }
       ],
       "C": [
@@ -538,7 +534,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "O número de entrada é 3."
+          "say": "O número de entrada é 2."
         }
       ]
     },

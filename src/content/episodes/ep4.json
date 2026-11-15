@@ -455,73 +455,93 @@
           "variants": {
             "A": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Releia o dossiê: as respostas estão lá.",
-              "hint2": "1969, Margaret Hamilton e o pouso na Lua.",
+              "hint1": "Releia o dossiê e as curiosidades: as respostas estão lá.",
+              "hint2": "Armstrong e Aldrin, muito menos memória e o MIT.",
               "questions": [
                 {
-                  "q": "Em que ano o ser humano pisou na Lua pela primeira vez?",
-                  "options": ["1969", "1869", "2019"],
+                  "q": "Quem pousou na Lua em julho de 1969?",
+                  "options": [
+                    "Neil Armstrong e Buzz Aldrin",
+                    "Alan Turing e Ada Lovelace",
+                    "Pelé e Garrincha"
+                  ],
                   "correct": 0
                 },
                 {
-                  "q": "Quem liderou o time de software da Apollo?",
-                  "options": ["Margaret Hamilton", "Ada Lovelace", "Alan Turing"],
+                  "q": "O computador da Apollo tinha mais ou menos memória que um celular de hoje?",
+                  "options": ["Muito menos memória", "Muito mais memória", "A mesma memória"],
                   "correct": 0
                 },
                 {
-                  "q": "O computador da Apollo ajudava a...",
-                  "options": ["Pousar a nave na Lua", "Fazer pipoca", "Tocar música"],
+                  "q": "Em que instituição Margaret Hamilton trabalhava?",
+                  "options": ["No MIT", "Na padaria do bairro", "Em Bletchley Park"],
                   "correct": 0
                 }
               ]
             },
             "B": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Releia o dossiê: tem números de alarme.",
-              "hint2": "1202 e 1201: o software manteve só o essencial.",
+              "hint1": "Releia as curiosidades do episódio.",
+              "hint2": "Tarefas demais, decidir o que vem primeiro e a pilha de código.",
               "questions": [
                 {
-                  "q": "Que números de alarme apareceram no pouso da Apollo 11?",
-                  "options": ["1202 e 1201", "404 e 500", "007 e 911"],
-                  "correct": 0
-                },
-                {
-                  "q": "O que o software fez quando o computador ficou sobrecarregado?",
+                  "q": "O que os alarmes 1202 e 1201 significavam?",
                   "options": [
-                    "Deixou de lado o que era menos importante e manteve o essencial",
-                    "Desligou tudo",
-                    "Começou a missão do zero"
+                    "Que o computador estava com tarefas demais",
+                    "Que a nave estava sem combustível",
+                    "Que a Lua tinha sumido"
                   ],
                   "correct": 0
                 },
                 {
-                  "q": "Margaret Hamilton trabalhava em qual instituição?",
-                  "options": ["MIT", "Bletchley Park", "Museu do Louvre"],
+                  "q": "O que é priorizar?",
+                  "options": [
+                    "Decidir o que vem primeiro quando não dá para fazer tudo",
+                    "Fazer tudo ao mesmo tempo",
+                    "Deixar tudo para depois"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Que foto famosa de Margaret Hamilton existe?",
+                  "options": [
+                    "Ao lado de uma pilha de folhas com o código, quase da altura dela",
+                    "Pilotando a nave",
+                    "Jogando xadrez com um robô"
+                  ],
                   "correct": 0
                 }
               ]
             },
             "C": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Pense em um computador com pouca memória numa hora crítica.",
-              "hint2": "Muito menos memória que um celular.",
+              "hint1": "Pense nas curiosidades e no que aconteceu nos alarmes.",
+              "hint2": "Medalha Presidencial da Liberdade, tarefas essenciais e tarefas demais.",
               "questions": [
                 {
-                  "q": "Comparado a um celular de hoje, o computador da Apollo tinha...",
-                  "options": ["Muito menos memória", "Mais memória", "A mesma memória"],
-                  "correct": 0
-                },
-                {
-                  "q": "Margaret Hamilton ajudou a popularizar o termo...",
-                  "options": ["Engenharia de software", "Inteligência artificial", "Internet"],
-                  "correct": 0
-                },
-                {
-                  "q": "Por que priorizar tarefas foi tão importante no pouso?",
+                  "q": "Que prêmio Margaret Hamilton recebeu em 2016?",
                   "options": [
-                    "Sem isso, o computador poderia travar na hora mais crítica",
-                    "Para economizar papel",
-                    "Para a nave ir mais rápido que a luz"
+                    "A Medalha Presidencial da Liberdade",
+                    "O Prêmio Turing",
+                    "Uma medalha de ouro olímpica"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Durante o pouso, o software da Apollo...",
+                  "options": [
+                    "Manteve as tarefas essenciais e deixou de lado as outras",
+                    "Reiniciou a missão do zero",
+                    "Pediu para os astronautas desligarem tudo"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Por que o computador ficou sobrecarregado no pouso?",
+                  "options": [
+                    "Estava recebendo tarefas demais ao mesmo tempo",
+                    "Porque acabou a bateria",
+                    "Porque um astronauta derramou café"
                   ],
                   "correct": 0
                 }
@@ -682,23 +702,29 @@
         "type": "priority",
         "variants": {
           "A": {
-            "prompt": "O navio tem 8 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+            "prompt": "O navio tem 9 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
             "mode": "budget",
-            "capacity": 8,
+            "capacity": 9,
             "capacityLabel": "energia",
             "valueLabel": "estrelas",
             "tasks": [
               {
                 "id": "radar",
                 "label": "Radar de pouso",
-                "cost": 3,
-                "value": 5
+                "cost": 4,
+                "value": 6
               },
               {
                 "id": "motores",
                 "label": "Controle dos motores",
                 "cost": 3,
                 "value": 4
+              },
+              {
+                "id": "altitude",
+                "label": "Medidor de altitude",
+                "cost": 2,
+                "value": 3
               },
               {
                 "id": "musica",
@@ -709,24 +735,18 @@
               {
                 "id": "fotos",
                 "label": "Fotos do passeio",
-                "cost": 2,
-                "value": 1
-              },
-              {
-                "id": "altitude",
-                "label": "Medidor de altitude",
-                "cost": 2,
-                "value": 3
+                "cost": 1,
+                "value": 0
               }
             ],
-            "optimalValue": 12,
+            "optimalValue": 13,
             "hint1": "Comece pelos sistemas com mais estrelas.",
             "hint2": "Radar, motores e altitude."
           },
           "B": {
-            "prompt": "O navio tem 10 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+            "prompt": "O navio tem 11 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
             "mode": "budget",
-            "capacity": 10,
+            "capacity": 11,
             "capacityLabel": "energia",
             "valueLabel": "estrelas",
             "tasks": [
@@ -734,13 +754,13 @@
                 "id": "radar",
                 "label": "Radar de pouso",
                 "cost": 4,
-                "value": 5
+                "value": 6
               },
               {
                 "id": "motores",
                 "label": "Controle dos motores",
-                "cost": 3,
-                "value": 4
+                "cost": 4,
+                "value": 5
               },
               {
                 "id": "altitude",
@@ -752,7 +772,7 @@
                 "id": "combustivel",
                 "label": "Combustível extra",
                 "cost": 2,
-                "value": 1
+                "value": 2
               },
               {
                 "id": "musica",
@@ -767,14 +787,14 @@
                 "value": 0
               }
             ],
-            "optimalValue": 12,
+            "optimalValue": 14,
             "hint1": "Compare quantas estrelas cada unidade de energia rende.",
             "hint2": "Radar, motores e altitude."
           },
           "C": {
-            "prompt": "O navio tem 12 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+            "prompt": "O navio tem 13 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
             "mode": "budget",
-            "capacity": 12,
+            "capacity": 13,
             "capacityLabel": "energia",
             "valueLabel": "estrelas",
             "tasks": [
@@ -806,7 +826,7 @@
                 "id": "comunicacao",
                 "label": "Comunicação com a Terra",
                 "cost": 5,
-                "value": 7
+                "value": 8
               },
               {
                 "id": "musica",
@@ -821,7 +841,7 @@
                 "value": 1
               }
             ],
-            "optimalValue": 18,
+            "optimalValue": 19,
             "hint1": "Nem sempre a soma das menores ganha. Teste combinações.",
             "hint2": "Radar, motores e comunicação."
           }

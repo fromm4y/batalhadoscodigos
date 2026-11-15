@@ -286,69 +286,77 @@
             "A": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
               "hint1": "Releia o dossiê da invenção: as respostas estão lá.",
-              "hint2": "A primeira programadora tinha um nome de 3 letras.",
+              "hint2": "Século 19, um tear e a primeira programadora.",
               "questions": [
                 {
-                  "q": "Quem escreveu o primeiro algoritmo para uma máquina?",
-                  "options": ["Ada Lovelace", "Alan Turing", "Steve Jobs"],
+                  "q": "Em que século a Máquina Analítica foi projetada?",
+                  "options": ["No século 19", "No século 21", "No século 5"],
                   "correct": 0
                 },
                 {
-                  "q": "Como a máquina recebia instruções?",
-                  "options": ["Cartões perfurados", "Teclado", "Tela de toque"],
+                  "q": "De qual máquina veio a ideia dos cartões perfurados?",
+                  "options": ["Do tear de Jacquard", "Da máquina de lavar", "Do relógio cuco"],
                   "correct": 0
                 },
                 {
-                  "q": "Quem projetou a Máquina Analítica?",
-                  "options": ["Charles Babbage", "Bill Gates", "Santos Dumont"],
+                  "q": "Ada Lovelace é lembrada como...",
+                  "options": [
+                    "A primeira programadora da história",
+                    "A primeira astronauta",
+                    "A inventora do telefone"
+                  ],
                   "correct": 0
                 }
               ]
             },
             "B": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Releia o dossiê: tem um ano e uma máquina de tecer.",
-              "hint2": "As notas de Ada são do século 19, e os cartões vieram de um tear.",
+              "hint1": "Releia o dossiê e as curiosidades: tem notas, instruções e um poeta.",
+              "hint2": "Ada publicou notas com um algoritmo e era filha de Lord Byron.",
               "questions": [
                 {
-                  "q": "Em que ano Ada publicou suas notas com o algoritmo?",
-                  "options": ["1843", "1943", "1993"],
+                  "q": "O que Ada publicou em 1843?",
+                  "options": [
+                    "Notas com um algoritmo para a máquina",
+                    "Um livro de receitas",
+                    "Um mapa do tesouro"
+                  ],
                   "correct": 0
                 },
                 {
-                  "q": "De onde veio a ideia dos cartões perfurados?",
-                  "options": ["Do tear de Jacquard", "De um relógio", "Da imprensa"],
+                  "q": "O que a máquina recebia pelos cartões perfurados?",
+                  "options": ["Instruções", "Dinheiro", "Cartas de amor"],
                   "correct": 0
                 },
                 {
-                  "q": "A Máquina Analítica foi construída por completo naquela época?",
-                  "options": ["Não", "Sim", "Só a parte do teclado"],
+                  "q": "De quem Ada Lovelace era filha?",
+                  "options": ["Do poeta Lord Byron", "De Charles Babbage", "De um capitão pirata"],
                   "correct": 0
                 }
               ]
             },
             "C": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Pense no que Ada percebeu que ia além das contas.",
-              "hint2": "O algoritmo de Ada calculava uma sequência de números com nome de matemático.",
+              "hint1": "As curiosidades do episódio têm as respostas.",
+              "hint2": "Ciência poética, vapor e uma terça-feira de outubro.",
               "questions": [
                 {
-                  "q": "O que o algoritmo de Ada calculava?",
-                  "options": ["Números de Bernoulli", "Previsão do tempo", "Órbitas de planetas"],
+                  "q": "Como Ada chamava o jeito dela de pensar?",
+                  "options": ["\"Ciência poética\"", "\"Matemática mágica\"", "\"Lógica de robô\""],
                   "correct": 0
                 },
                 {
-                  "q": "O que Ada percebeu de diferente sobre a máquina?",
+                  "q": "Como a máquina de Babbage foi projetada para funcionar?",
+                  "options": ["A vapor", "Com energia solar", "Com pilhas"],
+                  "correct": 0
+                },
+                {
+                  "q": "Que dia do ano homenageia Ada Lovelace?",
                   "options": [
-                    "Que ela podia trabalhar com símbolos, não só números",
-                    "Que ela era muito rápida",
-                    "Que ela era barata"
+                    "A segunda terça-feira de outubro",
+                    "O dia 1º de abril",
+                    "O dia de Natal"
                   ],
-                  "correct": 0
-                },
-                {
-                  "q": "Uma linguagem de programação recebeu o nome de Ada em...",
-                  "options": ["1980", "1880", "2020"],
                   "correct": 0
                 }
               ]
@@ -366,24 +374,24 @@
           "variants": {
             "A": {
               "prompt": "Arrume as letras para descobrir a palavra secreta.",
-              "answer": "CARTÃO PERFURADO",
+              "answer": "CHARLES BABBAGE",
               "mode": "perWordFirstFixed",
-              "hint1": "É o que a máquina usava para receber instruções.",
-              "hint2": "A primeira palavra é CARTÃO."
+              "hint1": "É quem projetou a Máquina Analítica.",
+              "hint2": "A primeira palavra é CHARLES."
             },
             "B": {
               "prompt": "Arrume as letras para descobrir a palavra secreta.",
-              "answer": "CARTÃO PERFURADO",
+              "answer": "CHARLES BABBAGE",
               "mode": "perWord",
-              "hint1": "É o que a máquina usava para receber instruções.",
-              "hint2": "A primeira palavra é CARTÃO."
+              "hint1": "É quem projetou a Máquina Analítica.",
+              "hint2": "A primeira palavra é CHARLES."
             },
             "C": {
               "prompt": "Arrume as letras para descobrir o nome secreto.",
-              "answer": "ADA LOVELACE",
+              "answer": "LORD BYRON",
               "mode": "whole",
-              "hint1": "É a primeira programadora da história.",
-              "hint2": "O primeiro nome tem 3 letras: A _ A."
+              "hint1": "É o pai de Ada, um poeta famoso.",
+              "hint2": "A primeira palavra tem 4 letras: L O R D."
             }
           }
         },
@@ -396,32 +404,32 @@
             "A": {
               "prompt": "Fure um buraco por coluna para formar a senha.",
               "rows": 10,
-              "target": [8, 4, 3],
+              "target": [5, 2, 7],
               "decode": "digits",
-              "shownTarget": "8 4 _",
+              "shownTarget": "5 2 _",
               "spokenColumn": 2,
               "hint1": "Em cada coluna, fure a linha do número.",
-              "hint2": "Na 1ª coluna, fure a linha 8."
+              "hint2": "Na 1ª coluna, fure a linha 5."
             },
             "B": {
               "prompt": "Fure um buraco por coluna para formar a senha.",
               "rows": 10,
-              "target": [1, 8, 4, 3],
+              "target": [1, 8, 0, 4],
               "decode": "digits",
-              "shownTarget": "1 8 4 _",
+              "shownTarget": "1 8 0 _",
               "spokenColumn": 3,
               "hint1": "Em cada coluna, fure a linha do número.",
-              "hint2": "A senha é um ano importante para Ada."
+              "hint2": "A senha é o ano do tear de Jacquard."
             },
             "C": {
               "prompt": "Transforme as letras em números (A=1, B=2...) e fure o cartão.",
               "rows": 10,
-              "target": [1, 4, 1],
+              "target": [4, 9, 1],
               "decode": "letters",
-              "shownTarget": "A D _",
+              "shownTarget": "D I _",
               "spokenColumn": 2,
               "hint1": "A=1, B=2, C=3, D=4...",
-              "hint2": "A senha forma o nome da primeira programadora."
+              "hint2": "A senha é uma palavra de 3 letras: o contrário de noite."
             }
           }
         }
@@ -441,19 +449,19 @@
                 "body": [
                   {
                     "type": "weave",
-                    "symbol": "star"
+                    "symbol": "dot"
                   },
                   {
                     "type": "weave",
-                    "symbol": "star"
+                    "symbol": "dot"
                   }
                 ]
               }
             ],
-            "target": ["star", "dot", "star", "dot", "star", "dot"],
+            "target": ["dot", "line", "dot", "line", "dot", "line"],
             "editable": "symbols",
             "hint1": "Compare o que o tear tece com o padrão: onde fica diferente?",
-            "hint2": "O segundo bloco dentro da repetição deveria ser ●."
+            "hint2": "O segundo bloco dentro da repetição deveria ser ▬."
           },
           "B": {
             "prompt": "O tear deveria tecer o padrão, mas tem um erro. Ache e conserte.",
@@ -464,55 +472,58 @@
                 "body": [
                   {
                     "type": "weave",
-                    "symbol": "star"
-                  },
-                  {
-                    "type": "weave",
-                    "symbol": "star"
+                    "symbol": "dot"
                   },
                   {
                     "type": "weave",
                     "symbol": "dot"
+                  },
+                  {
+                    "type": "weave",
+                    "symbol": "star"
                   }
                 ]
               }
             ],
             "target": [
-              "star",
-              "star",
+              "dot",
               "dot",
               "star",
-              "star",
+              "dot",
               "dot",
               "star",
-              "star",
+              "dot",
               "dot",
               "star",
+              "dot",
+              "dot",
               "star",
-              "dot"
+              "dot",
+              "dot",
+              "star"
             ],
             "editable": "counts",
             "hint1": "Os blocos estão certos. Conte quantas vezes o padrão aparece.",
-            "hint2": "A repetição deveria ser 4 vezes."
+            "hint2": "A repetição deveria ser 5 vezes."
           },
           "C": {
-            "prompt": "O tear deveria tecer as 3 fileiras, mas tem um erro escondido. Ache e conserte.",
+            "prompt": "O tear deveria tecer as 2 fileiras, mas tem um erro escondido. Ache e conserte.",
             "program": [
               {
                 "type": "repeat",
-                "times": 3,
+                "times": 2,
                 "body": [
                   {
                     "type": "repeat",
-                    "times": 3,
+                    "times": 2,
                     "body": [
                       {
                         "type": "weave",
-                        "symbol": "star"
+                        "symbol": "dot"
                       },
                       {
                         "type": "weave",
-                        "symbol": "dot"
+                        "symbol": "star"
                       }
                     ]
                   },
@@ -524,25 +535,24 @@
               }
             ],
             "target": [
-              "star",
               "dot",
               "star",
               "dot",
+              "star",
+              "dot",
+              "star",
               "line",
-              "star",
               "dot",
-              "star",
-              "dot",
-              "line",
               "star",
               "dot",
               "star",
               "dot",
+              "star",
               "line"
             ],
             "editable": "both",
-            "hint1": "Conte quantos ★● existem em cada fileira do padrão.",
-            "hint2": "A repetição de dentro deveria ser 2 vezes."
+            "hint1": "Conte quantos ●★ existem em cada fileira do padrão.",
+            "hint2": "A repetição de dentro deveria ser 3 vezes."
           }
         }
       }
@@ -580,7 +590,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "O número que molhou é o 3."
+          "say": "O número que molhou é o 7."
         }
       ],
       "B": [
@@ -590,7 +600,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "O número que molhou é o 3."
+          "say": "O número que molhou é o 4."
         }
       ],
       "C": [
@@ -600,7 +610,7 @@
         },
         {
           "challengeKey": "blue-lock3",
-          "say": "A letra que molhou é a mesma da primeira: A."
+          "say": "A letra que molhou é A, a primeira do alfabeto."
         }
       ]
     },

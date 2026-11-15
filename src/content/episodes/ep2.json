@@ -288,45 +288,15 @@
             "A": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
               "hint1": "Releia o dossiê: as respostas estão lá.",
-              "hint2": "A Enigma servia para esconder mensagens, e Turing ajudou a decifrá-las.",
+              "hint2": "Inglaterra, a Bombe e todo dia.",
               "questions": [
                 {
-                  "q": "Para que servia a máquina Enigma?",
-                  "options": [
-                    "Para cifrar mensagens secretas",
-                    "Para fazer contas de padaria",
-                    "Para tocar música"
-                  ],
+                  "q": "Em que país fica Bletchley Park?",
+                  "options": ["Na Inglaterra", "No Brasil", "No Japão"],
                   "correct": 0
                 },
                 {
-                  "q": "Quem ajudou a quebrar os códigos da Enigma?",
-                  "options": ["Alan Turing", "Santos Dumont", "Ada Lovelace"],
-                  "correct": 0
-                },
-                {
-                  "q": "Em que guerra a Enigma foi usada?",
-                  "options": [
-                    "Na Segunda Guerra Mundial",
-                    "Na Guerra dos Farrapos",
-                    "Em nenhuma guerra"
-                  ],
-                  "correct": 0
-                }
-              ]
-            },
-            "B": {
-              "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Releia o dossiê: tem um lugar na Inglaterra e uma máquina com nome de bomba.",
-              "hint2": "Bletchley Park, a Bombe e mudanças diárias.",
-              "questions": [
-                {
-                  "q": "Onde Turing trabalhou quebrando códigos?",
-                  "options": ["Em Bletchley Park, na Inglaterra", "Na NASA", "No Google"],
-                  "correct": 0
-                },
-                {
-                  "q": "Como se chamava a máquina que Turing projetou para ajudar a quebrar a Enigma?",
+                  "q": "Como se chamava a máquina que Turing projetou?",
                   "options": ["Bombe", "Calculadora Turbo", "Tear de Jacquard"],
                   "correct": 0
                 },
@@ -337,35 +307,53 @@
                 }
               ]
             },
-            "C": {
+            "B": {
               "prompt": "Responda as 3 perguntas do diário de bordo.",
-              "hint1": "Pense em como alguém adivinharia parte de uma mensagem.",
-              "hint2": "A Enigma nunca trocava uma letra por ela mesma.",
+              "hint1": "Releia o dossiê e as curiosidades.",
+              "hint2": "Trocava letras, muitas mulheres ajudaram, e Turing é um pai da computação.",
               "questions": [
                 {
-                  "q": "Qual falha da Enigma ajudou a quebrá-la?",
+                  "q": "O que a Enigma fazia com cada letra?",
                   "options": [
-                    "Ela nunca cifrava uma letra como ela mesma",
-                    "Ela só usava números",
-                    "Ela só tinha 3 letras"
+                    "Trocava por outra letra",
+                    "Apagava a letra",
+                    "Deixava a letra igual"
                   ],
                   "correct": 0
                 },
                 {
-                  "q": "Os decifradores usavam \"cribs\". O que era um crib?",
-                  "options": [
-                    "Um trecho que provavelmente estava na mensagem",
-                    "Uma peça da máquina",
-                    "Um tipo de espião"
-                  ],
+                  "q": "Quem também trabalhou em Bletchley Park decifrando mensagens?",
+                  "options": ["Milhares de mulheres", "Só robôs", "Ninguém além de Turing"],
                   "correct": 0
                 },
                 {
-                  "q": "Quem quebrou versões da Enigma pela primeira vez, antes da guerra?",
+                  "q": "Alan Turing é considerado um dos pais da...",
+                  "options": ["Computação e da inteligência artificial", "Aviação", "Medicina"],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 3 perguntas do diário de bordo.",
+              "hint1": "Pense nas curiosidades e em como uma chave que muda atrapalha quem tenta decifrar.",
+              "hint2": "Prêmio Turing, Cifra de César e chaves que mudam todo dia.",
+              "questions": [
+                {
+                  "q": "Que prêmio é chamado de \"Nobel da computação\"?",
+                  "options": ["Prêmio Turing", "Prêmio Ada", "Oscar"],
+                  "correct": 0
+                },
+                {
+                  "q": "Como é conhecida a cifra de deslocamento que vocês usaram?",
+                  "options": ["Cifra de César", "Código Morse", "Cifra de Babbage"],
+                  "correct": 0
+                },
+                {
+                  "q": "Por que trocar a configuração todo dia deixava a Enigma mais difícil?",
                   "options": [
-                    "Matemáticos poloneses",
-                    "Engenheiros americanos",
-                    "A própria Ada Lovelace"
+                    "Descobrir a chave de um dia não servia para o dia seguinte",
+                    "Porque as letras sumiam",
+                    "Porque a máquina ficava mais rápida"
                   ],
                   "correct": 0
                 }
@@ -424,8 +412,8 @@
               "prompt": "Escute a chave na transmissão e cifre a palavra.",
               "mode": "encode",
               "shift": 2,
-              "text": "CODIGO",
-              "answer": "EQFKIQ",
+              "text": "PIRATA",
+              "answer": "RKTCVC",
               "wheel": "free",
               "spokenKey": true,
               "hint1": "A chave é o número que a Narradora falou.",
@@ -435,8 +423,8 @@
               "prompt": "Escute a chave na transmissão e cifre a palavra.",
               "mode": "encode",
               "shift": 4,
-              "text": "MAQUINA",
-              "answer": "QEUYMRE",
+              "text": "TESOURO",
+              "answer": "XIWSYVS",
               "wheel": "free",
               "spokenKey": true,
               "hint1": "A chave é o número que a Narradora falou.",
@@ -446,8 +434,8 @@
               "prompt": "Escute a chave na transmissão e cifre a palavra.",
               "mode": "encode",
               "shift": 7,
-              "text": "BOMBE",
-              "answer": "IVTIL",
+              "text": "ANCORA",
+              "answer": "HUJVYH",
               "wheel": "free",
               "spokenKey": true,
               "hint1": "A chave é o número que a Narradora falou.",
