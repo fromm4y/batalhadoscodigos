@@ -1,6 +1,7 @@
 # Roteiro da aula — A Grande Caçada aos Códigos
 
 > Guia prático para a Narradora. Os tempos são **guia**: nada avança sozinho, você decide quando liberar cada fase (RN-05).
+> 📜 **Roteiro de cada episódio (falas, pistas, gabarito):** botão "Roteiro deste episódio" na página da turma ou "Roteiro completo em nova aba" no painel (`/instrutor/roteiro/ep1`, `ep2`...).
 > Total previsto: **~47 min** (3 de entrada + 5 + 20 + 12 + 7). Cabe numa aula de 50 min.
 
 ## Antes da aula (10 min, uma vez por turma)
