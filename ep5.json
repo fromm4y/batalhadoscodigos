@@ -1,0 +1,438 @@
+{
+  "id": "ep5",
+  "number": 5,
+  "title": "Deep Blue",
+  "mode": "coop",
+  "invention": {
+    "name": "Deep Blue",
+    "year": "1997",
+    "people": [
+      "Equipe da IBM",
+      "Garry Kasparov"
+    ]
+  },
+  "intro": {
+    "comic": [
+      {
+        "caption": "Museu Nacional da Tecnologia. Quatro da manhã. A última vitrine.",
+        "art": "ep5-ultima-vitrine"
+      },
+      {
+        "caption": "As luzes se apagam. Uma voz metálica ecoa pelo museu: \"Xeque.\"",
+        "art": "ep5-maquina-desperta"
+      },
+      {
+        "speech": {
+          "who": "professor",
+          "text": "Esqueçam o assalto. Se essa máquina fechar o museu, ninguém sai daqui."
+        },
+        "art": "ep5-professor-capita"
+      },
+      {
+        "speech": {
+          "who": "capita",
+          "text": "Bando e Piratas, juntos pela primeira vez. Hoje o adversário é ela!"
+        },
+        "art": "ep5-alianca"
+      }
+    ],
+    "coop": "Bando e Piratas se unem: a turma inteira contra a máquina que venceu o campeão mundial de xadrez."
+  },
+  "dossier": [
+    "O Deep Blue era um computador da IBM especializado em jogar xadrez.",
+    "Em 1996, perdeu para o campeão mundial Garry Kasparov. Em 1997, venceu a revanche.",
+    "Foi a primeira vez que uma máquina venceu um campeão mundial numa partida completa.",
+    "Ele não aprendia sozinho: calculava milhões de jogadas e seguia regras ajustadas por especialistas."
+  ],
+  "curiosities": [
+    "O Deep Blue analisava cerca de 200 milhões de posições por segundo.",
+    "Depois de perder, Kasparov pediu uma revanche, mas a IBM aposentou o Deep Blue.",
+    "Hoje, programas de xadrez de celular jogam melhor que o Deep Blue.",
+    "Pensar no que o adversário vai responder antes de jogar é a base de muitas IAs de jogos.",
+    "Essa forma de escolher a jogada segura, imaginando a pior resposta do adversário, se chama minimax.",
+    "Uma parte do Deep Blue está exposta num museu de história da computação nos Estados Unidos."
+  ],
+  "coop": {
+    "locks": [
+      {
+        "key": "coop-lock1",
+        "title": "Dossiê da máquina",
+        "leaderLine": "Bando e Piratas, juntos agora. Conheçam o adversário!",
+        "type": "quiz",
+        "reward": {
+          "clue": "Pista: o painel da máquina tem uma charada."
+        },
+        "variants": {
+          "A": {
+            "prompt": "Responda as 3 perguntas do dossiê.",
+            "hint1": "Releia o dossiê: as respostas estão lá.",
+            "hint2": "Xadrez, Kasparov e IBM.",
+            "questions": [
+              {
+                "q": "Que jogo o Deep Blue jogava?",
+                "options": [
+                  "Xadrez",
+                  "Futebol",
+                  "Amarelinha"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "Quem o Deep Blue venceu em 1997?",
+                "options": [
+                  "Garry Kasparov, campeão mundial de xadrez",
+                  "Pelé",
+                  "Alan Turing"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "Qual empresa criou o Deep Blue?",
+                "options": [
+                  "IBM",
+                  "NASA",
+                  "Uma fábrica de brinquedos"
+                ],
+                "correct": 0
+              }
+            ]
+          },
+          "B": {
+            "prompt": "Responda as 3 perguntas do dossiê.",
+            "hint1": "Releia o dossiê: tem dois duelos, em anos diferentes.",
+            "hint2": "1997, e em 1996 quem venceu foi Kasparov.",
+            "questions": [
+              {
+                "q": "Em que ano o Deep Blue venceu Kasparov numa partida completa?",
+                "options": [
+                  "1997",
+                  "1897",
+                  "2017"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "No primeiro duelo, em 1996, quem venceu?",
+                "options": [
+                  "Kasparov",
+                  "Deep Blue",
+                  "Ninguém, empatou tudo"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "Como o Deep Blue escolhia as jogadas?",
+                "options": [
+                  "Calculava milhões de jogadas possíveis",
+                  "Tirava na sorte",
+                  "Perguntava para uma pessoa"
+                ],
+                "correct": 0
+              }
+            ]
+          },
+          "C": {
+            "prompt": "Responda as 3 perguntas do dossiê.",
+            "hint1": "Pense em como uma máquina escolhe jogadas sem aprender como nós.",
+            "hint2": "Ela calculava muitas jogadas por segundo, seguindo regras de especialistas.",
+            "questions": [
+              {
+                "q": "Aproximadamente quantas posições por segundo o Deep Blue analisava?",
+                "options": [
+                  "Cerca de 200 milhões",
+                  "Cerca de 20",
+                  "Cerca de 2 mil"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "O Deep Blue aprendia sozinho como as IAs modernas?",
+                "options": [
+                  "Não: usava busca de jogadas e regras ajustadas por especialistas",
+                  "Sim, igual aos chatbots de hoje",
+                  "Sim, lendo livros de xadrez sozinho"
+                ],
+                "correct": 0
+              },
+              {
+                "q": "O que é uma \"árvore de jogadas\"?",
+                "options": [
+                  "Um mapa das jogadas possíveis e das respostas a cada uma",
+                  "Uma árvore de verdade no jardim",
+                  "Um tipo de peça de xadrez"
+                ],
+                "correct": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "key": "coop-lock2",
+        "title": "A charada da máquina",
+        "leaderLine": "A máquina deixou uma charada. Mostrem que pensam rápido!",
+        "type": "riddle",
+        "reward": {
+          "clue": "Pista: a máquina vai jogar, mas a jogada dela só chega pelo rádio."
+        },
+        "variants": {
+          "A": {
+            "prompt": "Quem sou eu?",
+            "mode": "choice",
+            "text": "No tabuleiro de xadrez, eu ando em L e pulo por cima das outras peças. Quem sou eu?",
+            "options": [
+              "Cavalo",
+              "Rei",
+              "Peão"
+            ],
+            "accept": [
+              "cavalo"
+            ],
+            "hint1": "É a única peça que pula as outras.",
+            "hint2": "Tem forma de um animal."
+          },
+          "B": {
+            "prompt": "Digite a resposta da charada.",
+            "mode": "text",
+            "text": "No tabuleiro de xadrez, eu ando em L e pulo por cima das outras peças. Quem sou eu?",
+            "accept": [
+              "cavalo",
+              "o cavalo"
+            ],
+            "hint1": "É a única peça que pula as outras.",
+            "hint2": "Tem forma de um animal."
+          },
+          "C": {
+            "prompt": "Digite a resposta da charada.",
+            "mode": "text",
+            "text": "Sou a peça mais poderosa do xadrez: ando em linha reta ou na diagonal, quantas casas eu quiser. Quem sou eu?",
+            "accept": [
+              "rainha",
+              "dama",
+              "a rainha",
+              "a dama"
+            ],
+            "hint1": "Não é o rei, mas é da família real.",
+            "hint2": "Também é chamada de dama."
+          }
+        }
+      },
+      {
+        "key": "coop-lock3",
+        "title": "A jogada escondida",
+        "leaderLine": "A máquina jogou, mas a jogada não aparece na tela. Escutem a transmissão e respondam!",
+        "type": "boardChoice",
+        "variants": {
+          "A": {
+            "prompt": "Vocês são o X. Escute onde a máquina jogou e escolha a casa que impede a vitória dela.",
+            "board": "O...X....",
+            "you": "X",
+            "spokenMove": {
+              "cell": 2,
+              "symbol": "O"
+            },
+            "answer": 1,
+            "hint1": "Depois da jogada da máquina, onde ela pode completar 3 em linha?",
+            "hint2": "Bloqueie a fileira de cima."
+          },
+          "B": {
+            "prompt": "Vocês são o X. Escute onde a máquina jogou e escolha a casa que impede a vitória dela.",
+            "board": "XOX.O....",
+            "you": "X",
+            "spokenMove": {
+              "cell": 6,
+              "symbol": "O"
+            },
+            "answer": 7,
+            "hint1": "A máquina ameaça completar uma coluna.",
+            "hint2": "Bloqueie a coluna do meio, embaixo."
+          },
+          "C": {
+            "prompt": "Vocês são o X. Escute onde a máquina jogou e escolha a casa que cria uma armadilha dupla.",
+            "board": "XOX......",
+            "you": "X",
+            "spokenMove": {
+              "cell": 6,
+              "symbol": "O"
+            },
+            "answer": 8,
+            "hint1": "Uma armadilha dupla cria duas ameaças ao mesmo tempo.",
+            "hint2": "Olhe o canto de baixo à direita."
+          }
+        }
+      }
+    ],
+    "vault": {
+      "key": "coop-vault",
+      "title": "O Grande Cofre: pense como a máquina",
+      "leaderLine": "A máquina sempre escolhe a resposta pior para vocês. Escolham a jogada que é boa mesmo assim!",
+      "type": "gameTree",
+      "variants": {
+        "A": {
+          "prompt": "Escolha sua jogada. Depois, a máquina responde com o número MENOR. Qual jogada garante o maior número no fim?",
+          "depth": 2,
+          "tree": {
+            "Jogada 1": [
+              3,
+              7
+            ],
+            "Jogada 2": [
+              5,
+              6
+            ]
+          },
+          "answer": "Jogada 2",
+          "hint1": "Para cada jogada, veja qual número a máquina vai escolher.",
+          "hint2": "A máquina escolheria 3 na Jogada 1 e 5 na Jogada 2."
+        },
+        "B": {
+          "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
+          "depth": 2,
+          "tree": {
+            "Jogada 1": [
+              8,
+              2
+            ],
+            "Jogada 2": [
+              4,
+              5
+            ],
+            "Jogada 3": [
+              9,
+              1
+            ]
+          },
+          "answer": "Jogada 2",
+          "hint1": "Não se deixe enganar pelos números grandes: a máquina não vai deixar você pegá-los.",
+          "hint2": "A máquina deixaria 2, 4 e 1."
+        },
+        "C": {
+          "prompt": "Vocês jogam, a máquina responde com o PIOR para vocês, e depois vocês escolhem o MAIOR número. Qual primeira jogada é a melhor?",
+          "depth": 3,
+          "tree": {
+            "Jogada 1": {
+              "R1": [
+                6,
+                9
+              ],
+              "R2": [
+                3,
+                8
+              ]
+            },
+            "Jogada 2": {
+              "R1": [
+                5,
+                4
+              ],
+              "R2": [
+                7,
+                6
+              ]
+            },
+            "Jogada 3": {
+              "R1": [
+                2,
+                10
+              ],
+              "R2": [
+                4,
+                5
+              ]
+            }
+          },
+          "answer": "Jogada 1",
+          "hint1": "Resolva de baixo para cima: primeiro o seu maior, depois o menor da máquina.",
+          "hint2": "Jogada 1 garante 8; as outras garantem 5."
+        }
+      }
+    }
+  },
+  "event": {
+    "type": "alarmTrueFalse",
+    "title": "XEQUE?",
+    "secondsPerItem": 15,
+    "items": [
+      {
+        "text": "O Deep Blue ficava nervoso durante as partidas!",
+        "isReal": false,
+        "explanation": "Falso! Ele era uma máquina: não sentia nada, só calculava."
+      },
+      {
+        "text": "Kasparov pediu uma revanche depois de perder em 1997!",
+        "isReal": true,
+        "explanation": "Real! Mas a IBM aposentou o Deep Blue."
+      },
+      {
+        "text": "Hoje, programas de xadrez de celular jogam melhor que o Deep Blue!",
+        "isReal": true,
+        "explanation": "Real! A tecnologia evoluiu muito desde 1997."
+      }
+    ]
+  },
+  "narratorScript": {
+    "opening": "Quatro da manhã. A última vitrine. Bando e Piratas: hoje não tem lado. A turma inteira contra a máquina!",
+    "spokenClues": {
+      "A": [
+        {
+          "challengeKey": "coop-lock3",
+          "say": "A máquina jogou no canto de cima, à direita (casa 3)."
+        }
+      ],
+      "B": [
+        {
+          "challengeKey": "coop-lock3",
+          "say": "A máquina jogou no canto de baixo, à esquerda (casa 7)."
+        }
+      ],
+      "C": [
+        {
+          "challengeKey": "coop-lock3",
+          "say": "A máquina jogou no canto de baixo, à esquerda (casa 7)."
+        }
+      ]
+    },
+    "revealLines": [
+      "Sabiam que o Grande Cofre usava o truque do Deep Blue? Imaginar a pior resposta do adversário antes de jogar.",
+      "Isso se chama minimax. E vocês descobriram sozinhos: às vezes a jogada mais segura vale mais que a jogada mais bonita."
+    ],
+    "closing": "O museu está a salvo. Bando, Piratas... obrigada. A temporada termina aqui, mas os códigos continuam."
+  },
+  "reveal": [
+    {
+      "caption": "Maio de 1997. Pela primeira vez, uma máquina vence um campeão mundial de xadrez numa partida completa.",
+      "art": "ep5-kasparov"
+    },
+    {
+      "caption": "O Deep Blue não pensava como gente: ele calculava milhões de jogadas por segundo.",
+      "art": "ep5-arvore-jogadas"
+    },
+    {
+      "speech": {
+        "who": "narradora",
+        "text": "Hoje, a turma inteira venceu junta. Esse é o maior código de todos."
+      },
+      "art": "narradora"
+    }
+  ],
+  "teaser": {
+    "line": "A temporada termina... mas o museu ainda guarda segredos.",
+    "art": "teaser-ep5"
+  },
+  "recapOfThis": [
+    "Na última aula, a turma se uniu contra o Deep Blue."
+  ],
+  "card": {
+    "title": "Deep Blue",
+    "year": "1997",
+    "people": [
+      "Equipe da IBM"
+    ],
+    "facts": [
+      "Venceu o campeão mundial de xadrez",
+      "Analisava milhões de jogadas por segundo",
+      "Usava busca e regras de especialistas"
+    ],
+    "art": "card-ep5"
+  }
+}
