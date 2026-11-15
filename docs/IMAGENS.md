@@ -38,7 +38,7 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 | `capa-entrada`, `lado-bando`, `lado-piratas`, `cofre-fechado`, `cofre-aberto`, `alarme-museu`, `cela-prisao`                                                                     | ✅ no jogo (cofre, alarme e cela aparecem nas Etapas 5–6) |
 | `interferencia`                                                                                                                                                                  | ✅ no jogo                                                |
 | `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`                                                                                                             | ✅ no jogo (margem branca cortada)                        |
-| `disfarce`, `planoB`, `ancora`, `escudo`, `bussola` (habilidades), `carta-ep1` (Álbum, fim do episódio), `proximo-ep2` (gancho)                                                  | ✅ no jogo                                                |
+| `disfarce`, `planoB`, `ancora`, `escudo`, `bussola` (habilidades), `card-ep1` (Álbum, fim do episódio), `teaser-ep1` (gancho)                                                    | ✅ no jogo                                                |
 | `narradora` (quadro da revelação)                                                                                                                                                | ✅ no jogo                                                |
 | `telhado-museu` (extra: telhado do museu à noite)                                                                                                                                | ✅ fundo do projetor                                      |
 
@@ -117,10 +117,10 @@ Retrato da cintura pra cima, olhando um pouco para o lado, para caber ao lado do
 
 ## 5. Ganchos "quero jogar mais" (VISUAL.md §8.7 e §9) — `src/assets/scenes/`
 
-| id            | Onde aparece                        | Descrição                                                                                                                                                                                           |
-| ------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `carta-ep1`   | Álbum do Museu (carta colecionável) | A Máquina Analítica como "carta de colecionador": a máquina de engrenagens em destaque, fundo escuro, brilho de vitrine. Formato **retrato 600 × 840**, `.png`. (A moldura de latão o jogo coloca.) |
-| `proximo-ep2` | Cliffhanger do fim do Ep. 1         | Objeto do tamanho de uma máquina de escrever **coberto por um pano**, só a silhueta, sob um holofote, num depósito escuro. (O carimbo "PRÓXIMA SEMANA" o jogo coloca.)                              |
+| id           | Onde aparece                        | Descrição                                                                                                                                                                                           |
+| ------------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `card-ep1`   | Álbum do Museu (carta colecionável) | A Máquina Analítica como "carta de colecionador": a máquina de engrenagens em destaque, fundo escuro, brilho de vitrine. Formato **retrato 600 × 840**, `.png`. (A moldura de latão o jogo coloca.) |
+| `teaser-ep1` | Cliffhanger do fim do Ep. 1         | Objeto do tamanho de uma máquina de escrever **coberto por um pano**, só a silhueta, sob um holofote, num depósito escuro. (O carimbo "PRÓXIMA SEMANA" o jogo coloca.)                              |
 
 ---
 
@@ -140,9 +140,44 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 > _noir comic book illustration, waist-up portrait of an original kid character, [11]-year-old [girl/boy] with [dark brown skin, curly black hair in two puffs, round glasses], confident friendly smile, wearing [a red hooded jumpsuit and a simple red domino eye mask, holding a flashlight] / [a straw hat with a blue ribbon, blue vest and neck scarf, holding a spyglass], bold black ink outlines, halftone shading, dramatic rim lighting, plain solid flat dark navy background (#0B0D14), no pattern, no text, no logos_
 
+### Situação dos personagens (15/11)
+
+| Personagem                                           | Bando        | Piratas      | No jogo?     |
+| ---------------------------------------------------- | ------------ | ------------ | ------------ |
+| `menina-01` (ruiva, sardas)                          | ✅           | ✅           | ✅           |
+| `menina-02` (cabelo chanel preto)                    | ✅           | ✅           | ✅           |
+| `menina-03` (tranças)                                | ✅           | ✅           | ✅           |
+| `menina-04` (puffs + óculos)                         | ✅           | ✅           | ✅           |
+| `menina-05` (hijab)                                  | ✅           | ⏳ **falta** | espera o par |
+| `menino-01` (loiro)                                  | ✅           | ✅           | ✅           |
+| `menino-02` (cabelo curto)                           | ✅           | ✅           | ✅           |
+| `menino-03` (black alto)                             | ✅           | ✅           | ✅           |
+| `menino-04` (cacheado, máscara-óculos)               | ✅           | ⏳ **falta** | espera o par |
+| `menino-05` (aparelho nos dentes)                    | ⏳ **falta** | ✅           | espera o par |
+| `menina-06` a `menina-12`, `menino-06` a `menino-12` | ⏳           | ⏳           | —            |
+
+> Algumas imagens vieram com a marca d'água **"raphael.app"** no canto: eu removo no recorte, mas se der, gere sem ela.
+
 ---
 
-**Total: 32 imagens** (7 quadros + 10 retratos + 7 cenários + 6 habilidades + 2 ganchos), todas entregues ✅, **+ 48 dos personagens das duplas** (seção 6).
+## 7. Episódios 2 a 5 (SPEC-03 §6) — formatos iguais aos do Ep. 1
+
+**Pessoas reais** (Turing, as programadoras do ENIAC, Margaret Hamilton, Kasparov): personagens de HQ **genéricos, de costas ou em silhueta**, sem tentar retratar o rosto real. Nada de fotos.
+
+| Episódio          | Quadros de HQ (`src/assets/comic/`, 1200 × 800)                                                                                  | Carta do Álbum e gancho (`src/assets/scenes/`)                                              |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Ep. 2 — Enigma    | `ep2-sala-guerra`, `ep2-enigma-vitrine`, `ep2-professor-radio`, `ep2-capita-radio`, `ep2-bletchley`, `ep2-bombe`                 | `card-ep2` (600 × 840) · `teaser-ep2` (gancho do Ep. 3: armários com válvulas, em silhueta) |
+| Ep. 3 — ENIAC     | `ep3-salao-escuro`, `ep3-eniac-acendendo`, `ep3-professor-cabos`, `ep3-capita-painel`, `ep3-programadoras`, `ep3-reconhecimento` | `card-ep3` · `teaser-ep3` (gancho do Ep. 4: Lua com alarme vermelho)                        |
+| Ep. 4 — Apollo 11 | `ep4-sala-espacial`, `ep4-computador-vitrine`, `ep4-professor-relogio`, `ep4-capita-alarme`, `ep4-alarme-pouso`, `ep4-pouso-lua` | `card-ep4` · `teaser-ep4` (gancho do Ep. 5: peça de xadrez na sombra)                       |
+| Ep. 5 — Deep Blue | `ep5-ultima-vitrine`, `ep5-maquina-desperta`, `ep5-professor-capita`, `ep5-alianca`, `ep5-kasparov`, `ep5-arvore-jogadas`        | `card-ep5` · `teaser-ep5` (encerramento da temporada)                                       |
+
+- **Gancho:** o `teaser-epN` mostra o episódio **seguinte** (o `teaser-ep1` já está pronto: a Enigma coberta por um pano).
+- **Cartas** (`card-*`): retrato 600 × 840, com espaço livre embaixo para o texto que o jogo coloca.
+- **Prioridade:** Ep. 2 primeiro (é o próximo a entrar no jogo).
+
+---
+
+**Ep. 1: 32 imagens, todas entregues ✅.** Faltam: **31 dos personagens das duplas** (seção 6, 17 de 48 prontas) e **32 dos Ep. 2–5** (seção 7: 24 quadros + 4 cartas + 4 ganchos).
 **Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
 
 > O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.
