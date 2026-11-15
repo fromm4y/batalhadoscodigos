@@ -18,7 +18,11 @@ export function TugBar({ bar, redName, blueName, hidden = false, compact = false
   const reduce = useReducedMotion();
   const shake = useAnimationControls();
   const prev = useRef(bar);
-  const pct = ((bar - GAME_RULES.bar.min) / (GAME_RULES.bar.max - GAME_RULES.bar.min)) * 100;
+  // Pedido da May (15/11): a cor de quem está ganhando "come" a do outro.
+  // Barra −100 (Bando vence) → vermelho ocupa tudo; +100 (Piratas) → azul ocupa tudo.
+  const redPct = ((GAME_RULES.bar.max - bar) / (GAME_RULES.bar.max - GAME_RULES.bar.min)) * 100;
+  const redLeads = bar < 0;
+  const blueLeads = bar > 0;
   const lim = GAME_RULES.bar.preVaultLimit;
   const limPct = (lim / (GAME_RULES.bar.max - GAME_RULES.bar.min)) * 100;
 
@@ -56,8 +60,21 @@ export function TugBar({ bar, redName, blueName, hidden = false, compact = false
           compact ? 'h-5' : 'h-7',
         )}
       >
-        <div className="absolute inset-y-0 left-0 w-1/2 bg-bando-dark" />
-        <div className="absolute inset-y-0 right-0 w-1/2 bg-piratas-dark" />
+        <div
+          className={cn(
+            'absolute inset-0 transition-colors',
+            blueLeads ? 'bg-piratas glow-blue' : 'bg-piratas-dark',
+          )}
+        />
+        <motion.div
+          className={cn(
+            'absolute inset-y-0 left-0 transition-colors',
+            redLeads ? 'bg-bando glow-red' : 'bg-bando-dark',
+          )}
+          initial={false}
+          animate={{ width: `${redPct}%` }}
+          transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 120, damping: 12 }}
+        />
         {/* zona travada antes do Cofre (RN-17) */}
         <div
           className="absolute inset-y-0 border-x-2 border-dashed border-paper/30"
@@ -75,7 +92,7 @@ export function TugBar({ bar, redName, blueName, hidden = false, compact = false
               'absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-ink bg-brass glow-brass',
               compact ? 'h-6 w-6' : 'h-9 w-9',
             )}
-            animate={{ left: `${pct}%` }}
+            animate={{ left: `${redPct}%` }}
             transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 120, damping: 12 }}
           >
             <span aria-hidden className="grid h-full place-items-center text-xs">
