@@ -20,9 +20,12 @@ Entre com a **conta Google pessoal** que vai ser a dona do projeto.
 
 1. Menu da esquerda: **Criação → Authentication → Vamos começar**.
 2. Aba **Método de login** → **Google** → **Ativar** → escolha o **e-mail de suporte** → **Salvar**.
-3. Aba **Configurações → Domínios autorizados → Adicionar domínio**:
-   - o endereço do site na Vercel, **sem `https://`**, por exemplo `cacada-aos-codigos.vercel.app`;
-   - se tiver domínio próprio, adicione também.
+3. Ainda dentro de **Authentication**, clique na aba **Configurações** (em inglês: **Settings**), no alto da página, ao lado de "Usuários" e "Método de login".
+   - No menu que aparece à esquerda **dentro** dessa aba, clique em **Domínios autorizados** (**Authorized domains**).
+   - Já vêm `localhost` e `SEU-PROJETO.firebaseapp.com`. Clique em **Adicionar domínio** e cole o endereço do site na Vercel, **sem `https://` e sem `/` no fim**, por exemplo `cacada-aos-codigos.vercel.app`.
+   - Onde achar esse endereço: na Vercel, abra o projeto → página **Overview** → campo **Domains** (o que termina em `.vercel.app`).
+   - Se tiver domínio próprio, adicione também.
+   - Sem isso, o "Entrar com Google" da Narradora dá o erro `auth/unauthorized-domain`.
 
 > As duplas **não** usam login do Google (entram pelo código + PIN). Não precisa ativar mais nada.
 
@@ -77,7 +80,7 @@ Leva alguns minutos até ficarem **Ativado**.
 
 ### 8. Trocar as variáveis
 
-Projeto → **Settings → Environment Variables**. Edite (ou crie) estas 7, marcando **Production** e **Preview**:
+Projeto → **Settings → Environment Variables**. Edite (ou crie) estas 6, marcando **Production** e **Preview**:
 
 | Nome                            | Valor                                                                                                             |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
