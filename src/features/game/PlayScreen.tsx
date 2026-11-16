@@ -16,6 +16,8 @@ import {
   type OnomatopoeiaKind,
 } from '@/components/comic';
 import { AbilityCards } from '@/components/game/AbilityCards';
+import { AlbumLink } from '@/components/game/AlbumLink';
+import { MissionCard } from './MissionCard';
 import { InterferenceOverlay } from '@/components/game/InterferenceOverlay';
 import { TugBar } from '@/components/game/TugBar';
 import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
@@ -34,6 +36,7 @@ import {
   registerWrongAnswer,
   solveBonus,
   solveVault,
+  activateCard,
   activateAbility,
   addFeed,
   callHelp,
@@ -113,7 +116,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const lightningOn = session.phase === 'vault' && !player.phaseOverride;
   const lightningLeft =
     lightningOn && !player.progress.vaultSolvedAt
-      ? lightningSecondsLeft(level, phaseStart, sNow)
+      ? lightningSecondsLeft(
+          level,
+          phaseStart,
+          sNow,
+          player.cardBoost === 'lightningPlus' ? GAME_RULES.cards.lightningPlusMinutes : 0,
+        )
       : 0;
   const bonus = resolveBonus(episode, side, level);
   const comboAvailable =
@@ -283,6 +291,20 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                 }}
               />
             )}
+            <MissionCard
+              team={team}
+              player={player}
+              challengeKey={challenge?.key ?? null}
+              usedHints={usedHints}
+              inVault={session.phase === 'vault'}
+              disabled={busy}
+              onUse={(power) => {
+                playSfx('hint');
+                setPop({ kind: 'custom', key: Date.now(), text: `${power.name.toUpperCase()}!` });
+                void guard(() => activateCard(ctx, power.id, challenge?.key ?? null));
+                addFeed(ctx, 'card', `${myName} usou a carta ${power.name}`);
+              }}
+            />
             {match?.machineSide && (
               <RobotTalk
                 mood={
@@ -657,6 +679,7 @@ function WaitingPanel({ text, curiosities }: { text: string; curiosities: string
       role="status"
     >
       <Typewriter text={text} speed={40} className="text-3xl text-brass text-glow-brass" />
+      <AlbumLink />
       {curiosities.length > 0 && (
         <SpeechBubble who="narradora" tail="center" className="max-w-xl">
           <span className="mb-1 block font-type text-sm uppercase">Você sabia?</span>

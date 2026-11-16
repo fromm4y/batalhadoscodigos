@@ -32,6 +32,17 @@
   --animate-dust: dust-float 14s linear infinite;
   --animate-glitch: glitch 2.8s steps(1) infinite;
   --animate-alarm: alarm-flash 0.9s ease-in-out infinite;
+  /* carta dourada (rara): brilho holográfico que passeia */
+  --animate-holo: holo-shift 3.5s linear infinite;
+}
+
+@keyframes holo-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
 @keyframes laser-blink {
@@ -226,6 +237,7 @@
 
 /* Movimento reduzido: sem lasers piscando, poeira, glitch ou alarme piscando. */
 @media (prefers-reduced-motion: reduce) {
+  .animate-holo,
   .animate-laser,
   .animate-dust,
   .animate-glitch,
@@ -234,5 +246,32 @@
   }
   .animate-dust {
     display: none;
+  }
+}
+
+/* Certificados (16/11): uma folha A4 deitada por certificado, sem o fundo escuro do site. */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .certificate {
+    width: 297mm;
+    height: 210mm;
+    max-width: none;
+    aspect-ratio: auto;
+    break-after: page;
+    border-width: 8px;
+  }
+  .no-print {
+    display: none !important;
   }
 }

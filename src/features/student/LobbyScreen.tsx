@@ -1,3 +1,4 @@
+import { AlbumLink } from '@/components/game/AlbumLink';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Avatar } from '@/components/avatar/Avatar';
@@ -84,6 +85,7 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
               className="text-3xl text-brass text-glow-brass"
             />
           </div>
+          <AlbumLink count={team.cards?.length ?? 0} className="self-start" />
           {curiosities.length > 0 && (
             <AnimatePresence mode="wait">
               <motion.div

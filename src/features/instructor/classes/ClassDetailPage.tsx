@@ -220,6 +220,14 @@ export function ClassDetailPage() {
                   >
                     📜 Roteiro deste episódio
                   </a>
+                  <a
+                    href={`/instrutor/turmas/${classId}/certificados/${episodeId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="grid min-h-11 place-items-center border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider text-ink hover:glow-brass"
+                  >
+                    🎓 Certificados deste episódio
+                  </a>
                 </div>
               )}
             </ComicPanel>

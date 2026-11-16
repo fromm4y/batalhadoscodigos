@@ -65,5 +65,7 @@ describe('cartas do Álbum (16/11)', () => {
     expect(albumSlot('ep2', cards, played)).toBe('ganha');
     expect(albumSlot('ep3', cards, played)).toBe('perdida');
     expect(albumSlot('ep4', cards, played)).toBe('futura');
+    expect(albumSlot('ep4', cards, played, 'ep4')).toBe('hoje');
+    expect(albumSlot('ep1', cards, played, 'ep1')).toBe('dourada');
   });
 });

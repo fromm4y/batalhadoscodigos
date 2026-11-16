@@ -110,6 +110,19 @@ export type LedgerEntryDoc = {
   by: 'game' | string;
 };
 
+/**
+ * "Anteriormente na Caçada" (SPEC-02 C1): números reais da aula anterior da turma, calculados
+ * pelo servidor quando a sessão abre. Sem dado pessoal: só nomes de dupla da lista fechada.
+ */
+export type PreviousSummary = {
+  episodeId: string;
+  wins: { red: number; blue: number; machine: number; draw: number };
+  /** dupla destaque (mais pontos na aula), com o nome do lado que jogou */
+  highlight: { name: string; side: Side; points: number } | null;
+  vaultOpened: number;
+  teams: number;
+};
+
 export type SessionDoc = {
   classId: string;
   instructorId: string;
@@ -130,6 +143,8 @@ export type SessionDoc = {
   autoEventAt: Timestamp | null;
   createdAt: Timestamp;
   expiresAt: Timestamp;
+  /** histórico da turma quando a sessão abriu (Álbum e "Anteriormente") */
+  history?: { played: string[]; previously: PreviousSummary | null };
 };
 
 /** Estado da dupla nesta sessão (SPEC 6.1). Campos de jogo detalhados nas próximas etapas. */

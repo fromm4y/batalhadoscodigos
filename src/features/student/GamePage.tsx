@@ -12,6 +12,7 @@ import {
   addFeed,
   chooseMode,
   chooseSide,
+  equipCard,
   finishMuseumEvent,
   joinLateAgainstMachine,
   markHeardTransmission,
@@ -306,6 +307,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         teamId={claims.teamId}
         onChooseSide={(s) => chooseSide(ctx, s)}
         onChooseMode={(m) => chooseMode(ctx, m)}
+        onEquipCard={(id) => void equipCard(ctx, id)}
       />
     );
   } else if (effective.phase === 'end') {
@@ -333,6 +335,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         late
         onChooseSide={(s) => joinLateAgainstMachine(ctx, s)}
         onChooseMode={(m) => chooseMode(ctx, m)}
+        onEquipCard={(id) => void equipCard(ctx, id)}
       />
     );
   } else {

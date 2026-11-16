@@ -69,14 +69,17 @@ export function cardEffect(power: CardPowerId): CardEffect {
 }
 
 /** Situação de cada episódio no álbum (SPEC-02 C2). */
-export type AlbumSlot = 'ganha' | 'dourada' | 'perdida' | 'futura';
+export type AlbumSlot = 'ganha' | 'dourada' | 'perdida' | 'futura' | 'hoje';
 export function albumSlot(
   episodeId: string,
   cards: TeamCard[] | undefined,
-  /** episódios que a turma já jogou (sessões abertas para ela) */
+  /** episódios que a turma já jogou (sessões anteriores) */
   playedByClass: string[],
+  /** episódio da sessão de hoje (a carta sai no fim) */
+  today?: string,
 ): AlbumSlot {
   const c = (cards ?? []).find((x) => x.episodeId === episodeId);
   if (c) return c.variant === 'dourada' ? 'dourada' : 'ganha';
+  if (episodeId === today) return 'hoje';
   return playedByClass.includes(episodeId) ? 'perdida' : 'futura';
 }

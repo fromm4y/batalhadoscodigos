@@ -12,10 +12,14 @@ import {
 } from '@/components/comic';
 import { RankingPodium } from '@/components/game/RankingPodium';
 import { SessionHighlight } from '@/components/game/SessionHighlight';
-import { BrassFrame, Confetti, Spotlights, Stamp, Typewriter } from '@/components/scene';
+import { Confetti, Spotlights, Stamp, Typewriter } from '@/components/scene';
 import type { Episode } from '@/content/types';
 import { ledgerSum } from '@/engine/ranking';
-import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamDoc } from '@/types/domain';
+import { Link } from 'react-router';
+import { AlbumLink } from '@/components/game/AlbumLink';
+import { CollectibleCard } from '@/components/game/CollectibleCard';
+import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamCard, TeamDoc } from '@/types/domain';
+import { usesLabel } from './cardLabels';
 import { LEDGER_LABEL } from './ledgerLabels';
 import { useEpisodeHook } from './useEpisodeHook';
 
@@ -117,7 +121,12 @@ export function EndScreen({
                 />
               </div>
             )}
-            {step === 'reveal' && <RevealChapter episode={episode} />}
+            {step === 'reveal' && (
+              <RevealChapter
+                episode={episode}
+                card={team.cards?.find((c) => c.episodeId === episode.id)}
+              />
+            )}
             {step === 'hook' && <HookChapter episode={episode} />}
           </motion.section>
         </AnimatePresence>
@@ -277,7 +286,7 @@ function ResultChapter({
   );
 }
 
-function RevealChapter({ episode }: { episode: Episode }) {
+function RevealChapter({ episode, card }: { episode: Episode; card: TeamCard | undefined }) {
   return (
     <div className="grid flex-1 grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_auto]">
       <div className="flex flex-col gap-3">
@@ -308,37 +317,52 @@ function RevealChapter({ episode }: { episode: Episode }) {
           Olhos aqui: a Narradora vai contar a história verdadeira dessa invenção!
         </SpeechBubble>
       </div>
-      <AlbumCard episode={episode} />
+      <AlbumCard episode={episode} card={card} />
     </div>
   );
 }
 
-/** Álbum do Museu (VISUAL 9): a carta colecionável da invenção da semana. */
-function AlbumCard({ episode }: { episode: Episode }) {
-  const reduce = useReducedMotion();
+/**
+ * Álbum do Museu (VISUAL 9 + pedido da May, 16/11): a figurinha da invenção da semana vira na
+ * tela, já guardada no inventário; dourada (rara) para quem venceu. Daqui saem o certificado e
+ * o álbum.
+ */
+function AlbumCard({ episode, card }: { episode: Episode; card: TeamCard | undefined }) {
+  useEffect(() => {
+    if (card) playSfx('vault');
+  }, [card]);
+  if (!card)
+    return (
+      <p className="w-60 font-type text-mist" role="status">
+        🃏 A carta do episódio está chegando...
+      </p>
+    );
+  const gold = card.variant === 'dourada';
   return (
-    <motion.figure
-      initial={reduce ? { opacity: 0 } : { rotateY: 180, opacity: 0, scale: 0.7 }}
-      animate={{ rotateY: 0, opacity: 1, scale: 1 }}
-      transition={{ delay: 1.2, duration: 0.9, type: 'spring', damping: 15 }}
-      className="flex w-60 flex-col items-center gap-2"
-    >
-      <p className="font-comic text-3xl tracking-wide text-brass text-outline">CARTA NOVA!</p>
-      <BrassFrame className="w-full bg-night p-2">
-        <div className="aspect-[600/840] w-full overflow-hidden">
-          <ComicArt id={episode.card.art} alt={`Carta do Álbum: ${episode.card.title}`} />
-        </div>
-        <figcaption className="mt-2 text-center">
-          <span className="block font-heist text-2xl leading-none tracking-wider text-paper">
-            {episode.card.title}
-          </span>
-          <span className="font-type text-sm text-brass">
-            {episode.card.year} · Ep. {episode.number}
-          </span>
-        </figcaption>
-      </BrassFrame>
-      <p className="text-center font-type text-sm text-mist">Guardada no Álbum do Museu</p>
-    </motion.figure>
+    <div className="flex flex-col items-center gap-2">
+      <p className="font-comic text-3xl tracking-wide text-brass text-outline">
+        {gold ? 'CARTA RARA!' : 'CARTA NOVA!'}
+      </p>
+      <CollectibleCard
+        card={episode.card}
+        number={episode.number}
+        slot={gold ? 'dourada' : 'ganha'}
+        usesLabel={usesLabel(card)}
+        flip
+      />
+      <p className="max-w-60 text-center font-type text-sm text-mist">
+        Guardada no Álbum: levem esta carta para usar o poder nos próximos episódios!
+      </p>
+      <div className="flex flex-wrap justify-center gap-2">
+        <Link
+          to={`/certificado/${episode.id}`}
+          className="grid min-h-11 place-items-center border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider text-ink hover:glow-brass"
+        >
+          🎓 Certificado
+        </Link>
+        <AlbumLink />
+      </div>
+    </div>
   );
 }
 

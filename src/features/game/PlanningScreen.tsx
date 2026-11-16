@@ -14,7 +14,9 @@ import type { Episode } from '@/content/types';
 import { ListenButton } from '@/components/game/ListenButton';
 import { RankingPodium } from '@/components/game/RankingPodium';
 import { VersusScreen } from '@/components/game/VersusScreen';
+import { equippableCards } from '@/engine/cards';
 import type { GameMode, MatchDoc, PlayerDoc, Side, TeamDoc } from '@/types/domain';
+import { CardPicker } from './CardPicker';
 
 type Props = {
   episode: Episode;
@@ -30,14 +32,18 @@ type Props = {
   teamId?: string;
   onChooseSide: (s: Side) => Promise<void>;
   onChooseMode: (m: GameMode) => Promise<void>;
+  /** carta do Álbum levada na missão (16/11) */
+  onEquipCard?: (episodeId: string | null) => void;
 };
 
 const STEP_LABEL = {
   comic: 'Abertura',
   dossier: 'Dossiê',
   ranking: 'Ranking',
+  card: 'Carta',
   side: 'Seu lado',
 } as const;
+type Step = keyof typeof STEP_LABEL;
 
 const SIDE_INFO = {
   red: { title: 'BANDO', icon: '🎭', motto: 'Entrar. Pegar. Sumir.' },
@@ -59,10 +65,17 @@ export function PlanningScreen({
   teamId,
   onChooseSide,
   onChooseMode,
+  onEquipCard,
 }: Props) {
-  const [step, setStep] = useState<'comic' | 'dossier' | 'ranking' | 'side'>(
-    player.side || late ? 'side' : 'comic',
-  );
+  const [step, setStep] = useState<Step>(player.side || late ? 'side' : 'comic');
+  const hasCards = !!onEquipCard && equippableCards(team.cards, episode.id).length > 0;
+  const steps: Step[] = [
+    'comic',
+    'dossier',
+    'ranking',
+    ...(hasCards ? ['card' as const] : []),
+    'side',
+  ];
   const [busy, setBusy] = useState(false);
 
   if (match && player.side) {
@@ -78,7 +91,7 @@ export function PlanningScreen({
             Episódio {episode.number} · {episode.title}
           </p>
           <nav aria-label="Planejamento" className="flex flex-wrap gap-2">
-            {(['comic', 'dossier', 'ranking', 'side'] as const).map((s, i) => (
+            {steps.map((s, i) => (
               <button
                 key={s}
                 type="button"
@@ -194,9 +207,31 @@ export function PlanningScreen({
                 maxRest={4}
                 className="w-full max-w-3xl"
               />
-              <ComicButton variant="red" size="lg" icon="⚡" onClick={() => setStep('side')}>
-                Escolher meu lado
+              <ComicButton
+                variant="red"
+                size="lg"
+                icon={hasCards ? '🃏' : '⚡'}
+                onClick={() => setStep(hasCards ? 'card' : 'side')}
+              >
+                {hasCards ? 'Escolher a carta da missão' : 'Escolher meu lado'}
               </ComicButton>
+            </motion.section>
+          )}
+
+          {step === 'card' && onEquipCard && (
+            <motion.section
+              key="card"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <CardPicker
+                cards={team.cards}
+                episodeId={episode.id}
+                equipped={player.equippedCard}
+                onEquip={onEquipCard}
+                onNext={() => setStep('side')}
+              />
             </motion.section>
           )}
 
