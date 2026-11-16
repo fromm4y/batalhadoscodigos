@@ -25,18 +25,19 @@
 
 ## Se algo der errado
 
-| Situação                            | O que fazer                                                                                              |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Dupla terminou o Cofre cedo         | Ela ganha a **🌟 Missão bônus** sozinha (vale +2). Não precisa fazer nada.                               |
-| Dupla chegou atrasada               | Ela entra normalmente; se os confrontos já foram formados, escolhe o lado e joga **contra o robô**.      |
-| Dupla adiantada ou atrasada demais  | Clique na dupla no painel → **Fase só desta dupla**.                                                     |
-| Dupla travada num desafio           | Clique na dupla → **Dar Dica 1** (grátis) ou espere ela usar o 🙋.                                       |
-| Ponto lançado errado                | Clique na dupla → **Pontos (ajuste manual)** com − ou +. Fica no extrato.                                |
-| Computador caiu ou recarregou       | Abrir o site de novo: a dupla volta direto para o jogo (o login fica na aba).                            |
-| Dupla esqueceu o PIN                | Na página da turma, **Resetar PIN**: o próximo PIN digitado vira o novo.                                 |
-| Lado ou par errado antes de começar | No planejamento: **Desfazer confrontos**, troque o lado da dupla no painel e forme de novo.              |
-| Sem som                             | Ver o 🔇 no canto da tela e o fone. O som só liga depois do primeiro clique na página (regra do Chrome). |
-| O botão 🔊 "Ouvir" não aparece      | O computador não tem voz em português instalada. O jogo funciona normalmente sem ele.                    |
+| Situação                                     | O que fazer                                                                                              |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Dupla diz que "abriu e apareceu outra coisa" | Normal: cada cadeado e o Cofre têm **2 etapas**. A etapa 1 já puxa a corda; o cadeado abre na etapa 2.   |
+| Dupla terminou o Cofre cedo                  | Ela ganha a **🌟 Missão bônus** sozinha (vale +2). Não precisa fazer nada.                               |
+| Dupla chegou atrasada                        | Ela entra normalmente; se os confrontos já foram formados, escolhe o lado e joga **contra o robô**.      |
+| Dupla adiantada ou atrasada demais           | Clique na dupla no painel → **Fase só desta dupla**.                                                     |
+| Dupla travada num desafio                    | Clique na dupla → **Dar Dica 1** (grátis) ou espere ela usar o 🙋.                                       |
+| Ponto lançado errado                         | Clique na dupla → **Pontos (ajuste manual)** com − ou +. Fica no extrato.                                |
+| Computador caiu ou recarregou                | Abrir o site de novo: a dupla volta direto para o jogo (o login fica na aba).                            |
+| Dupla esqueceu o PIN                         | Na página da turma, **Resetar PIN**: o próximo PIN digitado vira o novo.                                 |
+| Lado ou par errado antes de começar          | No planejamento: **Desfazer confrontos**, troque o lado da dupla no painel e forme de novo.              |
+| Sem som                                      | Ver o 🔇 no canto da tela e o fone. O som só liga depois do primeiro clique na página (regra do Chrome). |
+| O botão 🔊 "Ouvir" não aparece               | O computador não tem voz em português instalada. O jogo funciona normalmente sem ele.                    |
 
 ## Cartas e certificados
 

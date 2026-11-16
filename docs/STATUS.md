@@ -1,6 +1,6 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 16/11/2026 (madrugada)._
+_Atualizado em 17/11/2026._
 
 **Resumo:** os **Episódios 1 e 2 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 3 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
@@ -49,6 +49,15 @@ _Atualizado em 16/11/2026 (madrugada)._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 17/11 — mais desafio: duas etapas 🔐🔐
+
+- **Todo cadeado e o Cofre têm 2 etapas.** A etapa 1 é o desafio de antes; a etapa 2 é **mais difícil e mais longa** (quizzes de 5 perguntas, enigma sem alternativas, anagrama maior, cartões com mais colunas, tear com duas repetições, conserto com 2–3 erros, cifras com a mensagem inteira, Cofre do Ep. 2 sem pista e com mais mensagens falsas).
+- Terminar a etapa 1 já dá **meio puxão** na corda (10) e aparece **ETAPA 2/2**; o cadeado só abre (e dá ponto) na etapa 2. O combo vale se as **duas** etapas saírem de primeira e sem dica.
+- **Sem transmissão extra:** a etapa 2 do cartão é um cartão inteiro (sem coluna rasgada), e a etapa 2 da cifra usa a **mesma chave** falada.
+- **O robô ficou mais lento** junto (as duas etapas), e o **Cofre Relâmpago** agora é 10/9/8 min (A/B/C).
+- Pronto no **Ep. 1 e no Ep. 2**; os Ep. 3–5 já vão nascer com as duas etapas.
+- **Personagens das duplas recortados de novo**, sem falhas no cabelo, nos contornos e nas roupas.
 
 ### Novidades de 16/11 (madrugada) — Álbum, cartas com poder e certificado 🃏🎓
 
