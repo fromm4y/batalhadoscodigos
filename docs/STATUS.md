@@ -2,21 +2,21 @@
 
 _Atualizado em 16/11/2026._
 
-**Resumo:** o **Episódio 1 está completo e testado** (cabe em 50 min, sem erros). Os **Ep. 2 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
+**Resumo:** os **Episódios 1 e 2 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 3 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
 ## 🗺️ Plano em andamento (15/11)
 
-| #   | Item                                                                           | Situação                   |
-| --- | ------------------------------------------------------------------------------ | -------------------------- |
-| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May | ✅ pronto (PR #16)         |
-| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida) | ✅ pronto, **para testar** |
-| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                     | ⏳ próximo                 |
-| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum do Museu                     | ⏳                         |
-| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                       | ⏳                         |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority`                                 | ⏳                         |
-| 6   | SPEC-02 **D + E** — ficha que evolui, selos, certificados                      | ⏳                         |
-| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                     | ⏳                         |
-| 8   | SPEC-02 **F** — relatório da turma                                             | ⏳                         |
+| #   | Item                                                                             | Situação                   |
+| --- | -------------------------------------------------------------------------------- | -------------------------- |
+| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May   | ✅ pronto (PR #16)         |
+| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida) | ✅ pronto (PR #17)         |
+| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                       | ✅ pronto, **para testar** |
+| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum do Museu                       | ⏳ próximo                 |
+| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                         | ⏳                         |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority`                                   | ⏳                         |
+| 6   | SPEC-02 **D + E** — ficha que evolui, selos, certificados                        | ⏳                         |
+| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                       | ⏳                         |
+| 8   | SPEC-02 **F** — relatório da turma                                               | ⏳                         |
 
 ---
 
@@ -50,6 +50,16 @@ _Atualizado em 16/11/2026._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 16/11 (noite) — Ep. 2: Máquina Enigma 🔐
+
+- **Disco de cifra:** dois anéis de letras (fora: original · dentro: cifrado). Gira arrastando, pelas setas ◀ ▶ ou pelo teclado.
+- **Bando:** decifrar uma palavra → decifrar com a **chave falada** pela Narradora → **quebrar o código** no Cofre (gira o disco até o "Teste rápido" fazer sentido; no nível C tem uma pista: a mensagem começa com TURING).
+- **Piratas:** cifrar uma palavra → cifrar com a **chave falada** → **verificar** no Cofre: entre 3 ou 4 mensagens de rádio, só uma foi cifrada com a chave do dia (ordem própria de cada dupla; erro = −2).
+- **Chave pelo rádio:** no cadeado 3 o disco fica travado com 🎧 até a Narradora fazer a transmissão (igual aos cartões do Ep. 1; o painel mostra quem está esperando).
+- **Missão bônus do Ep. 2:** a chave vem disfarçada numa continha (ex.: "letras de ENIGMA × 3 − 1").
+- A mensagem se escreve **letra por letra**, numa caixinha embaixo de cada letra da fita.
+- Testado nos níveis A, B e C, nos dois lados, no computador (1366×768) e no celular.
+
 ### Novidades de 16/11 — mais diversão e mais desafio
 
 - **🔥 Combo:** abrir o cadeado de primeira, sem erro e sem dica, puxa a corda **+5** a mais (25 em vez de 20). A tela avisa "COMBO valendo" e o painel mostra quem fez.
@@ -64,7 +74,7 @@ _Atualizado em 16/11/2026._
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 105 unitários + 70 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 113 unitários + 70 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 
