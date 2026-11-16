@@ -9,6 +9,7 @@ import { TugBar } from '@/components/game/TugBar';
 import { RobotFigure, Stamp, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
+import { raceOrder } from '@/engine/race';
 import type { MatchDoc, PlayerDoc, SessionDoc, Side, TeamDoc } from '@/types/domain';
 import type { WithId } from '../data';
 
@@ -79,61 +80,135 @@ export function ProjectorMatches({
           {guide > 0 && <span className="ml-3 text-3xl text-mist">/ {guide} min</span>}
         </p>
       </div>
-      {sorted.length === 0 ? (
-        <p className="font-type text-4xl text-mist">Os confrontos ainda não foram formados.</p>
-      ) : (
-        <ul className={cn('grid gap-5', big ? 'grid-cols-1' : 'grid-cols-2')}>
-          {sorted.map((m, i) => (
-            <motion.li
-              key={m.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              className="rounded-hand border-4 border-ink bg-graphite/90 p-4 shadow-[8px_8px_0_#000]"
-            >
-              <div className="flex items-center gap-4">
-                <Fighter
-                  side="red"
-                  match={m}
-                  team={m.redTeamId ? teamById.get(m.redTeamId) : undefined}
-                  player={m.redTeamId ? playerById.get(m.redTeamId) : undefined}
-                  big={big}
-                />
-                <div className="flex-1">
-                  <TugBar
-                    bar={m.bar}
-                    redName={name(m, 'red', teamById)}
-                    blueName={name(m, 'blue', teamById)}
-                    compact={!big}
+      <div className="grid items-start gap-6 lg:grid-cols-[1fr_22rem]">
+        {sorted.length === 0 ? (
+          <p className="font-type text-4xl text-mist">Os confrontos ainda não foram formados.</p>
+        ) : (
+          <ul className={cn('grid gap-5', big ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-2')}>
+            {sorted.map((m, i) => (
+              <motion.li
+                key={m.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-hand border-4 border-ink bg-graphite/90 p-4 shadow-[8px_8px_0_#000]"
+              >
+                <div className="flex items-center gap-4">
+                  <Fighter
+                    side="red"
+                    match={m}
+                    team={m.redTeamId ? teamById.get(m.redTeamId) : undefined}
+                    player={m.redTeamId ? playerById.get(m.redTeamId) : undefined}
+                    big={big}
                   />
-                  {m.winner && (
-                    <p className="mt-1 text-center font-comic text-4xl tracking-wide text-brass text-outline">
-                      {m.winner === 'draw'
-                        ? 'EMPATE!'
-                        : `${m.winner === 'red' ? '🎭' : '⚓'} ${name(m, m.winner, teamById)} VENCEU!`}
-                    </p>
-                  )}
+                  <div className="flex-1">
+                    <TugBar
+                      bar={m.bar}
+                      redName={name(m, 'red', teamById)}
+                      blueName={name(m, 'blue', teamById)}
+                      compact={!big}
+                    />
+                    {m.winner && (
+                      <p className="mt-1 text-center font-comic text-4xl tracking-wide text-brass text-outline">
+                        {m.winner === 'draw'
+                          ? 'EMPATE!'
+                          : `${m.winner === 'red' ? '🎭' : '⚓'} ${name(m, m.winner, teamById)} VENCEU!`}
+                      </p>
+                    )}
+                  </div>
+                  <Fighter
+                    side="blue"
+                    match={m}
+                    team={m.blueTeamId ? teamById.get(m.blueTeamId) : undefined}
+                    player={m.blueTeamId ? playerById.get(m.blueTeamId) : undefined}
+                    big={big}
+                  />
                 </div>
-                <Fighter
-                  side="blue"
-                  match={m}
-                  team={m.blueTeamId ? teamById.get(m.blueTeamId) : undefined}
-                  player={m.blueTeamId ? playerById.get(m.blueTeamId) : undefined}
-                  big={big}
-                />
-              </div>
-            </motion.li>
-          ))}
-        </ul>
-      )}
+              </motion.li>
+            ))}
+          </ul>
+        )}
+        <RaceBoard players={players} teamById={teamById} />
+      </div>
     </div>
+  );
+}
+
+/**
+ * Corrida até o Cofre (pedido da May, 16/11): quem está mais perto, SEM pontos. Gera torcida.
+ * Mostra as 8 primeiras duplas; o nome segue o lado escolhido (cidade ou nome pirata).
+ */
+function RaceBoard({
+  players,
+  teamById,
+}: {
+  players: WithId<PlayerDoc>[];
+  teamById: Map<string, TeamDoc>;
+}) {
+  const rows = raceOrder(players).slice(0, 8);
+  if (rows.length === 0) return null;
+  return (
+    <section
+      aria-label="Corrida até o Cofre"
+      className="rounded-hand border-4 border-ink bg-graphite/90 p-4 text-left shadow-[8px_8px_0_#000]"
+    >
+      <h2 className="mb-3 font-heist text-4xl tracking-[0.1em] text-brass text-glow-brass">
+        🏁 CORRIDA ATÉ O COFRE
+      </h2>
+      <ol className="flex flex-col gap-2">
+        {rows.map(({ player, steps, place }) => {
+          const team = teamById.get(player.teamId);
+          const side = player.side ?? 'red';
+          const lit = side === 'red' ? 'bg-bando glow-red' : 'bg-piratas glow-blue';
+          return (
+            <motion.li
+              key={player.id}
+              layout
+              className="flex items-center gap-3 rounded-md bg-night/60 px-2 py-1"
+            >
+              <span className="w-8 font-heist text-3xl text-mist">{place}º</span>
+              {team && <Avatar avatar={team.avatar} side={side} className="h-12 w-10" decorative />}
+              <span
+                className={cn(
+                  'min-w-0 flex-1 truncate font-heist text-2xl tracking-wider',
+                  side === 'red' ? 'text-bando' : 'text-piratas',
+                )}
+              >
+                {team ? (side === 'red' ? team.cityName : team.pirateName) : '—'}
+              </span>
+              <span className="sr-only">{steps} de 4 passos</span>
+              <span className="flex gap-1" aria-hidden>
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      'h-4 w-4 rounded-full border-2 border-ink',
+                      i < Math.min(steps, 3) ? lit : 'bg-graphite-light',
+                    )}
+                  />
+                ))}
+                <span
+                  className={cn(
+                    'grid h-4 w-4 place-items-center rounded-sm border-2 border-ink text-[10px]',
+                    steps >= 4 ? 'bg-brass glow-brass' : 'bg-graphite-light',
+                  )}
+                >
+                  {side === 'red' ? '◆' : '✕'}
+                </span>
+              </span>
+            </motion.li>
+          );
+        })}
+      </ol>
+    </section>
   );
 }
 
 function name(m: MatchDoc, side: Side, teamById: Map<string, TeamDoc>): string {
   if (m.machineSide === side) return 'Robô';
   const id = side === 'red' ? m.redTeamId : m.blueTeamId;
-  return (id && teamById.get(id)?.cityName) || '—';
+  const t = id ? teamById.get(id) : undefined;
+  return (t && (side === 'red' ? t.cityName : t.pirateName)) || '—';
 }
 
 /** Avatar + cadeados abertos (pontos de luz) de um lado do confronto. */

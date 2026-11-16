@@ -37,6 +37,19 @@ export function resolveChallenge(
   } as ResolvedChallenge;
 }
 
+/** Missão bônus do lado (16/11), se o episódio tiver. */
+export function resolveBonus(ep: Episode, side: Side, level: Level): ResolvedChallenge | null {
+  const c = ep.sides[side].bonus;
+  if (!c) return null;
+  return {
+    key: c.key,
+    title: c.title,
+    leaderLine: c.leaderLine,
+    type: c.type,
+    variant: c.variants[level],
+  } as ResolvedChallenge;
+}
+
 // ---------- quiz ----------
 export const checkQuiz = (v: QuizVariant, question: number, option: number) =>
   v.questions[question]?.correct === option;

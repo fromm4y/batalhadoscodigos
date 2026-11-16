@@ -21,10 +21,10 @@ import { TugBar } from '@/components/game/TugBar';
 import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
-import { resolveChallenge, type Slot } from '@/engine/challenges';
+import { resolveBonus, resolveChallenge, type Slot } from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
 import { ABILITY_INFO, hasEffect, other } from '@/engine/match';
-import { nextHint } from '@/engine/scoring';
+import { hintCost, lightningSecondsLeft, nextHint } from '@/engine/scoring';
 import { clockOffset } from '@/lib/serverClock';
 import { useNow } from '@/lib/useNow';
 import type { Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
@@ -32,6 +32,7 @@ import {
   buyHint,
   openLock,
   registerWrongAnswer,
+  solveBonus,
   solveVault,
   activateAbility,
   addFeed,
@@ -72,7 +73,8 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const shielded = hasEffect(effects, 'shield', side, sNow);
   const rivalSide = other(side);
   const rivalWon = match?.winner === rivalSide;
-  const vaultAdvantage = session.phase === 'vault' && match?.vaultLeader === side;
+  const vaultAdvantage =
+    session.phase === 'vault' && match?.vaultLeader === side && !player.progress.vaultSolvedAt;
   const lastLog = match?.log.at(-1) ?? null;
   const myName = red ? team.cityName : team.pirateName;
 
@@ -107,6 +109,15 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
   const phaseStart = session.phaseStartedAt?.toMillis?.() ?? now;
   const elapsed = Math.max(0, Math.floor((now - phaseStart) / 1000));
   const guide = GAME_RULES.phaseGuideMinutes[session.phase as 'locks' | 'vault'];
+  // Cofre Relâmpago (16/11): só para quem está no ritmo da turma (sem fase própria).
+  const lightningOn = session.phase === 'vault' && !player.phaseOverride;
+  const lightningLeft =
+    lightningOn && !player.progress.vaultSolvedAt
+      ? lightningSecondsLeft(level, phaseStart, sNow)
+      : 0;
+  const bonus = resolveBonus(episode, side, level);
+  const comboAvailable =
+    !!challenge && slot !== 'vault' && !usedHints && !player.misses?.[challenge.key];
 
   async function guard(fn: () => Promise<void>) {
     setError(null);
@@ -124,7 +135,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
     setCooldown(true);
     setTimeout(() => setCooldown(false), GAME_RULES.answers.wrongAnswerCooldownMs);
-    void guard(() => registerWrongAnswer(ctx));
+    if (challenge) void guard(() => registerWrongAnswer(ctx, challenge.key));
   }
 
   function onSolved() {
@@ -132,12 +143,20 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     setBusy(true);
     void guard(async () => {
       if (slot === 'vault') {
-        const v = await solveVault(ctx);
+        const v = await solveVault(ctx, lightningOn ? { level, phaseStartMs: phaseStart } : null);
         playSfx('vault');
-        addFeed(ctx, 'vault', `${myName} resolveu o Cofre${v.won ? ' primeiro e venceu!' : '.'}`);
-        setPop({ kind: 'boom', key: Date.now() });
+        addFeed(
+          ctx,
+          'vault',
+          `${myName} resolveu o Cofre${v.won ? ' primeiro e venceu!' : '.'}${v.fast ? ' ⚡ Relâmpago!' : ''}`,
+        );
+        setPop(
+          v.fast
+            ? { kind: 'custom', key: Date.now(), text: 'RELÂMPAGO! ⚡' }
+            : { kind: 'boom', key: Date.now() },
+        );
       } else {
-        const r = await openLock(ctx, slot);
+        const r = await openLock(ctx, slot, challenge!.key);
         playSfx('lock');
         addFeed(ctx, 'lock_open', `${myName} abriu o ${red ? 'cadeado' : 'defesa'} ${slot + 1}`);
         setPop(
@@ -149,8 +168,11 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                   key: Date.now(),
                   text: `+ ${ABILITY_INFO[r.ability].name.toUpperCase()}!`,
                 }
-              : { kind: 'click', key: Date.now() },
+              : r.combo
+                ? { kind: 'custom', key: Date.now(), text: 'COMBO! +PUXÃO' }
+                : { kind: 'click', key: Date.now() },
         );
+        if (r.combo) addFeed(ctx, 'combo', `${myName} fez COMBO: abriu de primeira, sem dica!`);
         const reward = episode.sides[side].locks[slot].reward?.clue;
         setClue(reward ?? null);
       }
@@ -174,6 +196,16 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           <p className="hidden font-heist text-3xl tracking-[0.15em] text-paper md:block">
             {PHASE_TITLE[session.phase as 'locks' | 'vault']}
           </p>
+          {lightningLeft > 0 && (
+            <p
+              className="font-heist text-2xl tracking-wider text-spotlight text-glow-spot sm:text-3xl"
+              aria-label="Tempo do Cofre Relâmpago"
+              title={`Resolvam o Cofre antes de zerar: +${GAME_RULES.points.vaultFast}`}
+            >
+              ⚡ {String(Math.floor(lightningLeft / 60)).padStart(2, '0')}:
+              {String(lightningLeft % 60).padStart(2, '0')}
+            </p>
+          )}
           <p
             className="font-heist text-2xl tracking-wider text-brass sm:text-3xl"
             aria-label="Tempo da fase"
@@ -195,7 +227,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
             <p
               className={cn(
                 'flex justify-center gap-4 font-type text-sm text-mist',
-                (anchored || shielded || vaultAdvantage) && 'mt-1',
+                (anchored || shielded || vaultAdvantage || comboAvailable) && 'mt-1',
               )}
               aria-live="polite"
             >
@@ -203,6 +235,12 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               {shielded && (
                 <span className="text-alert">
                   🛡️ Escudo do rival: seu próximo puxão será anulado!
+                </span>
+              )}
+              {comboAvailable && !anchored && !shielded && (
+                <span className="text-brass">
+                  🔥 COMBO valendo: acertem de primeira, sem dica, e puxem +
+                  {GAME_RULES.pull.comboBonus}!
                 </span>
               )}
               {vaultAdvantage && (
@@ -346,6 +384,19 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                   </ChallengeFrame>
                 </div>
               </>
+            ) : session.phase === 'vault' && player.progress.vaultSolvedAt && bonus ? (
+              <BonusMission
+                key={bonus.key}
+                ctx={ctx}
+                bonus={bonus}
+                red={red}
+                level={level}
+                leaderArt={leaderArt}
+                solved={!!player.bonusSolvedAt}
+                name={myName}
+                curiosities={episode.curiosities}
+                onPop={setPop}
+              />
             ) : (
               <WaitingPanel
                 text={
@@ -415,7 +466,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                     onClick={() =>
                       void guard(async () => {
                         playSfx('hint');
-                        await buyHint(ctx, challenge.key, tier, free);
+                        await buyHint(ctx, challenge.key, tier, free, level);
                       })
                     }
                     className={cn(
@@ -432,7 +483,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                       ? '(aberta)'
                       : free
                         ? '(grátis ⭐)'
-                        : `(${tier === 1 ? GAME_RULES.points.hint1 : GAME_RULES.points.hint2})`}
+                        : `(${hintCost(tier, false, level)})`}
                   </button>
                 );
               })}
@@ -460,6 +511,134 @@ function ChallengeFrame({ red, children }: { red: boolean; children: React.React
     <BrassFrame className="bg-graphite" tight>
       <div className="rounded-sm bg-aged p-4 text-ink">{children}</div>
     </BrassFrame>
+  );
+}
+
+/**
+ * Missão bônus (pedido da May, 16/11): quem já abriu o Cofre ganha um enigma extra difícil.
+ * Sem dicas e sem perder ponto ao errar: é só para quem quer "bater a cabeça" mais um pouco.
+ */
+function BonusMission({
+  ctx,
+  bonus,
+  red,
+  level,
+  leaderArt,
+  solved,
+  name,
+  curiosities,
+  onPop,
+}: {
+  ctx: GameCtx;
+  bonus: ResolvedChallenge;
+  red: boolean;
+  level: Level;
+  leaderArt: string;
+  solved: boolean;
+  name: string;
+  curiosities: string[];
+  onPop: (p: { kind: OnomatopoeiaKind; key: number; text?: string }) => void;
+}) {
+  const [accepted, setAccepted] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  if (solved)
+    return (
+      <WaitingPanel
+        text={`🌟 Missão bônus cumprida! +${GAME_RULES.points.bonusMission}. Aguardando a Narradora...`}
+        curiosities={curiosities}
+      />
+    );
+
+  if (!accepted)
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+        <p className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
+          🌟 MISSÃO BÔNUS
+        </p>
+        <SpeechBubble
+          who={red ? 'professor' : 'capita'}
+          glitch={red}
+          tail="center"
+          className="max-w-xl"
+        >
+          {bonus.leaderLine}
+        </SpeechBubble>
+        <p className="max-w-xl font-type text-lg text-mist">
+          Um enigma DIFÍCIL, sem dicas. Vale +{GAME_RULES.points.bonusMission}, e errar não tira
+          ponto. Topam?
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            playSfx('hint');
+            setAccepted(true);
+          }}
+          className="min-h-12 cursor-pointer rounded-md border-[3px] border-ink bg-brass px-6 pt-1 font-heist text-3xl tracking-wider text-ink shadow-comic-sm hover:glow-brass"
+        >
+          Aceitar a missão
+        </button>
+      </div>
+    );
+
+  return (
+    <>
+      <div className="flex items-start gap-3">
+        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-4 border-ink bg-graphite">
+          <ComicArt id={leaderArt} alt={red ? 'O Professor' : 'A Capitã'} className="object-top" />
+        </div>
+        <SpeechBubble
+          who={red ? 'professor' : 'capita'}
+          glitch={red}
+          tail="left"
+          compact
+          className="max-w-none flex-1"
+        >
+          {bonus.leaderLine}
+        </SpeechBubble>
+      </div>
+      <div data-challenge-scroll className="min-h-0 flex-1 pr-1 lg:overflow-y-auto">
+        <ChallengeFrame red={red}>
+          <div className="mb-2 flex items-baseline justify-between gap-4 border-b-2 border-dashed border-ink/40 pb-1">
+            <h2 className="font-heist text-2xl tracking-wider">🌟 Missão bônus · {bonus.title}</h2>
+            <div className="flex items-center gap-3">
+              <p className="font-type text-sm">{bonus.variant.prompt}</p>
+              <ListenButton text={narrationText(bonus)} />
+            </div>
+          </div>
+          <ChallengeView
+            challenge={bonus}
+            level={level}
+            seed={ctx.teamId}
+            heardTransmission
+            locked={cooldown || busy}
+            onWrong={() => {
+              playSfx('error');
+              onPop({ kind: 'errou', key: Date.now() });
+              setCooldown(true);
+              setTimeout(() => setCooldown(false), GAME_RULES.answers.wrongAnswerCooldownMs);
+              void registerWrongAnswer(ctx, bonus.key, true).catch(() => undefined);
+            }}
+            onSolved={() => {
+              if (busy) return;
+              setBusy(true);
+              playSfx('vault');
+              onPop({ kind: 'custom', key: Date.now(), text: 'MISSÃO CUMPRIDA! 🌟' });
+              addFeed(ctx, 'bonus', `${name} cumpriu a missão bônus! 🌟`);
+              void solveBonus(ctx)
+                .catch(() => undefined)
+                .finally(() => setBusy(false));
+            }}
+          />
+          {cooldown && (
+            <p role="status" className="mt-3 font-bold text-alert">
+              Quase! Pensem mais um pouco... (errar aqui não tira ponto)
+            </p>
+          )}
+        </ChallengeFrame>
+      </div>
+    </>
   );
 }
 

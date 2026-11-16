@@ -18,7 +18,16 @@ import {
   resolveChallenge,
 } from './challenges';
 import { currentStage } from './progress';
-import { applyDelta, hintCost, nextHint, POINTS } from './scoring';
+import {
+  applyDelta,
+  hintCost,
+  isCombo,
+  isLightningVault,
+  lightningSecondsLeft,
+  lockPull,
+  nextHint,
+  POINTS,
+} from './scoring';
 
 const ep1 = ep1Json as unknown as Episode;
 const LEVELS: Level[] = ['A', 'B', 'C'];
@@ -95,6 +104,10 @@ describe('pontuação (7.6)', () => {
     expect(hintCost(1, false)).toBe(-2);
     expect(hintCost(2, false)).toBe(-4);
     expect(hintCost(1, true)).toBe(0);
+    // 16/11: dica mais cara no B e no C
+    expect(hintCost(1, false, 'B')).toBe(-3);
+    expect(hintCost(2, false, 'C')).toBe(-5);
+    expect(hintCost(2, true, 'C')).toBe(0);
   });
 });
 
@@ -258,6 +271,34 @@ describe('gabarito do roteiro', () => {
       for (const c of list)
         for (const lv of LEVELS)
           expect(answerKey(c, lv).length, `${e.id} ${c.key} ${lv}`).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('combo e Cofre Relâmpago (16/11)', () => {
+  it('combo só sem erro e sem dica', () => {
+    expect(isCombo(undefined, undefined)).toBe(true);
+    expect(isCombo(0, 0)).toBe(true);
+    expect(isCombo(1, 0)).toBe(false);
+    expect(isCombo(0, 2)).toBe(false);
+    expect(lockPull(true)).toBe(GAME_RULES.pull.lockOpen + GAME_RULES.pull.comboBonus);
+    expect(lockPull(false)).toBe(GAME_RULES.pull.lockOpen);
+  });
+  it('relâmpago conta a partir da liberação do Cofre, por nível', () => {
+    const min = GAME_RULES.vaultLightningMinutes;
+    expect(isLightningVault('A', 0, min.A * 60_000)).toBe(true);
+    expect(isLightningVault('A', 0, min.A * 60_000 + 1)).toBe(false);
+    expect(isLightningVault('C', 1000, 1000 + min.C * 60_000 - 1)).toBe(true);
+    expect(lightningSecondsLeft('B', 0, 0)).toBe(min.B * 60);
+    expect(lightningSecondsLeft('B', 0, 10 * 60_000)).toBe(0);
+  });
+  it('o relâmpago é possível, mas mais curto que o tempo guia do Cofre', () => {
+    for (const lv of ['A', 'B', 'C'] as const) {
+      expect(GAME_RULES.vaultLightningMinutes[lv]).toBeLessThan(GAME_RULES.phaseGuideMinutes.vault);
+      // a dupla tem chance de bater o robô mais lento
+      expect(GAME_RULES.vaultLightningMinutes[lv] * 60).toBeGreaterThanOrEqual(
+        GAME_RULES.machineSolveSeconds[lv].vault[0],
+      );
     }
   });
 });

@@ -162,7 +162,8 @@ service cloud.firestore {
         && changedOnly(['totalPoints'])
         && request.resource.data.totalPoints is int
         && request.resource.data.totalPoints >= 0
-        && request.resource.data.totalPoints - resource.data.totalPoints >= -4
+        // −5: Dica 2 nos níveis B/C (16/11) · +7: vitória + Cofre Relâmpago
+        && request.resource.data.totalPoints - resource.data.totalPoints >= -5
         && request.resource.data.totalPoints - resource.data.totalPoints <= 7;
       allow update: if ownsClass(classId)
         && changedOnly(['totalPoints'])
@@ -178,9 +179,9 @@ service cloud.firestore {
           && request.resource.data.sessionId == request.auth.token.sessionId
           && request.resource.data.by == 'game'
           && request.resource.data.at == request.time
-          && request.resource.data.reason in ['lock_open', 'lock_first', 'event_ok', 'vault_win', 'draw', 'side_bonus', 'wrong_answer', 'hint_1', 'hint_2']
+          && request.resource.data.reason in ['lock_open', 'lock_first', 'event_ok', 'vault_win', 'draw', 'side_bonus', 'wrong_answer', 'hint_1', 'hint_2', 'vault_fast', 'bonus_mission']
           && request.resource.data.delta is int
-          && request.resource.data.delta >= -4
+          && request.resource.data.delta >= -5
           && request.resource.data.delta <= 5;
         // A Narradora lança pontos do confronto (bônus de lado, vitória no fim, empate) e ajustes manuais.
         allow create: if ownsClass(classId)
@@ -230,7 +231,7 @@ service cloud.firestore {
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'misses', 'bonusSolvedAt', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
           && request.resource.data.connected is bool
           // matchId: só para entrar sozinha contra a máquina, se ainda não tinha confronto
           && (request.resource.data.get('matchId', null) == resource.data.get('matchId', null)

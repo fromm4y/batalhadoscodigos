@@ -1,6 +1,6 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 15/11/2026 (tarde)._
+_Atualizado em 16/11/2026._
 
 **Resumo:** o **Episódio 1 está completo e testado** (cabe em 50 min, sem erros). Os **Ep. 2 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
@@ -8,7 +8,8 @@ _Atualizado em 15/11/2026 (tarde)._
 
 | #   | Item                                                                           | Situação                   |
 | --- | ------------------------------------------------------------------------------ | -------------------------- |
-| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May | ✅ pronto, **para testar** |
+| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May | ✅ pronto (PR #16)         |
+| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida) | ✅ pronto, **para testar** |
 | 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                     | ⏳ próximo                 |
 | 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum do Museu                     | ⏳                         |
 | 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                       | ⏳                         |
@@ -49,11 +50,21 @@ _Atualizado em 15/11/2026 (tarde)._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 16/11 — mais diversão e mais desafio
+
+- **🔥 Combo:** abrir o cadeado de primeira, sem erro e sem dica, puxa a corda **+5** a mais (25 em vez de 20). A tela avisa "COMBO valendo" e o painel mostra quem fez.
+- **💌 Dica mais cara no B e no C:** Dica 1 = −3 e Dica 2 = −5 (no A continua −2 e −4).
+- **⚡ Cofre Relâmpago:** cronômetro no Cofre (A 7 min · B 6 min · C 5 min). Quem resolve antes de zerar ganha **+2**, vencendo ou não.
+- **🌟 Missão bônus:** quem abre o Cofre ganha um enigma extra difícil (sem dicas, errar não tira ponto) que vale **+2**. Hoje existe no Ep. 1; cada episódio novo ganha a sua. O selo entra com a Parte D (selos).
+- **🏁 Corrida até o Cofre no projetor:** quem está mais perto do Cofre, sem mostrar pontos.
+- Correção: no projetor, o lado Piratas agora mostra o **nome pirata** (antes aparecia a cidade).
+- ⚠️ **Precisa publicar o `firestore.rules` de novo** (ou só publicar o novo, já que a conta é nova).
+
 ### Por baixo
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 97 unitários + 69 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 105 unitários + 70 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 

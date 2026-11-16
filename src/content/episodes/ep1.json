@@ -269,6 +269,38 @@
             "hint2": "Repita 3 vezes [ Repita 2 vezes [★ ●], ▬ ]."
           }
         }
+      },
+      "bonus": {
+        "key": "red-bonus",
+        "title": "O cartão impossível",
+        "type": "riddle",
+        "leaderLine": "Cofre aberto? Então tenho um trabalho extra, só para os melhores do Bando...",
+        "variants": {
+          "A": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Um cartão perfurado tem 3 colunas. Em cada coluna pode ter um furo ou não ter furo. Quantos cartões DIFERENTES dá para fazer?",
+            "accept": ["8", "oito"],
+            "hint1": "Desenhe: comece com 1 coluna. Quantos jeitos? E com 2?",
+            "hint2": "1 coluna: 2 jeitos. 2 colunas: 4 jeitos. Cada coluna nova dobra."
+          },
+          "B": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Um lenço tem 24 linhas, e o desenho se repete a cada 6 linhas. Em cada repetição, a linha 1 e a linha 3 são iguais. O tear reaproveita cartões iguais. Quantos cartões DIFERENTES ele precisa, no mínimo?",
+            "accept": ["5", "cinco"],
+            "hint1": "Esqueça as 24 linhas: olhe só para uma repetição.",
+            "hint2": "Uma repetição tem 6 linhas, mas duas delas são iguais."
+          },
+          "C": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Cada cartão do tear tem 5 colunas, e cada coluna pode ter furo ou não ter furo. Quantos padrões DIFERENTES existem?",
+            "accept": ["32", "trinta e dois", "trinta e 2"],
+            "hint1": "Cada coluna nova multiplica as possibilidades.",
+            "hint2": "2 × 2 × 2 × 2 × 2."
+          }
+        }
       }
     },
     "blue": {
@@ -553,6 +585,38 @@
             "editable": "both",
             "hint1": "Conte quantos ●★ existem em cada fileira do padrão.",
             "hint2": "A repetição de dentro deveria ser 3 vezes."
+          }
+        }
+      },
+      "bonus": {
+        "key": "blue-bonus",
+        "title": "A bandeira secreta",
+        "type": "riddle",
+        "leaderLine": "Defesas de pé! Mas uma boa pirata nunca para: tenho um desafio extra para vocês...",
+        "variants": {
+          "A": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Uma bandeira de sinais tem 2 faixas. Cada faixa pode ser vermelha, azul ou branca. Quantas bandeiras DIFERENTES dá para fazer?",
+            "accept": ["9", "nove"],
+            "hint1": "Fixe a cor da primeira faixa e conte as da segunda.",
+            "hint2": "Para cada uma das 3 cores de cima, há 3 cores embaixo."
+          },
+          "B": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Uma vela de navio tem 30 pontos bordados, e o desenho se repete a cada 5 pontos. Em cada repetição, o ponto 2 e o ponto 5 são iguais. O tear reaproveita cartões iguais. Quantos cartões DIFERENTES ele precisa, no mínimo?",
+            "accept": ["4", "quatro"],
+            "hint1": "Esqueça os 30 pontos: olhe só para uma repetição.",
+            "hint2": "Uma repetição tem 5 pontos, mas dois deles são iguais."
+          },
+          "C": {
+            "prompt": "Missão bônus: digitem a resposta (errar aqui não tira ponto).",
+            "mode": "text",
+            "text": "Cada cartão tem 4 colunas, e cada coluna pode ter um furo pequeno, um furo grande ou nenhum furo. Quantos padrões DIFERENTES existem?",
+            "accept": ["81", "oitenta e um", "oitenta e 1"],
+            "hint1": "Cada coluna tem 3 jeitos, e as colunas são independentes.",
+            "hint2": "3 × 3 × 3 × 3."
           }
         }
       }

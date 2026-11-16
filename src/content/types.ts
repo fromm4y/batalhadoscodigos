@@ -182,6 +182,8 @@ export type SideContent = {
   name: string;
   locks: [Challenge, Challenge, Challenge];
   vault: Challenge;
+  /** Missão bônus (pedido da May, 16/11): enigma extra para quem já abriu o Cofre. */
+  bonus?: Challenge;
 };
 
 /** Carta do Álbum do Museu (SPEC-02 Parte B/C). */

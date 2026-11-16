@@ -15,6 +15,8 @@ import ep4 from './episodes/ep4.json';
 import ep5 from './episodes/ep5.json';
 import { SEASON } from './season';
 import type {
+  Episode,
+  RiddleVariant,
   AnyEpisode,
   BoardChoiceVariant,
   Challenge,
@@ -29,7 +31,15 @@ const ALL = { ep1, ep2, ep3, ep4, ep5 } as unknown as Record<string, AnyEpisode>
 
 function challengesOf(e: AnyEpisode): Challenge[] {
   if (e.mode === 'coop') return [...e.coop.locks, e.coop.vault];
-  return [...e.sides.red.locks, e.sides.red.vault, ...e.sides.blue.locks, e.sides.blue.vault];
+  const opt = (c: Challenge | undefined) => (c ? [c] : []);
+  return [
+    ...e.sides.red.locks,
+    e.sides.red.vault,
+    ...opt(e.sides.red.bonus),
+    ...e.sides.blue.locks,
+    e.sides.blue.vault,
+    ...opt(e.sides.blue.bonus),
+  ];
 }
 function variantsOf<V>(e: AnyEpisode, type: Challenge['type']): { tag: string; v: V }[] {
   return challengesOf(e)
@@ -146,6 +156,16 @@ describe('Ep. 1 continua no formato novo (SPEC-02 Parte B)', () => {
     expect(ep1.card.art).toBe('card-ep1');
     expect(ep1.teaser.art).toBe('teaser-ep1');
   });
+  it('tem missão bônus nos dois lados, com resposta em número e por extenso', () => {
+    const e = ep1 as unknown as Episode;
+    for (const side of ['red', 'blue'] as const)
+      for (const lv of ['A', 'B', 'C'] as const) {
+        const v = e.sides[side].bonus!.variants[lv] as RiddleVariant;
+        expect(v.mode).toBe('text');
+        expect(v.accept.some((a) => /^\d+$/.test(a))).toBe(true);
+        expect(v.accept.length).toBeGreaterThan(1);
+      }
+  });
 });
 
 /**
@@ -202,8 +222,9 @@ describe('lados espelhados sem respostas compartilhadas', () => {
   for (const id of ['ep1', 'ep2', 'ep3', 'ep4']) {
     it(id, () => {
       const e = ALL[id] as Extract<AnyEpisode, { sides: unknown }>;
-      const red = [...e.sides.red.locks, e.sides.red.vault];
-      const blue = [...e.sides.blue.locks, e.sides.blue.vault];
+      const opt = (c: Challenge | undefined) => (c ? [c] : []);
+      const red = [...e.sides.red.locks, e.sides.red.vault, ...opt(e.sides.red.bonus)];
+      const blue = [...e.sides.blue.locks, e.sides.blue.vault, ...opt(e.sides.blue.bonus)];
       for (const lv of ['A', 'B', 'C'] as const)
         red.forEach((rc, i) => {
           const r = answersAndScreen(rc, lv);
