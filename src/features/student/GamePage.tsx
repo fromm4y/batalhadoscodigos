@@ -223,7 +223,7 @@ function Game({ claims }: { claims: TeamClaims }) {
       return false;
     const stage = currentStage(phase ?? session.phase, player.progress);
     if (stage.kind !== 'challenge' || player.progress.heardTransmission) return false;
-    return needsTransmission(resolveChallenge(episode, player.side, level, stage.slot));
+    return needsTransmission(resolveChallenge(episode, player.side, level, stage.slot, stage.step));
   })();
   useEffect(() => {
     if (transmissionOn && waitingClue) void markHeardTransmission(ctx).catch(() => undefined);

@@ -55,6 +55,11 @@ export const GAME_RULES = {
      * este tanto A MAIS. Recompensa quem "bate a cabeça" sem pedir ajuda.
      */
     comboBonus: 5,
+    /**
+     * Duas etapas por desafio (pedido da May, 17/11): terminar a etapa 1 já dá este puxão.
+     * O cadeado abre (e dá pontos) só na etapa 2.
+     */
+    stageOne: 10,
   },
 
   /** Seção 7.6: pontuação da temporada. */
@@ -85,10 +90,10 @@ export const GAME_RULES = {
 
   /**
    * Cofre Relâmpago (pedido da May, 16/11) [PADRÃO]: quem resolve o Cofre em até N minutos depois
-   * de a Narradora liberar ganha `points.vaultFast`. O robô leva de 3,5 a 7 min, então dá para
-   * bater (C é mais apertado).
+   * de a Narradora liberar ganha `points.vaultFast`. Com as 2 etapas do Cofre (17/11), o robô
+   * leva de 5 a 10,5 min, então dá para bater (C é mais apertado).
    */
-  vaultLightningMinutes: { A: 7, B: 6, C: 5 } satisfies Record<Level, number>,
+  vaultLightningMinutes: { A: 10, B: 9, C: 8 } satisfies Record<Level, number>,
 
   /**
    * Cartas do Álbum (pedido da May, 16/11) [PADRÃO]: a dupla equipa UMA carta de outro episódio
@@ -148,10 +153,11 @@ export const GAME_RULES = {
   },
 
   /** RN-42 [PADRÃO]: tempo (s) que a máquina leva por desafio, por nível. */
+  // 17/11: cada desafio tem 2 etapas, então o robô ficou mais lento junto (as duas etapas).
   machineSolveSeconds: {
-    A: { lock: [150, 210], vault: [300, 420] },
-    B: { lock: [120, 180], vault: [240, 360] },
-    C: { lock: [90, 150], vault: [200, 300] },
+    A: { lock: [240, 330], vault: [450, 630] },
+    B: { lock: [195, 285], vault: [360, 540] },
+    C: { lock: [150, 240], vault: [300, 450] },
   } satisfies Record<Level, { lock: [number, number]; vault: [number, number] }>,
 
   team: {

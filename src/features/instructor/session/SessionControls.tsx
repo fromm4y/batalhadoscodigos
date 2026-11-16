@@ -70,7 +70,7 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
           const st = currentStage(session.phase, p.progress);
           return (
             st.kind === 'challenge' &&
-            needsTransmission(resolveChallenge(episode, p.side, level, st.slot))
+            needsTransmission(resolveChallenge(episode, p.side, level, st.slot, st.step))
           );
         }).length
       : 0;

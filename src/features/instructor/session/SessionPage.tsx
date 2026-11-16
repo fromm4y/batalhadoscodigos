@@ -324,7 +324,7 @@ function teamFlags(
     const st = currentStage(phase, p.progress);
     if (
       st.kind === 'challenge' &&
-      needsTransmission(resolveChallenge(ep, p.side, level, st.slot))
+      needsTransmission(resolveChallenge(ep, p.side, level, st.slot, st.step))
     ) {
       flags.push('🎧 aguardando transmissão');
     }

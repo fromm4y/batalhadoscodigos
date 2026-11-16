@@ -41,7 +41,7 @@ export function TeamActionsDialog({ ctx, team, player, episode, level, onClose }
   const stage = currentStage(phase, player.progress);
   const challenge =
     episode && level && player.side && stage.kind === 'challenge'
-      ? resolveChallenge(episode, player.side, level, stage.slot)
+      ? resolveChallenge(episode, player.side, level, stage.slot, stage.step)
       : null;
   const canChangeSide = ctx.session.phase === 'lobby' || ctx.session.phase === 'planning';
 

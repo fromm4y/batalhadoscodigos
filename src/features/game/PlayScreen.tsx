@@ -23,7 +23,13 @@ import { TugBar } from '@/components/game/TugBar';
 import { BrassFrame, Dust, RouteMap, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
-import { resolveBonus, resolveChallenge, type Slot } from '@/engine/challenges';
+import {
+  hasStage2,
+  resolveBonus,
+  resolveChallenge,
+  stageKeys,
+  type Slot,
+} from '@/engine/challenges';
 import { currentStage, needsTransmission } from '@/engine/progress';
 import { ABILITY_INFO, hasEffect, other } from '@/engine/match';
 import { hintCost, lightningSecondsLeft, nextHint } from '@/engine/scoring';
@@ -34,6 +40,7 @@ import {
   buyHint,
   openLock,
   registerWrongAnswer,
+  finishStageOne,
   solveBonus,
   solveVault,
   activateCard,
@@ -56,13 +63,20 @@ type Props = {
 
 const PHASE_TITLE = { locks: 'OS CADEADOS', vault: 'O COFRE' } as const;
 
+/** chave única para reanimar a onomatopeia (só em eventos de clique) */
+const stamp = () => Date.now();
+
 /** Fases `locks` e `vault`: layout fixo do jogo (SPEC 9.2, item 6; VISUAL 8.6). */
 export function PlayScreen({ ctx, episode, level, session, team, player, match, rival }: Props) {
   const side = player.side ?? 'red';
   const red = side === 'red';
   const stage = currentStage(session.phase, player.progress);
   const slot: Slot | null = stage.kind === 'challenge' ? stage.slot : null;
-  const challenge = slot !== null ? resolveChallenge(episode, side, level, slot) : null;
+  const step = stage.kind === 'challenge' ? stage.step : 0;
+  const challenge = slot !== null ? resolveChallenge(episode, side, level, slot, step) : null;
+  // 17/11: cada desafio pode ter 2 etapas; o cadeado só abre na última
+  const twoSteps = slot !== null && hasStage2(episode, side, slot);
+  const keys = slot !== null ? stageKeys(episode, side, slot) : [];
   const usedHints = (challenge && player.hints?.[challenge.key]) || 0;
   const now = useNow(1000);
   const sNow = now + clockOffset();
@@ -125,7 +139,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
       : 0;
   const bonus = resolveBonus(episode, side, level);
   const comboAvailable =
-    !!challenge && slot !== 'vault' && !usedHints && !player.misses?.[challenge.key];
+    !!challenge && slot !== 'vault' && keys.every((k) => !player.hints?.[k] && !player.misses?.[k]);
 
   async function guard(fn: () => Promise<void>) {
     setError(null);
@@ -139,7 +153,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
 
   function onWrong() {
     playSfx('error');
-    setPop({ kind: 'errou', key: Date.now() });
+    setPop({ kind: 'errou', key: stamp() });
     void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
     setCooldown(true);
     setTimeout(() => setCooldown(false), GAME_RULES.answers.wrongAnswerCooldownMs);
@@ -150,7 +164,21 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
     if (slot === null || busy) return;
     setBusy(true);
     void guard(async () => {
-      if (slot === 'vault') {
+      if (twoSteps && step === 0) {
+        // etapa 1 concluída: meio puxão e segue para a etapa 2 (mais difícil)
+        const r = await finishStageOne(ctx, slot);
+        playSfx('lock');
+        setPop(
+          r.blocked
+            ? { kind: 'tcha', key: stamp() }
+            : { kind: 'custom', key: stamp(), text: 'ETAPA 1 ✓ AGORA A 2!' },
+        );
+        addFeed(
+          ctx,
+          'stage',
+          `${myName} passou da etapa 1 ${slot === 'vault' ? 'do Cofre' : `do ${red ? 'cadeado' : 'defesa'} ${slot + 1}`}`,
+        );
+      } else if (slot === 'vault') {
         const v = await solveVault(ctx, lightningOn ? { level, phaseStartMs: phaseStart } : null);
         playSfx('vault');
         addFeed(
@@ -160,25 +188,25 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
         );
         setPop(
           v.fast
-            ? { kind: 'custom', key: Date.now(), text: 'RELÂMPAGO! ⚡' }
-            : { kind: 'boom', key: Date.now() },
+            ? { kind: 'custom', key: stamp(), text: 'RELÂMPAGO! ⚡' }
+            : { kind: 'boom', key: stamp() },
         );
       } else {
-        const r = await openLock(ctx, slot, challenge!.key);
+        const r = await openLock(ctx, slot, keys);
         playSfx('lock');
         addFeed(ctx, 'lock_open', `${myName} abriu o ${red ? 'cadeado' : 'defesa'} ${slot + 1}`);
         setPop(
           r.blocked
-            ? { kind: 'tcha', key: Date.now() }
+            ? { kind: 'tcha', key: stamp() }
             : r.ability
               ? {
                   kind: 'custom',
-                  key: Date.now(),
+                  key: stamp(),
                   text: `+ ${ABILITY_INFO[r.ability].name.toUpperCase()}!`,
                 }
               : r.combo
-                ? { kind: 'custom', key: Date.now(), text: 'COMBO! +PUXÃO' }
-                : { kind: 'click', key: Date.now() },
+                ? { kind: 'custom', key: stamp(), text: 'COMBO! +PUXÃO' }
+                : { kind: 'click', key: stamp() },
         );
         if (r.combo) addFeed(ctx, 'combo', `${myName} fez COMBO: abriu de primeira, sem dica!`);
         const reward = episode.sides[side].locks[slot].reward?.clue;
@@ -283,7 +311,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                   playSfx(id);
                   setPop({
                     kind: id === 'interferencia' ? 'zzzt' : id === 'escudo' ? 'tcha' : 'custom',
-                    key: Date.now(),
+                    key: stamp(),
                     text: ABILITY_INFO[id].name.toUpperCase() + '!',
                   });
                   void guard(() => activateAbility(ctx, id, challenge?.key ?? null));
@@ -300,7 +328,7 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               disabled={busy}
               onUse={(power) => {
                 playSfx('hint');
-                setPop({ kind: 'custom', key: Date.now(), text: `${power.name.toUpperCase()}!` });
+                setPop({ kind: 'custom', key: stamp(), text: `${power.name.toUpperCase()}!` });
                 void guard(() => activateCard(ctx, power.id, challenge?.key ?? null));
                 addFeed(ctx, 'card', `${myName} usou a carta ${power.name}`);
               }}
@@ -368,6 +396,14 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                           ? '🔐'
                           : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
                         {challenge.title}
+                        {twoSteps && (
+                          <span
+                            className="ml-2 inline-block rounded-sm border-2 border-ink bg-ink px-1.5 align-middle font-heist text-base text-paper"
+                            aria-label={`Etapa ${step + 1} de 2`}
+                          >
+                            ETAPA {step + 1}/2
+                          </span>
+                        )}
                       </h2>
                       <div className="flex items-center gap-3">
                         <p className="font-type text-sm">{challenge.variant.prompt}</p>

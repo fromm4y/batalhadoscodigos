@@ -152,6 +152,30 @@ function checkChallenge(c: unknown, at: string, err: (m: string) => void, keys: 
     if (!isObj(v)) err(`${at}: falta o nível ${lv}`);
     else checkVariant(c.type as ChallengeType, v, `${at} nível ${lv}`, err);
   }
+  // Etapa 2 (17/11): mesmo formato, key própria.
+  if (c.stage2 !== undefined) {
+    const s2 = c.stage2;
+    checkChallenge(s2, `${at} etapa 2`, err, keys);
+    if (isObj(s2) && isObj(s2.stage2)) err(`${at}: a etapa 2 não tem etapa 3`);
+    // chave da cifra falada: a etapa 2 reaproveita a mesma chave (sem nova transmissão)
+    if (isObj(s2) && s2.type === 'cipher' && isObj(s2.variants) && isObj(c.variants))
+      for (const lv of LEVELS) {
+        const a = c.variants[lv] as Obj | undefined;
+        const b = s2.variants[lv] as Obj | undefined;
+        if (b?.spokenKey === true && (a?.spokenKey !== true || a.shift !== b.shift))
+          err(`${at} etapa 2 nível ${lv}: chave falada diferente da etapa 1`);
+      }
+    // cartão da etapa 2 não pede outra pista falada (spokenColumn = -1)
+    if (
+      isObj(s2) &&
+      (s2.type === 'punchCardRead' || s2.type === 'punchCardWrite') &&
+      isObj(s2.variants)
+    )
+      for (const lv of LEVELS) {
+        const b = s2.variants[lv] as Obj | undefined;
+        if (b && b.spokenColumn !== -1) err(`${at} etapa 2 nível ${lv}: use spokenColumn -1`);
+      }
+  }
 }
 
 export function validateEpisode(e: unknown): string[] {

@@ -149,6 +149,11 @@ type ChallengeOf<T extends ChallengeType> = {
   type: T;
   variants: Record<Level, VariantByType[T]>;
   reward?: { clue: string };
+  /**
+   * Etapa 2 do mesmo cadeado/Cofre (pedido da May, 17/11): mais perguntas e mais difícil.
+   * O cadeado só abre depois das duas etapas. Pode ser de outro tipo; `key` própria.
+   */
+  stage2?: Challenge;
 };
 export type Challenge = { [T in ChallengeType]: ChallengeOf<T> }[ChallengeType];
 

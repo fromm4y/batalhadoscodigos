@@ -121,15 +121,33 @@ describe('progresso por fase (RN-05, RN-09)', () => {
     heardTransmission: false,
   };
   it('cadeados em sequência; depois do 3º, espera a Narradora', () => {
-    expect(currentStage('locks', base)).toEqual({ kind: 'challenge', slot: 0 });
+    expect(currentStage('locks', base)).toEqual({ kind: 'challenge', slot: 0, step: 0 });
     expect(currentStage('locks', { ...base, lockIndex: 2 })).toEqual({
       kind: 'challenge',
       slot: 2,
+      step: 0,
+    });
+    // 17/11: etapa 2 do mesmo cadeado
+    expect(currentStage('locks', { ...base, lockIndex: 1, step: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 1,
+      step: 1,
     });
     expect(currentStage('locks', { ...base, lockIndex: 3 })).toEqual({ kind: 'waiting' });
   });
   it('no Cofre todo mundo joga, mesmo sem abrir os cadeados', () => {
-    expect(currentStage('vault', base)).toEqual({ kind: 'challenge', slot: 'vault' });
+    expect(currentStage('vault', base)).toEqual({ kind: 'challenge', slot: 'vault', step: 0 });
+    // a etapa do cadeado não vaza para o Cofre (RN-09: dá para chegar ao Cofre no meio)
+    expect(currentStage('vault', { ...base, step: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 'vault',
+      step: 0,
+    });
+    expect(currentStage('vault', { ...base, vaultStep: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 'vault',
+      step: 1,
+    });
   });
   it('lobby e planning não têm desafio', () => {
     expect(currentStage('lobby', base).kind).toBe('none');

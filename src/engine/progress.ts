@@ -6,7 +6,8 @@ import type { Level, Phase, PlayerDoc, Side } from '@/types/domain';
 import type { Slot } from './challenges';
 
 export type Stage =
-  | { kind: 'challenge'; slot: Slot }
+  /** `step`: etapa 0 ou 1 do desafio (17/11) */
+  | { kind: 'challenge'; slot: Slot; step: 0 | 1 }
   /** terminou o que a fase permite: espera a Narradora (RN-10) */
   | { kind: 'waiting' }
   | { kind: 'none' };
@@ -14,12 +15,14 @@ export type Stage =
 export function currentStage(phase: Phase, progress: PlayerDoc['progress']): Stage {
   if (phase === 'locks') {
     return progress.lockIndex < 3
-      ? { kind: 'challenge', slot: progress.lockIndex as 0 | 1 | 2 }
+      ? { kind: 'challenge', slot: progress.lockIndex as 0 | 1 | 2, step: progress.step ?? 0 }
       : { kind: 'waiting' };
   }
   if (phase === 'vault') {
     // RN-09: todo mundo vai para o Cofre, mesmo sem os 3 cadeados.
-    return progress.vaultSolvedAt ? { kind: 'waiting' } : { kind: 'challenge', slot: 'vault' };
+    return progress.vaultSolvedAt
+      ? { kind: 'waiting' }
+      : { kind: 'challenge', slot: 'vault', step: progress.vaultStep ?? 0 };
   }
   return { kind: 'none' };
 }
@@ -41,7 +44,8 @@ export function needsTransmission(ch: ResolvedChallenge): boolean {
   switch (ch.type) {
     case 'punchCardRead':
     case 'punchCardWrite':
-      return true;
+      // etapa 2 sem coluna falada: spokenColumn = -1
+      return ch.variant.spokenColumn >= 0;
     case 'cipher':
       return ch.variant.spokenKey === true;
     default:
@@ -49,7 +53,8 @@ export function needsTransmission(ch: ResolvedChallenge): boolean {
   }
 }
 
-/** Chave do desafio para dicas: `red-lock1`, `blue-vault`... */
-export function challengeKey(ep: Episode, side: Side, slot: Slot): string {
-  return slot === 'vault' ? ep.sides[side].vault.key : ep.sides[side].locks[slot].key;
+/** Chave do desafio para dicas: `red-lock1`, `blue-vault`... (etapa 2: a `key` do `stage2`) */
+export function challengeKey(ep: Episode, side: Side, slot: Slot, step: 0 | 1 = 0): string {
+  const c = slot === 'vault' ? ep.sides[side].vault : ep.sides[side].locks[slot];
+  return step === 1 && c.stage2 ? c.stage2.key : c.key;
 }

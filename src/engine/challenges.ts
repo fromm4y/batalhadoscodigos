@@ -21,13 +21,27 @@ import { countNodes, nestingDepth, respectsDebugEdits, run, sameSymbols } from '
 /** Desafio da etapa atual: cadeado 0–2 ou o Cofre ('vault'). */
 export type Slot = 0 | 1 | 2 | 'vault';
 
+/** O desafio deste espaço tem etapa 2? (17/11) */
+export function hasStage2(ep: Episode, side: Side, slot: Slot): boolean {
+  const c = slot === 'vault' ? ep.sides[side].vault : ep.sides[side].locks[slot];
+  return !!c.stage2;
+}
+
+/** Todas as chaves do desafio (etapa 1 e, se houver, etapa 2): combo e dicas. */
+export function stageKeys(ep: Episode, side: Side, slot: Slot): string[] {
+  const c = slot === 'vault' ? ep.sides[side].vault : ep.sides[side].locks[slot];
+  return c.stage2 ? [c.key, c.stage2.key] : [c.key];
+}
+
 export function resolveChallenge(
   ep: Episode,
   side: Side,
   level: Level,
   slot: Slot,
+  step: 0 | 1 = 0,
 ): ResolvedChallenge {
-  const c = slot === 'vault' ? ep.sides[side].vault : ep.sides[side].locks[slot];
+  const base = slot === 'vault' ? ep.sides[side].vault : ep.sides[side].locks[slot];
+  const c = step === 1 && base.stage2 ? base.stage2 : base;
   return {
     key: c.key,
     title: c.title,
