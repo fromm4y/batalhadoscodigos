@@ -32,7 +32,7 @@ const ALL = { ep1, ep2, ep3, ep4, ep5 } as unknown as Record<string, AnyEpisode>
 function challengesOf(e: AnyEpisode): Challenge[] {
   if (e.mode === 'coop') return [...e.coop.locks, e.coop.vault];
   const opt = (c: Challenge | undefined) => (c ? [c] : []);
-  return [
+  const all = [
     ...e.sides.red.locks,
     e.sides.red.vault,
     ...opt(e.sides.red.bonus),
@@ -40,6 +40,7 @@ function challengesOf(e: AnyEpisode): Challenge[] {
     e.sides.blue.vault,
     ...opt(e.sides.blue.bonus),
   ];
+  return [...all, ...all.flatMap((c) => opt(c.stage2))];
 }
 function variantsOf<V>(e: AnyEpisode, type: Challenge['type']): { tag: string; v: V }[] {
   return challengesOf(e)
@@ -91,7 +92,10 @@ describe('cipher (Ep. 2)', () => {
     );
     // Palavras curtas e as das mensagens certas, que no episódio só aparecem cifradas.
     const extra = 'O A E AO DA DO NA NO DE EM UM ESTA TESOURO SEGURO NAVIO PARTE MEIO DIA';
-    for (const w of `${extra} GUARDEM MAQUINA SALA DOIS`.split(' ')) words.add(w);
+    for (const w of `${extra} GUARDEM MAQUINA SALA DOIS NOSSO SALVO CAPITA MANDOU RECUAR MUDOU ILHA`.split(
+      ' ',
+    ))
+      words.add(w);
     for (const { tag, v } of vs.filter((x) => x.v.mode === 'verify')) {
       v.options!.forEach((opt, i) => {
         const plain = decodeText(opt, v.shift).split(' ');
@@ -223,10 +227,25 @@ describe('lados espelhados sem respostas compartilhadas', () => {
     it(id, () => {
       const e = ALL[id] as Extract<AnyEpisode, { sides: unknown }>;
       const opt = (c: Challenge | undefined) => (c ? [c] : []);
-      const red = [...e.sides.red.locks, e.sides.red.vault, ...opt(e.sides.red.bonus)];
-      const blue = [...e.sides.blue.locks, e.sides.blue.vault, ...opt(e.sides.blue.bonus)];
+      // 17/11: a etapa 2 de cada desafio também é comparada com a etapa 2 do outro lado
+      const st2 = (list: Challenge[]) => list.map((c) => c.stage2);
+      const pair = (side: 'red' | 'blue') => {
+        const sd = e.sides[side];
+        const base = [...sd.locks, sd.vault];
+        return [...base, ...opt(sd.bonus), ...st2(base)];
+      };
+      const red = pair('red');
+      const blue = pair('blue');
+      expect(red.length, `${id}: os dois lados com o mesmo número de etapas`).toBe(blue.length);
       for (const lv of ['A', 'B', 'C'] as const)
         red.forEach((rc, i) => {
+          if (!rc || !blue[i]) {
+            expect(
+              !rc && !blue[i],
+              `${id} desafio ${i + 1}: etapa 2 nos dois lados ou em nenhum`,
+            ).toBe(true);
+            return;
+          }
           const r = answersAndScreen(rc, lv);
           const b = answersAndScreen(blue[i]!, lv);
           const tag = `${id} nível ${lv} desafio ${i + 1}`;

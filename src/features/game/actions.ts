@@ -176,7 +176,8 @@ export async function buyHint(
 export async function openLock(
   c: GameCtx,
   index: 0 | 1 | 2,
-  challengeKey: string,
+  /** chaves das etapas do cadeado: o combo exige todas sem erro e sem dica */
+  keys: string[],
 ): Promise<{ first: boolean; ability: AbilityId | null; blocked: boolean; combo: boolean }> {
   const { db } = getFirebase('student');
   const firstRef = doc(db, 'sessions', c.sessionId, 'firsts', `lock${index + 1}`);
@@ -187,7 +188,7 @@ export async function openLock(
     const mSnap = mRef ? await tx.get(mRef) : null;
     if (player.progress.lockIndex !== index)
       return { first: false, ability: null, blocked: false, combo: false };
-    const combo = isCombo(player.hints?.[challengeKey], player.misses?.[challengeKey]);
+    const combo = keys.every((k) => isCombo(player.hints?.[k], player.misses?.[k]));
 
     const first = !firstSnap.exists();
     if (first) tx.set(firstRef, { teamId: c.teamId, at: serverTimestamp() });
@@ -230,6 +231,7 @@ export async function openLock(
     writePoints(tx, db, c, team, player, changes, {
       ...(player.cardBoost === 'extraPull' ? { cardBoost: null } : {}),
       'progress.lockIndex': index + 1,
+      'progress.step': 0,
       'progress.locksOpenedAt': openedAt,
       solvedCount: solved,
       ...(ability ? { 'abilities.owned': [...owned, ability] } : {}),
@@ -294,6 +296,51 @@ export async function solveVault(
       extra,
     );
     return { won: true, fast };
+  });
+}
+
+/**
+ * Etapa 1 de um cadeado ou do Cofre concluída (pedido da May, 17/11): meio puxão na corda e a
+ * dupla passa para a etapa 2. Sem pontos (o ponto vem ao abrir o cadeado).
+ */
+export async function finishStageOne(
+  c: GameCtx,
+  slot: 0 | 1 | 2 | 'vault',
+): Promise<{ blocked: boolean }> {
+  const { db } = getFirebase('student');
+  return runTransaction(db, async (tx) => {
+    const { player } = await readBoth(tx, db, c);
+    const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
+    const mSnap = mRef ? await tx.get(mRef) : null;
+    const field = slot === 'vault' ? 'progress.vaultStep' : 'progress.step';
+    const current = slot === 'vault' ? player.progress.vaultStep : player.progress.step;
+    if (current === 1 || (slot !== 'vault' && player.progress.lockIndex !== slot))
+      return { blocked: false };
+    const side = player.side ?? 'red';
+    let blocked = false;
+    if (mRef && mSnap?.exists()) {
+      const m = mSnap.data() as MatchDoc;
+      if (!m.winner) {
+        const now = serverNow();
+        const r = applyPull(m, side, GAME_RULES.pull.stageOne, now);
+        blocked = r.blocked;
+        const what = slot === 'vault' ? 'o Cofre' : `o cadeado ${slot + 1}`;
+        tx.update(mRef, {
+          bar: r.bar,
+          effects: r.effects,
+          log: pushLog(m.log, {
+            at: now,
+            side,
+            type: r.blocked ? 'blocked' : 'pull',
+            text: r.blocked
+              ? `${who(side)} passou da metade de ${what}, mas o Escudo segurou a corda!`
+              : `${who(side)} passou da metade de ${what} e puxou ${r.applied}!`,
+          }),
+        });
+      }
+    }
+    tx.update(refs(db, c).player, { [field]: 1 });
+    return { blocked };
   });
 }
 

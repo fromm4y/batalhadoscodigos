@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Episode, Program } from '@/content/types';
+import type { Episode, Program, PunchCardReadVariant } from '@/content/types';
 import ep1Json from '@/content/episodes/ep1.json';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Level } from '@/types/domain';
@@ -15,7 +15,9 @@ import {
   checkQuiz,
   checkRiddle,
   decodeColumns,
+  hasStage2,
   resolveChallenge,
+  type Slot,
 } from './challenges';
 import { currentStage } from './progress';
 import {
@@ -121,15 +123,33 @@ describe('progresso por fase (RN-05, RN-09)', () => {
     heardTransmission: false,
   };
   it('cadeados em sequência; depois do 3º, espera a Narradora', () => {
-    expect(currentStage('locks', base)).toEqual({ kind: 'challenge', slot: 0 });
+    expect(currentStage('locks', base)).toEqual({ kind: 'challenge', slot: 0, step: 0 });
     expect(currentStage('locks', { ...base, lockIndex: 2 })).toEqual({
       kind: 'challenge',
       slot: 2,
+      step: 0,
+    });
+    // 17/11: etapa 2 do mesmo cadeado
+    expect(currentStage('locks', { ...base, lockIndex: 1, step: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 1,
+      step: 1,
     });
     expect(currentStage('locks', { ...base, lockIndex: 3 })).toEqual({ kind: 'waiting' });
   });
   it('no Cofre todo mundo joga, mesmo sem abrir os cadeados', () => {
-    expect(currentStage('vault', base)).toEqual({ kind: 'challenge', slot: 'vault' });
+    expect(currentStage('vault', base)).toEqual({ kind: 'challenge', slot: 'vault', step: 0 });
+    // a etapa do cadeado não vaza para o Cofre (RN-09: dá para chegar ao Cofre no meio)
+    expect(currentStage('vault', { ...base, step: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 'vault',
+      step: 0,
+    });
+    expect(currentStage('vault', { ...base, vaultStep: 1 })).toEqual({
+      kind: 'challenge',
+      slot: 'vault',
+      step: 1,
+    });
   });
   it('lobby e planning não têm desafio', () => {
     expect(currentStage('lobby', base).kind).toBe('none');
@@ -161,8 +181,13 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
   for (const side of sides) {
     for (const level of LEVELS) {
       it(`${side} nível ${level}`, () => {
-        for (const slot of [0, 1, 2, 'vault'] as const) {
-          const ch = resolveChallenge(ep1, side, level, slot);
+        for (const [slot, step] of [0, 1, 2, 'vault'].flatMap((x) =>
+          [0, 1].map((st) => [x, st] as const),
+        ) as [Slot, 0 | 1][]) {
+          const ch = resolveChallenge(ep1, side, level, slot, step);
+          // 17/11: todo desafio do Ep. 1 tem etapa 2, com key própria
+          expect(hasStage2(ep1, side, slot)).toBe(true);
+          if (step === 1) expect(ch.key).toMatch(/-2$/);
           switch (ch.type) {
             case 'quiz':
               ch.variant.questions.forEach((q, i) => {
@@ -193,6 +218,14 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
               expect(decodeColumns(ch.variant.columns, ch.variant.decode)).toBe(ch.variant.answer);
               expect(checkPunchRead(ch.variant, ch.variant.answer.toLowerCase())).toBe(true);
               expect(ch.variant.spokenColumn).toBeLessThan(ch.variant.columns.length);
+              // etapa 2: cartão maior que o da etapa 1 e sem coluna falada
+              if (step === 1) {
+                expect(ch.variant.spokenColumn).toBe(-1);
+                expect(ch.variant.columns.length).toBeGreaterThan(
+                  (resolveChallenge(ep1, side, level, slot, 0).variant as PunchCardReadVariant)
+                    .columns.length,
+                );
+              }
               expect(ch.variant.columns.every((r) => r >= 0 && r < ch.variant.rows)).toBe(true);
               break;
             case 'punchCardWrite':
@@ -205,11 +238,18 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
               ).toBe(false);
               break;
             case 'blockBuild': {
-              const sol: Record<Level, Program> = {
-                A: [rep(3, [w('star'), w('dot')])],
-                B: [rep(4, [w('star'), w('star'), w('dot')])],
-                C: [rep(3, [rep(2, [w('star'), w('dot')]), w('line')])],
-              };
+              const sol: Record<Level, Program> =
+                step === 0
+                  ? {
+                      A: [rep(3, [w('star'), w('dot')])],
+                      B: [rep(4, [w('star'), w('star'), w('dot')])],
+                      C: [rep(3, [rep(2, [w('star'), w('dot')]), w('line')])],
+                    }
+                  : {
+                      A: [rep(3, [w('star'), w('star'), w('dot')])],
+                      B: [rep(3, [w('star'), w('dot')]), rep(2, [w('line'), w('dot')])],
+                      C: [rep(2, [rep(3, [w('star')]), w('dot'), rep(2, [w('line')])])],
+                    };
               expect(checkBlockBuild(ch.variant, sol[level], level).ok).toBe(true);
               // sem repetição estoura o limite de blocos
               const flat = ch.variant.target.map((s) => w(s));
@@ -220,11 +260,18 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
               // o programa original (com erro) NÃO gera o alvo
               expect(checkBlockDebug(ch.variant, ch.variant.program).ok).toBe(false);
               // Piratas com padrões próprios (15/11): nenhuma resposta igual à do Bando.
-              const fixed: Record<Level, Program> = {
-                A: [rep(3, [w('dot'), w('line')])],
-                B: [rep(5, [w('dot'), w('dot'), w('star')])],
-                C: [rep(2, [rep(3, [w('dot'), w('star')]), w('line')])],
-              };
+              const fixed: Record<Level, Program> =
+                step === 0
+                  ? {
+                      A: [rep(3, [w('dot'), w('line')])],
+                      B: [rep(5, [w('dot'), w('dot'), w('star')])],
+                      C: [rep(2, [rep(3, [w('dot'), w('star')]), w('line')])],
+                    }
+                  : {
+                      A: [rep(3, [w('star'), w('line'), w('dot')])],
+                      B: [rep(4, [w('star'), w('dot')]), rep(2, [w('line')])],
+                      C: [rep(3, [rep(3, [w('dot')]), w('star'), rep(2, [w('line')])])],
+                    };
               expect(checkBlockDebug(ch.variant, fixed[level]).ok).toBe(true);
               break;
             }

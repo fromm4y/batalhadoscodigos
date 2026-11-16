@@ -97,7 +97,10 @@ function Container({
         if (block) onDropBlock?.(id, block);
       }}
       className={cn(
-        'flex min-h-14 flex-col gap-2 rounded-md p-2',
+        // consertar (debug): blocos lado a lado para caber em 1366×768; montar: um embaixo do outro
+        build
+          ? 'flex min-h-14 flex-col gap-2 rounded-md p-2'
+          : 'flex min-h-14 flex-wrap content-start gap-2 rounded-md p-2',
         id === 'root' ? 'bg-ink/5' : 'ml-4 border-l-4 border-brass/70 bg-brass/10',
         isSelected && 'outline-3 outline-dashed outline-brass',
         build && !disabled && 'cursor-pointer',
@@ -118,6 +121,7 @@ function Container({
           layout
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
+          className={!build && n.type === 'repeat' ? 'basis-full' : undefined}
         >
           {n.type === 'weave' ? (
             <div className="flex items-center gap-2">

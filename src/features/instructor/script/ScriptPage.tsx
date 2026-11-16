@@ -200,7 +200,19 @@ export function ScriptPage() {
   );
 }
 
+/** "1.", "1 · etapa 2", "Cofre ·", "🌟 Bônus ·" a partir da key (`red-lock1-2`, `red-vault`...). */
+function slotLabel(key: string, i: number): string {
+  const two = key.endsWith('-2') ? ' · etapa 2 ·' : '.';
+  const lock = /lock(\d)/.exec(key);
+  if (lock) return `${lock[1]}${two}`;
+  if (key.includes('vault')) return key.endsWith('-2') ? 'Cofre · etapa 2 ·' : 'Cofre ·';
+  if (key.includes('bonus')) return '🌟 Bônus ·';
+  return `${i + 1}.`;
+}
+
 const opt = (c: Challenge | undefined) => (c ? [c] : []);
+/** desafio + a etapa 2 dele (17/11), em sequência */
+const withStages = (list: Challenge[]) => list.flatMap((c) => (c.stage2 ? [c, c.stage2] : [c]));
 
 function AnswerTable({ e }: { e: AnyEpisode }) {
   const groups: { label: string; list: Challenge[] }[] =
@@ -209,11 +221,17 @@ function AnswerTable({ e }: { e: AnyEpisode }) {
       : [
           {
             label: '🎭 Bando',
-            list: [...e.sides.red.locks, e.sides.red.vault, ...opt(e.sides.red.bonus)],
+            list: [
+              ...withStages([...e.sides.red.locks, e.sides.red.vault]),
+              ...opt(e.sides.red.bonus),
+            ],
           },
           {
             label: '⚓ Piratas',
-            list: [...e.sides.blue.locks, e.sides.blue.vault, ...opt(e.sides.blue.bonus)],
+            list: [
+              ...withStages([...e.sides.blue.locks, e.sides.blue.vault]),
+              ...opt(e.sides.blue.bonus),
+            ],
           },
         ];
   return (
@@ -236,7 +254,7 @@ function AnswerTable({ e }: { e: AnyEpisode }) {
               {g.list.map((c, i) => (
                 <tr key={c.key} className="border-b border-ink/15 align-top">
                   <td className="py-2 pr-3 font-bold">
-                    {i < 3 ? `${i + 1}.` : i === 3 ? 'Cofre ·' : '🌟 Bônus ·'} {c.title}
+                    {slotLabel(c.key, i)} {c.title}
                   </td>
                   {LEVELS.map((lv) => (
                     <td key={lv} className="py-2 pr-3">

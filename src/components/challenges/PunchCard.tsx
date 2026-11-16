@@ -41,7 +41,8 @@ export function PunchCard({
   const height = PAD_TOP + rows * ROW_H + PAD_BOTTOM;
   const x = (c: number) => PAD_X + c * COL_W;
   const y = (r: number) => PAD_TOP + r * ROW_H;
-  const hidden = (c: number) => c === spokenColumn && !spokenUnlocked;
+  // spokenColumn = -1: cartão inteiro, sem coluna rasgada nem molhada (etapa 2, 17/11)
+  const hidden = (c: number) => spokenColumn >= 0 && c === spokenColumn && !spokenUnlocked;
 
   return (
     <svg

@@ -164,6 +164,10 @@ export type PlayerDoc = {
     eventResult: 'pending' | 'ok' | 'failed';
     jailUntil: Timestamp | null;
     heardTransmission: boolean;
+    /** etapa do cadeado atual: 0 = primeira, 1 = segunda (17/11) */
+    step?: 0 | 1;
+    /** etapa do Cofre (separada: dá para chegar ao Cofre no meio de um cadeado, RN-09) */
+    vaultStep?: 0 | 1;
   };
   hints: Record<string, 0 | 1 | 2>;
   /** erros por desafio (combo: abrir de primeira, sem erro e sem dica) */

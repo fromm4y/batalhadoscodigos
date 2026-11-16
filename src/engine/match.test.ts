@@ -148,8 +148,11 @@ describe('habilidades (7.9)', () => {
 
 describe('máquina (RN-42)', () => {
   it('sorteia o tempo dentro do intervalo do nível', () => {
-    expect(machineDelayMs('A', 'lock', () => 0)).toBe(150_000);
-    expect(machineDelayMs('A', 'lock', () => 1)).toBe(210_000);
-    expect(machineDelayMs('C', 'vault', () => 0.5)).toBe(250_000);
+    const M = GAME_RULES.machineSolveSeconds;
+    expect(machineDelayMs('A', 'lock', () => 0)).toBe(M.A.lock[0] * 1000);
+    expect(machineDelayMs('A', 'lock', () => 1)).toBe(M.A.lock[1] * 1000);
+    expect(machineDelayMs('C', 'vault', () => 0.5)).toBe(
+      ((M.C.vault[0] + M.C.vault[1]) / 2) * 1000,
+    );
   });
 });

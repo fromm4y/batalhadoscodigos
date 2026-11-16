@@ -32,12 +32,22 @@ export function raceOrder<T extends Pick<PlayerDoc, 'progress' | 'side'>>(
 ): RaceEntry<T>[] {
   const rows = players
     .filter((p) => p.side)
-    .map((player) => ({ player, steps: raceSteps(player), at: lastStepAt(player) }))
-    .sort((a, b) => b.steps - a.steps || a.at - b.at);
+    .map((player) => ({
+      player,
+      steps: raceSteps(player),
+      // 17/11: no meio do cadeado (etapa 2) fica na frente de quem ainda está na etapa 1
+      half: player.progress.vaultSolvedAt
+        ? 0
+        : player.progress.lockIndex >= 3
+          ? (player.progress.vaultStep ?? 0)
+          : (player.progress.step ?? 0),
+      at: lastStepAt(player),
+    }))
+    .sort((a, b) => b.steps - a.steps || b.half - a.half || a.at - b.at);
   const out: RaceEntry<T>[] = [];
   rows.forEach((r, i) => {
     const prev = rows[i - 1];
-    const tied = prev && prev.steps === r.steps && prev.at === r.at;
+    const tied = prev && prev.steps === r.steps && prev.half === r.half && prev.at === r.at;
     out.push({ player: r.player, steps: r.steps, place: tied ? out[i - 1]!.place : i + 1 });
   });
   return out;

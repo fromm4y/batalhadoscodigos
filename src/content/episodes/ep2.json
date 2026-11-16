@@ -148,6 +148,142 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "red-lock1-2",
+            "title": "Dossiê secreto",
+            "type": "quiz",
+            "leaderLine": "Agora o dossiê secreto: cinco perguntas sobre chaves e cifras. Pensem antes de clicar!",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "hint1": "Use o disco de cifra para conferir.",
+                "hint2": "Chave 1: cada letra anda 1 casa. Para decifrar, volte.",
+                "questions": [
+                  {
+                    "q": "O que é a chave de uma cifra?",
+                    "options": [
+                      "O segredo que diz como trocar as letras",
+                      "Uma ferramenta de abrir porta",
+                      "Um tipo de máquina"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 1, a letra A vira...",
+                    "options": ["B", "Z", "A"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Para decifrar uma mensagem com chave 3, cada letra deve...",
+                    "options": [
+                      "Voltar 3 casas no alfabeto",
+                      "Andar 3 casas para a frente",
+                      "Ficar igual"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "A Enigma parecia com qual objeto?",
+                    "options": ["Uma máquina de escrever", "Um telefone", "Uma geladeira"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que as mensagens de guerra eram cifradas?",
+                    "options": [
+                      "Para o inimigo não entender",
+                      "Para economizar papel",
+                      "Para ficarem bonitas"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "hint1": "Use o disco: gire e confira cada letra.",
+                "hint2": "Depois do Z, o alfabeto volta para o A.",
+                "questions": [
+                  {
+                    "q": "Na cifra de deslocamento, quantas chaves diferentes existem (sem contar a chave 0)?",
+                    "options": ["25", "10", "100"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 3, a palavra SOL vira...",
+                    "options": ["VRO", "TPM", "PQI"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 1, a letra Z vira...",
+                    "options": ["A", "Y", "B"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que a Enigma era mais difícil que a cifra de deslocamento?",
+                    "options": [
+                      "A troca de letras mudava a cada tecla apertada",
+                      "Ela usava números",
+                      "Ela escrevia em latim"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que os decifradores faziam com as mensagens interceptadas?",
+                    "options": [
+                      "Tentavam descobrir a configuração do dia",
+                      "Jogavam fora",
+                      "Mandavam de volta"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "hint1": "Pense em testar todas as possibilidades e nas letras mais comuns.",
+                "hint2": "13 + 13 = 26: uma volta inteira no alfabeto.",
+                "questions": [
+                  {
+                    "q": "Com chave 13, cifrar duas vezes seguidas devolve...",
+                    "options": [
+                      "A mensagem original",
+                      "Tudo com a letra A",
+                      "Uma mensagem embaralhada para sempre"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Para que servia o painel de tomadas na frente da Enigma?",
+                    "options": [
+                      "Trocar pares de letras e aumentar as combinações",
+                      "Carregar a bateria",
+                      "Acender a luz da sala"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Testar todas as chaves possíveis até achar a certa se chama...",
+                    "options": ["Força bruta", "Sorte grande", "Cópia"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Qual é a letra mais comum em textos em português?",
+                    "options": ["A", "Z", "K"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Como a Bombe ajudava a achar a configuração do dia?",
+                    "options": [
+                      "Eliminava rápido as configurações impossíveis",
+                      "Adivinhava ao acaso",
+                      "Perguntava aos espiões"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -188,6 +324,44 @@
               "wheel": "free",
               "hint1": "Volte 5 casas em cada letra.",
               "hint2": "É onde Turing trabalhava: B L E T..."
+            }
+          },
+          "stage2": {
+            "key": "red-lock2-2",
+            "title": "A mensagem inteira",
+            "type": "cipher",
+            "leaderLine": "Era só o começo! Interceptamos a mensagem inteira. Girem o disco e decifrem tudo.",
+            "variants": {
+              "A": {
+                "prompt": "A chave é 3. Decifre a mensagem inteira.",
+                "mode": "decode",
+                "shift": 3,
+                "text": "PHQVDJHP VHFUHWD",
+                "answer": "MENSAGEM SECRETA",
+                "wheel": "free",
+                "hint1": "Gire o disco até a chave 3 e leia de dentro para fora.",
+                "hint2": "Começa com MENSAGEM."
+              },
+              "B": {
+                "prompt": "A chave é 6. Decifre a mensagem inteira.",
+                "mode": "decode",
+                "shift": 6,
+                "text": "G HUSHK GINUA G INGBK",
+                "answer": "A BOMBE ACHOU A CHAVE",
+                "wheel": "free",
+                "hint1": "Volte 6 casas em cada letra.",
+                "hint2": "A segunda palavra é BOMBE."
+              },
+              "C": {
+                "prompt": "A chave é 11. Decifre a mensagem inteira.",
+                "mode": "decode",
+                "shift": 11,
+                "text": "MWPENSWPJ RFLCOLGL DPRCPOZD",
+                "answer": "BLETCHLEY GUARDAVA SEGREDOS",
+                "wheel": "free",
+                "hint1": "Volte 11 casas em cada letra.",
+                "hint2": "A primeira palavra é um lugar na Inglaterra."
+              }
             }
           }
         },
@@ -230,6 +404,47 @@
               "hint1": "A chave é o número que a Narradora falou.",
               "hint2": "Volte 7 casas. É o nome da máquina de Turing."
             }
+          },
+          "stage2": {
+            "key": "red-lock3-2",
+            "title": "O rádio continua",
+            "type": "cipher",
+            "leaderLine": "O rádio mandou mais um pedaço com a MESMA chave. Lembram qual era?",
+            "variants": {
+              "A": {
+                "prompt": "Use a mesma chave da transmissão e decifre a mensagem.",
+                "mode": "decode",
+                "shift": 2,
+                "text": "Q TCFKQ HCNQW",
+                "answer": "O RADIO FALOU",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "A primeira palavra é só uma letra.",
+                "spokenKey": true
+              },
+              "B": {
+                "prompt": "Use a mesma chave da transmissão e decifre a mensagem.",
+                "mode": "decode",
+                "shift": 4,
+                "text": "E KYIVVE EGEFSY",
+                "answer": "A GUERRA ACABOU",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "A última palavra é ACABOU.",
+                "spokenKey": true
+              },
+              "C": {
+                "prompt": "Use a mesma chave da transmissão e decifre a mensagem.",
+                "mode": "decode",
+                "shift": 7,
+                "text": "ABYPUN ZHSCVB CPKHZ",
+                "answer": "TURING SALVOU VIDAS",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "A primeira palavra é um nome famoso.",
+                "spokenKey": true
+              }
+            }
           }
         }
       ],
@@ -269,6 +484,44 @@
             "crib": "TURING",
             "hint1": "Compare a primeira palavra cifrada com TURING: quantas casas o T andou?",
             "hint2": "T virou E: a chave é 11."
+          }
+        },
+        "stage2": {
+          "key": "red-vault-2",
+          "title": "O Cofre: o último código",
+          "type": "cipher",
+          "leaderLine": "Uma última mensagem, e dessa vez nem pista nós temos. Mostrem do que o Bando é capaz!",
+          "variants": {
+            "A": {
+              "prompt": "Ninguém sabe a chave. Gire o disco até a mensagem fazer sentido e digite o que ela diz.",
+              "mode": "crack",
+              "shift": 9,
+              "text": "X BNPANMX EJIXD",
+              "answer": "O SEGREDO VAZOU",
+              "wheel": "free",
+              "hint1": "Teste uma chave por vez e olhe o teste rápido.",
+              "hint2": "A chave é maior que 5."
+            },
+            "B": {
+              "prompt": "Ninguém sabe a chave. Descubra a chave e digite a mensagem decifrada.",
+              "mode": "crack",
+              "shift": 15,
+              "text": "DH PAXPSDH KTCRTGPB",
+              "answer": "OS ALIADOS VENCERAM",
+              "wheel": "free",
+              "hint1": "Procure uma palavra curta que faça sentido.",
+              "hint2": "A chave está entre 12 e 18."
+            },
+            "C": {
+              "prompt": "Ninguém sabe a chave e não há pista. Quebre o código e digite a mensagem.",
+              "mode": "crack",
+              "shift": 20,
+              "text": "HCHAOYG MUVCU XY VFYNWBFYS",
+              "answer": "NINGUEM SABIA DE BLETCHLEY",
+              "wheel": "free",
+              "hint1": "A palavra de 2 letras no meio da mensagem é bem comum.",
+              "hint2": "A chave está entre 18 e 22."
+            }
           }
         }
       },
@@ -397,6 +650,126 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "blue-lock1-2",
+            "title": "Diário secreto da Capitã",
+            "type": "quiz",
+            "leaderLine": "Página secreta do diário: cinco perguntas para quem quer ser mestre em segredos!",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "hint1": "Use o disco de cifra para conferir.",
+                "hint2": "Cifrar é andar para a frente no alfabeto.",
+                "questions": [
+                  {
+                    "q": "Cifrar uma mensagem significa...",
+                    "options": [
+                      "Esconder o sentido trocando as letras",
+                      "Apagar a mensagem",
+                      "Traduzir para o inglês"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 2, a letra A vira...",
+                    "options": ["C", "Y", "B"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Para cifrar com chave 4, cada letra deve...",
+                    "options": ["Andar 4 casas para a frente", "Voltar 4 casas", "Virar um número"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que a Bombe fazia?",
+                    "options": [
+                      "Testava muitas combinações bem rápido",
+                      "Tocava música",
+                      "Imprimia jornais"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quem consegue ler uma mensagem cifrada?",
+                    "options": ["Quem conhece a chave", "Qualquer pessoa", "Ninguém, nunca"],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "hint1": "Use o disco: gire e confira cada letra.",
+                "hint2": "Depois do Z vem o A de novo.",
+                "questions": [
+                  {
+                    "q": "Se a chave é 5, quantas casas você volta para decifrar?",
+                    "options": ["5", "1", "26"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 2, a palavra MAR vira...",
+                    "options": ["OCT", "NBS", "KYP"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com chave 3, a letra Y vira...",
+                    "options": ["B", "Z", "V"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quantas posições tinha cada rotor da Enigma?",
+                    "options": ["26, uma para cada letra", "10, uma para cada número", "100"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que é uma cifra forte?",
+                    "options": [
+                      "Uma que demora muito para ser quebrada",
+                      "Uma escrita com letra grande",
+                      "Uma que usa só vogais"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "hint1": "Uma volta inteira no alfabeto tem 26 casas.",
+                "hint2": "26 − 7 = 19.",
+                "questions": [
+                  {
+                    "q": "Uma mensagem foi cifrada com chave 7. Que chave, andando para a frente, também decifra?",
+                    "options": ["19", "7", "13"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Contar quais letras aparecem mais numa mensagem se chama...",
+                    "options": [
+                      "Análise de frequência",
+                      "Contagem de palavras",
+                      "Leitura dinâmica"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Cada tecla apertada na Enigma acendia...",
+                    "options": ["Uma lâmpada com a letra cifrada", "Um alarme", "Uma sirene"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Hoje, o que protege as mensagens do celular?",
+                    "options": ["Criptografia", "Cola", "Fita adesiva"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Num alfabeto de só 10 letras, quantas chaves teria a cifra de deslocamento (sem a chave 0)?",
+                    "options": ["9", "10", "26"],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -438,6 +811,44 @@
               "hint1": "Ande 5 casas em cada letra.",
               "hint2": "S vira X, E vira J..."
             }
+          },
+          "stage2": {
+            "key": "blue-lock2-2",
+            "title": "A ordem inteira",
+            "type": "cipher",
+            "leaderLine": "Agora a ordem inteira para a frota. Cifrem tudo antes que o Bando escute!",
+            "variants": {
+              "A": {
+                "prompt": "A chave é 3. Cifre a mensagem inteira.",
+                "mode": "encode",
+                "shift": 3,
+                "text": "CAPITA AVISA",
+                "answer": "FDSLWD DYLVD",
+                "wheel": "free",
+                "hint1": "Ande 3 casas com cada letra.",
+                "hint2": "C vira F."
+              },
+              "B": {
+                "prompt": "A chave é 6. Cifre a mensagem inteira.",
+                "mode": "encode",
+                "shift": 6,
+                "text": "ALERTA NO PORTO",
+                "answer": "GRKXZG TU VUXZU",
+                "wheel": "free",
+                "hint1": "Ande 6 casas com cada letra.",
+                "hint2": "A vira G."
+              },
+              "C": {
+                "prompt": "A chave é 11. Cifre a mensagem inteira.",
+                "mode": "encode",
+                "shift": 11,
+                "text": "O MAPA ESTA NO BAU",
+                "answer": "Z XLAL PDEL YZ MLF",
+                "wheel": "free",
+                "hint1": "Ande 11 casas com cada letra.",
+                "hint2": "O vira Z."
+              }
+            }
           }
         },
         {
@@ -478,6 +889,47 @@
               "spokenKey": true,
               "hint1": "A chave é o número que a Narradora falou.",
               "hint2": "Ande 7 casas em cada letra."
+            }
+          },
+          "stage2": {
+            "key": "blue-lock3-2",
+            "title": "O rádio continua",
+            "type": "cipher",
+            "leaderLine": "Mais um alarme para cifrar, com a MESMA chave do rádio. Lembram qual era?",
+            "variants": {
+              "A": {
+                "prompt": "Use a mesma chave da transmissão e cifre a mensagem.",
+                "mode": "encode",
+                "shift": 2,
+                "text": "SINAL DO FAROL",
+                "answer": "UKPCN FQ HCTQN",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "Ande as casas da chave com cada letra.",
+                "spokenKey": true
+              },
+              "B": {
+                "prompt": "Use a mesma chave da transmissão e cifre a mensagem.",
+                "mode": "encode",
+                "shift": 4,
+                "text": "ANCORA LEVANTADA",
+                "answer": "ERGSVE PIZERXEHE",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "Ande as casas da chave com cada letra.",
+                "spokenKey": true
+              },
+              "C": {
+                "prompt": "Use a mesma chave da transmissão e cifre a mensagem.",
+                "mode": "encode",
+                "shift": 7,
+                "text": "VELAS AO VENTO",
+                "answer": "CLSHZ HV CLUAV",
+                "wheel": "free",
+                "hint1": "É a mesma chave que a Narradora falou antes.",
+                "hint2": "Ande as casas da chave com cada letra.",
+                "spokenKey": true
+              }
             }
           }
         }
@@ -527,6 +979,61 @@
             "wheel": "free",
             "hint1": "As falsas foram cifradas com outras chaves: com 9 elas viram letras sem sentido.",
             "hint2": "A verdadeira manda guardar a máquina."
+          }
+        },
+        "stage2": {
+          "key": "blue-vault-2",
+          "title": "O Cofre: a última mensagem",
+          "type": "cipher",
+          "leaderLine": "O Bando encheu o rádio de mensagens falsas! Só uma é nossa. Não caiam na armadilha!",
+          "variants": {
+            "A": {
+              "prompt": "A chave do dia é 4. Decifre as mensagens e escolha a única que faz sentido.",
+              "mode": "verify",
+              "shift": 4,
+              "options": [
+                "RSWWS REZMS IWXE WEPZS",
+                "X KJWMX NBCJ LQNPJWMX",
+                "GVKBN QBSB B JMIB",
+                "AYVXBLT KL YVAH"
+              ],
+              "correct": 0,
+              "wheel": "free",
+              "hint1": "Decifre só a primeira palavra de cada mensagem.",
+              "hint2": "A mensagem certa fala do nosso navio."
+            },
+            "B": {
+              "prompt": "A chave do dia é 8. Decifre e escolha a mensagem verdadeira.",
+              "mode": "verify",
+              "shift": 8,
+              "options": [
+                "I KIXQBI UIVLWC ZMKCIZ",
+                "R FRIUH HVWD DEHUWR",
+                "A DANA PADYUG",
+                "FYFVZJR FLTWF",
+                "C EJCXG G XKPVG"
+              ],
+              "correct": 0,
+              "wheel": "free",
+              "hint1": "Decifre só a primeira palavra de cada mensagem.",
+              "hint2": "A mensagem certa fala da Capitã."
+            },
+            "C": {
+              "prompt": "A chave do dia é 12. Decifre e escolha a mensagem verdadeira.",
+              "mode": "verify",
+              "shift": 12,
+              "options": [
+                "A FQEAGDA YGPAG PQ UXTM",
+                "T RFUF JWF KFQXT",
+                "XGMKXZNXF TL CHBTL",
+                "H MYVAH ZL YLUKLB",
+                "J AVMJG VKVBJP"
+              ],
+              "correct": 0,
+              "wheel": "free",
+              "hint1": "Decifre só a primeira palavra de cada mensagem.",
+              "hint2": "A mensagem certa fala do tesouro."
+            }
           }
         }
       },

@@ -142,7 +142,9 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 > _noir comic book illustration, waist-up portrait of an original kid character, [11]-year-old [girl/boy] with [dark brown skin, curly black hair in two puffs, round glasses], confident friendly smile, wearing [a red hooded jumpsuit and a simple red domino eye mask, holding a flashlight] / [a straw hat with a blue ribbon, blue vest and neck scarf, holding a spyglass], bold black ink outlines, halftone shading, dramatic rim lighting, plain solid flat dark navy background (#0B0D14), no pattern, no text, no logos_
 
-### Situação dos personagens — ✅ COMPLETOS (15/11)
+### Situação dos personagens — ✅ COMPLETOS (15/11) · recortados de novo (17/11)
+
+> **17/11:** as 48 imagens foram recortadas de novo a partir dos originais com um recorte **por forma** (não por cor), porque o recorte antigo deixava buracos no cabelo escuro, nos contornos e em partes da roupa. Para personagens novos: fundo liso de uma cor só continua ajudando, mas o recorte já não depende disso.
 
 **Os 24 personagens estão no jogo** (12 meninas + 12 meninos, cada um em Bando e Piratas).
 

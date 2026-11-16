@@ -33,10 +33,12 @@ export function PunchCardReadChallenge({
           holes={variant.columns}
           spokenColumn={variant.spokenColumn}
           spokenStyle="torn"
-          label={`Cartão perfurado com ${variant.columns.length} colunas; a coluna ${variant.spokenColumn + 1} está rasgada`}
+          label={`Cartão perfurado com ${variant.columns.length} colunas${variant.spokenColumn >= 0 ? `; a coluna ${variant.spokenColumn + 1} está rasgada` : ''}`}
         />
         <p className="font-type text-sm">
-          🎧 A coluna {variant.spokenColumn + 1} está rasgada: escutem a Narradora!
+          {variant.spokenColumn >= 0
+            ? `🎧 A coluna ${variant.spokenColumn + 1} está rasgada: escutem a Narradora!`
+            : '🔍 Cartão inteiro: leiam coluna por coluna, com calma.'}
         </p>
         {letters && <LetterLegend />}
       </div>
