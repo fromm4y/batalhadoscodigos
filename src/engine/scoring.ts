@@ -60,12 +60,23 @@ export function lockPull(combo: boolean): number {
  * Cofre Relâmpago (16/11): resolveu o Cofre até `vaultLightningMinutes` depois de a Narradora
  * liberar? `phaseStartMs` e `nowMs` no relógio do servidor (o tempo congelado já foi descontado).
  */
-export function isLightningVault(level: Level, phaseStartMs: number, nowMs: number): boolean {
-  return nowMs - phaseStartMs <= GAME_RULES.vaultLightningMinutes[level] * 60_000;
+export function isLightningVault(
+  level: Level,
+  phaseStartMs: number,
+  nowMs: number,
+  /** carta Contagem Regressiva */
+  extraMinutes = 0,
+): boolean {
+  return nowMs - phaseStartMs <= (GAME_RULES.vaultLightningMinutes[level] + extraMinutes) * 60_000;
 }
 
 /** Segundos que ainda faltam para o Cofre Relâmpago (0 = acabou). */
-export function lightningSecondsLeft(level: Level, phaseStartMs: number, nowMs: number): number {
-  const end = phaseStartMs + GAME_RULES.vaultLightningMinutes[level] * 60_000;
+export function lightningSecondsLeft(
+  level: Level,
+  phaseStartMs: number,
+  nowMs: number,
+  extraMinutes = 0,
+): number {
+  const end = phaseStartMs + (GAME_RULES.vaultLightningMinutes[level] + extraMinutes) * 60_000;
   return Math.max(0, Math.ceil((end - nowMs) / 1000));
 }

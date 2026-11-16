@@ -38,6 +38,12 @@
 | Sem som                             | Ver o 🔇 no canto da tela e o fone. O som só liga depois do primeiro clique na página (regra do Chrome). |
 | O botão 🔊 "Ouvir" não aparece      | O computador não tem voz em português instalada. O jogo funciona normalmente sem ele.                    |
 
+## Cartas e certificados
+
+- Ao clicar em **Liberar: Fim**, cada dupla que jogou ganha a **carta do episódio** (dourada para quem venceu). Quem faltou não ganha depois.
+- No planejamento do próximo episódio, as duplas escolhem **uma carta para levar** e usam o poder no jogo.
+- **Certificados:** na página da turma, escolha o episódio e clique em **🎓 Certificados deste episódio** → **Imprimir todos** (uma folha A4 por dupla, com duas linhas "Nome:" para os alunos escreverem).
+
 ## Depois da aula
 
 - A sessão fecha sozinha em 3 h. O ranking da temporada fica na página da turma.

@@ -10,6 +10,7 @@ import { SEASON } from '../src/content/season.js';
 import { getAdmin } from './_lib/admin.js';
 import { allowMethods, body, sendError } from './_lib/http.js';
 import { HttpError, requireInstructor } from './_lib/instructor.js';
+import { classHistory } from './_lib/history.js';
 import { findOpenSessionByCode, sessionExpiry } from './_lib/sessions.js';
 import { generateCode } from './_lib/validate.js';
 
@@ -62,6 +63,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     }
     if (!code) return sendError(res, 503, 'Não achei um código livre. Tente de novo.');
 
+    // Álbum ("perdida" se faltou) e "Anteriormente na Caçada" (SPEC-02 C).
+    const history = await classHistory(db, classId);
     const ref = db.collection('sessions').doc();
     await ref.create({
       classId,
@@ -78,6 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
       autoEventAt: null,
       createdAt: FieldValue.serverTimestamp(),
       expiresAt: sessionExpiry(now),
+      history,
     });
     res.status(200).json({ ok: true, sessionId: ref.id, code, existing: false });
   } catch (err) {

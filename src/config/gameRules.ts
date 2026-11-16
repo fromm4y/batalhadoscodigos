@@ -90,6 +90,19 @@ export const GAME_RULES = {
    */
   vaultLightningMinutes: { A: 7, B: 6, C: 5 } satisfies Record<Level, number>,
 
+  /**
+   * Cartas do Álbum (pedido da May, 16/11) [PADRÃO]: a dupla equipa UMA carta de outro episódio
+   * no planejamento e usa o poder durante o jogo. A dourada (venceu o confronto) é rara: vale
+   * mais usos por episódio.
+   */
+  cards: {
+    usesPerEpisode: { normal: 1, dourada: 2 },
+    /** Bombe Turbinada: força extra no próximo cadeado aberto */
+    extraPull: 10,
+    /** Contagem Regressiva: minutos a mais no Cofre Relâmpago */
+    lightningPlusMinutes: 2,
+  },
+
   /** RN-12.4 [PADRÃO]: diferença mínima de duplas para o bônus de lado vazio. */
   sideBonusMinDifference: 2,
 
@@ -177,6 +190,8 @@ export const GAME_RULES = {
   ui: {
     /** RN-10: troca a curiosidade da tela de espera a cada N segundos. */
     curiosityRotateSeconds: 9,
+    /** SPEC-02 C1: o "Anteriormente na Caçada" do aluno dura no máximo N s (tem "Pular") */
+    previouslySeconds: 30,
     /** Seção 9.6: corpo mínimo do texto (px) por nível. */
     minBodyFontPx: { A: 18, B: 16, C: 16 } satisfies Record<Level, number>,
     minButtonHeightPx: 44,

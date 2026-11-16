@@ -945,6 +945,19 @@
       "Tinha muito pouca memória",
       "Priorizou tarefas nos alarmes 1202 e 1201"
     ],
-    "art": "card-ep4"
+    "art": "card-ep4",
+    "power": {
+      "id": "lightningPlus",
+      "name": "Contagem Regressiva",
+      "text": "Ganham minutos extras no Cofre Relâmpago."
+    }
+  },
+  "certificate": {
+    "skill": "Prioridades e otimização",
+    "learned": [
+      "Quando os recursos são poucos, é preciso priorizar",
+      "Comparar combinações ajuda a achar a melhor escolha",
+      "Um bom sistema continua funcionando mesmo com alarmes"
+    ]
   }
 }

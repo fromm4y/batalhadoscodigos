@@ -5,11 +5,14 @@ import { PrototypePage } from './prototype/PrototypePage';
 import { AdminPage } from '@/features/instructor/admin/AdminPage';
 import { InstructorLoginPage } from '@/features/instructor/auth/InstructorLoginPage';
 import { RequireInstructor } from '@/features/instructor/auth/RequireInstructor';
+import { ClassCertificatesPage } from '@/features/instructor/classes/ClassCertificatesPage';
 import { ClassDetailPage } from '@/features/instructor/classes/ClassDetailPage';
 import { ClassesPage } from '@/features/instructor/classes/ClassesPage';
 import { ScriptPage } from '@/features/instructor/script/ScriptPage';
 import { ProjectorPage } from '@/features/instructor/session/ProjectorPage';
 import { SessionPage } from '@/features/instructor/session/SessionPage';
+import { AlbumPage } from '@/features/student/AlbumPage';
+import { CertificatePage } from '@/features/student/CertificatePage';
 import { EntrancePage } from '@/features/student/EntrancePage';
 import { GamePage } from '@/features/student/GamePage';
 import { NewTeamPage } from '@/features/student/NewTeamPage';
@@ -23,6 +26,8 @@ export const router = createBrowserRouter([
   { path: '/dupla', element: <TeamSelectPage /> },
   { path: '/dupla/nova', element: <NewTeamPage /> },
   { path: '/jogo', element: <GamePage /> },
+  { path: '/album', element: <AlbumPage /> },
+  { path: '/certificado/:episodeId', element: <CertificatePage /> },
   { path: '/instrutor', element: <InstructorLoginPage /> },
   {
     path: '/instrutor/turmas',
@@ -37,6 +42,14 @@ export const router = createBrowserRouter([
     element: (
       <RequireInstructor>
         <ClassDetailPage />
+      </RequireInstructor>
+    ),
+  },
+  {
+    path: '/instrutor/turmas/:classId/certificados/:episodeId',
+    element: (
+      <RequireInstructor>
+        <ClassCertificatesPage />
       </RequireInstructor>
     ),
   },

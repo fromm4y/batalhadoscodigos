@@ -65,7 +65,7 @@ export function ProjectorPage() {
             />
           </>
         ) : s.phase === 'planning' ? (
-          <ProjectorPlanning teams={teams.data} players={players.data} />
+          <ProjectorPlanning teams={teams.data} players={players.data} session={s} />
         ) : s.phase === 'locks' || s.phase === 'vault' ? (
           <ProjectorMatches
             session={s}

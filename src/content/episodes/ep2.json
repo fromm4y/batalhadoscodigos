@@ -666,6 +666,19 @@
       "A configuração mudava todo dia",
       "Turing criou a Bombe para quebrá-la"
     ],
-    "art": "card-ep2"
+    "art": "card-ep2",
+    "power": {
+      "id": "extraPull",
+      "name": "Bombe Turbinada",
+      "text": "O próximo cadeado que vocês abrirem puxa a corda com força extra."
+    }
+  },
+  "certificate": {
+    "skill": "Criptografia",
+    "learned": [
+      "Cifrar é esconder uma mensagem trocando as letras por uma regra",
+      "A chave é o segredo que permite cifrar e decifrar",
+      "Testar possibilidades com método ajuda a quebrar um código"
+    ]
   }
 }

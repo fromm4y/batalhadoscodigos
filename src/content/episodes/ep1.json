@@ -718,6 +718,19 @@
       "Ada escreveu o primeiro algoritmo para ela",
       "Nunca foi construída por completo na época"
     ],
-    "art": "card-ep1"
+    "art": "card-ep1",
+    "power": {
+      "id": "freeHint",
+      "name": "Cartão Perfurado Extra",
+      "text": "Abre a Dica 1 de graça no desafio em que vocês estiverem."
+    }
+  },
+  "certificate": {
+    "skill": "Algoritmos e repetição",
+    "learned": [
+      "Um algoritmo é uma sequência de passos para resolver um problema",
+      "Máquinas podem ler instruções codificadas, como os furos de um cartão",
+      "Usar repetição deixa o programa mais curto e mais fácil de consertar"
+    ]
   }
 }

@@ -35,6 +35,8 @@ import {
   lockPull,
   POINTS,
 } from '@/engine/scoring';
+import { cardEffect, cardUsesLeft } from '@/engine/cards';
+import type { CardPowerId } from '@/content/types';
 import { getFirebase } from '@/lib/firebase';
 import { serverNow } from '@/lib/serverClock';
 import type {
@@ -120,14 +122,19 @@ export async function registerWrongAnswer(
   const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
+    // carta Válvula Reserva: o próximo erro não tira ponto
+    const forgiven = !free && player.cardBoost === 'forgiveMiss';
     writePoints(
       tx,
       db,
       c,
       team,
       player,
-      free ? [] : [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }],
-      { [`misses.${challengeKey}`]: (player.misses?.[challengeKey] ?? 0) + 1 },
+      free || forgiven ? [] : [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }],
+      {
+        [`misses.${challengeKey}`]: (player.misses?.[challengeKey] ?? 0) + 1,
+        ...(forgiven ? { cardBoost: null } : {}),
+      },
     );
   });
 }
@@ -196,7 +203,8 @@ export async function openLock(
       const m = mSnap.data() as MatchDoc;
       if (!m.winner) {
         const now = serverNow();
-        const r = applyPull(m, side, lockPull(combo), now);
+        const boost = player.cardBoost === 'extraPull' ? GAME_RULES.cards.extraPull : 0;
+        const r = applyPull(m, side, lockPull(combo) + boost, now);
         bar = r.bar;
         blocked = r.blocked;
         tx.update(mRef, {
@@ -220,6 +228,7 @@ export async function openLock(
       ? pickAbility(side, owned)
       : null;
     writePoints(tx, db, c, team, player, changes, {
+      ...(player.cardBoost === 'extraPull' ? { cardBoost: null } : {}),
       'progress.lockIndex': index + 1,
       'progress.locksOpenedAt': openedAt,
       solvedCount: solved,
@@ -248,7 +257,13 @@ export async function solveVault(
     const extra = { 'progress.vaultSolvedAt': serverTimestamp(), finishedAt: serverTimestamp() };
     if (player.progress.vaultSolvedAt) return { won: false, fast: false };
     const fast =
-      !!lightning && isLightningVault(lightning.level, lightning.phaseStartMs, serverNow());
+      !!lightning &&
+      isLightningVault(
+        lightning.level,
+        lightning.phaseStartMs,
+        serverNow(),
+        player.cardBoost === 'lightningPlus' ? GAME_RULES.cards.lightningPlusMinutes : 0,
+      );
     const fastPts: PointsChange[] = fast
       ? [{ reason: 'vault_fast', delta: POINTS.vault_fast }]
       : [];
@@ -485,5 +500,43 @@ export async function callHelp(c: GameCtx, challengeKey: string): Promise<void> 
       status: 'open',
     });
     tx.update(refs(db, c).player, { helpUsed: true });
+  });
+}
+
+/** Equipa uma carta do Álbum para este episódio (no planejamento). `null` = sem carta. */
+export async function equipCard(c: GameCtx, episodeId: string | null): Promise<void> {
+  await updateDoc(refs(getFirebase('student').db, c).player, {
+    equippedCard: episodeId,
+    cardUses: 0,
+    cardBoost: null,
+  });
+}
+
+/**
+ * Usa o poder da carta equipada (pedido da May, 16/11). Dicas abrem na hora, sem custo; os
+ * outros poderes ficam guardados até o momento certo (`cardBoost`).
+ */
+export async function activateCard(
+  c: GameCtx,
+  power: CardPowerId,
+  challengeKey: string | null,
+): Promise<void> {
+  const { db } = getFirebase('student');
+  await runTransaction(db, async (tx) => {
+    const { team, player } = await readBoth(tx, db, c);
+    const card = team.cards?.find((x) => x.episodeId === player.equippedCard);
+    if (!card || cardUsesLeft(card, player.cardUses) <= 0) return;
+    const effect = cardEffect(power);
+    const patch: Record<string, unknown> = { cardUses: (player.cardUses ?? 0) + 1 };
+    if (effect.kind === 'hints') {
+      if (!challengeKey) throw new Error('Usem esta carta dentro de um desafio.');
+      const used = player.hints?.[challengeKey] ?? 0;
+      if (used >= effect.tier) return;
+      patch[`hints.${challengeKey}`] = effect.tier;
+    } else {
+      if (player.cardBoost) return; // um poder guardado por vez
+      patch.cardBoost = effect.boost;
+    }
+    tx.update(refs(db, c).player, patch);
   });
 }

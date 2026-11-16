@@ -1,6 +1,6 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 16/11/2026._
+_Atualizado em 16/11/2026 (madrugada)._
 
 **Resumo:** os **Episódios 1 e 2 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 3 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
@@ -50,6 +50,16 @@ _Atualizado em 16/11/2026._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 16/11 (madrugada) — Álbum, cartas com poder e certificado 🃏🎓
+
+- **Figurinha rara por episódio:** quem jogou ganha a carta no fim (a Narradora entrega ao liberar o Fim). **Dourada holográfica (★ RARA)** para quem venceu o confronto. A carta vira na tela com som.
+- **Poder da carta:** no planejamento, a dupla escolhe **uma carta de outro episódio** para levar ("Carta da missão") e usa o poder no jogo pelo botão **Usar**. Normal = 1 uso por episódio; dourada = 2 usos.
+  - Ep. 1 **Cartão Perfurado Extra**: Dica 1 grátis · Ep. 2 **Bombe Turbinada**: próximo cadeado puxa +10 · Ep. 3 **Válvula Reserva**: o próximo erro não tira ponto · Ep. 4 **Contagem Regressiva**: +2 min no Cofre Relâmpago · Ep. 5 **Jogada de Mestre**: Dica 1 e 2 grátis.
+- **Álbum do Museu** (`/album`): ganha, dourada, "em jogo hoje", futura (trancada) e perdida (faltou: não volta). Atalhos no lobby, na espera e no fim.
+- **Certificado de conhecimento** de cada episódio, em A4 deitado, **sem nome de aluno** (duas linhas "Nome:" para escrever à mão): a dupla imprime pelo fim/álbum; a Narradora imprime **a turma toda** pelo botão "🎓 Certificados deste episódio" na página da turma.
+- **"Anteriormente na Caçada"** (a partir do Ep. 2): abre o planejamento com o resumo do episódio anterior e os **números reais da aula passada** (vitórias de cada lado, dupla destaque, quantas abriram o Cofre). Até 30 s, com "Pular". No projetor, a Narradora alterna 📼 Anteriormente / 🏆 Ranking.
+- ⚠️ **Publicar o `firestore.rules` novo** (a Narradora grava as cartas; a dupla grava a carta equipada).
+
 ### Novidades de 16/11 (noite) — Ep. 2: Máquina Enigma 🔐
 
 - **Disco de cifra:** dois anéis de letras (fora: original · dentro: cifrado). Gira arrastando, pelas setas ◀ ▶ ou pelo teclado.
@@ -74,7 +84,7 @@ _Atualizado em 16/11/2026._
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 113 unitários + 70 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 124 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 

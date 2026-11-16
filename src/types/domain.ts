@@ -82,6 +82,13 @@ export type ClassDoc = {
   seasonClosedAt?: Timestamp;
 };
 
+/** Carta do Álbum (SPEC-02 C2): concedida na fase `end` para quem jogou o episódio. */
+export type CardVariant = 'normal' | 'dourada';
+export type TeamCard = { episodeId: string; variant: CardVariant; earnedAt: Timestamp };
+
+/** Efeito de carta esperando o momento certo (Bombe Turbinada, Válvula Reserva, Contagem). */
+export type CardBoost = 'extraPull' | 'forgiveMiss' | 'lightningPlus';
+
 export type TeamDoc = {
   cityName: string;
   pirateName: string;
@@ -89,6 +96,8 @@ export type TeamDoc = {
   totalPoints: number;
   episodesPlayed: number;
   badges: string[];
+  /** Álbum do Museu (inventário de cartas) */
+  cards?: TeamCard[];
   createdAt: Timestamp;
 };
 
@@ -99,6 +108,19 @@ export type LedgerEntryDoc = {
   reason: LedgerReason;
   at: Timestamp;
   by: 'game' | string;
+};
+
+/**
+ * "Anteriormente na Caçada" (SPEC-02 C1): números reais da aula anterior da turma, calculados
+ * pelo servidor quando a sessão abre. Sem dado pessoal: só nomes de dupla da lista fechada.
+ */
+export type PreviousSummary = {
+  episodeId: string;
+  wins: { red: number; blue: number; machine: number; draw: number };
+  /** dupla destaque (mais pontos na aula), com o nome do lado que jogou */
+  highlight: { name: string; side: Side; points: number } | null;
+  vaultOpened: number;
+  teams: number;
 };
 
 export type SessionDoc = {
@@ -121,6 +143,8 @@ export type SessionDoc = {
   autoEventAt: Timestamp | null;
   createdAt: Timestamp;
   expiresAt: Timestamp;
+  /** histórico da turma quando a sessão abriu (Álbum e "Anteriormente") */
+  history?: { played: string[]; previously: PreviousSummary | null };
 };
 
 /** Estado da dupla nesta sessão (SPEC 6.1). Campos de jogo detalhados nas próximas etapas. */
@@ -146,6 +170,12 @@ export type PlayerDoc = {
   misses?: Record<string, number>;
   /** missão bônus resolvida (16/11) */
   bonusSolvedAt?: Timestamp | null;
+  /** carta do Álbum equipada neste episódio (id do episódio de origem) */
+  equippedCard?: string | null;
+  /** quantas vezes o poder da carta já foi usado neste episódio */
+  cardUses?: number;
+  /** poder que espera o momento certo (próximo cadeado, próximo erro, Cofre) */
+  cardBoost?: CardBoost | null;
   helpUsed: boolean;
   /** RN-07: a Narradora adiantou/atrasou só esta dupla */
   phaseOverride?: Phase | null;

@@ -6,12 +6,15 @@ import {
   collection,
   doc,
   getDocs,
+  getDocsFromServer,
   runTransaction,
   serverTimestamp,
+  Timestamp,
   writeBatch,
   type Firestore,
   type Transaction,
 } from 'firebase/firestore';
+import { addCard, cardsToGrant } from '@/engine/cards';
 import { formMatches, leader, resolveByBar } from '@/engine/match';
 import { applyDelta, POINTS } from '@/engine/scoring';
 import { newMatchDoc } from '@/features/game/actions';
@@ -111,16 +114,25 @@ export async function markVaultLeaders(c: Ctx): Promise<void> {
  * RN-20: ao liberar o fim, confrontos sem Cofre resolvido são decididos pela barra
  * (+5 para o vencedor humano; empate = +2 para cada dupla). A máquina não pontua (RN-23).
  */
-export async function resolveOpenMatches(c: Ctx): Promise<number> {
+export async function resolveOpenMatches(
+  c: Ctx,
+): Promise<{ resolved: number; winners: Record<string, MatchDoc['winner']> }> {
   const { db } = getFirebase();
-  const matches = await getDocs(collection(db, 'sessions', c.sessionId, 'matches'));
+  const matches = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'matches'));
   let resolved = 0;
+  // Resultado final de cada confronto, lido DENTRO da transação (sem cache): as cartas usam isto.
+  const winners: Record<string, MatchDoc['winner']> = {};
   for (const m of matches.docs) {
     await runTransaction(db, async (tx) => {
       const snap = await tx.get(m.ref);
       const data = snap.data() as MatchDoc | undefined;
-      if (!data || data.winner) return;
+      if (!data) return;
+      if (data.winner) {
+        winners[m.id] = data.winner;
+        return;
+      }
       const winner = resolveByBar(data.bar);
+      winners[m.id] = winner;
       const humans = [
         { teamId: data.redTeamId, side: 'red' as const },
         { teamId: data.blueTeamId, side: 'blue' as const },
@@ -141,5 +153,38 @@ export async function resolveOpenMatches(c: Ctx): Promise<number> {
       resolved++;
     });
   }
-  return resolved;
+  return { resolved, winners };
+}
+
+/**
+ * SPEC-02 C2 + pedido da May (16/11): ao liberar o fim, toda dupla que jogou ganha a carta do
+ * episódio no inventário (`teams.cards`); dourada se venceu o confronto. Roda depois de
+ * `resolveOpenMatches`, para os vencedores já estarem decididos. Idempotente.
+ */
+export async function grantEpisodeCards(
+  c: Ctx,
+  winners: Record<string, MatchDoc['winner']>,
+): Promise<number> {
+  const { db } = getFirebase();
+  const playersSnap = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'players'));
+  const matches = Object.fromEntries(
+    Object.entries(winners).map(([id, winner]) => [id, { winner }]),
+  );
+  const grants = cardsToGrant(
+    playersSnap.docs.map((d) => d.data() as PlayerDoc),
+    matches,
+  );
+  let granted = 0;
+  for (const g of grants) {
+    const ref = doc(db, 'classes', c.session.classId, 'teams', g.teamId);
+    await runTransaction(db, async (tx) => {
+      const t = (await tx.get(ref)).data() as TeamDoc | undefined;
+      if (!t) return;
+      const next = addCard(t.cards, c.session.episodeId, g.variant, Timestamp.now());
+      if (!next) return;
+      tx.update(ref, { cards: next });
+      granted++;
+    });
+  }
+  return granted;
 }

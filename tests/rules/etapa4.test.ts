@@ -175,3 +175,24 @@ describe('Narradora', () => {
     );
   });
 });
+
+describe('cartas do Álbum (16/11)', () => {
+  const card = { episodeId: 'ep1', variant: 'dourada', earnedAt: new Date() };
+  it('a Narradora entrega a carta; a dupla não se dá carta sozinha', async () => {
+    await assertSucceeds(
+      updateDoc(doc(asAna(), 'classes', 'turma', 'teams', 'r1'), { cards: [card] }),
+    );
+    await assertFails(
+      updateDoc(doc(asTeam('b1'), 'classes', 'turma', 'teams', 'b1'), { cards: [card] }),
+    );
+  });
+  it('a dupla equipa uma carta e marca o uso do poder', async () => {
+    await assertSucceeds(
+      updateDoc(doc(asTeam('r1'), 'sessions', 's1', 'players', 'r1'), {
+        equippedCard: 'ep1',
+        cardUses: 1,
+        cardBoost: 'extraPull',
+      }),
+    );
+  });
+});
