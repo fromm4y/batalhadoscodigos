@@ -119,7 +119,12 @@ export function ScriptPage() {
                 </p>
               </Step>
               <Step min={`${g.vault} min`} title="Cofre">
-                <p>Libere o Cofre. Quem estava na frente na barra ganha a Dica 1 grátis.</p>
+                <p>
+                  Libere o Cofre. Quem estava na frente na barra ganha a Dica 1 grátis. Quem
+                  resolver em até {GAME_RULES.vaultLightningMinutes.A} min (A),{' '}
+                  {GAME_RULES.vaultLightningMinutes.B} (B) ou {GAME_RULES.vaultLightningMinutes.C}{' '}
+                  (C) ganha o ⚡ Cofre Relâmpago; quem terminar ganha a 🌟 Missão bônus sozinha.
+                </p>
               </Step>
               <Step min={`até ${g.end} min`} title="Fim — leia a revelação">
                 {e.narratorScript.revealLines.map((l) => (
@@ -195,13 +200,21 @@ export function ScriptPage() {
   );
 }
 
+const opt = (c: Challenge | undefined) => (c ? [c] : []);
+
 function AnswerTable({ e }: { e: AnyEpisode }) {
   const groups: { label: string; list: Challenge[] }[] =
     e.mode === 'coop'
       ? [{ label: '🤝 Aliança', list: [...e.coop.locks, e.coop.vault] }]
       : [
-          { label: '🎭 Bando', list: [...e.sides.red.locks, e.sides.red.vault] },
-          { label: '⚓ Piratas', list: [...e.sides.blue.locks, e.sides.blue.vault] },
+          {
+            label: '🎭 Bando',
+            list: [...e.sides.red.locks, e.sides.red.vault, ...opt(e.sides.red.bonus)],
+          },
+          {
+            label: '⚓ Piratas',
+            list: [...e.sides.blue.locks, e.sides.blue.vault, ...opt(e.sides.blue.bonus)],
+          },
         ];
   return (
     <div className="grid gap-4">
@@ -223,7 +236,7 @@ function AnswerTable({ e }: { e: AnyEpisode }) {
               {g.list.map((c, i) => (
                 <tr key={c.key} className="border-b border-ink/15 align-top">
                   <td className="py-2 pr-3 font-bold">
-                    {i < 3 ? `${i + 1}.` : 'Cofre ·'} {c.title}
+                    {i < 3 ? `${i + 1}.` : i === 3 ? 'Cofre ·' : '🌟 Bônus ·'} {c.title}
                   </td>
                   {LEVELS.map((lv) => (
                     <td key={lv} className="py-2 pr-3">
