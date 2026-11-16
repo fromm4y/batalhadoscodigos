@@ -374,7 +374,7 @@
             "leaderLine": "A vitrine tem uma segunda tranca: um cartão maior. Esse está inteiro, é só ler... com atenção.",
             "variants": {
               "A": {
-                "prompt": "Cada coluna tem um furo. A linha do furo é o número. Digite a senha de 4 números.",
+                "prompt": "Leiam os furos: senha de 4 números.",
                 "rows": 10,
                 "columns": [1, 8, 1, 5],
                 "decode": "digits",
@@ -384,7 +384,7 @@
                 "hint2": "É o ano em que Ada nasceu: começa com 18..."
               },
               "B": {
-                "prompt": "Cada coluna tem um furo. Digite a senha de 8 números.",
+                "prompt": "Leiam os furos: senha de 8 números.",
                 "rows": 10,
                 "columns": [1, 8, 0, 4, 1, 8, 4, 3],
                 "decode": "digits",
@@ -394,7 +394,7 @@
                 "hint2": "Começa com 1804..."
               },
               "C": {
-                "prompt": "Os furos viram números, e os números viram letras (1=A, 2=B...). Digite a palavra.",
+                "prompt": "Furos viram letras (1=A, 2=B...). Digitem a palavra.",
                 "rows": 10,
                 "columns": [3, 1, 2, 9, 4, 5],
                 "decode": "letters",
@@ -871,7 +871,7 @@
             "leaderLine": "Vitrine trancada! Agora o baú do tesouro: um cartão maior, e sem nada molhado.",
             "variants": {
               "A": {
-                "prompt": "Fure um buraco por coluna para formar a senha de 4 números.",
+                "prompt": "Um furo por coluna: senha de 4 números.",
                 "rows": 10,
                 "target": [1, 9, 8, 0],
                 "decode": "digits",
@@ -881,7 +881,7 @@
                 "hint2": "Na 2ª coluna, fure a linha 9."
               },
               "B": {
-                "prompt": "Fure um buraco por coluna para formar a senha de 8 números.",
+                "prompt": "Um furo por coluna: senha de 8 números.",
                 "rows": 10,
                 "target": [1, 8, 1, 5, 1, 8, 5, 2],
                 "decode": "digits",
@@ -891,7 +891,7 @@
                 "hint2": "A 5ª coluna é furada na linha 1."
               },
               "C": {
-                "prompt": "Transforme as letras em números (A=1, B=2...) e fure o cartão.",
+                "prompt": "Letras viram números (A=1, B=2...). Furem o cartão.",
                 "rows": 10,
                 "target": [4, 5, 3, 9, 4, 1],
                 "decode": "letters",

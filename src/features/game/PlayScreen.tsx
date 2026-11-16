@@ -397,8 +397,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                           : `${red ? 'Cadeado' : 'Defesa'} ${Number(slot) + 1} ·`}{' '}
                         {challenge.title}
                         {twoSteps && (
+                          // pendurado na borda de cima da moldura: não ocupa altura (1366×768)
                           <span
-                            className="ml-2 inline-block rounded-sm border-2 border-ink bg-ink px-1.5 align-middle font-heist text-base text-paper"
+                            className="absolute -top-3 left-6 z-10 rounded-sm border-2 border-ink bg-brass px-2 pt-0.5 font-heist text-base tracking-wider text-ink shadow-comic-sm"
                             aria-label={`Etapa ${step + 1} de 2`}
                           >
                             ETAPA {step + 1}/2
