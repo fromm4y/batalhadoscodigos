@@ -27,13 +27,21 @@ import {
   winningBar,
   ABILITY_INFO,
 } from '@/engine/match';
-import { applyDelta, hintCost, POINTS } from '@/engine/scoring';
+import {
+  applyDelta,
+  hintCost,
+  isCombo,
+  isLightningVault,
+  lockPull,
+  POINTS,
+} from '@/engine/scoring';
 import { getFirebase } from '@/lib/firebase';
 import { serverNow } from '@/lib/serverClock';
 import type {
   AbilityId,
   GameMode,
   LedgerReason,
+  Level,
   MatchDoc,
   PlayerDoc,
   Side,
@@ -100,12 +108,27 @@ async function readBoth(tx: Transaction, db: Firestore, c: GameCtx) {
   return { team: t.data() as TeamDoc, player: p.data() as PlayerDoc };
 }
 
-/** Resposta errada: −2 (7.6). */
-export async function registerWrongAnswer(c: GameCtx): Promise<void> {
+/**
+ * Resposta errada: −2 (7.6) e conta o erro no desafio (o combo só vale sem erro).
+ * Na missão bônus (`free`), errar não custa ponto.
+ */
+export async function registerWrongAnswer(
+  c: GameCtx,
+  challengeKey: string,
+  free = false,
+): Promise<void> {
   const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
-    writePoints(tx, db, c, team, player, [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }]);
+    writePoints(
+      tx,
+      db,
+      c,
+      team,
+      player,
+      free ? [] : [{ reason: 'wrong_answer', delta: POINTS.wrong_answer }],
+      { [`misses.${challengeKey}`]: (player.misses?.[challengeKey] ?? 0) + 1 },
+    );
   });
 }
 
@@ -115,6 +138,7 @@ export async function buyHint(
   challengeKey: string,
   tier: 1 | 2,
   free = false,
+  level: Level = 'A',
 ): Promise<void> {
   const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
@@ -122,7 +146,7 @@ export async function buyHint(
     const used = player.hints?.[challengeKey] ?? 0;
     if (used >= tier) return; // já comprada (clique duplo)
     if (tier === 2 && used < 1) throw new Error('A Dica 2 só abre depois da Dica 1.');
-    const cost = hintCost(tier, free);
+    const cost = hintCost(tier, free, level);
     writePoints(
       tx,
       db,
@@ -139,13 +163,14 @@ export async function buyHint(
 
 /**
  * Abre o cadeado `index` (0–2): +1, e +3 se for a primeira dupla da turma a abrir esse
- * número (independe do lado). Na mesma transação: puxão no cabo de guerra (RN-21) e,
- * se for a vez, uma habilidade nova (RN-37/38).
+ * número (independe do lado). Na mesma transação: puxão no cabo de guerra (RN-21, com o bônus
+ * de combo se abriu de primeira sem dica) e, se for a vez, uma habilidade nova (RN-37/38).
  */
 export async function openLock(
   c: GameCtx,
   index: 0 | 1 | 2,
-): Promise<{ first: boolean; ability: AbilityId | null; blocked: boolean }> {
+  challengeKey: string,
+): Promise<{ first: boolean; ability: AbilityId | null; blocked: boolean; combo: boolean }> {
   const { db } = getFirebase('student');
   const firstRef = doc(db, 'sessions', c.sessionId, 'firsts', `lock${index + 1}`);
   return runTransaction(db, async (tx) => {
@@ -153,7 +178,9 @@ export async function openLock(
     const firstSnap = await tx.get(firstRef);
     const mRef = player.matchId ? matchRef(db, c, player.matchId) : null;
     const mSnap = mRef ? await tx.get(mRef) : null;
-    if (player.progress.lockIndex !== index) return { first: false, ability: null, blocked: false };
+    if (player.progress.lockIndex !== index)
+      return { first: false, ability: null, blocked: false, combo: false };
+    const combo = isCombo(player.hints?.[challengeKey], player.misses?.[challengeKey]);
 
     const first = !firstSnap.exists();
     if (first) tx.set(firstRef, { teamId: c.teamId, at: serverTimestamp() });
@@ -169,7 +196,7 @@ export async function openLock(
       const m = mSnap.data() as MatchDoc;
       if (!m.winner) {
         const now = serverNow();
-        const r = applyPull(m, side, GAME_RULES.pull.lockOpen, now);
+        const r = applyPull(m, side, lockPull(combo), now);
         bar = r.bar;
         blocked = r.blocked;
         tx.update(mRef, {
@@ -181,7 +208,7 @@ export async function openLock(
             type: r.blocked ? 'blocked' : 'pull',
             text: r.blocked
               ? `${who(side)} abriu o cadeado ${index + 1}, mas o Escudo segurou a corda!`
-              : `${who(side)} abriu o cadeado ${index + 1} e puxou ${r.applied}!`,
+              : `${who(side)} abriu o cadeado ${index + 1} e puxou ${r.applied}${combo ? ' (COMBO!)' : ''}!`,
           }),
         });
       } else bar = m.bar;
@@ -198,15 +225,20 @@ export async function openLock(
       solvedCount: solved,
       ...(ability ? { 'abilities.owned': [...owned, ability] } : {}),
     });
-    return { first, ability, blocked };
+    return { first, ability, blocked, combo };
   });
 }
 
 /**
  * Resolve o Cofre. O primeiro lado a resolver vence o confronto (RN-19): barra vai a ±100 e
- * a dupla vencedora ganha +5 na mesma transação.
+ * a dupla vencedora ganha +5 na mesma transação. Dentro do tempo relâmpago (16/11), +2 para
+ * quem resolveu, vencendo ou não. `phaseStartMs` = null quando não vale o relâmpago
+ * (ex.: fase adiantada só para esta dupla).
  */
-export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
+export async function solveVault(
+  c: GameCtx,
+  lightning: { level: Level; phaseStartMs: number } | null,
+): Promise<{ won: boolean; fast: boolean }> {
   const { db } = getFirebase('student');
   return runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
@@ -214,10 +246,15 @@ export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
     const mSnap = mRef ? await tx.get(mRef) : null;
     const side = player.side ?? 'red';
     const extra = { 'progress.vaultSolvedAt': serverTimestamp(), finishedAt: serverTimestamp() };
-    if (player.progress.vaultSolvedAt) return { won: false };
+    if (player.progress.vaultSolvedAt) return { won: false, fast: false };
+    const fast =
+      !!lightning && isLightningVault(lightning.level, lightning.phaseStartMs, serverNow());
+    const fastPts: PointsChange[] = fast
+      ? [{ reason: 'vault_fast', delta: POINTS.vault_fast }]
+      : [];
     if (!mRef || !mSnap?.exists() || (mSnap.data() as MatchDoc).winner) {
-      writePoints(tx, db, c, team, player, [], extra);
-      return { won: false };
+      writePoints(tx, db, c, team, player, fastPts, extra);
+      return { won: false, fast };
     }
     const m = mSnap.data() as MatchDoc;
     const now = serverNow();
@@ -232,8 +269,34 @@ export async function solveVault(c: GameCtx): Promise<{ won: boolean }> {
         text: `${who(side)} abriu o Cofre primeiro! BOOM!`,
       }),
     });
-    writePoints(tx, db, c, team, player, [{ reason: 'vault_win', delta: POINTS.vault_win }], extra);
-    return { won: true };
+    writePoints(
+      tx,
+      db,
+      c,
+      team,
+      player,
+      [{ reason: 'vault_win', delta: POINTS.vault_win }, ...fastPts],
+      extra,
+    );
+    return { won: true, fast };
+  });
+}
+
+/** Missão bônus (16/11): só depois do Cofre, uma vez por episódio. */
+export async function solveBonus(c: GameCtx): Promise<void> {
+  const { db } = getFirebase('student');
+  await runTransaction(db, async (tx) => {
+    const { team, player } = await readBoth(tx, db, c);
+    if (!player.progress.vaultSolvedAt || player.bonusSolvedAt) return;
+    writePoints(
+      tx,
+      db,
+      c,
+      team,
+      player,
+      [{ reason: 'bonus_mission', delta: POINTS.bonus_mission }],
+      { bonusSolvedAt: serverTimestamp() },
+    );
   });
 }
 
