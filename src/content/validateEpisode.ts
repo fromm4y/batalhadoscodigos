@@ -3,7 +3,7 @@
  * O TypeScript não confere o conteúdo de um JSON importado; este validador confere.
  * Devolve a lista de problemas (vazia = válido).
  */
-import type { ChallengeType } from './types';
+import type { CardPowerId, ChallengeType } from './types';
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -11,6 +11,13 @@ const isStr = (v: unknown): v is string => typeof v === 'string' && v.length > 0
 const isInt = (v: unknown): v is number => Number.isInteger(v);
 const isStrArr = (v: unknown): v is string[] => Array.isArray(v) && v.every(isStr);
 const LEVELS = ['A', 'B', 'C'] as const;
+const CARD_POWERS: CardPowerId[] = [
+  'freeHint',
+  'freeHint2',
+  'extraPull',
+  'forgiveMiss',
+  'lightningPlus',
+];
 
 const TYPES: ChallengeType[] = [
   'quiz',
@@ -167,6 +174,17 @@ export function validateEpisode(e: unknown): string[] {
     !isStr(card.art)
   )
     err('card {title, year, people, facts, art}');
+  const power = isObj(card) ? card.power : undefined;
+  if (
+    !isObj(power) ||
+    !CARD_POWERS.includes(power.id as CardPowerId) ||
+    !isStr(power.name) ||
+    !isStr(power.text)
+  )
+    err(`card.power {id (${CARD_POWERS.join('/')}), name, text}`);
+  const cert = e.certificate;
+  if (!isObj(cert) || !isStr(cert.skill) || !isStrArr(cert.learned) || cert.learned.length === 0)
+    err('certificate {skill, learned[]}');
   if (!Array.isArray(e.reveal)) err('reveal');
   const ev = e.event;
   if (

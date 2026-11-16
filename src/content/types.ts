@@ -186,14 +186,21 @@ export type SideContent = {
   bonus?: Challenge;
 };
 
-/** Carta do Álbum do Museu (SPEC-02 Parte B/C). */
+/** Poderes das cartas (pedido da May, 16/11): o motor só conhece estes ids. */
+export type CardPowerId = 'freeHint' | 'freeHint2' | 'extraPull' | 'forgiveMiss' | 'lightningPlus';
+
+/** Carta do Álbum do Museu (SPEC-02 Parte B/C) — figurinha rara com um poder para outros episódios. */
 export type EpisodeCard = {
   title: string;
   year: string;
   people: string[];
   facts: string[];
   art: string;
+  power: { id: CardPowerId; name: string; text: string };
 };
+
+/** Certificado de conhecimento do episódio (pedido da May, 16/11). */
+export type EpisodeCertificate = { skill: string; learned: string[] };
 
 type EpisodeBase = {
   id: string;
@@ -213,6 +220,7 @@ type EpisodeBase = {
   /** "Anteriormente na Caçada..." do episódio seguinte */
   recapOfThis: string[];
   card: EpisodeCard;
+  certificate: EpisodeCertificate;
 };
 
 /** Episódio Bando × Piratas (Ep. 1 a 4). */

@@ -355,6 +355,19 @@
       "Analisava milhões de jogadas por segundo",
       "Usava busca e regras de especialistas"
     ],
-    "art": "card-ep5"
+    "art": "card-ep5",
+    "power": {
+      "id": "freeHint2",
+      "name": "Jogada de Mestre",
+      "text": "Abre a Dica 1 e a Dica 2 de graça no desafio em que vocês estiverem."
+    }
+  },
+  "certificate": {
+    "skill": "Busca e estratégia",
+    "learned": [
+      "Computadores podem prever jogadas olhando várias possibilidades",
+      "Uma árvore de jogadas organiza as escolhas e suas respostas",
+      "Pensar no melhor lance do adversário ajuda a escolher o nosso"
+    ]
   }
 }

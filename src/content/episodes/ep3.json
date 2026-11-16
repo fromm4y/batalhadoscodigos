@@ -578,6 +578,19 @@
       "Era programado com cabos e chaves",
       "Calculava em decimal"
     ],
-    "art": "card-ep3"
+    "art": "card-ep3",
+    "power": {
+      "id": "forgiveMiss",
+      "name": "Válvula Reserva",
+      "text": "O próximo erro de vocês não tira ponto."
+    }
+  },
+  "certificate": {
+    "skill": "Sequência e depuração",
+    "learned": [
+      "A ordem das operações muda o resultado",
+      "Depurar é encontrar e consertar o passo errado",
+      "Programar com cabos e chaves também é programar"
+    ]
   }
 }

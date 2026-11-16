@@ -8,10 +8,12 @@ import {
   getDocs,
   runTransaction,
   serverTimestamp,
+  Timestamp,
   writeBatch,
   type Firestore,
   type Transaction,
 } from 'firebase/firestore';
+import { addCard, cardsToGrant } from '@/engine/cards';
 import { formMatches, leader, resolveByBar } from '@/engine/match';
 import { applyDelta, POINTS } from '@/engine/scoring';
 import { newMatchDoc } from '@/features/game/actions';
@@ -142,4 +144,37 @@ export async function resolveOpenMatches(c: Ctx): Promise<number> {
     });
   }
   return resolved;
+}
+
+/**
+ * SPEC-02 C2 + pedido da May (16/11): ao liberar o fim, toda dupla que jogou ganha a carta do
+ * episódio no inventário (`teams.cards`); dourada se venceu o confronto. Roda depois de
+ * `resolveOpenMatches`, para os vencedores já estarem decididos. Idempotente.
+ */
+export async function grantEpisodeCards(c: Ctx): Promise<number> {
+  const { db } = getFirebase();
+  const [playersSnap, matchesSnap] = await Promise.all([
+    getDocs(collection(db, 'sessions', c.sessionId, 'players')),
+    getDocs(collection(db, 'sessions', c.sessionId, 'matches')),
+  ]);
+  const matches = Object.fromEntries(
+    matchesSnap.docs.map((d) => [d.id, d.data() as Pick<MatchDoc, 'winner'>]),
+  );
+  const grants = cardsToGrant(
+    playersSnap.docs.map((d) => d.data() as PlayerDoc),
+    matches,
+  );
+  let granted = 0;
+  for (const g of grants) {
+    const ref = doc(db, 'classes', c.session.classId, 'teams', g.teamId);
+    await runTransaction(db, async (tx) => {
+      const t = (await tx.get(ref)).data() as TeamDoc | undefined;
+      if (!t) return;
+      const next = addCard(t.cards, c.session.episodeId, g.variant, Timestamp.now());
+      if (!next) return;
+      tx.update(ref, { cards: next });
+      granted++;
+    });
+  }
+  return granted;
 }

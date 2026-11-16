@@ -165,10 +165,13 @@ service cloud.firestore {
         // −5: Dica 2 nos níveis B/C (16/11) · +7: vitória + Cofre Relâmpago
         && request.resource.data.totalPoints - resource.data.totalPoints >= -5
         && request.resource.data.totalPoints - resource.data.totalPoints <= 7;
+      // A Narradora lança pontos e entrega as cartas do Álbum no fim do episódio (16/11).
       allow update: if ownsClass(classId)
-        && changedOnly(['totalPoints'])
+        && changedOnly(['totalPoints', 'cards'])
         && request.resource.data.totalPoints is int
-        && request.resource.data.totalPoints >= 0;
+        && request.resource.data.totalPoints >= 0
+        && (!('cards' in request.resource.data) || request.resource.data.cards is list)
+        && request.resource.data.get('cards', []).size() <= 10;
       allow create, delete: if false;
 
       // ---------- ledger (histórico de pontos, RN-24) ----------
@@ -231,7 +234,7 @@ service cloud.firestore {
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'misses', 'bonusSolvedAt', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'misses', 'bonusSolvedAt', 'equippedCard', 'cardUses', 'cardBoost', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
           && request.resource.data.connected is bool
           // matchId: só para entrar sozinha contra a máquina, se ainda não tinha confronto
           && (request.resource.data.get('matchId', null) == resource.data.get('matchId', null)

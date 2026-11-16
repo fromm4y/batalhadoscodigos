@@ -12,7 +12,12 @@ import { useNow } from '@/lib/useNow';
 import type { Level, Phase, PlayerDoc, SessionDoc } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
 import type { WithId } from '../data';
-import { formSessionMatches, markVaultLeaders, resolveOpenMatches } from './matchOps';
+import {
+  formSessionMatches,
+  grantEpisodeCards,
+  markVaultLeaders,
+  resolveOpenMatches,
+} from './matchOps';
 import { undoMatches } from './sessionOps';
 
 const ORDER: Phase[] = ['lobby', 'planning', 'locks', 'vault', 'end'];
@@ -117,7 +122,10 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
                   void run(async () => {
                     // RN-18: vantagem do Cofre antes de liberar; RN-20: resultado antes do fim.
                     if (next === 'vault') await markVaultLeaders(opsCtx);
-                    if (next === 'end') await resolveOpenMatches(opsCtx);
+                    if (next === 'end') {
+                      await resolveOpenMatches(opsCtx);
+                      await grantEpisodeCards(opsCtx);
+                    }
                     await updateDoc(ref, {
                       phase: next,
                       phaseStartedAt: serverTimestamp(),
