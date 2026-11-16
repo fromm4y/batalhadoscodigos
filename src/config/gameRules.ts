@@ -190,6 +190,8 @@ export const GAME_RULES = {
   ui: {
     /** RN-10: troca a curiosidade da tela de espera a cada N segundos. */
     curiosityRotateSeconds: 9,
+    /** SPEC-02 C1: o "Anteriormente na Caçada" do aluno dura no máximo N s (tem "Pular") */
+    previouslySeconds: 30,
     /** Seção 9.6: corpo mínimo do texto (px) por nível. */
     minBodyFontPx: { A: 18, B: 16, C: 16 } satisfies Record<Level, number>,
     minButtonHeightPx: 44,

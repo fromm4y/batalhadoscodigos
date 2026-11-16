@@ -31,7 +31,7 @@ export function CollectibleCard({
   const reduce = useReducedMotion();
   const gold = slot === 'dourada';
   const owned = slot === 'ganha' || gold;
-  const w = size === 'sm' ? 'w-36' : size === 'lg' ? 'w-64' : 'w-48';
+  const w = size === 'sm' ? 'w-36' : size === 'lg' ? 'w-64' : 'w-44';
 
   return (
     <motion.figure

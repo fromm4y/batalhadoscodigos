@@ -6,6 +6,7 @@ import {
   collection,
   doc,
   getDocs,
+  getDocsFromServer,
   runTransaction,
   serverTimestamp,
   Timestamp,
@@ -113,16 +114,25 @@ export async function markVaultLeaders(c: Ctx): Promise<void> {
  * RN-20: ao liberar o fim, confrontos sem Cofre resolvido são decididos pela barra
  * (+5 para o vencedor humano; empate = +2 para cada dupla). A máquina não pontua (RN-23).
  */
-export async function resolveOpenMatches(c: Ctx): Promise<number> {
+export async function resolveOpenMatches(
+  c: Ctx,
+): Promise<{ resolved: number; winners: Record<string, MatchDoc['winner']> }> {
   const { db } = getFirebase();
-  const matches = await getDocs(collection(db, 'sessions', c.sessionId, 'matches'));
+  const matches = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'matches'));
   let resolved = 0;
+  // Resultado final de cada confronto, lido DENTRO da transação (sem cache): as cartas usam isto.
+  const winners: Record<string, MatchDoc['winner']> = {};
   for (const m of matches.docs) {
     await runTransaction(db, async (tx) => {
       const snap = await tx.get(m.ref);
       const data = snap.data() as MatchDoc | undefined;
-      if (!data || data.winner) return;
+      if (!data) return;
+      if (data.winner) {
+        winners[m.id] = data.winner;
+        return;
+      }
       const winner = resolveByBar(data.bar);
+      winners[m.id] = winner;
       const humans = [
         { teamId: data.redTeamId, side: 'red' as const },
         { teamId: data.blueTeamId, side: 'blue' as const },
@@ -143,7 +153,7 @@ export async function resolveOpenMatches(c: Ctx): Promise<number> {
       resolved++;
     });
   }
-  return resolved;
+  return { resolved, winners };
 }
 
 /**
@@ -151,14 +161,14 @@ export async function resolveOpenMatches(c: Ctx): Promise<number> {
  * episódio no inventário (`teams.cards`); dourada se venceu o confronto. Roda depois de
  * `resolveOpenMatches`, para os vencedores já estarem decididos. Idempotente.
  */
-export async function grantEpisodeCards(c: Ctx): Promise<number> {
+export async function grantEpisodeCards(
+  c: Ctx,
+  winners: Record<string, MatchDoc['winner']>,
+): Promise<number> {
   const { db } = getFirebase();
-  const [playersSnap, matchesSnap] = await Promise.all([
-    getDocs(collection(db, 'sessions', c.sessionId, 'players')),
-    getDocs(collection(db, 'sessions', c.sessionId, 'matches')),
-  ]);
+  const playersSnap = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'players'));
   const matches = Object.fromEntries(
-    matchesSnap.docs.map((d) => [d.id, d.data() as Pick<MatchDoc, 'winner'>]),
+    Object.entries(winners).map(([id, winner]) => [id, { winner }]),
   );
   const grants = cardsToGrant(
     playersSnap.docs.map((d) => d.data() as PlayerDoc),

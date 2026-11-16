@@ -70,7 +70,7 @@ export function MissionCard({
           {powerIcon(power.id)}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-heist text-lg leading-none tracking-wider text-paper">
+          <p className="font-heist text-lg leading-tight tracking-wider text-paper">
             {power.name} {gold && <span className="text-brass">★</span>}
           </p>
           <p className="font-type text-xs text-mist">

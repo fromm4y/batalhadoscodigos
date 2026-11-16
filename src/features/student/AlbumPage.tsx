@@ -58,7 +58,7 @@ function Album({ claims }: { claims: TeamClaims }) {
   return (
     <HalftoneBackground>
       <Spotlights intensity={0.08} />
-      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-4 py-6 sm:px-8">
+      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-3 px-4 py-4 sm:px-8">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
@@ -110,7 +110,7 @@ function Album({ claims }: { claims: TeamClaims }) {
           )}
         </BrassFrame>
 
-        <SpeechBubble who="narradora" tail="left" className="max-w-3xl">
+        <SpeechBubble who="narradora" tail="left" compact className="max-w-none">
           Cada carta tem um <strong>poder</strong>: no planejamento, levem UMA carta para a missão e
           usem durante o jogo. A <strong>★ dourada</strong> é rara (só para quem venceu o confronto)
           e vale mais usos. Carta perdida não volta: não faltem! 😉

@@ -19,7 +19,6 @@ import { Link } from 'react-router';
 import { AlbumLink } from '@/components/game/AlbumLink';
 import { CollectibleCard } from '@/components/game/CollectibleCard';
 import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamCard, TeamDoc } from '@/types/domain';
-import { usesLabel } from './cardLabels';
 import { LEDGER_LABEL } from './ledgerLabels';
 import { useEpisodeHook } from './useEpisodeHook';
 
@@ -339,20 +338,19 @@ function AlbumCard({ episode, card }: { episode: Episode; card: TeamCard | undef
     );
   const gold = card.variant === 'dourada';
   return (
-    <div className="flex flex-col items-center gap-2">
-      <p className="font-comic text-3xl tracking-wide text-brass text-outline">
+    <div className="flex flex-col items-center gap-1">
+      <p
+        className="font-comic text-3xl tracking-wide text-brass text-outline"
+        title="Guardada no Álbum: levem esta carta para usar o poder nos próximos episódios!"
+      >
         {gold ? 'CARTA RARA!' : 'CARTA NOVA!'}
       </p>
       <CollectibleCard
         card={episode.card}
         number={episode.number}
         slot={gold ? 'dourada' : 'ganha'}
-        usesLabel={usesLabel(card)}
         flip
       />
-      <p className="max-w-60 text-center font-type text-sm text-mist">
-        Guardada no Álbum: levem esta carta para usar o poder nos próximos episódios!
-      </p>
       <div className="flex flex-wrap justify-center gap-2">
         <Link
           to={`/certificado/${episode.id}`}

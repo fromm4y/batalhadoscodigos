@@ -6,7 +6,7 @@ import type { AnyEpisode } from '@/content/types';
 /** O que o Álbum e o certificado precisam de cada episódio. */
 export type SeasonCardInfo = Pick<
   AnyEpisode,
-  'id' | 'number' | 'title' | 'card' | 'certificate' | 'invention'
+  'id' | 'number' | 'title' | 'card' | 'certificate' | 'invention' | 'recapOfThis'
 >;
 
 let cache: Record<string, SeasonCardInfo> | null = null;

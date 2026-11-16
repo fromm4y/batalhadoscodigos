@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
-import { useEpisodeHook } from '@/features/game/useEpisodeHook';
+import { useEpisodeHook, useSeasonOrder } from '@/features/game/useEpisodeHook';
+import { previousEpisodeId } from '@/features/game/previousEpisode';
+import { useSeasonCards } from '@/features/game/useSeasonCards';
+import { PreviouslyPanel } from '@/components/game/PreviouslyPanel';
 import { useState } from 'react';
 import { Avatar } from '@/components/avatar/Avatar';
 import { ComicArt, cn } from '@/components/comic';
@@ -15,23 +18,69 @@ import type { WithId } from '../data';
 
 type Teams = WithId<TeamDoc>[];
 
-/** `planning` no projetor (SPEC 9.4): pódio + contagem de lados escolhidos. */
-export function ProjectorPlanning({ teams, players }: { teams: Teams; players: PlayerDoc[] }) {
+/**
+ * `planning` no projetor (SPEC 9.4): pódio + contagem de lados escolhidos. A partir do Ep. 2,
+ * começa no "Anteriormente na Caçada" (SPEC-02 C1); a Narradora troca pelos botões do canto.
+ */
+export function ProjectorPlanning({
+  teams,
+  players,
+  session,
+}: {
+  teams: Teams;
+  players: PlayerDoc[];
+  session: SessionDoc;
+}) {
+  const order = useSeasonOrder('instructor');
+  const prevId = previousEpisodeId(session, order);
+  const prev = useSeasonCards()?.[prevId ?? ''];
+  const [view, setView] = useState<'recap' | 'ranking'>(prevId ? 'recap' : 'ranking');
   const red = players.filter((p) => p.side === 'red').length;
   const blue = players.filter((p) => p.side === 'blue').length;
   const none = players.length - red - blue;
   return (
     <div className="flex w-full flex-col items-center gap-8">
-      <h1 className="font-heist text-7xl tracking-[0.12em] text-brass text-glow-brass">
-        QUEM ESTÁ NA FRENTE?
-      </h1>
-      <RankingPodium teams={teams} size="xl" maxRest={6} className="w-full max-w-6xl" />
+      {view === 'recap' && prev ? (
+        <PreviouslyPanel
+          big
+          recap={prev.recapOfThis}
+          title={`Episódio ${prev.number}: ${prev.title}`}
+          stats={
+            session.history?.previously?.episodeId === prev.id ? session.history.previously : null
+          }
+        />
+      ) : (
+        <>
+          <h1 className="font-heist text-7xl tracking-[0.12em] text-brass text-glow-brass">
+            QUEM ESTÁ NA FRENTE?
+          </h1>
+          <RankingPodium teams={teams} size="xl" maxRest={6} className="w-full max-w-6xl" />
+        </>
+      )}
       <div className="flex items-center gap-10 font-heist text-5xl tracking-wider">
         <span className="text-bando text-glow-red">🎭 Bando {red}</span>
         <span className="text-mist">×</span>
         <span className="text-piratas text-glow-blue">⚓ Piratas {blue}</span>
         {none > 0 && <span className="text-3xl text-mist">({none} escolhendo...)</span>}
       </div>
+      {prevId && (
+        <div className="fixed right-4 bottom-4 flex gap-2 opacity-40 transition-opacity hover:opacity-100 focus-within:opacity-100">
+          {(['recap', 'ranking'] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              aria-pressed={view === v}
+              onClick={() => setView(v)}
+              className={cn(
+                'min-h-11 cursor-pointer border-[3px] border-ink px-3 pt-1 font-heist text-xl tracking-wider',
+                view === v ? 'bg-brass text-ink' : 'bg-graphite-light text-paper',
+              )}
+            >
+              {v === 'recap' ? '📼 Anteriormente' : '🏆 Ranking'}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

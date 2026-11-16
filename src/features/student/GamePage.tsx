@@ -308,6 +308,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         onChooseSide={(s) => chooseSide(ctx, s)}
         onChooseMode={(m) => chooseMode(ctx, m)}
         onEquipCard={(id) => void equipCard(ctx, id)}
+        session={session}
       />
     );
   } else if (effective.phase === 'end') {

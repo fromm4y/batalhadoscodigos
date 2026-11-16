@@ -14,9 +14,13 @@ import type { Episode } from '@/content/types';
 import { ListenButton } from '@/components/game/ListenButton';
 import { RankingPodium } from '@/components/game/RankingPodium';
 import { VersusScreen } from '@/components/game/VersusScreen';
+import { PreviouslyPanel } from '@/components/game/PreviouslyPanel';
 import { equippableCards } from '@/engine/cards';
-import type { GameMode, MatchDoc, PlayerDoc, Side, TeamDoc } from '@/types/domain';
+import type { GameMode, MatchDoc, PlayerDoc, SessionDoc, Side, TeamDoc } from '@/types/domain';
 import { CardPicker } from './CardPicker';
+import { previousEpisodeId } from './previousEpisode';
+import { useSeasonOrder } from './useEpisodeHook';
+import { useSeasonCards } from './useSeasonCards';
 
 type Props = {
   episode: Episode;
@@ -34,9 +38,12 @@ type Props = {
   onChooseMode: (m: GameMode) => Promise<void>;
   /** carta do Álbum levada na missão (16/11) */
   onEquipCard?: (episodeId: string | null) => void;
+  /** sessão (histórico da turma para o "Anteriormente na Caçada") */
+  session?: Pick<SessionDoc, 'episodeId' | 'history'>;
 };
 
 const STEP_LABEL = {
+  recap: 'Anteriormente',
   comic: 'Abertura',
   dossier: 'Dossiê',
   ranking: 'Ranking',
@@ -66,10 +73,16 @@ export function PlanningScreen({
   onChooseSide,
   onChooseMode,
   onEquipCard,
+  session,
 }: Props) {
-  const [step, setStep] = useState<Step>(player.side || late ? 'side' : 'comic');
+  const order = useSeasonOrder('student');
+  const prevId = session ? previousEpisodeId(session, order) : null;
+  const seasonCards = useSeasonCards();
+  const prev = prevId ? seasonCards?.[prevId] : undefined;
+  const [step, setStep] = useState<Step>(player.side || late ? 'side' : prevId ? 'recap' : 'comic');
   const hasCards = !!onEquipCard && equippableCards(team.cards, episode.id).length > 0;
   const steps: Step[] = [
+    ...(prevId ? ['recap' as const] : []),
     'comic',
     'dossier',
     'ranking',
@@ -109,6 +122,30 @@ export function PlanningScreen({
         </header>
 
         <AnimatePresence mode="wait">
+          {step === 'recap' && (
+            <motion.section
+              key="recap"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {prev ? (
+                <PreviouslyPanel
+                  recap={prev.recapOfThis}
+                  title={`Episódio ${prev.number}: ${prev.title}`}
+                  stats={
+                    session?.history?.previously?.episodeId === prev.id
+                      ? session.history.previously
+                      : null
+                  }
+                  onDone={() => setStep('comic')}
+                />
+              ) : (
+                <p className="font-type text-mist">Rebobinando a fita...</p>
+              )}
+            </motion.section>
+          )}
+
           {step === 'comic' && (
             <motion.section
               key="comic"

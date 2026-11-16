@@ -123,8 +123,8 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
                     // RN-18: vantagem do Cofre antes de liberar; RN-20: resultado antes do fim.
                     if (next === 'vault') await markVaultLeaders(opsCtx);
                     if (next === 'end') {
-                      await resolveOpenMatches(opsCtx);
-                      await grantEpisodeCards(opsCtx);
+                      const { winners } = await resolveOpenMatches(opsCtx);
+                      await grantEpisodeCards(opsCtx, winners);
                     }
                     await updateDoc(ref, {
                       phase: next,
