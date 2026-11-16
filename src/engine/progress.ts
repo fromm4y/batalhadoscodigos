@@ -33,9 +33,20 @@ export function spokenClueFor(
   return script.spokenClues[level].find((c) => c.challengeKey === challengeKey)?.say ?? null;
 }
 
-/** O desafio depende da transmissão da Narradora? (cartões com coluna "rasgada/molhada") */
+/**
+ * O desafio depende da transmissão da Narradora? Cartões com coluna "rasgada/molhada" (Ep. 1) e
+ * cifra com a chave falada (Ep. 2).
+ */
 export function needsTransmission(ch: ResolvedChallenge): boolean {
-  return ch.type === 'punchCardRead' || ch.type === 'punchCardWrite';
+  switch (ch.type) {
+    case 'punchCardRead':
+    case 'punchCardWrite':
+      return true;
+    case 'cipher':
+      return ch.variant.spokenKey === true;
+    default:
+      return false;
+  }
 }
 
 /** Chave do desafio para dicas: `red-lock1`, `blue-vault`... */

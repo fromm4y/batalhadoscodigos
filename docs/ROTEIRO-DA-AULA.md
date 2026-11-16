@@ -27,7 +27,7 @@
 
 | Situação                            | O que fazer                                                                                              |
 | ----------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Dupla terminou o Cofre cedo        | Ela ganha a **🌟 Missão bônus** sozinha (vale +2). Não precisa fazer nada.                               |
+| Dupla terminou o Cofre cedo         | Ela ganha a **🌟 Missão bônus** sozinha (vale +2). Não precisa fazer nada.                               |
 | Dupla chegou atrasada               | Ela entra normalmente; se os confrontos já foram formados, escolhe o lado e joga **contra o robô**.      |
 | Dupla adiantada ou atrasada demais  | Clique na dupla no painel → **Fase só desta dupla**.                                                     |
 | Dupla travada num desafio           | Clique na dupla → **Dar Dica 1** (grátis) ou espere ela usar o 🙋.                                       |

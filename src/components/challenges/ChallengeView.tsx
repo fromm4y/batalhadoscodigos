@@ -2,6 +2,7 @@ import type { ResolvedChallenge } from '@/content/types';
 import type { Level } from '@/types/domain';
 import { AnagramChallenge } from './AnagramChallenge';
 import { BlockBuildChallenge, BlockDebugChallenge } from './BlockChallenges';
+import { CipherChallenge } from './CipherChallenge';
 import type { ChallengeBaseProps } from './common';
 import { PunchCardReadChallenge, PunchCardWriteChallenge } from './PunchCardChallenges';
 import { QuizChallenge } from './QuizChallenge';
@@ -12,7 +13,7 @@ type Props = ChallengeBaseProps & {
   level: Level;
   /** semente do embaralhamento (id da dupla) */
   seed: string;
-  /** a dupla já ouviu a transmissão da Narradora (cartões) */
+  /** a dupla já ouviu a transmissão da Narradora (cartões, chave da cifra) */
   heardTransmission: boolean;
 };
 
@@ -41,5 +42,17 @@ export function ChallengeView({ challenge, level, seed, heardTransmission, ...ba
       return <BlockBuildChallenge variant={challenge.variant} level={level} {...base} />;
     case 'blockDebug':
       return <BlockDebugChallenge variant={challenge.variant} {...base} />;
+    case 'cipher':
+      return (
+        <CipherChallenge
+          variant={challenge.variant}
+          heard={heardTransmission}
+          seed={`${seed}:${challenge.key}`}
+          {...base}
+        />
+      );
+    default:
+      // tipos dos próximos episódios (wiring, priority, boardChoice, gameTree) entram com eles
+      return null;
   }
 }
