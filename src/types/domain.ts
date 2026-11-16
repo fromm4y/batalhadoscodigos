@@ -30,6 +30,10 @@ export type LedgerReason =
   | 'wrong_answer'
   | 'hint_1'
   | 'hint_2'
+  /** Cofre Relâmpago (16/11) */
+  | 'vault_fast'
+  /** Missão bônus (16/11) */
+  | 'bonus_mission'
   | 'manual';
 
 /** Seção 9.5 */
@@ -138,6 +142,10 @@ export type PlayerDoc = {
     heardTransmission: boolean;
   };
   hints: Record<string, 0 | 1 | 2>;
+  /** erros por desafio (combo: abrir de primeira, sem erro e sem dica) */
+  misses?: Record<string, number>;
+  /** missão bônus resolvida (16/11) */
+  bonusSolvedAt?: Timestamp | null;
   helpUsed: boolean;
   /** RN-07: a Narradora adiantou/atrasou só esta dupla */
   phaseOverride?: Phase | null;

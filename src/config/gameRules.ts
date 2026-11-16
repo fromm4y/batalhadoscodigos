@@ -50,6 +50,11 @@ export const GAME_RULES = {
   pull: {
     lockOpen: 20,
     museumEventOk: 10,
+    /**
+     * Combo (pedido da May, 16/11): abrir o cadeado de primeira, sem erro e sem dica, puxa
+     * este tanto A MAIS. Recompensa quem "bate a cabeça" sem pedir ajuda.
+     */
+    comboBonus: 5,
   },
 
   /** Seção 7.6: pontuação da temporada. */
@@ -61,11 +66,29 @@ export const GAME_RULES = {
     draw: 2,
     sideBonus: 2,
     wrongAnswer: -2,
+    /** Dicas no nível A (o B e o C pagam mais, ver `hintsByLevel`). */
     hint1: -2,
     hint2: -4,
+    /** Pedido da May (16/11): dica mais cara nos níveis B e C, para valer a pena pensar antes. */
+    hintsByLevel: {
+      A: { hint1: -2, hint2: -4 },
+      B: { hint1: -3, hint2: -5 },
+      C: { hint1: -3, hint2: -5 },
+    } satisfies Record<Level, { hint1: number; hint2: number }>,
+    /** Cofre Relâmpago (16/11): resolver o Cofre dentro do tempo relâmpago. */
+    vaultFast: 2,
+    /** Missão bônus (16/11): o enigma extra de quem já abriu o Cofre. */
+    bonusMission: 2,
     /** RN-22: o total nunca fica abaixo disto. */
     minTotal: 0,
   },
+
+  /**
+   * Cofre Relâmpago (pedido da May, 16/11) [PADRÃO]: quem resolve o Cofre em até N minutos depois
+   * de a Narradora liberar ganha `points.vaultFast`. O robô leva de 3,5 a 7 min, então dá para
+   * bater (C é mais apertado).
+   */
+  vaultLightningMinutes: { A: 7, B: 6, C: 5 } satisfies Record<Level, number>,
 
   /** RN-12.4 [PADRÃO]: diferença mínima de duplas para o bônus de lado vazio. */
   sideBonusMinDifference: 2,

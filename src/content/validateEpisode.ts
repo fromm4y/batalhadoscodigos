@@ -206,7 +206,10 @@ export function validateEpisode(e: unknown): string[] {
         checkChallenge(c, `${s} cadeado ${i + 1}`, err, keys),
       );
       checkChallenge(sd.vault, `${s} Cofre`, err, keys);
+      if (sd.bonus !== undefined) checkChallenge(sd.bonus, `${s} missão bônus`, err, keys);
     }
+    const hasBonus = (s: string) => isObj(sides?.[s]) && (sides?.[s] as Obj).bonus !== undefined;
+    if (hasBonus('red') !== hasBonus('blue')) err('missão bônus: os dois lados ou nenhum');
     if (!isObj(intro) || !isStr(intro.red) || !isStr(intro.blue)) err('intro.red/blue');
   }
   // As pistas faladas apontam para desafios que existem.

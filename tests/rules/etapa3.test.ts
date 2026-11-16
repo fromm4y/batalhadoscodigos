@@ -123,6 +123,28 @@ describe('pontos e ledger', () => {
     await assertFails(setDoc(led('t1'), ledgerEntry({ sessionId: 'outra' })));
   });
 
+  it('16/11: Dica 2 do nível B/C (−5), Cofre Relâmpago e missão bônus', async () => {
+    const db = asTeam('t1');
+    const led = doc(collection(db, 'classes', 'turma', 'teams', 't1', 'ledger'));
+    await assertSucceeds(setDoc(led, ledgerEntry({ delta: -5, reason: 'hint_2' })));
+    await assertFails(
+      setDoc(
+        doc(collection(db, 'classes', 'turma', 'teams', 't1', 'ledger')),
+        ledgerEntry({ delta: -6, reason: 'hint_2' }),
+      ),
+    );
+    for (const reason of ['vault_fast', 'bonus_mission'])
+      await assertSucceeds(
+        setDoc(
+          doc(collection(db, 'classes', 'turma', 'teams', 't1', 'ledger')),
+          ledgerEntry({ delta: 2, reason }),
+        ),
+      );
+    await assertSucceeds(updateDoc(doc(db, 'classes', 'turma', 'teams', 't1'), { totalPoints: 0 }));
+    const p = doc(db, 'sessions', 's1', 'players', 't1');
+    await assertSucceeds(updateDoc(p, { 'misses.red-lock1': 1, bonusSolvedAt: serverTimestamp() }));
+  });
+
   it('sessão encerrada: nada de pontos', async () => {
     await env.withSecurityRulesDisabled(async (ctx) => {
       await updateDoc(doc(ctx.firestore(), 'sessions', 's1'), { status: 'finished' });

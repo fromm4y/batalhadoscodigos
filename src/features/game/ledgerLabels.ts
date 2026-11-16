@@ -11,5 +11,7 @@ export const LEDGER_LABEL: Record<LedgerReason, string> = {
   wrong_answer: 'Resposta errada',
   hint_1: 'Dica 1',
   hint_2: 'Dica 2',
+  vault_fast: 'Cofre Relâmpago ⚡',
+  bonus_mission: 'Missão bônus 🌟',
   manual: 'Ajuste da Narradora',
 };
