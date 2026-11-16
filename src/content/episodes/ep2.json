@@ -271,6 +271,44 @@
             "hint2": "T virou E: a chave é 11."
           }
         }
+      },
+      "bonus": {
+        "key": "red-bonus",
+        "title": "A chave escondida",
+        "type": "cipher",
+        "leaderLine": "Cofre aberto? Interceptei mais uma. Só que dessa vez a chave veio... disfarçada.",
+        "variants": {
+          "A": {
+            "prompt": "A chave é o número de letras da palavra TURING. Contem e decifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "decode",
+            "shift": 6,
+            "text": "SOYYGU IASVXOJG",
+            "answer": "MISSAO CUMPRIDA",
+            "wheel": "free",
+            "hint1": "Contem as letras: T-U-R-I-N-G.",
+            "hint2": "A chave é 6."
+          },
+          "B": {
+            "prompt": "A chave é 3 + 4 + 5. Façam a conta e decifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "decode",
+            "shift": 12,
+            "text": "A YGEQG Q ZAEEA",
+            "answer": "O MUSEU E NOSSO",
+            "wheel": "free",
+            "hint1": "Somem com calma.",
+            "hint2": "A chave é 12."
+          },
+          "C": {
+            "prompt": "A chave é: (letras de ENIGMA) × 3 − 1. Calculem e decifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "decode",
+            "shift": 17,
+            "text": "R VEZXDR TRZL",
+            "answer": "A ENIGMA CAIU",
+            "wheel": "free",
+            "hint1": "ENIGMA tem 6 letras.",
+            "hint2": "6 × 3 − 1 = 17."
+          }
+        }
       }
     },
     "blue": {
@@ -489,6 +527,44 @@
             "wheel": "free",
             "hint1": "As falsas foram cifradas com outras chaves: com 9 elas viram letras sem sentido.",
             "hint2": "A verdadeira manda guardar a máquina."
+          }
+        }
+      },
+      "bonus": {
+        "key": "blue-bonus",
+        "title": "A ordem da Capitã",
+        "type": "cipher",
+        "leaderLine": "Defesas de pé! Agora mandem uma ordem secreta para a frota. A chave? Descubram.",
+        "variants": {
+          "A": {
+            "prompt": "A chave é o número de letras da palavra NAVIO. Contem e cifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "encode",
+            "shift": 5,
+            "text": "TESOURO ACHADO",
+            "answer": "YJXTZWT FHMFIT",
+            "wheel": "free",
+            "hint1": "Contem as letras: N-A-V-I-O.",
+            "hint2": "A chave é 5."
+          },
+          "B": {
+            "prompt": "A chave é 5 + 4 + 2. Façam a conta e cifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "encode",
+            "shift": 11,
+            "text": "VELA AO VENTO",
+            "answer": "GPWL LZ GPYEZ",
+            "wheel": "free",
+            "hint1": "Somem com calma.",
+            "hint2": "A chave é 11."
+          },
+          "C": {
+            "prompt": "A chave é: (letras de CAPITA) × 3 + 1. Calculem e cifrem! (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "encode",
+            "shift": 19,
+            "text": "MAPA DO OURO",
+            "answer": "FTIT WH HNKH",
+            "wheel": "free",
+            "hint1": "CAPITA tem 6 letras.",
+            "hint2": "6 × 3 + 1 = 19."
           }
         }
       }

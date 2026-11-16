@@ -5,6 +5,7 @@ import type {
   AnagramVariant,
   BlockBuildVariant,
   BlockDebugVariant,
+  CipherVariant,
   Episode,
   Program,
   PunchCardReadVariant,
@@ -49,6 +50,16 @@ export function resolveBonus(ep: Episode, side: Side, level: Level): ResolvedCha
     variant: c.variants[level],
   } as ResolvedChallenge;
 }
+
+// ---------- cipher (Ep. 2) ----------
+/** decode/encode/crack: compara a mensagem digitada com a resposta (RN-28: sem acento, caixa e espaços extras). */
+export function checkCipher(v: CipherVariant, typed: string): boolean {
+  if (v.answer === undefined) return false;
+  const n = normalizeAnswer(typed);
+  return n.length > 0 && n === normalizeAnswer(v.answer);
+}
+/** verify: a opção escolhida (índice ORIGINAL, antes de embaralhar) é a mensagem certa? */
+export const checkCipherVerify = (v: CipherVariant, option: number) => v.correct === option;
 
 // ---------- quiz ----------
 export const checkQuiz = (v: QuizVariant, question: number, option: number) =>
