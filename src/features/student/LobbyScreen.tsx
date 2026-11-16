@@ -31,7 +31,7 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
     <HalftoneBackground>
       <Spotlights beams={[{ x: '30%', angle: 4, sweep: 8, duration: 7 }]} intensity={0.18} />
       <Dust />
-      <main className="relative mx-auto grid min-h-screen max-w-6xl grid-cols-[1fr_1.1fr] items-center gap-12 p-10">
+      <main className="relative mx-auto grid min-h-screen max-w-6xl grid-cols-1 items-center gap-8 p-4 lg:grid-cols-[1fr_1.1fr] lg:gap-12 lg:p-10">
         <div className="flex justify-center [perspective:1200px]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -45,7 +45,7 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
                 <Dossier
                   title={`Ficha: codinome ${team.cityName}`}
                   rotate={-2}
-                  className="w-[24rem]"
+                  className="w-full max-w-[24rem]"
                 >
                   <div className="flex items-center gap-4">
                     <Avatar avatar={team.avatar} side="red" className="h-36 w-32" />

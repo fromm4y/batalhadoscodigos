@@ -73,7 +73,7 @@ export function TeamActionsDialog({ ctx, team, player, episode, level, onClose }
         role="dialog"
         aria-modal="true"
         aria-labelledby="team-actions-title"
-        className="grid max-h-[90vh] w-full max-w-4xl grid-cols-[1.1fr_1fr] gap-6 overflow-y-auto rounded-sm border-[3px] border-ink bg-aged p-6 text-ink shadow-comic"
+        className="grid max-h-[90vh] w-full max-w-4xl grid-cols-1 gap-6 overflow-y-auto rounded-sm border-[3px] border-ink bg-aged p-4 md:grid-cols-[1.1fr_1fr] md:p-6 text-ink shadow-comic"
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">

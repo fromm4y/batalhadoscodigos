@@ -15,10 +15,10 @@ export function InstructorLayout({ title, children }: { title: string; children:
   const signOut = useAuthStore((s) => s.signOut);
   return (
     <HalftoneBackground>
-      <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-6 border-b-4 border-ink bg-graphite px-6">
+      <header className="sticky top-0 z-20 flex min-h-16 flex-wrap items-center justify-between gap-x-6 gap-y-2 border-b-4 border-ink bg-graphite px-3 py-2 sm:px-6">
         <div className="flex items-center gap-3">
           <span className="font-comic text-3xl text-bando text-glow-red">CAÇADA</span>
-          <span className="font-type text-sm text-mist">sala de controle</span>
+          <span className="hidden font-type text-sm text-mist sm:inline">sala de controle</span>
         </div>
         <nav aria-label="Navegação da Narradora" className="flex gap-2">
           <NavLink to="/instrutor/turmas" className={navClass}>
@@ -31,7 +31,7 @@ export function InstructorLayout({ title, children }: { title: string; children:
           )}
         </nav>
         <div className="flex items-center gap-3">
-          <span className="text-right text-sm leading-tight">
+          <span className="hidden text-right text-sm leading-tight sm:block">
             <span className="block font-bold text-paper">{profile?.displayName}</span>
             <span className="block text-mist">
               {profile?.role === 'admin' ? 'Administradora' : 'Narradora'}
@@ -46,8 +46,8 @@ export function InstructorLayout({ title, children }: { title: string; children:
           </button>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-8 py-8">
-        <h1 className="mb-6 font-heist text-5xl tracking-[0.1em] text-paper text-glow-spot">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-8">
+        <h1 className="mb-6 font-heist text-4xl tracking-[0.1em] text-paper text-glow-spot sm:text-5xl">
           {title}
         </h1>
         {children}

@@ -72,12 +72,12 @@ export function PlanningScreen({
   return (
     <HalftoneBackground>
       <Spotlights intensity={0.08} />
-      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-8 py-6">
-        <header className="flex items-center justify-between">
+      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-4 py-6 sm:px-8">
+        <header className="flex flex-wrap items-center justify-between gap-3">
           <p className="font-type text-mist">
             Episódio {episode.number} · {episode.title}
           </p>
-          <nav aria-label="Planejamento" className="flex gap-2">
+          <nav aria-label="Planejamento" className="flex flex-wrap gap-2">
             {(['comic', 'dossier', 'ranking', 'side'] as const).map((s, i) => (
               <button
                 key={s}
@@ -104,7 +104,7 @@ export function PlanningScreen({
               exit={{ opacity: 0 }}
               className="flex flex-col gap-5"
             >
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 {episode.intro.comic.map((p, i) => (
                   <ComicPanel
                     key={i}
@@ -154,7 +154,7 @@ export function PlanningScreen({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="grid grid-cols-[1.2fr_1fr] items-start gap-8"
+              className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.2fr_1fr]"
             >
               <Dossier title={`Dossiê: ${episode.invention.name} (${episode.invention.year})`}>
                 <ul className="list-disc space-y-2 pl-5 text-lg">
@@ -185,7 +185,7 @@ export function PlanningScreen({
               exit={{ opacity: 0 }}
               className="flex flex-col items-center gap-4"
             >
-              <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
+              <h1 className="font-heist text-4xl tracking-[0.12em] sm:text-5xl text-brass text-glow-brass">
                 QUEM ESTÁ NA FRENTE?
               </h1>
               <RankingPodium
@@ -208,10 +208,10 @@ export function PlanningScreen({
               exit={{ opacity: 0 }}
               className="flex flex-col gap-5"
             >
-              <h1 className="text-center font-heist text-5xl tracking-[0.12em] text-paper text-glow-spot">
+              <h1 className="text-center font-heist text-4xl tracking-[0.12em] sm:text-5xl text-paper text-glow-spot">
                 DE QUE LADO VOCÊ ESTÁ?
               </h1>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {(['red', 'blue'] as const).map((s) => {
                   const red = s === 'red';
                   const chosen = player.side === s;
@@ -277,7 +277,7 @@ export function PlanningScreen({
                 </p>
               )}
               {player.side && !late && (
-                <div className="grid grid-cols-[1fr_1fr] items-center gap-6">
+                <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_1fr]">
                   <RouteMap theme={player.side === 'red' ? 'bando' : 'piratas'} opened={0} />
                   <div className="flex flex-col gap-3">
                     <p className="font-heist text-3xl tracking-wider text-paper">CONTRA QUEM?</p>

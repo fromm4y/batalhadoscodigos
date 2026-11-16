@@ -36,8 +36,8 @@ export function TeamSelectPage() {
   return (
     <HalftoneBackground>
       <Spotlights intensity={0.08} />
-      <main className="relative mx-auto max-w-6xl p-8">
-        <header className="mb-8 flex items-end justify-between gap-6">
+      <main className="relative mx-auto max-w-6xl p-4 sm:p-8">
+        <header className="mb-8 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-type text-mist">Sessão {join.code}</p>
             <h1 className="font-heist text-6xl tracking-[0.1em] text-paper text-glow-spot">
@@ -64,7 +64,7 @@ export function TeamSelectPage() {
             </SpeechBubble>
           </div>
         ) : (
-          <ul className="grid grid-cols-5 gap-5">
+          <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
             {join.teams.map((t, i) => (
               <motion.li
                 key={t.teamId}
@@ -198,7 +198,7 @@ function PinDialog({
         initial={{ scale: 0.8, rotate: -3 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="grid grid-cols-[auto_1fr] items-center gap-8 rounded-hand border-4 border-ink bg-graphite-dots p-8 shadow-comic glow-brass"
+        className="grid grid-cols-1 items-center gap-8 rounded-hand border-4 border-ink bg-graphite-dots p-4 sm:grid-cols-[auto_1fr] sm:p-8 shadow-comic glow-brass"
       >
         <div className="flex flex-col items-center gap-2">
           <Avatar avatar={team.avatar} className="h-48 w-40" title={`Avatar de ${team.cityName}`} />

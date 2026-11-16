@@ -16,7 +16,7 @@
 - **Back:** Firebase Auth (Google p/ instrutores, **custom token** p/ duplas) + Firestore (tempo real via `onSnapshot`).
 - **Funções:** Vercel Serverless Functions em `api/*` com `firebase-admin`. **Não usar Cloud Functions** (plano Spark).
 - **Qualidade:** TypeScript **estrito**, sem `any` desnecessário; ESLint + Prettier; Vitest para o motor.
-- **Alvo:** Chrome desktop, mínimo **1366×768**, sem rolagem horizontal na tela de jogo.
+- **Alvo:** Chrome desktop 1366×768 (a tela de jogo cabe sem rolar); o site também é **responsivo** (celular e tablet, sem rolagem lateral).
 
 ## Regras inegociáveis
 
@@ -132,7 +132,12 @@ firestore.rules
 - **(13/11) Áudio (Etapa 7):** `src/audio/engine.ts` (Web Audio sintetizado: efeitos + música por fase: lobby, planning, red, blue, vault, end). Preferências (música, efeitos, mudo) em `localStorage['cacada.audio']` via `useAudio`. Música para em transmissão e telas congeladas.
 - **(13/11) Narração:** botão "🔊 Ouvir" (Web Speech, voz pt-BR) nos desafios e na abertura; some sem voz pt-BR; abaixa a música enquanto fala; nunca lê respostas.
 - **(15/11) Fim de ano (SPEC-02 A2–A4):** turma arquivada é somente leitura (regras: só desarquivar; a admin também arquiva). `POST /api/admin-cleanup` apaga sessões vencidas há mais de `GAME_RULES.cleanup.olderThanDays` (Narradora: as próprias; admin: todas). `POST /api/season-close` exige o nome da turma, apaga duplas/ledger/PINs/sessões e arquiva (o CSV do ranking é baixado antes, no navegador). Tudo vai para `auditLog` (só a admin lê). Lógica em `api/_lib/dataLifecycle.ts`.
-- **(15/11) Personagens recebidos:** 7 completos (`menina-01..04`, `menino-01..03`) + 3 metades esperando o par. Recorte do fundo e da marca d'água por script; o personagem só aparece com as duas versões.
+- **(15/11) Personagens:** os 24 estão completos (lista em `docs/IMAGENS.md` §6). Recorte do fundo e da marca d'água por script; o personagem só aparece com as duas versões. **Toda imagem nova que o jogo precisar vai para o `docs/IMAGENS.md` antes de entrar no código.**
+- **(15/11) Conta nova do Firebase:** roteiro em `docs/CONFIGURACAO-FIREBASE.md` (projeto, Auth Google, Firestore em São Paulo, regras, 2 índices, app web, conta de serviço, variáveis da Vercel, Redeploy, `/api/setup`).
+- **(15/11) Escolas:** 17, agrupadas por professor(a) em `api/_lib/schools.ts` (a José Emidio de Aguiar é da Mayara e do Julio).
+- **(15/11) Roteiro em nova aba:** `/instrutor/roteiro/:episodeId` (`ScriptPage`), lido do JSON do episódio; gabarito por `src/engine/answerKey.ts`.
+- **(15/11) Responsivo:** sem largura mínima; telas empilham abaixo de `lg`. No computador (`lg+`) a tela de jogo mantém altura fixa (`lg:h-screen`) e cabe em 1366×768. Conferência: nenhum elemento passa da borda em 390, 820 e 1366 px.
+- **Dupla = 2 alunos no mesmo computador** (SPEC); o confronto é dupla contra dupla (ou contra o robô). Com 1 computador por aluno, o aluno joga sozinho como uma "dupla" de 1.
 - **(13/11) Classes conflitantes:** o `cn` só junta strings (sem tailwind-merge). Nunca passar duas classes da mesma propriedade (ex.: `relative` + `fixed`); usar ternário ou uma prop (`compact`, `tight`, `onDark`).
 - **(13/11) Ensaio geral (Etapa 8, aprovado no teste):** aula real de 43 min (entrada 3 + planejamento 5 + cadeados 20 + Cofre 12 + fim 3) com 3 duplas, painel e projetor, robô em velocidade real, sem erro no console, memória estável (~40–55 MB por tela). O orçamento fica protegido por teste (`src/engine/lessonTiming.ts`: tempos guia + entrada ≤ `GAME_RULES.lesson.totalMinutes`; pior caso do robô cabe nos tempos guia). Roteiro prático para a Narradora: `docs/ROTEIRO-DA-AULA.md`.
 - **(13/11) Pista falada:** dupla que chega ao cadeado da pista depois da transmissão fica esperando; o painel mostra "N dupla(s) aguardando" e a Narradora transmite de novo (está no roteiro).

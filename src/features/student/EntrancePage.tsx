@@ -71,7 +71,7 @@ export function EntrancePage() {
       <Spotlights />
       <Lasers lasers={[{ top: '82%', angle: 2 }]} />
       <Dust />
-      <main className="relative mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center gap-8 p-8">
+      <main className="relative mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center gap-8 p-4 sm:p-8">
         <GameLogo />
 
         {team.status === 'team' ? (

@@ -68,7 +68,7 @@ export function BlockBuildChallenge({
   }
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-5">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_1fr]">
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2" aria-label="Blocos disponíveis">
           {variant.palette.map((b: PaletteBlock) => (
@@ -183,7 +183,7 @@ export function BlockDebugChallenge({
         : 'Você pode trocar símbolos (clique no bloco) e contagens (− e +).';
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-5">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-[1fr_1fr]">
       <div className="flex flex-col gap-3">
         <p className="text-sm">{hint} Não dá para colocar nem tirar blocos.</p>
         <ProgramEditor

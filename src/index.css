@@ -107,7 +107,9 @@
   }
   body {
     min-height: 100vh;
-    min-width: 1024px;
+    /* Responsivo (pedido da May, 15/11): nada de largura mínima. Enfeites (holofotes, lasers)
+       nunca criam rolagem para o lado. */
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
   }
   :focus-visible {

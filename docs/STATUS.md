@@ -1,6 +1,6 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 15/11/2026._
+_Atualizado em 15/11/2026 (tarde)._
 
 **Resumo:** o **Episódio 1 está completo e testado** (cabe em 50 min, sem erros). Os **Ep. 2 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
@@ -40,6 +40,15 @@ _Atualizado em 15/11/2026._
 - **Admin:** professoras liberadas, escolas, **temporada longa ou curta** (muda o gancho do fim de cada episódio), limpeza geral.
 - Roteiro prático da aula: `docs/ROTEIRO-DA-AULA.md`.
 
+### Novidades da tarde de 15/11
+
+- **Passo a passo do Firebase/Vercel numa conta nova:** `docs/CONFIGURACAO-FIREBASE.md`.
+- **17 escolas** (Mayara, Guilherme, Francisco, Dante e Julio) no `/api/setup`.
+- **24 personagens completos** (12 meninas + 12 meninos).
+- **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
+- **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
+- **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
 ### Por baixo
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
@@ -52,11 +61,11 @@ _Atualizado em 15/11/2026._
 
 ### Com você
 
-| O quê                                                 | Por quê                                                                                                              |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Publicar o `firestore.rules`** deste PR no Firebase | Sem isso: alarme pelas duplas, `config/season`, arquivar e `auditLog` não funcionam                                  |
-| **Testar num computador da escola**                   | Som, voz do "Ouvir" e desempenho em máquina mais fraca                                                               |
-| **Imagens** (`docs/IMAGENS.md`)                       | 31 dos personagens (faltam os pares de `menina-05`, `menino-04`, `menino-05` e mais 14 personagens) e 32 dos Ep. 2–5 |
+| O quê                                                                                            | Por quê                                                                                                              |
+| ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| **Configurar a conta nova** (`docs/CONFIGURACAO-FIREBASE.md`) e **publicar o `firestore.rules`** | Sem isso: alarme pelas duplas, `config/season`, arquivar e `auditLog` não funcionam                                  |
+| **Testar num computador da escola**                                                              | Som, voz do "Ouvir" e desempenho em máquina mais fraca                                                               |
+| **Imagens** (`docs/IMAGENS.md`)                                                                  | 31 dos personagens (faltam os pares de `menina-05`, `menino-04`, `menino-05` e mais 14 personagens) e 32 dos Ep. 2–5 |
 
 ### No código
 

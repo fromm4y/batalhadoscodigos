@@ -27,7 +27,7 @@ export function CharacterPicker({
   const list = all.filter((id) => id.startsWith(group));
 
   return (
-    <div className="grid grid-cols-[1fr_auto] items-start gap-8">
+    <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_auto]">
       <div>
         {groups.length > 1 && (
           <div role="tablist" aria-label="Personagens" className="mb-3 flex gap-2">
@@ -48,7 +48,10 @@ export function CharacterPicker({
             ))}
           </div>
         )}
-        <ul className="grid grid-cols-6 gap-3" aria-label="Escolham o personagem">
+        <ul
+          className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6"
+          aria-label="Escolham o personagem"
+        >
           {list.map((id, i) => {
             const selected = value.character === id;
             return (
@@ -79,13 +82,13 @@ export function CharacterPicker({
         </ul>
       </div>
 
-      <div className="flex gap-4" aria-live="polite">
+      <div className="flex flex-wrap justify-center gap-4" aria-live="polite">
         {value.character ? (
           (['red', 'blue'] as const).map((s) => (
             <figure key={s} className="flex flex-col items-center gap-1">
               <div
                 className={cn(
-                  'flex h-60 w-48 items-end justify-center overflow-hidden rounded-hand border-4 border-ink',
+                  'flex h-44 w-36 items-end justify-center overflow-hidden rounded-hand border-4 border-ink sm:h-60 sm:w-48',
                   s === 'red' ? 'bg-bando-dark glow-red' : 'bg-piratas-dark glow-blue',
                 )}
               >

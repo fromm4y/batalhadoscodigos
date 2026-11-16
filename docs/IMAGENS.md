@@ -5,6 +5,8 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 
 > **O que NÃO vou pedir como imagem** (eu faço em SVG/CSS no código): avatares das duplas (SPEC 9.5 exige SVG em camadas), cadeados, barra do cabo de guerra, onomatopeias, balões, botões, logo, ícones de UI.
 
+> 📌 **Toda imagem nova que o jogo precisar entra nesta lista antes de ser usada no código** (combinado com a May em 15/11). Se faltar algum id aqui, é bug de documentação.
+
 ## ⚠️ Regras de direitos (obrigatório)
 
 - **Imagens:** nada de _La Casa de Papel_ ou _One Piece_ (os **nomes** dos personagens podem aparecer como opção de nome, decisão da May em 13/11, mas a **arte** continua 100% original): sem máscara de Dalí (usar **máscara de olhos simples, tipo dominó**), sem Luffy, sem chapéu de palha **com fita vermelha** (usar **fita azul**), sem Jolly Roger com chapéu, sem logos.
@@ -140,23 +142,17 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 > _noir comic book illustration, waist-up portrait of an original kid character, [11]-year-old [girl/boy] with [dark brown skin, curly black hair in two puffs, round glasses], confident friendly smile, wearing [a red hooded jumpsuit and a simple red domino eye mask, holding a flashlight] / [a straw hat with a blue ribbon, blue vest and neck scarf, holding a spyglass], bold black ink outlines, halftone shading, dramatic rim lighting, plain solid flat dark navy background (#0B0D14), no pattern, no text, no logos_
 
-### Situação dos personagens (15/11)
+### Situação dos personagens — ✅ COMPLETOS (15/11)
 
-| Personagem                                           | Bando        | Piratas      | No jogo?     |
-| ---------------------------------------------------- | ------------ | ------------ | ------------ |
-| `menina-01` (ruiva, sardas)                          | ✅           | ✅           | ✅           |
-| `menina-02` (cabelo chanel preto)                    | ✅           | ✅           | ✅           |
-| `menina-03` (tranças)                                | ✅           | ✅           | ✅           |
-| `menina-04` (puffs + óculos)                         | ✅           | ✅           | ✅           |
-| `menina-05` (hijab)                                  | ✅           | ⏳ **falta** | espera o par |
-| `menino-01` (loiro)                                  | ✅           | ✅           | ✅           |
-| `menino-02` (cabelo curto)                           | ✅           | ✅           | ✅           |
-| `menino-03` (black alto)                             | ✅           | ✅           | ✅           |
-| `menino-04` (cacheado, máscara-óculos)               | ✅           | ⏳ **falta** | espera o par |
-| `menino-05` (aparelho nos dentes)                    | ⏳ **falta** | ✅           | espera o par |
-| `menina-06` a `menina-12`, `menino-06` a `menino-12` | ⏳           | ⏳           | —            |
+**Os 24 personagens estão no jogo** (12 meninas + 12 meninos, cada um em Bando e Piratas).
 
-> Algumas imagens vieram com a marca d'água **"raphael.app"** no canto: eu removo no recorte, mas se der, gere sem ela.
+| Meninas                                                                                                                                                                                                                                                                            | Meninos                                                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 01 ruiva, sardas · 02 chanel preto · 03 tranças · 04 puffs + óculos · 05 hijab · 06 cachos com mechas roxas · 07 cadeirante, cabelo castanho · 08 trança lateral · 09 cabelo preto liso com franja · 10 loira, coque cacheado · 11 tranças com miçangas · 12 cabelo black curtinho | 01 loiro · 02 cabelo curto · 03 black alto · 04 undercut + óculos · 05 cacheado + óculos · 06 cadeirante · 07 cabelo preto espetado · 08 franja preta · 09 ruivo cacheado + óculos · 10 dreads · 11 cacheado castanho · 12 castanho, sorriso banguela |
+
+Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na máscara), menina-09 com penas e com cinto, menino-04 antigo de cabelo espetado e aparelho (Bando e Piratas: lembrava um personagem de anime) e menina-10 com óculos gatinho.
+
+> Para **trocar** um personagem: gere as duas versões novas e mande dizendo qual id substitui.
 
 ---
 
@@ -177,7 +173,7 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 ---
 
-**Ep. 1: 32 imagens, todas entregues ✅.** Faltam: **31 dos personagens das duplas** (seção 6, 17 de 48 prontas) e **32 dos Ep. 2–5** (seção 7: 24 quadros + 4 cartas + 4 ganchos).
+**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 48 ✅**. Faltam **32 dos Ep. 2–5** (seção 7: 24 quadros + 4 cartas + 4 ganchos).
 **Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
 
 > O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.

@@ -61,12 +61,12 @@ export function EndScreen({
   return (
     <HalftoneBackground>
       <Spotlights intensity={step === 'hook' ? 0.05 : 0.14} />
-      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-8 py-6">
-        <header className="flex items-center justify-between">
+      <main className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-5 px-4 py-6 sm:px-8">
+        <header className="flex flex-wrap items-center justify-between gap-3">
           <p className="font-type text-mist">
             Fim do episódio {episode.number} · {episode.title}
           </p>
-          <nav aria-label="Fim do episódio" className="flex gap-2">
+          <nav aria-label="Fim do episódio" className="flex flex-wrap gap-2">
             {STEPS.map((s, i) => (
               <button
                 key={s}
@@ -101,7 +101,7 @@ export function EndScreen({
             )}
             {step === 'ranking' && (
               <div className="flex flex-col items-center gap-4">
-                <h1 className="font-heist text-5xl tracking-[0.12em] text-brass text-glow-brass">
+                <h1 className="font-heist text-4xl tracking-[0.12em] sm:text-5xl text-brass text-glow-brass">
                   RANKING DA TURMA
                 </h1>
                 <SessionHighlight
@@ -180,7 +180,7 @@ function ResultChapter({
   }, [resultKind]);
 
   return (
-    <div className="grid flex-1 grid-cols-[1fr_1fr] items-start gap-8">
+    <div className="grid flex-1 grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_1fr]">
       <div className="relative flex flex-col gap-3">
         {result ? (
           <>
@@ -279,12 +279,12 @@ function ResultChapter({
 
 function RevealChapter({ episode }: { episode: Episode }) {
   return (
-    <div className="grid flex-1 grid-cols-[1fr_auto] items-start gap-6">
+    <div className="grid flex-1 grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_auto]">
       <div className="flex flex-col gap-3">
         <h1 className="font-heist text-4xl tracking-[0.12em] text-paper text-glow-spot">
           O QUE ACONTECEU DE VERDADE
         </h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {episode.reveal.map((p, i) => (
             <ComicPanel
               key={i}
@@ -348,7 +348,7 @@ function HookChapter({ episode }: { episode: Episode }) {
   if (!hook) return <div className="flex-1" />;
   const end = hook.kind === 'seasonEnd';
   return (
-    <div className="relative grid flex-1 grid-cols-[1.1fr_1fr] items-center gap-8 rounded-hand border-4 border-ink bg-noir p-8">
+    <div className="relative grid flex-1 grid-cols-1 items-center gap-8 rounded-hand border-4 border-ink bg-noir p-4 md:p-8 lg:grid-cols-[1.1fr_1fr]">
       <div className="flex flex-col gap-4">
         <p className="font-heist text-5xl leading-none tracking-[0.2em] text-bando text-glow-red animate-glitch">
           TRANSMISSÃO INTERCEPTADA

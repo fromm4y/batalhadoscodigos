@@ -244,3 +244,20 @@ describe('alternativas embaralhadas por dupla (pedido da May, 15/11)', () => {
     expect(new Set(firstPos).size).toBe(3);
   });
 });
+
+describe('gabarito do roteiro', () => {
+  it('resume a resposta de todos os desafios de todos os episódios', async () => {
+    const { answerKey } = await import('./answerKey');
+    const eps = await Promise.all(
+      ['ep1', 'ep2', 'ep3', 'ep4', 'ep5'].map((id) => import(`../content/episodes/${id}.json`)),
+    );
+    for (const { default: e } of eps) {
+      const list = e.coop
+        ? [...e.coop.locks, e.coop.vault]
+        : [...e.sides.red.locks, e.sides.red.vault, ...e.sides.blue.locks, e.sides.blue.vault];
+      for (const c of list)
+        for (const lv of LEVELS)
+          expect(answerKey(c, lv).length, `${e.id} ${c.key} ${lv}`).toBeGreaterThan(0);
+    }
+  });
+});
