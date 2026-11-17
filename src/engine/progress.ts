@@ -48,6 +48,8 @@ export function needsTransmission(ch: ResolvedChallenge): boolean {
       return ch.variant.spokenColumn >= 0;
     case 'cipher':
       return ch.variant.spokenKey === true;
+    case 'wiring':
+      return ch.variant.startSpoken === true;
     default:
       return false;
   }

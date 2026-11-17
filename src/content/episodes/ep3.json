@@ -151,6 +151,119 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "red-lock1-2",
+            "title": "Dossiê secreto",
+            "type": "quiz",
+            "leaderLine": "Agora o dossiê secreto. Pensem como as programadoras: com calma e em ordem!",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 3 perguntas do dossiê secreto.",
+                "hint1": "Pense em como o ENIAC funcionava.",
+                "hint2": "Cabos ligam as partes; válvula queimada precisa ser trocada.",
+                "questions": [
+                  {
+                    "q": "Para que servem os cabos num painel como o do ENIAC?",
+                    "options": [
+                      "Para ligar as partes na ordem certa",
+                      "Para enfeitar a sala",
+                      "Para segurar a máquina"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quando uma válvula queimava, o que era preciso fazer?",
+                    "options": ["Achar qual era e trocar", "Esperar ela esfriar sozinha", "Nada"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O ENIAC fazia contas com números...",
+                    "options": ["Decimais, como os nossos", "Romanos", "Só pares"],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 4 perguntas do dossiê secreto.",
+                "hint1": "Releia o dossiê e pense no tamanho da máquina.",
+                "hint2": "Eram quase 18 mil válvulas e reprogramar levava dias.",
+                "questions": [
+                  {
+                    "q": "Por que o ENIAC esquentava tanto?",
+                    "options": [
+                      "Tinha milhares de válvulas ligadas",
+                      "Ficava perto de um fogão",
+                      "Era pintado de preto"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quanto tempo levava para reprogramar o ENIAC?",
+                    "options": ["Dias, religando cabos", "Um segundo", "Um ano inteiro"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quantas válvulas o ENIAC tinha, mais ou menos?",
+                    "options": ["Cerca de 18 mil", "Cerca de 10", "Cerca de 1 milhão"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que é um programa?",
+                    "options": [
+                      "Uma lista de instruções para a máquina",
+                      "Um cabo de energia",
+                      "Uma válvula grande"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "hint1": "Pense na ordem das contas e no que veio depois das válvulas.",
+                "hint2": "Ordem diferente = conta diferente. O transistor substituiu a válvula.",
+                "questions": [
+                  {
+                    "q": "Por que trocar a ordem dos módulos muda o resultado?",
+                    "options": [
+                      "Somar e multiplicar em ordens diferentes dá contas diferentes",
+                      "Porque a máquina cansa",
+                      "Não muda nada"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Em que ano o ENIAC foi apresentado ao público?",
+                    "options": ["1946", "1926", "1966"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Qual era a maior fraqueza das válvulas?",
+                    "options": [
+                      "Queimavam com frequência",
+                      "Eram invisíveis",
+                      "Molhavam com facilidade"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Que invenção substituiu as válvulas nos computadores?",
+                    "options": ["O transistor", "A lâmpada de LED", "O disquete"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Calcular a trajetória de um projétil é um exemplo de...",
+                    "options": [
+                      "Problema com muitas contas repetidas",
+                      "Desenho artístico",
+                      "Jogo de tabuleiro"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -186,6 +299,40 @@
               "accept": ["valvula", "valvulas", "a valvula", "valvula termionica"],
               "hint1": "É uma peça do ENIAC que aparece no dossiê.",
               "hint2": "Começa com V e tem 7 letras."
+            }
+          },
+          "stage2": {
+            "key": "red-lock2-2",
+            "title": "O enigma do painel",
+            "type": "riddle",
+            "leaderLine": "Atrás da charada tinha outra. O guarda gosta de enigmas!",
+            "variants": {
+              "A": {
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
+                "text": "Sou comprido, levo energia de um lugar a outro e, no ENIAC, fui usado para programar. Quem sou eu?",
+                "accept": ["cabo", "cabos", "o cabo"],
+                "hint1": "Pense no que as programadoras ligavam no painel.",
+                "hint2": "Tem 4 letras e começa com C.",
+                "options": ["Cabo", "Martelo", "Chapéu"]
+              },
+              "B": {
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
+                "text": "Sou a ordem dos passos de um programa. Se você me trocar, o resultado muda. Quem sou eu?",
+                "accept": ["sequencia", "a sequencia"],
+                "hint1": "Pense no painel: a ordem dos módulos importa.",
+                "hint2": "Começa com S.",
+                "options": ["Sequência", "Cor", "Tamanho", "Peso"]
+              },
+              "C": {
+                "prompt": "Digite a resposta do enigma.",
+                "mode": "text",
+                "text": "Sou pequeno, substituí as válvulas e hoje existo aos bilhões dentro de cada celular. Quem sou eu?",
+                "accept": ["transistor", "transistores", "o transistor"],
+                "hint1": "Veio depois da válvula e é muito menor.",
+                "hint2": "Começa com TRANS..."
+              }
             }
           }
         },
@@ -228,6 +375,47 @@
               "hint2": "×2, +4, ×3, −1.",
               "startSpoken": true
             }
+          },
+          "stage2": {
+            "key": "red-lock3-2",
+            "title": "O painel completo",
+            "type": "wiring",
+            "leaderLine": "O painel tem uma segunda fileira de cabos! A entrada é a MESMA que veio pelo rádio.",
+            "variants": {
+              "A": {
+                "mode": "build",
+                "start": 2,
+                "modules": ["-3", "x2", "x4"],
+                "slots": 3,
+                "target": 4,
+                "prompt": "Use a MESMA entrada do rádio. Ligue 3 módulos na ordem certa para chegar a 4.",
+                "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+                "hint2": "A ordem certa é ×2, -3, ×4.",
+                "startSpoken": true
+              },
+              "B": {
+                "mode": "build",
+                "start": 4,
+                "modules": ["-3", "+5", "x2", "-1"],
+                "slots": 3,
+                "target": 15,
+                "prompt": "Use a MESMA entrada do rádio. Ligue 3 módulos na ordem certa para chegar a 15. Um módulo sobra!",
+                "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+                "hint2": "A ordem certa é +5, ×2, -3.",
+                "startSpoken": true
+              },
+              "C": {
+                "mode": "build",
+                "start": 3,
+                "modules": ["+3", "+4", "x4", "x2", "+1"],
+                "slots": 4,
+                "target": 33,
+                "prompt": "Use a MESMA entrada do rádio. Ligue 4 módulos na ordem certa para chegar a 33. Um módulo sobra!",
+                "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+                "hint2": "A ordem certa é ×4, +4, ×2, +1.",
+                "startSpoken": true
+              }
+            }
           }
         }
       ],
@@ -266,6 +454,82 @@
             "target": 46,
             "hint1": "Pense de trás para frente: que número vira 46 multiplicando por 2?",
             "hint2": "+5, ×3, −1, ×2 (o +2 sobra)."
+          }
+        },
+        "stage2": {
+          "key": "red-vault-2",
+          "title": "O Cofre: o cálculo secreto",
+          "type": "wiring",
+          "leaderLine": "A primeira tranca abriu! A segunda pede um cálculo maior. Cabo por cabo!",
+          "variants": {
+            "A": {
+              "mode": "build",
+              "start": 1,
+              "modules": ["+3", "+2", "x2"],
+              "slots": 3,
+              "target": 10,
+              "prompt": "Ligue 3 módulos na ordem certa para chegar a 10.",
+              "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+              "hint2": "A ordem certa é +3, ×2, +2."
+            },
+            "B": {
+              "mode": "build",
+              "start": 2,
+              "modules": ["+4", "-3", "+1", "x2"],
+              "slots": 3,
+              "target": 13,
+              "prompt": "Ligue 3 módulos na ordem certa para chegar a 13. Um módulo sobra!",
+              "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+              "hint2": "A ordem certa é +4, ×2, +1."
+            },
+            "C": {
+              "mode": "build",
+              "start": 3,
+              "modules": ["x3", "+3", "+4", "+5", "x2", "-1"],
+              "slots": 5,
+              "target": 61,
+              "prompt": "Ligue 5 módulos na ordem certa para chegar a 61. Um módulo sobra!",
+              "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+              "hint2": "A ordem certa é +5, ×2, +3, ×3, +4."
+            }
+          }
+        }
+      },
+      "bonus": {
+        "key": "red-bonus",
+        "title": "O cálculo impossível",
+        "type": "wiring",
+        "leaderLine": "Cofre aberto? As programadoras deixaram um último desafio. Topam?",
+        "variants": {
+          "A": {
+            "mode": "build",
+            "start": 1,
+            "modules": ["+4", "x2", "x3"],
+            "slots": 3,
+            "target": 18,
+            "prompt": "Ligue 3 módulos na ordem certa para chegar a 18. (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+            "hint2": "A ordem certa é ×2, +4, ×3."
+          },
+          "B": {
+            "mode": "build",
+            "start": 2,
+            "modules": ["x4", "+5", "-3", "x2"],
+            "slots": 4,
+            "target": 44,
+            "prompt": "Ligue 4 módulos na ordem certa para chegar a 44. (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+            "hint2": "A ordem certa é +5, ×2, -3, ×4."
+          },
+          "C": {
+            "mode": "build",
+            "start": 3,
+            "modules": ["x3", "+4", "-3", "x2", "-1"],
+            "slots": 4,
+            "target": 40,
+            "prompt": "Ligue 4 módulos na ordem certa para chegar a 40. Um módulo sobra! (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Faça a conta depois de cada módulo e veja se está chegando perto.",
+            "hint2": "A ordem certa é +4, ×3, -1, ×2."
           }
         }
       }
@@ -360,6 +624,119 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "blue-lock1-2",
+            "title": "Diário secreto da Capitã",
+            "type": "quiz",
+            "leaderLine": "Página secreta do diário! Quem entende de instruções protege o tesouro.",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 3 perguntas do diário secreto.",
+                "hint1": "Pense em instruções e na ordem delas.",
+                "hint2": "A máquina segue a ordem que recebeu.",
+                "questions": [
+                  {
+                    "q": "Um computador segue as instruções na...",
+                    "options": [
+                      "Ordem em que foram dadas",
+                      "Ordem que ele quiser",
+                      "Ordem alfabética"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que acontece se um cabo for ligado no lugar errado?",
+                    "options": ["O resultado sai errado", "Sai uma música", "Nada acontece"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Comparados ao ENIAC, os computadores de hoje são...",
+                    "options": ["Muito menores e mais rápidos", "Muito maiores", "Iguaizinhos"],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 4 perguntas do diário secreto.",
+                "hint1": "Pense em como as programadoras planejavam.",
+                "hint2": "Elas desenhavam diagramas e depuravam passo a passo.",
+                "questions": [
+                  {
+                    "q": "O ENIAC ocupava uma sala de quantos metros quadrados, mais ou menos?",
+                    "options": ["167 m²", "2 m²", "5 000 m²"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que as programadoras desenhavam diagramas antes de ligar os cabos?",
+                    "options": [
+                      "Para planejar o programa antes",
+                      "Para colorir",
+                      "Para passar o tempo"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Encontrar o passo errado num cálculo se chama...",
+                    "options": ["Depurar", "Decorar", "Desligar"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que é a entrada de um programa?",
+                    "options": [
+                      "O dado que a máquina recebe para trabalhar",
+                      "A porta da sala",
+                      "O botão de desligar"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "hint1": "Faça as contas com calma, na ordem.",
+                "hint2": "Começando com 4: ×3 e +2 dá 14; +2 e ×3 dá 18.",
+                "questions": [
+                  {
+                    "q": "Em que universidade o ENIAC foi construído?",
+                    "options": [
+                      "Universidade da Pensilvânia",
+                      "Universidade de Oxford",
+                      "Universidade de São Paulo"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que dizemos que o ENIAC era programável?",
+                    "options": [
+                      "Podia fazer tarefas diferentes mudando os cabos",
+                      "Tinha teclado",
+                      "Falava com as pessoas"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Começando com 4, a sequência ×3 e depois +2 dá...",
+                    "options": ["14", "18", "10"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Começando com 4, a sequência +2 e depois ×3 dá...",
+                    "options": ["18", "14", "12"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que é a saída de um programa?",
+                    "options": [
+                      "O resultado que a máquina entrega",
+                      "A porta dos fundos",
+                      "O fim do expediente"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -391,6 +768,35 @@
               "mode": "whole",
               "hint1": "É uma das programadoras do ENIAC.",
               "hint2": "Primeiro nome: J E A N."
+            }
+          },
+          "stage2": {
+            "key": "blue-lock2-2",
+            "title": "A segunda garrafa",
+            "type": "anagram",
+            "leaderLine": "Mais uma garrafa! Essa mensagem fala do painel do ENIAC.",
+            "variants": {
+              "A": {
+                "prompt": "Arrume as letras da segunda mensagem.",
+                "answer": "CHAVE",
+                "mode": "perWordFirstFixed",
+                "hint1": "O ENIAC era programado com cabos e...",
+                "hint2": "Começa com C e tem 5 letras."
+              },
+              "B": {
+                "prompt": "Arrume as letras da segunda mensagem.",
+                "answer": "DIAGRAMA",
+                "mode": "perWordFirstFixed",
+                "hint1": "As programadoras desenhavam isto antes de ligar os cabos.",
+                "hint2": "Começa com D I A..."
+              },
+              "C": {
+                "prompt": "Arrume as letras da segunda mensagem.",
+                "answer": "BETTY HOLBERTON",
+                "mode": "whole",
+                "hint1": "Programadora do ENIAC que depois ajudou a criar linguagens.",
+                "hint2": "Primeiro nome: B E T T Y."
+              }
             }
           }
         },
@@ -436,6 +842,50 @@
               "hint2": "Os dois primeiros módulos estão invertidos.",
               "startSpoken": true
             }
+          },
+          "stage2": {
+            "key": "blue-lock3-2",
+            "title": "A segunda sabotagem",
+            "type": "wiring",
+            "leaderLine": "Tem mais cabo trocado! A entrada é a MESMA do rádio. Achem o erro!",
+            "variants": {
+              "A": {
+                "mode": "debug",
+                "start": 3,
+                "modules": ["+3", "-2", "x3"],
+                "slots": 3,
+                "target": 6,
+                "chain": ["x3", "-2", "+3"],
+                "prompt": "Use a MESMA entrada do rádio. O painel deveria dar 6, mas está errado. Troque módulos de lugar.",
+                "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+                "hint2": "A ordem certa é -2, ×3, +3.",
+                "startSpoken": true
+              },
+              "B": {
+                "mode": "debug",
+                "start": 5,
+                "modules": ["+3", "+2", "-1", "x3"],
+                "slots": 3,
+                "target": 23,
+                "chain": ["-1", "x3", "+3"],
+                "prompt": "Use a MESMA entrada do rádio. O painel deveria dar 23, mas está errado. Troque módulos de lugar. Tem um módulo sobrando!",
+                "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+                "hint2": "A ordem certa é +3, ×3, -1.",
+                "startSpoken": true
+              },
+              "C": {
+                "mode": "debug",
+                "start": 2,
+                "modules": ["-2", "x2", "-1", "+3", "x3"],
+                "slots": 4,
+                "target": 20,
+                "chain": ["+3", "x2", "-1", "x3"],
+                "prompt": "Use a MESMA entrada do rádio. O painel deveria dar 20, mas está errado. Troque módulos de lugar. Tem um módulo sobrando!",
+                "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+                "hint2": "A ordem certa é ×2, +3, ×3, -1.",
+                "startSpoken": true
+              }
+            }
           }
         }
       ],
@@ -477,6 +927,88 @@
             "chain": ["x3", "+2", "+4", "x2"],
             "hint1": "Faça a conta com os módulos na ordem atual.",
             "hint2": "Os dois primeiros módulos estão invertidos."
+          }
+        },
+        "stage2": {
+          "key": "blue-vault-2",
+          "title": "O Cofre: a última sabotagem",
+          "type": "wiring",
+          "leaderLine": "O Bando sabotou o segundo cálculo do cofre! Consertem antes que ele abra.",
+          "variants": {
+            "A": {
+              "mode": "debug",
+              "start": 2,
+              "modules": ["x2", "+5", "-2"],
+              "slots": 3,
+              "target": 12,
+              "chain": ["x2", "+5", "-2"],
+              "prompt": "O painel deveria dar 12, mas está errado. Troque módulos de lugar.",
+              "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+              "hint2": "A ordem certa é +5, ×2, -2."
+            },
+            "B": {
+              "mode": "debug",
+              "start": 3,
+              "modules": ["x4", "x2", "+2", "-2"],
+              "slots": 4,
+              "target": 26,
+              "chain": ["-2", "+2", "x2", "x4"],
+              "prompt": "O painel deveria dar 26, mas está errado. Troque módulos de lugar.",
+              "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+              "hint2": "A ordem certa é ×4, +2, ×2, -2."
+            },
+            "C": {
+              "mode": "debug",
+              "start": 4,
+              "modules": ["x3", "-1", "x2", "-2", "+4", "+2"],
+              "slots": 5,
+              "target": 53,
+              "chain": ["x2", "+4", "+2", "-1", "x3"],
+              "prompt": "O painel deveria dar 53, mas está errado. Troque módulos de lugar. Tem um módulo sobrando!",
+              "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+              "hint2": "A ordem certa é +4, ×2, +2, ×3, -1."
+            }
+          }
+        }
+      },
+      "bonus": {
+        "key": "blue-bonus",
+        "title": "A sabotagem final",
+        "type": "wiring",
+        "leaderLine": "Defesas de pé! Mas o Bando deixou mais uma armadilha nos cabos...",
+        "variants": {
+          "A": {
+            "mode": "debug",
+            "start": 2,
+            "modules": ["-3", "+3", "x2"],
+            "slots": 3,
+            "target": 7,
+            "chain": ["-3", "x2", "+3"],
+            "prompt": "O painel deveria dar 7, mas está errado. Troque módulos de lugar. (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+            "hint2": "A ordem certa é +3, ×2, -3."
+          },
+          "B": {
+            "mode": "debug",
+            "start": 4,
+            "modules": ["x2", "+3", "x3", "+1"],
+            "slots": 4,
+            "target": 45,
+            "chain": ["x2", "+3", "x3", "+1"],
+            "prompt": "O painel deveria dar 45, mas está errado. Troque módulos de lugar. (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+            "hint2": "A ordem certa é +3, ×2, +1, ×3."
+          },
+          "C": {
+            "mode": "debug",
+            "start": 5,
+            "modules": ["-3", "x4", "+5", "x2", "+4"],
+            "slots": 4,
+            "target": 36,
+            "chain": ["x4", "+5", "x2", "-3"],
+            "prompt": "O painel deveria dar 36, mas está errado. Troque módulos de lugar. Tem um módulo sobrando! (Missão bônus: errar aqui não tira ponto.)",
+            "hint1": "Ligue a máquina e veja em qual passo a conta começa a desandar.",
+            "hint2": "A ordem certa é -3, ×2, +5, ×4."
           }
         }
       }

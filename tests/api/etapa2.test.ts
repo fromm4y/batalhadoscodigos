@@ -142,7 +142,7 @@ describe('abrir sessão (RN-03, RN-04)', () => {
 
   it('rejeita episódio indisponível', async () => {
     await newClassAndSession();
-    const r = await call(sessionOpen, { classId, episodeId: 'ep3' }, { token: anaToken });
+    const r = await call(sessionOpen, { classId, episodeId: 'ep4' }, { token: anaToken });
     expect(r.status).toBe(400);
   });
 });
