@@ -6,17 +6,18 @@ _Atualizado em 17/11/2026._
 
 ## 🗺️ Plano em andamento (15/11)
 
-| #   | Item                                                                                       | Situação                   |
-| --- | ------------------------------------------------------------------------------------------ | -------------------------- |
-| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May             | ✅ pronto (PR #16)         |
-| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida)           | ✅ pronto (PR #17)         |
-| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                 | ✅ pronto, **para testar** |
-| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum do Museu                                 | ⏳ próximo                 |
-| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                   | ✅ pronto (PR #21/#22)     |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                   | ⏳                         |
-| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois) | ✅ pronto, **para testar** |
-| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                 | ⏳                         |
-| 8   | SPEC-02 **F** — relatório da turma                                                         | ⏳                         |
+| #   | Item                                                                                                   | Situação                   |
+| --- | ------------------------------------------------------------------------------------------------------ | -------------------------- |
+| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May                         | ✅ pronto (PR #16)         |
+| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida)                       | ✅ pronto (PR #17)         |
+| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)         |
+| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)         |
+| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)     |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ⏳                         |
+| 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)     |
+| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto, **para testar** |
+| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ⏳                         |
+| 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                         |
 
 ---
 
