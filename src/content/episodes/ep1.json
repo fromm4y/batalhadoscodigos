@@ -407,7 +407,8 @@
             "target": ["star", "dot", "star", "dot", "star", "dot"],
             "maxBlocks": 3,
             "hint1": "O padrão ★● se repete. Que bloco repete coisas?",
-            "hint2": "Repita 3 vezes [★ ●]."
+            "hint2": "Repita 3 vezes [★ ●].",
+            "livePreview": true
           },
           "B": {
             "prompt": "Monte um programa que teça o padrão. Use no máximo 4 blocos.",
@@ -428,7 +429,8 @@
             ],
             "maxBlocks": 4,
             "hint1": "Ache o pedaço que se repete e conte quantas vezes.",
-            "hint2": "Repita 4 vezes [★ ★ ●]."
+            "hint2": "Repita 4 vezes [★ ★ ●].",
+            "livePreview": true
           },
           "C": {
             "prompt": "Monte um programa que teça as 3 fileiras. Use no máximo 5 blocos.",
@@ -467,7 +469,8 @@
               "target": ["star", "star", "dot", "star", "star", "dot", "star", "star", "dot"],
               "maxBlocks": 4,
               "hint1": "Ache o pedaço que se repete.",
-              "hint2": "Repita 3 vezes [★ ★ ●]."
+              "hint2": "Repita 3 vezes [★ ★ ●].",
+              "livePreview": true
             },
             "B": {
               "prompt": "Monte um programa que teça o padrão. Use no máximo 4 blocos.",
@@ -475,7 +478,8 @@
               "target": ["star", "dot", "line", "star", "dot", "line", "star", "dot", "line"],
               "maxBlocks": 4,
               "hint1": "Ache o pedaço que se repete e conte quantas vezes.",
-              "hint2": "Repita 3 vezes [★ ● ▬]."
+              "hint2": "Repita 3 vezes [★ ● ▬].",
+              "livePreview": true
             },
             "C": {
               "prompt": "Monte um programa que teça as 2 fileiras. Use no máximo 6 blocos.",
@@ -900,7 +904,8 @@
             "target": ["dot", "line", "dot", "line", "dot", "line"],
             "editable": "symbols",
             "hint1": "Compare o que o tear tece com o padrão: onde fica diferente?",
-            "hint2": "O segundo bloco dentro da repetição deveria ser ▬."
+            "hint2": "O segundo bloco dentro da repetição deveria ser ▬.",
+            "livePreview": true
           },
           "B": {
             "prompt": "O tear deveria tecer o padrão, mas tem um erro. Ache e conserte.",
@@ -943,7 +948,8 @@
             ],
             "editable": "counts",
             "hint1": "Os blocos estão certos. Conte quantas vezes o padrão aparece.",
-            "hint2": "A repetição deveria ser 5 vezes."
+            "hint2": "A repetição deveria ser 5 vezes.",
+            "livePreview": true
           },
           "C": {
             "prompt": "O tear deveria tecer as 2 fileiras, mas tem um erro escondido. Ache e conserte.",
@@ -1025,7 +1031,8 @@
               "target": ["star", "line", "dot", "star", "line", "dot", "star", "line", "dot"],
               "editable": "symbols",
               "hint1": "Compare o último bloco de dentro com o padrão.",
-              "hint2": "O último bloco dentro da repetição deveria ser ●."
+              "hint2": "O último bloco dentro da repetição deveria ser ●.",
+              "livePreview": true
             },
             "B": {
               "prompt": "O tear deveria tecer o padrão, mas UMA contagem está errada. Conserte.",
@@ -1069,7 +1076,8 @@
               ],
               "editable": "counts",
               "hint1": "Conte quantos ▬ o padrão tem no fim.",
-              "hint2": "A segunda repetição deveria ser 2 vezes."
+              "hint2": "A segunda repetição deveria ser 2 vezes.",
+              "livePreview": true
             },
             "C": {
               "prompt": "O tear deveria tecer as 3 fileiras, mas tem TRÊS erros escondidos. Ache e conserte.",
