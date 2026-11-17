@@ -153,10 +153,10 @@
             "key": "red-lock1-2",
             "title": "Dossiê secreto",
             "type": "quiz",
-            "leaderLine": "Agora o dossiê secreto: cinco perguntas sobre chaves e cifras. Pensem antes de clicar!",
+            "leaderLine": "Agora o dossiê secreto. Usem o disco para conferir!",
             "variants": {
               "A": {
-                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "prompt": "Responda as 3 perguntas do dossiê secreto.",
                 "hint1": "Use o disco de cifra para conferir.",
                 "hint2": "Chave 1: cada letra anda 1 casa. Para decifrar, volte.",
                 "questions": [
@@ -175,20 +175,6 @@
                     "correct": 0
                   },
                   {
-                    "q": "Para decifrar uma mensagem com chave 3, cada letra deve...",
-                    "options": [
-                      "Voltar 3 casas no alfabeto",
-                      "Andar 3 casas para a frente",
-                      "Ficar igual"
-                    ],
-                    "correct": 0
-                  },
-                  {
-                    "q": "A Enigma parecia com qual objeto?",
-                    "options": ["Uma máquina de escrever", "Um telefone", "Uma geladeira"],
-                    "correct": 0
-                  },
-                  {
                     "q": "Por que as mensagens de guerra eram cifradas?",
                     "options": [
                       "Para o inimigo não entender",
@@ -200,7 +186,7 @@
                 ]
               },
               "B": {
-                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "prompt": "Responda as 4 perguntas do dossiê secreto.",
                 "hint1": "Use o disco: gire e confira cada letra.",
                 "hint2": "Depois do Z, o alfabeto volta para o A.",
                 "questions": [
@@ -217,15 +203,6 @@
                   {
                     "q": "Com chave 1, a letra Z vira...",
                     "options": ["A", "Y", "B"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "Por que a Enigma era mais difícil que a cifra de deslocamento?",
-                    "options": [
-                      "A troca de letras mudava a cada tecla apertada",
-                      "Ela usava números",
-                      "Ela escrevia em latim"
-                    ],
                     "correct": 0
                   },
                   {
@@ -333,21 +310,21 @@
             "leaderLine": "Era só o começo! Interceptamos a mensagem inteira. Girem o disco e decifrem tudo.",
             "variants": {
               "A": {
-                "prompt": "A chave é 3. Decifre a mensagem inteira.",
+                "prompt": "O disco já está na chave 3. Decifre a mensagem inteira.",
                 "mode": "decode",
                 "shift": 3,
                 "text": "PHQVDJHP VHFUHWD",
                 "answer": "MENSAGEM SECRETA",
-                "wheel": "free",
-                "hint1": "Gire o disco até a chave 3 e leia de dentro para fora.",
+                "wheel": "preset",
+                "hint1": "Leia cada letra no anel de dentro e veja a de fora.",
                 "hint2": "Começa com MENSAGEM."
               },
               "B": {
                 "prompt": "A chave é 6. Decifre a mensagem inteira.",
                 "mode": "decode",
                 "shift": 6,
-                "text": "G HUSHK GINUA G INGBK",
-                "answer": "A BOMBE ACHOU A CHAVE",
+                "text": "G HUSHK BKTIKA",
+                "answer": "A BOMBE VENCEU",
                 "wheel": "free",
                 "hint1": "Volte 6 casas em cada letra.",
                 "hint2": "A segunda palavra é BOMBE."
@@ -493,14 +470,15 @@
           "leaderLine": "Uma última mensagem, e dessa vez nem pista nós temos. Mostrem do que o Bando é capaz!",
           "variants": {
             "A": {
-              "prompt": "Ninguém sabe a chave. Gire o disco até a mensagem fazer sentido e digite o que ela diz.",
+              "prompt": "Ninguém sabe a chave, mas a mensagem começa com O SEGREDO. Gire o disco até ela aparecer e digite tudo.",
               "mode": "crack",
               "shift": 9,
               "text": "X BNPANMX EJIXD",
               "answer": "O SEGREDO VAZOU",
               "wheel": "free",
               "hint1": "Teste uma chave por vez e olhe o teste rápido.",
-              "hint2": "A chave é maior que 5."
+              "hint2": "A chave é maior que 5.",
+              "crib": "O SEGREDO"
             },
             "B": {
               "prompt": "Ninguém sabe a chave. Descubra a chave e digite a mensagem decifrada.",
@@ -655,10 +633,10 @@
             "key": "blue-lock1-2",
             "title": "Diário secreto da Capitã",
             "type": "quiz",
-            "leaderLine": "Página secreta do diário: cinco perguntas para quem quer ser mestre em segredos!",
+            "leaderLine": "Página secreta do diário: usem o disco para conferir!",
             "variants": {
               "A": {
-                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "prompt": "Responda as 3 perguntas do diário secreto.",
                 "hint1": "Use o disco de cifra para conferir.",
                 "hint2": "Cifrar é andar para a frente no alfabeto.",
                 "questions": [
@@ -677,20 +655,6 @@
                     "correct": 0
                   },
                   {
-                    "q": "Para cifrar com chave 4, cada letra deve...",
-                    "options": ["Andar 4 casas para a frente", "Voltar 4 casas", "Virar um número"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "O que a Bombe fazia?",
-                    "options": [
-                      "Testava muitas combinações bem rápido",
-                      "Tocava música",
-                      "Imprimia jornais"
-                    ],
-                    "correct": 0
-                  },
-                  {
                     "q": "Quem consegue ler uma mensagem cifrada?",
                     "options": ["Quem conhece a chave", "Qualquer pessoa", "Ninguém, nunca"],
                     "correct": 0
@@ -698,7 +662,7 @@
                 ]
               },
               "B": {
-                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "prompt": "Responda as 4 perguntas do diário secreto.",
                 "hint1": "Use o disco: gire e confira cada letra.",
                 "hint2": "Depois do Z vem o A de novo.",
                 "questions": [
@@ -715,11 +679,6 @@
                   {
                     "q": "Com chave 3, a letra Y vira...",
                     "options": ["B", "Z", "V"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "Quantas posições tinha cada rotor da Enigma?",
-                    "options": ["26, uma para cada letra", "10, uma para cada número", "100"],
                     "correct": 0
                   },
                   {
@@ -819,21 +778,21 @@
             "leaderLine": "Agora a ordem inteira para a frota. Cifrem tudo antes que o Bando escute!",
             "variants": {
               "A": {
-                "prompt": "A chave é 3. Cifre a mensagem inteira.",
+                "prompt": "O disco já está na chave 3. Cifre a mensagem inteira.",
                 "mode": "encode",
                 "shift": 3,
                 "text": "CAPITA AVISA",
                 "answer": "FDSLWD DYLVD",
-                "wheel": "free",
-                "hint1": "Ande 3 casas com cada letra.",
+                "wheel": "preset",
+                "hint1": "Ache cada letra no anel de fora e copie a de dentro.",
                 "hint2": "C vira F."
               },
               "B": {
                 "prompt": "A chave é 6. Cifre a mensagem inteira.",
                 "mode": "encode",
                 "shift": 6,
-                "text": "ALERTA NO PORTO",
-                "answer": "GRKXZG TU VUXZU",
+                "text": "ALERTA NO MAR",
+                "answer": "GRKXZG TU SGX",
                 "wheel": "free",
                 "hint1": "Ande 6 casas com cada letra.",
                 "hint2": "A vira G."
@@ -912,8 +871,8 @@
                 "prompt": "Use a mesma chave da transmissão e cifre a mensagem.",
                 "mode": "encode",
                 "shift": 4,
-                "text": "ANCORA LEVANTADA",
-                "answer": "ERGSVE PIZERXEHE",
+                "text": "ANCORA PRONTA",
+                "answer": "ERGSVE TVSRXE",
                 "wheel": "free",
                 "hint1": "É a mesma chave que a Narradora falou antes.",
                 "hint2": "Ande as casas da chave com cada letra.",
@@ -991,12 +950,7 @@
               "prompt": "A chave do dia é 4. Decifre as mensagens e escolha a única que faz sentido.",
               "mode": "verify",
               "shift": 4,
-              "options": [
-                "RSWWS REZMS IWXE WEPZS",
-                "X KJWMX NBCJ LQNPJWMX",
-                "GVKBN QBSB B JMIB",
-                "AYVXBLT KL YVAH"
-              ],
+              "options": ["RSWWS REZMS IWXE WEPZS", "X KJWMX NBCJ LQNPJWMX", "GVKBN QBSB B JMIB"],
               "correct": 0,
               "wheel": "free",
               "hint1": "Decifre só a primeira palavra de cada mensagem.",
@@ -1010,8 +964,7 @@
                 "I KIXQBI UIVLWC ZMKCIZ",
                 "R FRIUH HVWD DEHUWR",
                 "A DANA PADYUG",
-                "FYFVZJR FLTWF",
-                "C EJCXG G XKPVG"
+                "FYFVZJR FLTWF"
               ],
               "correct": 0,
               "wheel": "free",

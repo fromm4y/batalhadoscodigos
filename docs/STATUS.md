@@ -50,6 +50,14 @@ _Atualizado em 17/11/2026._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 17/11 (tarde) — mais fácil no A, mediano no B 🎚️
+
+- **Nível A:** a etapa 2 ficou curta e guiada: quiz de 3 perguntas fáceis, enigma com alternativas, anagrama de uma palavra, conserto do tear com 1 erro. No Ep. 2: disco já girado na chave, pista (crib) no Cofre do Bando e só 3 mensagens no Cofre dos Piratas.
+- **Nível B (mediano):** quiz de 4, enigma com 4 alternativas, anagrama com a primeira letra no lugar, cartão de 6 colunas (era 8), tear com uma repetição só, conserto com 1 erro, frases de cifra mais curtas e 4 mensagens no Cofre dos Piratas.
+- **Dica no nível B voltou ao preço normal** (−2 / −4). Só o C paga mais.
+- **O nível C não mudou.**
+- **30 imagens novas dos Ep. 2 a 5** (quadros de HQ, cartas e ganchos). Faltam só `card-ep5` e `teaser-ep5`.
+
 ### Novidades de 17/11 — mais desafio: duas etapas 🔐🔐
 
 - **Todo cadeado e o Cofre têm 2 etapas.** A etapa 1 é o desafio de antes; a etapa 2 é **mais difícil e mais longa** (quizzes de 5 perguntas, enigma sem alternativas, anagrama maior, cartões com mais colunas, tear com duas repetições, conserto com 2–3 erros, cifras com a mensagem inteira, Cofre do Ep. 2 sem pista e com mais mensagens falsas).

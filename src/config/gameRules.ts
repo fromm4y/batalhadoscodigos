@@ -77,7 +77,7 @@ export const GAME_RULES = {
     /** Pedido da May (16/11): dica mais cara nos níveis B e C, para valer a pena pensar antes. */
     hintsByLevel: {
       A: { hint1: -2, hint2: -4 },
-      B: { hint1: -3, hint2: -5 },
+      B: { hint1: -2, hint2: -4 },
       C: { hint1: -3, hint2: -5 },
     } satisfies Record<Level, { hint1: number; hint2: number }>,
     /** Cofre Relâmpago (16/11): resolver o Cofre dentro do tempo relâmpago. */

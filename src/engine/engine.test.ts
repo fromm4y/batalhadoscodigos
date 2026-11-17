@@ -107,7 +107,9 @@ describe('pontuação (7.6)', () => {
     expect(hintCost(2, false)).toBe(-4);
     expect(hintCost(1, true)).toBe(0);
     // 16/11: dica mais cara no B e no C
-    expect(hintCost(1, false, 'B')).toBe(-3);
+    // 17/11: o B voltou ao preço normal ("mediano"); só o C paga mais
+    expect(hintCost(1, false, 'B')).toBe(-2);
+    expect(hintCost(1, false, 'C')).toBe(-3);
     expect(hintCost(2, false, 'C')).toBe(-5);
     expect(hintCost(2, true, 'C')).toBe(0);
   });
@@ -247,7 +249,7 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
                     }
                   : {
                       A: [rep(3, [w('star'), w('star'), w('dot')])],
-                      B: [rep(3, [w('star'), w('dot')]), rep(2, [w('line'), w('dot')])],
+                      B: [rep(3, [w('star'), w('dot'), w('line')])],
                       C: [rep(2, [rep(3, [w('star')]), w('dot'), rep(2, [w('line')])])],
                     };
               expect(checkBlockBuild(ch.variant, sol[level], level).ok).toBe(true);
@@ -269,7 +271,7 @@ describe('conteúdo do Ep. 1 é resolvível nos 3 níveis, dos dois lados', () =
                     }
                   : {
                       A: [rep(3, [w('star'), w('line'), w('dot')])],
-                      B: [rep(4, [w('star'), w('dot')]), rep(2, [w('line')])],
+                      B: [rep(4, [w('star'), w('dot')]), rep(2, [w('line')])], // 1 contagem errada
                       C: [rep(3, [rep(3, [w('dot')]), w('star'), rep(2, [w('line')])])],
                     };
               expect(checkBlockDebug(ch.variant, fixed[level]).ok).toBe(true);
