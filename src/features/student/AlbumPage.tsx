@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { HalftoneBackground, SpeechBubble } from '@/components/comic';
 import { CollectibleCard } from '@/components/game/CollectibleCard';
+import { BadgeRow, StampRow } from '@/components/game/TeamRecord';
 import { BrassFrame, Spotlights } from '@/components/scene';
 import { seasonEpisodes } from '@/content/season';
 import { albumSlot } from '@/engine/cards';
@@ -77,6 +78,12 @@ function Album({ claims }: { claims: TeamClaims }) {
           </Link>
         </header>
 
+        {team && (team.stamps?.length || team.badges?.length) ? (
+          <div className="flex flex-wrap items-center gap-4" aria-label="Ficha da dupla">
+            <StampRow stamps={team.stamps} />
+            <BadgeRow badges={team.badges} onDark />
+          </div>
+        ) : null}
         <BrassFrame className="bg-graphite/80">
           {!info || !team ? (
             <p className="p-6 text-center font-type text-mist">Abrindo o álbum...</p>
