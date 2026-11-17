@@ -8,6 +8,8 @@ export type OpenSession = {
   instructorId: string;
   episodeId: string;
   code: string;
+  /** "continuar a aula anterior": sessão de onde vem o progresso das duplas */
+  resumeFrom?: string | null;
 };
 
 /** Sessão aberta e dentro do prazo (RN-04) com este código, ou null. */
@@ -32,6 +34,7 @@ export async function findOpenSessionByCode(
         instructorId: s.instructorId as string,
         episodeId: s.episodeId as string,
         code,
+        resumeFrom: (s.resumeFrom as string | undefined) ?? null,
       };
     }
   }

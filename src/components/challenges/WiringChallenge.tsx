@@ -110,6 +110,16 @@ export function WiringChallenge({
   }
 
   const out = trace?.at(-1);
+  // 17/11 (mais fácil, A e B): conta parcial ao vivo nos encaixes já preenchidos, em sequência
+  const live: (number | undefined)[] = [];
+  if (variant.livePreview && startOk && !waiting) {
+    let acc = start;
+    for (const id of slots) {
+      if (id === null) break;
+      acc = applyModule(acc, pieces[id]!.m);
+      live.push(acc);
+    }
+  }
   return (
     <div className="flex flex-col gap-3">
       {waiting && <WaitingTransmission />}
@@ -163,10 +173,14 @@ export function WiringChallenge({
                 <span
                   className={cn(
                     'mt-1 h-6 font-heist text-xl',
-                    val === undefined ? 'text-transparent' : 'text-spotlight',
+                    val !== undefined
+                      ? 'text-spotlight'
+                      : live[i] !== undefined
+                        ? 'text-mist'
+                        : 'text-transparent',
                   )}
                 >
-                  {val ?? '0'}
+                  {val ?? live[i] ?? '0'}
                 </span>
               </div>
             </div>

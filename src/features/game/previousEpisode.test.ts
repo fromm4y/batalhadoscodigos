@@ -15,7 +15,8 @@ describe('episódio da aula anterior (SPEC-02 C1)', () => {
   });
   it('sessão anterior apagada: o episódio anterior da temporada ativa', () => {
     expect(previousEpisodeId({ episodeId: 'ep4' }, 'long')).toBe('ep3');
-    expect(previousEpisodeId({ episodeId: 'ep4' }, 'short')).toBe('ep2');
+    // curta (17/11): ep1, ep2, ep3, ep5 → antes do Ep. 5 vem o ENIAC
+    expect(previousEpisodeId({ episodeId: 'ep5' }, 'short')).toBe('ep3');
   });
   it('primeiro episódio (ou repetindo o mesmo): nada antes', () => {
     expect(previousEpisodeId({ episodeId: 'ep1' }, 'long')).toBeNull();

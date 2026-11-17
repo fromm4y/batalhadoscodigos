@@ -18,13 +18,16 @@ describe('levelFromGrade', () => {
 describe('temporada dinâmica (SPEC-02 Parte B)', () => {
   it('ordem longa e curta', () => {
     expect(seasonEpisodes('long').map((e) => e.id)).toEqual(['ep1', 'ep2', 'ep3', 'ep4', 'ep5']);
-    expect(seasonEpisodes('short').map((e) => e.id)).toEqual(['ep1', 'ep2', 'ep4', 'ep5']);
-    expect(nextInSeason('short', 'ep2')).toBe('ep4');
+    // 17/11 (May): a curta fica com o ENIAC e tira o Apollo 11
+    expect(seasonEpisodes('short').map((e) => e.id)).toEqual(['ep1', 'ep2', 'ep3', 'ep5']);
+    expect(nextInSeason('short', 'ep2')).toBe('ep3');
+    expect(nextInSeason('short', 'ep3')).toBe('ep5');
     expect(nextInSeason('long', 'ep5')).toBeNull();
   });
-  it('na temporada curta, o gancho do fim do Ep. 2 aponta para o Ep. 4 (aceite B)', () => {
+  it('na temporada curta, o gancho do fim do Ep. 3 aponta para o Ep. 5 (pula o Apollo)', () => {
     expect(hookFor('long', 'ep2')).toEqual({ kind: 'next', nextId: 'ep3', teaserFrom: 'ep2' });
-    expect(hookFor('short', 'ep2')).toEqual({ kind: 'next', nextId: 'ep4', teaserFrom: 'ep3' });
+    expect(hookFor('short', 'ep2')).toEqual({ kind: 'next', nextId: 'ep3', teaserFrom: 'ep2' });
+    expect(hookFor('short', 'ep3')).toEqual({ kind: 'next', nextId: 'ep5', teaserFrom: 'ep4' });
     expect(hookFor('long', 'ep1')).toEqual({ kind: 'next', nextId: 'ep2', teaserFrom: 'ep1' });
   });
   it('no último episódio, encerramento da temporada', () => {

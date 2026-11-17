@@ -95,6 +95,8 @@ export type WiringVariant = Base & {
   chain?: string[];
   /** a entrada só chega pela transmissão */
   startSpoken?: boolean;
+  /** mostra a conta parcial embaixo de cada encaixe enquanto monta (mais fácil; 17/11) */
+  livePreview?: boolean;
 };
 
 /** Ep. 4 — console da Apollo: escolher tarefas (SPEC-03 §3). */

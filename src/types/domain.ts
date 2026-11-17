@@ -143,6 +143,8 @@ export type SessionDoc = {
   autoEventAt: Timestamp | null;
   createdAt: Timestamp;
   expiresAt: Timestamp;
+  /** "continuar a aula anterior" (17/11): sessão de onde vem o progresso */
+  resumeFrom?: string | null;
   /** histórico da turma quando a sessão abriu (Álbum e "Anteriormente") */
   history?: { played: string[]; previously: PreviousSummary | null };
 };
@@ -174,6 +176,8 @@ export type PlayerDoc = {
   misses?: Record<string, number>;
   /** missão bônus resolvida (16/11) */
   bonusSolvedAt?: Timestamp | null;
+  /** veio da aula anterior com o progresso (17/11) */
+  resumed?: boolean;
   /** carta do Álbum equipada neste episódio (id do episódio de origem) */
   equippedCard?: string | null;
   /** quantas vezes o poder da carta já foi usado neste episódio */

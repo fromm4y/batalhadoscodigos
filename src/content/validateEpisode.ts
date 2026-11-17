@@ -109,6 +109,7 @@ function checkVariant(type: ChallengeType, v: Obj, at: string, err: (m: string) 
       );
       if (v.mode === 'debug')
         need(isStrArr(v.chain) && (v.chain as string[]).length === v.slots, 'debug: chain');
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
     case 'priority': {
       need(
