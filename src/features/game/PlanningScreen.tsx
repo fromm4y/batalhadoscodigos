@@ -102,6 +102,11 @@ export function PlanningScreen({
         <header className="flex flex-wrap items-center justify-between gap-3">
           <p className="font-type text-mist">
             Episódio {episode.number} · {episode.title}
+            {player.resumed && (
+              <span className="ml-2 font-bold text-brass">
+                ▶️ Vocês continuam de onde pararam na aula passada!
+              </span>
+            )}
           </p>
           <nav aria-label="Planejamento" className="flex flex-wrap gap-2">
             {steps.map((s, i) => (

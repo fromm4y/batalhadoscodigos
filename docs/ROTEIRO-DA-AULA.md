@@ -4,6 +4,10 @@
 > 📜 **Roteiro de cada episódio (falas, pistas, gabarito):** botão "Roteiro deste episódio" na página da turma ou "Roteiro completo em nova aba" no painel (`/instrutor/roteiro/ep1`, `ep2`...).
 > Total previsto: **~47 min** (3 de entrada + 5 + 20 + 12 + 7). Cabe numa aula de 50 min.
 
+## Aula que ficou pela metade?
+
+- Na página da turma, escolha **o mesmo episódio** e marque **▶️ Continuar de onde pararam** antes de **Abrir sessão**. Cada dupla volta ao cadeado/etapa onde parou; os confrontos são formados de novo no planejamento.
+
 ## Antes da aula (10 min, uma vez por turma)
 
 - [ ] **Computadores das duplas:** Chrome atualizado, tela de pelo menos 1366×768, **fone de ouvido** em cada um.

@@ -15,16 +15,17 @@ export const SEASON: SeasonEntry[] = [
 
 /**
  * SPEC-02 Parte B: duas ordens prontas; a admin escolhe no painel (doc `config/season`).
- * Longa (até 18/12) tem os 5 episódios; curta (até 11/12) pula o ENIAC.
+ * Longa (até 18/12) tem os 5 episódios; curta (até 11/12) pula o Apollo 11 (decisão da May, 17/11).
  */
 export type SeasonOrder = 'long' | 'short';
 export const SEASON_ORDERS: Record<SeasonOrder, string[]> = {
   long: ['ep1', 'ep2', 'ep3', 'ep4', 'ep5'],
-  short: ['ep1', 'ep2', 'ep4', 'ep5'],
+  // 17/11 (May): a curta fica com o ENIAC e tira o Apollo 11
+  short: ['ep1', 'ep2', 'ep3', 'ep5'],
 };
 export const SEASON_ORDER_LABEL: Record<SeasonOrder, string> = {
   long: 'Longa (5 episódios, até 18/12)',
-  short: 'Curta (4 episódios, até 11/12, sem o ENIAC)',
+  short: 'Curta (4 episódios, até 11/12, sem o Apollo 11)',
 };
 export const DEFAULT_SEASON_ORDER: SeasonOrder = 'long';
 
@@ -49,7 +50,8 @@ export function nextInSeason(order: SeasonOrder, episodeId: string): string | nu
 /**
  * Gancho do fim do episódio. O `teaser` de cada JSON descreve o episódio SEGUINTE da ordem longa
  * (o do Ep. 3 fala da Apollo), então o gancho para o episódio N mora no JSON do episódio N−1.
- * Assim, na temporada curta, o fim do Ep. 2 mostra o gancho da Apollo (que está no JSON do Ep. 3).
+ * Assim, na temporada curta (sem o Apollo), o fim do Ep. 3 mostra o gancho do Deep Blue (que
+ * está no JSON do Ep. 4).
  * Sem próximo episódio: encerramento da temporada (teaser do próprio episódio final).
  */
 export function hookFor(

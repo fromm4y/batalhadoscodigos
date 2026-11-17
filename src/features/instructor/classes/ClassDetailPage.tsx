@@ -28,6 +28,8 @@ export function ClassDetailPage() {
   const available = SEASON.filter((e) => e.available);
   const [episodeId, setEpisodeId] = useState(available[0]?.id ?? '');
   const [busy, setBusy] = useState(false);
+  // 17/11: retomar o mesmo episódio de onde cada dupla parou na aula anterior
+  const [resume, setResume] = useState(false);
   const [msg, setMsg] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [resetting, setResetting] = useState<WithId<TeamDoc> | null>(null);
   const [now] = useState(() => Date.now());
@@ -75,6 +77,7 @@ export function ClassDetailPage() {
     const r = await postAsInstructor<{ sessionId: string; code: string }>('/api/session-open', {
       classId,
       episodeId,
+      resume,
     });
     setBusy(false);
     if (r.ok) navigate(`/instrutor/sessao/${r.sessionId}`);
@@ -202,6 +205,16 @@ export function ClassDetailPage() {
                         </option>
                       ))}
                     </select>
+                  </label>
+                  <label className="flex min-h-11 basis-full cursor-pointer items-center gap-2 font-body text-base text-paper">
+                    <input
+                      type="checkbox"
+                      checked={resume}
+                      onChange={(e) => setResume(e.target.checked)}
+                      className="h-5 w-5 accent-[#D4A537]"
+                    />
+                    ▶️ Continuar de onde pararam (cada dupla volta ao cadeado e à etapa da última
+                    aula deste episódio; os confrontos são formados de novo)
                   </label>
                   <ComicButton
                     variant="red"

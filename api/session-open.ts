@@ -11,6 +11,7 @@ import { getAdmin } from './_lib/admin.js';
 import { allowMethods, body, sendError } from './_lib/http.js';
 import { HttpError, requireInstructor } from './_lib/instructor.js';
 import { classHistory } from './_lib/history.js';
+import { lastSessionOfEpisode } from './_lib/resume.js';
 import { findOpenSessionByCode, sessionExpiry } from './_lib/sessions.js';
 import { generateCode } from './_lib/validate.js';
 
@@ -65,6 +66,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
 
     // Álbum ("perdida" se faltou) e "Anteriormente na Caçada" (SPEC-02 C).
     const history = await classHistory(db, classId);
+    // "Continuar a aula anterior" (17/11): só se a última aula deste episódio existir.
+    const resumeFrom =
+      b.resume === true ? await lastSessionOfEpisode(db, classId, episode.id) : null;
     const ref = db.collection('sessions').doc();
     await ref.create({
       classId,
@@ -82,8 +86,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
       createdAt: FieldValue.serverTimestamp(),
       expiresAt: sessionExpiry(now),
       history,
+      resumeFrom,
     });
-    res.status(200).json({ ok: true, sessionId: ref.id, code, existing: false });
+    res.status(200).json({ ok: true, sessionId: ref.id, code, existing: false, resumeFrom });
   } catch (err) {
     if (err instanceof HttpError) return sendError(res, err.status, err.message);
     console.error('[session-open]', err);

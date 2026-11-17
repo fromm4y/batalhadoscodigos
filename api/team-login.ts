@@ -8,6 +8,7 @@ import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { getAdmin } from './_lib/admin.js';
 import { allowMethods, body, sendError } from './_lib/http.js';
 import { hashPin, verifyPin } from './_lib/pin.js';
+import { resumeFields } from './_lib/resume.js';
 import { findOpenSessionByCode, initialPlayer, teamUid } from './_lib/sessions.js';
 import {
   applyPinFailure,
@@ -105,10 +106,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     // Reconexão (SPEC 5.2): mantém o progresso, só troca o uid do token.
     const uid = teamUid(teamId, session.id);
     const playerRef = db.doc(`sessions/${session.id}/players/${teamId}`);
+    // "Continuar a aula anterior" (17/11): a dupla volta de onde parou no mesmo episódio.
+    const prevRef = session.resumeFrom
+      ? db.doc(`sessions/${session.resumeFrom}/players/${teamId}`)
+      : null;
     await db.runTransaction(async (tx) => {
       const p = await tx.get(playerRef);
+      const prev = prevRef ? await tx.get(prevRef) : null;
       if (p.exists) tx.update(playerRef, { uid, lastSeenAt: FieldValue.serverTimestamp() });
-      else tx.create(playerRef, initialPlayer(teamId, uid));
+      else
+        tx.create(playerRef, {
+          ...initialPlayer(teamId, uid),
+          ...(prev?.exists ? resumeFields(prev.data() ?? {}) : {}),
+        });
     });
 
     const customToken = await auth.createCustomToken(uid, {

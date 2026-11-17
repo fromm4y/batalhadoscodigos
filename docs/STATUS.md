@@ -50,6 +50,12 @@ _Atualizado em 17/11/2026._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 17/11 (mais tarde) — continuar a aula, ENIAC mais fácil, temporada curta com o ENIAC
+
+- **▶️ Continuar de onde pararam:** ao abrir a sessão do MESMO episódio na página da turma, marque a opção. Cada dupla volta ao cadeado e à etapa (e ao Cofre) onde parou, com lado, dicas, habilidades, carta e pontos do dia. Os confrontos são formados de novo e a Narradora transmite a pista de novo se precisar.
+- **Painel do ENIAC mais fácil:** nos níveis A e B, a conta parcial aparece embaixo de cada módulo enquanto a dupla monta; no C, as sabotagens da etapa 2 têm só uma troca. O disco de cifra do Ep. 2 não mudou.
+- **Temporada curta agora é Ep. 1 → 2 → 3 (ENIAC) → 5** (sem o Apollo 11).
+
 ### Novidades de 17/11 (noite) — Ep. 3: ENIAC 🔌
 
 - **Painel do ENIAC:** ENTRADA → módulos ("+3", "×2", "−1") ligados por cabos → SAÍDA. "Ligar a máquina" mostra a conta passo a passo (2 → +3 → 5 → ×2 → 10).
@@ -109,7 +115,7 @@ _Atualizado em 17/11/2026._
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 131 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 133 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 
