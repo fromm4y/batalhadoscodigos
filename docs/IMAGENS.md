@@ -42,6 +42,7 @@ Enquanto uma imagem não existe, o jogo mostra um **placeholder** com o id, ent�
 | `capita-navio`, `professor-sombra`, `vitrine-maquina`, `museu-noite`                                                                                                             | ✅ no jogo (margem branca cortada)                        |
 | `disfarce`, `planoB`, `ancora`, `escudo`, `bussola` (habilidades), `card-ep1` (Álbum, fim do episódio), `teaser-ep1` (gancho)                                                    | ✅ no jogo                                                |
 | `narradora` (quadro da revelação)                                                                                                                                                | ✅ no jogo                                                |
+| **(17/11) Ep. 2 a 5:** os 24 quadros de HQ (`ep2-*` … `ep5-*`), `card-ep2`, `card-ep3`, `card-ep4`, `teaser-ep2`, `teaser-ep3`, `teaser-ep4`                                     | ✅ no jogo (marca d'água tirada nas cartas e ganchos)     |
 | `telhado-museu` (extra: telhado do museu à noite)                                                                                                                                | ✅ fundo do projetor                                      |
 
 > **Dica para personagens:** em vez de pedir "fundo transparente" (o gerador costuma **desenhar** um xadrez falso), peça **fundo liso de uma cor só**, por exemplo _"plain solid flat dark navy background (#0B0D14), no pattern"_. Fica fácil de recortar e, como o jogo é escuro, às vezes nem precisa recortar.
@@ -179,7 +180,7 @@ Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na
 
 ---
 
-**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 48 ✅**. Faltam **32 dos Ep. 2–5** (seção 7: 24 quadros + 4 cartas + 4 ganchos).
+**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 48 ✅**. Ep. 2–5: **30 de 32 ✅** (17/11). Faltam só **`card-ep5`** (carta do Deep Blue, 600 × 840) e **`teaser-ep5`** (encerramento da temporada, 1376 × 768).
 **Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
 
 > O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.

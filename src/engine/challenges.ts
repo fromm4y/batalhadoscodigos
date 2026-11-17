@@ -7,6 +7,7 @@ import type {
   BlockDebugVariant,
   CipherVariant,
   Episode,
+  WiringVariant,
   Program,
   PunchCardReadVariant,
   PunchCardWriteVariant,
@@ -16,6 +17,7 @@ import type {
 } from '@/content/types';
 import type { Level, Side } from '@/types/domain';
 import { matchesAccepted, normalizeAnswer } from './answers';
+import { runChain } from './wiring';
 import { countNodes, nestingDepth, respectsDebugEdits, run, sameSymbols } from './blocks';
 
 /** Desafio da etapa atual: cadeado 0–2 ou o Cofre ('vault'). */
@@ -74,6 +76,23 @@ export function checkCipher(v: CipherVariant, typed: string): boolean {
 }
 /** verify: a opção escolhida (índice ORIGINAL, antes de embaralhar) é a mensagem certa? */
 export const checkCipherVerify = (v: CipherVariant, option: number) => v.correct === option;
+
+// ---------- wiring (Ep. 3) ----------
+/**
+ * Painel do ENIAC: os encaixes estão todos preenchidos, só com peças que existem no painel
+ * (cada peça uma vez) e a conta chega no alvo. Com entrada falada, a dupla precisa ter
+ * digitado o número certo na tomada.
+ */
+export function checkWiring(v: WiringVariant, chain: readonly string[], start: number): boolean {
+  if (chain.length !== v.slots || start !== v.start) return false;
+  const left = [...v.modules];
+  for (const m of chain) {
+    const i = left.indexOf(m);
+    if (i < 0) return false;
+    left.splice(i, 1);
+  }
+  return runChain(start, chain) === v.target;
+}
 
 // ---------- quiz ----------
 export const checkQuiz = (v: QuizVariant, question: number, option: number) =>

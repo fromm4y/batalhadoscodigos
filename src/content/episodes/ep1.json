@@ -137,10 +137,10 @@
             "key": "red-lock1-2",
             "title": "Dossiê secreto",
             "type": "quiz",
-            "leaderLine": "Essa foi fácil. Agora o dossiê secreto: cinco perguntas, e sem chutar!",
+            "leaderLine": "Agora o dossiê secreto. Leiam com calma antes de clicar!",
             "variants": {
               "A": {
-                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "prompt": "Responda as 3 perguntas do dossiê secreto.",
                 "hint1": "Pense no que cada parte da máquina fazia.",
                 "hint2": "Algoritmo = passos em ordem. Os furos davam ordens.",
                 "questions": [
@@ -166,25 +166,11 @@
                       "Para deixar o cartão mais leve"
                     ],
                     "correct": 0
-                  },
-                  {
-                    "q": "Como a Máquina Analítica se mexeria?",
-                    "options": [
-                      "Com engrenagens movidas a vapor",
-                      "Com pilhas de celular",
-                      "Com a força do vento"
-                    ],
-                    "correct": 0
-                  },
-                  {
-                    "q": "Se os passos de um algoritmo estão fora de ordem, o que acontece?",
-                    "options": ["O resultado pode dar errado", "Fica mais rápido", "Nada muda"],
-                    "correct": 0
                   }
                 ]
               },
               "B": {
-                "prompt": "Responda as 5 perguntas do dossiê secreto.",
+                "prompt": "Responda as 4 perguntas do dossiê secreto.",
                 "hint1": "Babbage deu nomes de lugares às partes da máquina.",
                 "hint2": "A parte que guardava números era o armazém; a que calculava, o moinho.",
                 "questions": [
@@ -200,11 +186,6 @@
                   {
                     "q": "Babbage chamou a parte que guardava os números de...",
                     "options": ["Armazém", "Cozinha", "Garagem"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "E a parte que fazia as contas ele chamou de...",
-                    "options": ["Moinho", "Fornalha", "Biblioteca"],
                     "correct": 0
                   },
                   {
@@ -301,23 +282,30 @@
             "key": "red-lock2-2",
             "title": "O enigma do segurança",
             "type": "riddle",
-            "leaderLine": "Tinha uma segunda charada escondida atrás do painel. Sem alternativas desta vez!",
+            "leaderLine": "Tinha uma segunda charada escondida atrás do painel. Pensem juntos!",
             "variants": {
               "A": {
-                "prompt": "Digite a resposta do enigma.",
-                "mode": "text",
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
                 "text": "Sou uma lista de passos, sempre em ordem. Uma receita de bolo é um exemplo meu. Quem sou eu?",
                 "accept": ["algoritmo", "um algoritmo", "o algoritmo"],
                 "hint1": "Releia o dossiê secreto: tem uma palavra para 'passos em ordem'.",
-                "hint2": "Começa com AL... e termina com ...RITMO."
+                "hint2": "Começa com AL... e termina com ...RITMO.",
+                "options": ["Algoritmo", "Bicicleta", "Nuvem"]
               },
               "B": {
-                "prompt": "Digite a resposta do enigma.",
-                "mode": "text",
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
                 "text": "Tenho moinho, mas não faço farinha. Tenho armazém, mas não guardo comida. Fui desenhada no papel e nunca terminada. Quem sou eu?",
                 "accept": ["maquina analitica", "a maquina analitica"],
                 "hint1": "É a invenção de Babbage.",
-                "hint2": "Duas palavras: MÁQUINA + A..."
+                "hint2": "Duas palavras: MÁQUINA + A...",
+                "options": [
+                  "Máquina Analítica",
+                  "Máquina de Escrever",
+                  "Moinho de Vento",
+                  "Calculadora de Bolso"
+                ]
               },
               "C": {
                 "prompt": "Digite a resposta do enigma.",
@@ -384,13 +372,13 @@
                 "hint2": "É o ano em que Ada nasceu: começa com 18..."
               },
               "B": {
-                "prompt": "Leiam os furos: senha de 8 números.",
+                "prompt": "Leiam os furos: senha de 6 números.",
                 "rows": 10,
-                "columns": [1, 8, 0, 4, 1, 8, 4, 3],
+                "columns": [1, 8, 0, 4, 4, 3],
                 "decode": "digits",
-                "answer": "18041843",
+                "answer": "180443",
                 "spokenColumn": -1,
-                "hint1": "São dois anos grudados: o do tear e o das notas de Ada.",
+                "hint1": "Leia uma coluna por vez, da esquerda para a direita.",
                 "hint2": "Começa com 1804..."
               },
               "C": {
@@ -482,12 +470,12 @@
               "hint2": "Repita 3 vezes [★ ★ ●]."
             },
             "B": {
-              "prompt": "Monte um programa que teça o padrão. Use no máximo 6 blocos.",
+              "prompt": "Monte um programa que teça o padrão. Use no máximo 4 blocos.",
               "palette": ["star", "dot", "line", "repeat"],
-              "target": ["star", "dot", "star", "dot", "star", "dot", "line", "dot", "line", "dot"],
-              "maxBlocks": 6,
-              "hint1": "O padrão tem duas partes diferentes, cada uma com sua repetição.",
-              "hint2": "Repita 3 vezes [★ ●] e depois Repita 2 vezes [▬ ●]."
+              "target": ["star", "dot", "line", "star", "dot", "line", "star", "dot", "line"],
+              "maxBlocks": 4,
+              "hint1": "Ache o pedaço que se repete e conte quantas vezes.",
+              "hint2": "Repita 3 vezes [★ ● ▬]."
             },
             "C": {
               "prompt": "Monte um programa que teça as 2 fileiras. Use no máximo 6 blocos.",
@@ -641,10 +629,10 @@
             "key": "blue-lock1-2",
             "title": "Diário secreto da Capitã",
             "type": "quiz",
-            "leaderLine": "Primeira página feita! O diário secreto tem cinco perguntas mais cabeludas.",
+            "leaderLine": "Primeira página feita! Agora a página secreta do diário.",
             "variants": {
               "A": {
-                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "prompt": "Responda as 3 perguntas do diário secreto.",
                 "hint1": "Pense no dia a dia: receitas, tecidos e repetições.",
                 "hint2": "Um loop repete passos; uma receita é um algoritmo.",
                 "questions": [
@@ -654,20 +642,6 @@
                       "Escreve instruções para o computador",
                       "Conserta bicicletas",
                       "Desenha mapas"
-                    ],
-                    "correct": 0
-                  },
-                  {
-                    "q": "O tear de Jacquard fabricava...",
-                    "options": ["Tecidos com desenhos", "Pães", "Sapatos"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "Por que Ada ficou famosa?",
-                    "options": [
-                      "Escreveu um programa antes de existir computador",
-                      "Foi a primeira piloto de avião",
-                      "Inventou o telefone"
                     ],
                     "correct": 0
                   },
@@ -688,18 +662,13 @@
                 ]
               },
               "B": {
-                "prompt": "Responda as 5 perguntas do diário secreto.",
+                "prompt": "Responda as 4 perguntas do diário secreto.",
                 "hint1": "Faça a conta: Ada nasceu em 1815.",
                 "hint2": "As notas tinham letras; a mais famosa é a G. Erro de programa tem nome de inseto.",
                 "questions": [
                   {
                     "q": "Ada nasceu em 1815. Quantos anos ela tinha em 1843?",
                     "options": ["27", "12", "60"],
-                    "correct": 0
-                  },
-                  {
-                    "q": "Qual parte das notas de Ada tinha o algoritmo famoso?",
-                    "options": ["A Nota G", "A Nota A", "O índice"],
                     "correct": 0
                   },
                   {
@@ -805,17 +774,17 @@
             "variants": {
               "A": {
                 "prompt": "Arrume as letras da segunda mensagem.",
-                "answer": "NOTAS DE ADA",
+                "answer": "NOTAS",
                 "mode": "perWordFirstFixed",
                 "hint1": "É o que Ada escreveu em 1843.",
-                "hint2": "A primeira palavra é NOTAS."
+                "hint2": "Começa com N e tem 5 letras."
               },
               "B": {
                 "prompt": "Arrume as letras da segunda mensagem.",
                 "answer": "TEAR DE JACQUARD",
-                "mode": "perWord",
+                "mode": "perWordFirstFixed",
                 "hint1": "É a máquina de tecer que inspirou os cartões.",
-                "hint2": "A primeira palavra é TEAR."
+                "hint2": "A primeira palavra é TEAR; a última começa com J."
               },
               "C": {
                 "prompt": "Arrume as letras da segunda mensagem.",
@@ -881,14 +850,14 @@
                 "hint2": "Na 2ª coluna, fure a linha 9."
               },
               "B": {
-                "prompt": "Um furo por coluna: senha de 8 números.",
+                "prompt": "Um furo por coluna: senha de 6 números.",
                 "rows": 10,
-                "target": [1, 8, 1, 5, 1, 8, 5, 2],
+                "target": [1, 8, 1, 5, 5, 2],
                 "decode": "digits",
-                "shownTarget": "1 8 1 5 1 8 5 2",
+                "shownTarget": "1 8 1 5 5 2",
                 "spokenColumn": -1,
                 "hint1": "Vá devagar: uma coluna por número.",
-                "hint2": "A 5ª coluna é furada na linha 1."
+                "hint2": "A 4ª coluna é furada na linha 5."
               },
               "C": {
                 "prompt": "Letras viram números (A=1, B=2...). Furem o cartão.",
@@ -1029,10 +998,10 @@
           "key": "blue-vault-2",
           "title": "O Cofre: a segunda sabotagem",
           "type": "blockDebug",
-          "leaderLine": "Consertaram um erro... mas o Bando escondeu mais! Revisem tudo antes que o cofre abra.",
+          "leaderLine": "Consertaram um erro... mas o Bando escondeu outro! Revisem antes que o cofre abra.",
           "variants": {
             "A": {
-              "prompt": "O tear deveria tecer o padrão, mas tem DOIS blocos trocados. Ache e conserte.",
+              "prompt": "O tear deveria tecer o padrão, mas tem um bloco errado. Ache e conserte.",
               "program": [
                 {
                   "type": "repeat",
@@ -1040,7 +1009,7 @@
                   "body": [
                     {
                       "type": "weave",
-                      "symbol": "dot"
+                      "symbol": "star"
                     },
                     {
                       "type": "weave",
@@ -1055,15 +1024,15 @@
               ],
               "target": ["star", "line", "dot", "star", "line", "dot", "star", "line", "dot"],
               "editable": "symbols",
-              "hint1": "Compare o primeiro e o último bloco de dentro com o padrão.",
-              "hint2": "Dentro da repetição deveria ser ★ ▬ ●."
+              "hint1": "Compare o último bloco de dentro com o padrão.",
+              "hint2": "O último bloco dentro da repetição deveria ser ●."
             },
             "B": {
-              "prompt": "O tear deveria tecer o padrão, mas DUAS contagens estão erradas. Conserte.",
+              "prompt": "O tear deveria tecer o padrão, mas UMA contagem está errada. Conserte.",
               "program": [
                 {
                   "type": "repeat",
-                  "times": 2,
+                  "times": 4,
                   "body": [
                     {
                       "type": "weave",
@@ -1077,7 +1046,7 @@
                 },
                 {
                   "type": "repeat",
-                  "times": 4,
+                  "times": 3,
                   "body": [
                     {
                       "type": "weave",
@@ -1099,8 +1068,8 @@
                 "line"
               ],
               "editable": "counts",
-              "hint1": "Conte quantos ★● e quantos ▬ o padrão tem.",
-              "hint2": "A primeira repetição deveria ser 4 vezes; a segunda, 2."
+              "hint1": "Conte quantos ▬ o padrão tem no fim.",
+              "hint2": "A segunda repetição deveria ser 2 vezes."
             },
             "C": {
               "prompt": "O tear deveria tecer as 3 fileiras, mas tem TRÊS erros escondidos. Ache e conserte.",

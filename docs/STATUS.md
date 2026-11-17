@@ -2,7 +2,7 @@
 
 _Atualizado em 17/11/2026._
 
-**Resumo:** os **Episódios 1 e 2 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 3 a 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
+**Resumo:** os **Episódios 1, 2 e 3 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 4 e 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
 
 ## 🗺️ Plano em andamento (15/11)
 
@@ -50,6 +50,22 @@ _Atualizado em 17/11/2026._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Novidades de 17/11 (noite) — Ep. 3: ENIAC 🔌
+
+- **Painel do ENIAC:** ENTRADA → módulos ("+3", "×2", "−1") ligados por cabos → SAÍDA. "Ligar a máquina" mostra a conta passo a passo (2 → +3 → 5 → ×2 → 10).
+- **Bando monta** o circuito (no Cofre do B e do C sobra um módulo pegadinha); **Piratas consertam** a sabotagem trocando módulos de lugar.
+- **Entrada pelo rádio** no cadeado 3: a tomada mostra 🎧 até a transmissão; depois a dupla digita o número ouvido. A etapa 2 usa a MESMA entrada.
+- Duas etapas em tudo, missão bônus de cabos, quizzes e enigmas novos; níveis na régua nova (A curto, B mediano, C desafio).
+- Cada painel tem **uma única ordem certa** (conferido por teste).
+
+### Novidades de 17/11 (tarde) — mais fácil no A, mediano no B 🎚️
+
+- **Nível A:** a etapa 2 ficou curta e guiada: quiz de 3 perguntas fáceis, enigma com alternativas, anagrama de uma palavra, conserto do tear com 1 erro. No Ep. 2: disco já girado na chave, pista (crib) no Cofre do Bando e só 3 mensagens no Cofre dos Piratas.
+- **Nível B (mediano):** quiz de 4, enigma com 4 alternativas, anagrama com a primeira letra no lugar, cartão de 6 colunas (era 8), tear com uma repetição só, conserto com 1 erro, frases de cifra mais curtas e 4 mensagens no Cofre dos Piratas.
+- **Dica no nível B voltou ao preço normal** (−2 / −4). Só o C paga mais.
+- **O nível C não mudou.**
+- **30 imagens novas dos Ep. 2 a 5** (quadros de HQ, cartas e ganchos). Faltam só `card-ep5` e `teaser-ep5`.
+
 ### Novidades de 17/11 — mais desafio: duas etapas 🔐🔐
 
 - **Todo cadeado e o Cofre têm 2 etapas.** A etapa 1 é o desafio de antes; a etapa 2 é **mais difícil e mais longa** (quizzes de 5 perguntas, enigma sem alternativas, anagrama maior, cartões com mais colunas, tear com duas repetições, conserto com 2–3 erros, cifras com a mensagem inteira, Cofre do Ep. 2 sem pista e com mais mensagens falsas).
@@ -93,7 +109,7 @@ _Atualizado em 17/11/2026._
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 124 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 131 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 

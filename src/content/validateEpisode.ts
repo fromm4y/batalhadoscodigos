@@ -165,6 +165,14 @@ function checkChallenge(c: unknown, at: string, err: (m: string) => void, keys: 
         if (b?.spokenKey === true && (a?.spokenKey !== true || a.shift !== b.shift))
           err(`${at} etapa 2 nível ${lv}: chave falada diferente da etapa 1`);
       }
+    // painel do ENIAC: a etapa 2 com entrada falada usa a MESMA entrada da etapa 1
+    if (isObj(s2) && s2.type === 'wiring' && isObj(s2.variants) && isObj(c.variants))
+      for (const lv of LEVELS) {
+        const a = c.variants[lv] as Obj | undefined;
+        const b = s2.variants[lv] as Obj | undefined;
+        if (b?.startSpoken === true && (a?.startSpoken !== true || a.start !== b.start))
+          err(`${at} etapa 2 nível ${lv}: entrada falada diferente da etapa 1`);
+      }
     // cartão da etapa 2 não pede outra pista falada (spokenColumn = -1)
     if (
       isObj(s2) &&
