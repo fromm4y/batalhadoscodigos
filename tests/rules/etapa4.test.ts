@@ -186,6 +186,15 @@ describe('cartas do Álbum (16/11)', () => {
       updateDoc(doc(asTeam('b1'), 'classes', 'turma', 'teams', 'b1'), { cards: [card] }),
     );
   });
+  it('a Narradora entrega carimbos e selos; a dupla não se dá selo', async () => {
+    const patch = {
+      stamps: [{ episodeId: 'ep1', side: 'red', result: 'venceu' }],
+      badges: [{ id: 'semDicas', episodeId: 'ep1', at: new Date() }],
+      episodesPlayed: 1,
+    };
+    await assertSucceeds(updateDoc(doc(asAna(), 'classes', 'turma', 'teams', 'r1'), patch));
+    await assertFails(updateDoc(doc(asTeam('b1'), 'classes', 'turma', 'teams', 'b1'), patch));
+  });
   it('a dupla equipa uma carta e marca o uso do poder', async () => {
     await assertSucceeds(
       updateDoc(doc(asTeam('r1'), 'sessions', 's1', 'players', 'r1'), {
