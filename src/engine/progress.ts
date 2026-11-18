@@ -38,7 +38,8 @@ export function spokenClueFor(
 
 /**
  * O desafio depende da transmissão da Narradora? Cartões com coluna "rasgada/molhada" (Ep. 1) e
- * cifra com a chave falada (Ep. 2).
+ * cifra com a chave falada (Ep. 2),
+ * entrada do painel (Ep. 3) e quantidade de tarefas do console (Ep. 4).
  */
 export function needsTransmission(ch: ResolvedChallenge): boolean {
   switch (ch.type) {
@@ -50,6 +51,8 @@ export function needsTransmission(ch: ResolvedChallenge): boolean {
       return ch.variant.spokenKey === true;
     case 'wiring':
       return ch.variant.startSpoken === true;
+    case 'priority':
+      return ch.variant.mode === 'select' && ch.variant.pickSpoken === true;
     default:
       return false;
   }

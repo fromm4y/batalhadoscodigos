@@ -115,6 +115,8 @@ export type PriorityVariant = Base & {
   capacityLabel?: string;
   valueLabel?: string;
   optimalValue?: number;
+  /** apoio ao vivo (18/11, níveis A e B): mostra a meta de estrelas enquanto monta o plano */
+  livePreview?: boolean;
 };
 
 /** Ep. 5 — jogo da velha (SPEC-03 §4.2). Tabuleiro: 9 caracteres "X", "O" ou ".". */

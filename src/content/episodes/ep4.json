@@ -136,6 +136,127 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "red-lock1-2",
+            "title": "Dossiê secreto",
+            "leaderLine": "O dossiê tinha uma segunda página, escondida. Mais perguntas!",
+            "type": "quiz",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 3 perguntas da página secreta.",
+                "hint1": "Releia o dossiê e as curiosidades.",
+                "hint2": "Apollo 11, fazer primeiro o mais importante e 3 astronautas.",
+                "questions": [
+                  {
+                    "q": "Qual missão levou os astronautas até a Lua em 1969?",
+                    "options": ["Apollo 11", "Titanic", "Caravela Santa Maria"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Priorizar é...",
+                    "options": [
+                      "Fazer primeiro o que é mais importante",
+                      "Fazer tudo ao mesmo tempo",
+                      "Não fazer nada"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quantos astronautas viajaram na Apollo 11?",
+                    "options": ["3", "1", "20"],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 4 perguntas da página secreta.",
+                "hint1": "Releia o dossiê e as curiosidades.",
+                "hint2": "Apollo 11, Neil Armstrong, deixar para depois o menos importante e fios trançados.",
+                "questions": [
+                  {
+                    "q": "Qual missão pousou na Lua em 1969?",
+                    "options": ["Apollo 11", "Titanic", "Voyager 2"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quem foi o primeiro a pisar na Lua?",
+                    "options": ["Neil Armstrong", "Alan Turing", "Santos Dumont"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quando chegava tarefa demais, o computador da Apollo...",
+                    "options": [
+                      "Deixava para depois as menos importantes",
+                      "Fazia todas devagar",
+                      "Apagava todas"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Onde ficava guardado o programa da Apollo?",
+                    "options": [
+                      "Em fios trançados à mão, a memória de cordas",
+                      "Num pen drive",
+                      "Na nuvem da internet"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas da página secreta.",
+                "hint1": "Pense no que o alarme 1202 queria dizer e no que a equipe decidiu.",
+                "hint2": "Fila cheia, continuar o pouso, costureiras, erro humano e o que vale mais.",
+                "questions": [
+                  {
+                    "q": "O que o alarme 1202 queria dizer para quem estava no controle?",
+                    "options": [
+                      "A fila de tarefas encheu: não dava para fazer tudo de uma vez",
+                      "A nave estava de cabeça para baixo",
+                      "A Lua estava longe demais"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quando o 1202 apareceu, o controle da missão decidiu...",
+                    "options": [
+                      "Continuar o pouso",
+                      "Voltar para a Terra",
+                      "Desligar o computador"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "A memória de cordas da Apollo era feita por...",
+                    "options": [
+                      "Costureiras, fio por fio",
+                      "Robôs gigantes",
+                      "Os astronautas, já no espaço"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Margaret Hamilton queria proteger o software contra...",
+                    "options": [
+                      "Erros humanos, como apertar o botão errado",
+                      "Chuva de meteoros",
+                      "Falta de papel"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Com pouco tempo, um bom plano escolhe...",
+                    "options": [
+                      "As tarefas que valem mais para o objetivo",
+                      "As tarefas mais divertidas",
+                      "As tarefas mais rápidas, sempre"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -171,6 +292,45 @@
               "accept": ["software", "o software", "programa", "o programa", "codigo", "o codigo"],
               "hint1": "Não é uma peça: é feito de instruções.",
               "hint2": "Em inglês começa com SOFT..."
+            }
+          },
+          "stage2": {
+            "key": "red-lock2-2",
+            "title": "O enigma do controle",
+            "leaderLine": "Atrás da charada tinha outra. O guarda adora enigmas!",
+            "type": "riddle",
+            "variants": {
+              "A": {
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
+                "text": "Eu brilho no céu à noite, e em 1969 dois astronautas pisaram em mim. Quem sou eu?",
+                "options": ["Lua", "Sol", "Nuvem"],
+                "accept": ["lua", "a lua"],
+                "hint1": "Ela muda de forma durante o mês.",
+                "hint2": "Tem 3 letras."
+              },
+              "B": {
+                "prompt": "Quem sou eu?",
+                "mode": "choice",
+                "text": "Sou uma fila organizada: o mais importante vai na frente, e o resto espera a vez. Quem sou eu?",
+                "options": [
+                  "Fila de prioridades",
+                  "Gaveta de meias",
+                  "Caixa de brinquedos",
+                  "Lista bagunçada"
+                ],
+                "accept": ["fila de prioridades"],
+                "hint1": "Foi assim que o computador da Apollo organizou as tarefas.",
+                "hint2": "Tem a palavra FILA."
+              },
+              "C": {
+                "prompt": "Digite a resposta do enigma.",
+                "mode": "text",
+                "text": "Quando o tempo é curto e as tarefas são muitas, eu escolho o que vem primeiro. Sou um verbo de 9 letras. Quem sou eu?",
+                "accept": ["priorizar", "priorizo", "priorizacao", "priorizando"],
+                "hint1": "É o que o software da Apollo fez nos alarmes.",
+                "hint2": "Começa com PRIOR..."
+              }
             }
           }
         },
@@ -285,6 +445,131 @@
               "hint1": "Sem qual delas o assalto falha?",
               "hint2": "Lasers, vitrine e saída."
             }
+          },
+          "stage2": {
+            "key": "red-lock3-2",
+            "title": "Plano de fuga",
+            "leaderLine": "Invenção na mão! Agora a fuga: só o essencial, na mesma quantidade que o rádio disse.",
+            "type": "priority",
+            "variants": {
+              "A": {
+                "prompt": "Mesma quantidade do rádio: escolha as tarefas essenciais da fuga.",
+                "mode": "select",
+                "pick": 2,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "porta",
+                    "label": "Abrir a porta dos fundos"
+                  },
+                  {
+                    "id": "van",
+                    "label": "Ligar a van"
+                  },
+                  {
+                    "id": "sorvete",
+                    "label": "Comprar sorvete"
+                  },
+                  {
+                    "id": "foto",
+                    "label": "Tirar foto na saída"
+                  },
+                  {
+                    "id": "acenar",
+                    "label": "Acenar para o guarda"
+                  },
+                  {
+                    "id": "cantar",
+                    "label": "Cantar vitória"
+                  }
+                ],
+                "correct": ["porta", "van"],
+                "hint1": "Sem quais tarefas o Bando não sai do museu?",
+                "hint2": "Porta dos fundos e van."
+              },
+              "B": {
+                "prompt": "Mesma quantidade do rádio: escolha as tarefas essenciais da fuga.",
+                "mode": "select",
+                "pick": 3,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "porta",
+                    "label": "Abrir a porta dos fundos"
+                  },
+                  {
+                    "id": "van",
+                    "label": "Ligar a van"
+                  },
+                  {
+                    "id": "mapa",
+                    "label": "Levar o mapa do caminho"
+                  },
+                  {
+                    "id": "sorvete",
+                    "label": "Comprar sorvete"
+                  },
+                  {
+                    "id": "foto",
+                    "label": "Tirar foto na saída"
+                  },
+                  {
+                    "id": "buzinar",
+                    "label": "Buzinar para comemorar"
+                  },
+                  {
+                    "id": "pintar",
+                    "label": "Pintar a van de dourado"
+                  }
+                ],
+                "correct": ["porta", "van", "mapa"],
+                "hint1": "Sem quais tarefas a fuga dá errado?",
+                "hint2": "Porta, van e mapa."
+              },
+              "C": {
+                "prompt": "Mesma quantidade do rádio: escolha as tarefas essenciais da fuga.",
+                "mode": "select",
+                "pick": 3,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "porta",
+                    "label": "Abrir a porta dos fundos"
+                  },
+                  {
+                    "id": "van",
+                    "label": "Ligar a van"
+                  },
+                  {
+                    "id": "mapa",
+                    "label": "Levar o mapa do caminho"
+                  },
+                  {
+                    "id": "radio",
+                    "label": "Ligar o rádio da van"
+                  },
+                  {
+                    "id": "contar",
+                    "label": "Contar o dinheiro no caminho"
+                  },
+                  {
+                    "id": "roupa",
+                    "label": "Trocar de roupa duas vezes"
+                  },
+                  {
+                    "id": "postar",
+                    "label": "Postar foto da fuga"
+                  },
+                  {
+                    "id": "bilhete",
+                    "label": "Escrever bilhete para o guarda"
+                  }
+                ],
+                "correct": ["porta", "van", "mapa"],
+                "hint1": "Uma fuga precisa de saída, transporte e caminho.",
+                "hint2": "Porta, van e mapa."
+              }
+            }
           }
         }
       ],
@@ -334,7 +619,8 @@
             ],
             "optimalValue": 12,
             "hint1": "Comece pelas ações com mais estrelas.",
-            "hint2": "Lasers, vitrine e planta."
+            "hint2": "Lasers, vitrine e planta.",
+            "livePreview": true
           },
           "B": {
             "prompt": "Vocês têm 10 minutos. Escolha as ações que somam mais estrelas sem passar do tempo.",
@@ -382,7 +668,8 @@
             ],
             "optimalValue": 12,
             "hint1": "Compare quantas estrelas cada minuto rende.",
-            "hint2": "Lasers, vitrine e guarda."
+            "hint2": "Lasers, vitrine e guarda.",
+            "livePreview": true
           },
           "C": {
             "prompt": "Vocês têm 12 minutos. Escolha as ações que somam mais estrelas sem passar do tempo.",
@@ -437,6 +724,314 @@
             "optimalValue": 18,
             "hint1": "Nem sempre a soma das menores ganha. Teste combinações.",
             "hint2": "Lasers, vitrine e energia."
+          }
+        },
+        "stage2": {
+          "key": "red-vault-2",
+          "title": "O Cofre: a rota de fuga",
+          "leaderLine": "O Cofre abriu! Mas a polícia vem aí. Montem a rota que vale mais sem estourar o tempo.",
+          "type": "priority",
+          "variants": {
+            "A": {
+              "prompt": "Vocês têm 9 minutos. Escolha as ações que somam mais estrelas sem passar do tempo.",
+              "mode": "budget",
+              "capacity": 9,
+              "capacityLabel": "minutos",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "cofre",
+                  "label": "Esvaziar o cofre",
+                  "cost": 4,
+                  "value": 6
+                },
+                {
+                  "id": "alarme",
+                  "label": "Desligar o alarme",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "camera",
+                  "label": "Cobrir as câmeras",
+                  "cost": 2,
+                  "value": 3
+                },
+                {
+                  "id": "selfie",
+                  "label": "Tirar selfie",
+                  "cost": 2,
+                  "value": 1
+                },
+                {
+                  "id": "lanche",
+                  "label": "Fazer um lanche",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "danca",
+                  "label": "Dançar no salão",
+                  "cost": 3,
+                  "value": 2
+                }
+              ],
+              "optimalValue": 13,
+              "hint1": "Comece pelas ações com mais estrelas.",
+              "hint2": "Cofre, alarme e câmeras.",
+              "livePreview": true
+            },
+            "B": {
+              "prompt": "Vocês têm 11 minutos. Escolha as ações que somam mais estrelas sem passar do tempo.",
+              "mode": "budget",
+              "capacity": 11,
+              "capacityLabel": "minutos",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "cofre",
+                  "label": "Esvaziar o cofre",
+                  "cost": 4,
+                  "value": 6
+                },
+                {
+                  "id": "alarme",
+                  "label": "Desligar o alarme",
+                  "cost": 4,
+                  "value": 5
+                },
+                {
+                  "id": "camera",
+                  "label": "Cobrir as câmeras",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "guarda",
+                  "label": "Distrair o guarda",
+                  "cost": 3,
+                  "value": 3
+                },
+                {
+                  "id": "selfie",
+                  "label": "Tirar selfie",
+                  "cost": 2,
+                  "value": 1
+                },
+                {
+                  "id": "mascara",
+                  "label": "Pintar a máscara",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "musica",
+                  "label": "Escolher música",
+                  "cost": 2,
+                  "value": 1
+                }
+              ],
+              "optimalValue": 15,
+              "hint1": "Compare quantas estrelas cada minuto rende.",
+              "hint2": "Cofre, alarme e câmeras.",
+              "livePreview": true
+            },
+            "C": {
+              "prompt": "Vocês têm 14 minutos. Escolha as ações que somam mais estrelas sem passar do tempo.",
+              "mode": "budget",
+              "capacity": 14,
+              "capacityLabel": "minutos",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "energia",
+                  "label": "Cortar a energia",
+                  "cost": 7,
+                  "value": 11
+                },
+                {
+                  "id": "cofre",
+                  "label": "Esvaziar o cofre",
+                  "cost": 5,
+                  "value": 8
+                },
+                {
+                  "id": "alarme",
+                  "label": "Desligar o alarme",
+                  "cost": 4,
+                  "value": 7
+                },
+                {
+                  "id": "camera",
+                  "label": "Cobrir as câmeras",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "guarda",
+                  "label": "Distrair o guarda",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "tunel",
+                  "label": "Abrir o túnel",
+                  "cost": 2,
+                  "value": 2
+                },
+                {
+                  "id": "selfie",
+                  "label": "Tirar selfie",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "cracha",
+                  "label": "Trocar o crachá",
+                  "cost": 2,
+                  "value": 1
+                }
+              ],
+              "optimalValue": 22,
+              "hint1": "A ação com mais estrelas nem sempre está no melhor plano. Teste combinações.",
+              "hint2": "Cortar a energia entra no melhor plano."
+            }
+          }
+        }
+      },
+      "bonus": {
+        "key": "red-bonus",
+        "title": "O plano dos sonhos",
+        "type": "priority",
+        "leaderLine": "Cofre aberto? O Professor deixou um plano extra para quem é bom de conta. Topam?",
+        "variants": {
+          "A": {
+            "prompt": "Vocês têm 7 minutos. Monte o plano com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 7,
+            "capacityLabel": "minutos",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "joia",
+                "label": "Pegar a joia",
+                "cost": 3,
+                "value": 5
+              },
+              {
+                "id": "quadro",
+                "label": "Pegar o quadro",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "estatua",
+                "label": "Pegar a estátua",
+                "cost": 4,
+                "value": 4
+              },
+              {
+                "id": "chapeu",
+                "label": "Pegar o chapéu",
+                "cost": 2,
+                "value": 1
+              }
+            ],
+            "optimalValue": 9,
+            "hint1": "Some as estrelas de cada combinação que cabe.",
+            "hint2": "Joia, quadro e chapéu.",
+            "livePreview": true
+          },
+          "B": {
+            "prompt": "Vocês têm 9 minutos. Monte o plano com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 9,
+            "capacityLabel": "minutos",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "joia",
+                "label": "Pegar a joia",
+                "cost": 3,
+                "value": 5
+              },
+              {
+                "id": "quadro",
+                "label": "Pegar o quadro",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "estatua",
+                "label": "Pegar a estátua",
+                "cost": 4,
+                "value": 6
+              },
+              {
+                "id": "chapeu",
+                "label": "Pegar o chapéu",
+                "cost": 2,
+                "value": 1
+              },
+              {
+                "id": "vaso",
+                "label": "Pegar o vaso",
+                "cost": 3,
+                "value": 3
+              }
+            ],
+            "optimalValue": 14,
+            "hint1": "Some as estrelas de cada combinação que cabe.",
+            "hint2": "Joia, quadro e estátua.",
+            "livePreview": true
+          },
+          "C": {
+            "prompt": "Vocês têm 11 minutos. Monte o plano com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 11,
+            "capacityLabel": "minutos",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "joia",
+                "label": "Pegar a joia",
+                "cost": 3,
+                "value": 5
+              },
+              {
+                "id": "quadro",
+                "label": "Pegar o quadro",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "estatua",
+                "label": "Pegar a estátua",
+                "cost": 6,
+                "value": 9
+              },
+              {
+                "id": "chapeu",
+                "label": "Pegar o chapéu",
+                "cost": 2,
+                "value": 2
+              },
+              {
+                "id": "vaso",
+                "label": "Pegar o vaso",
+                "cost": 4,
+                "value": 5
+              },
+              {
+                "id": "moeda",
+                "label": "Pegar a moeda rara",
+                "cost": 1,
+                "value": 1
+              }
+            ],
+            "optimalValue": 17,
+            "hint1": "Teste combinações e compare o total de estrelas.",
+            "hint2": "Some e compare antes de confirmar."
           }
         }
       }
@@ -547,6 +1142,123 @@
                 }
               ]
             }
+          },
+          "stage2": {
+            "key": "blue-lock1-2",
+            "title": "Diário secreto",
+            "leaderLine": "Achamos mais páginas do diário de bordo, molhadas. Completem!",
+            "type": "quiz",
+            "variants": {
+              "A": {
+                "prompt": "Responda as 3 perguntas das páginas molhadas.",
+                "hint1": "Releia o dossiê e as curiosidades.",
+                "hint2": "Águia, na Lua e tarefas demais.",
+                "questions": [
+                  {
+                    "q": "Qual era o apelido do módulo que pousou na Lua?",
+                    "options": ["Águia (Eagle)", "Pérola do Mar", "Tubarão Voador"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Onde Armstrong e Aldrin desceram em 1969?",
+                    "options": ["Na superfície da Lua", "No fundo do mar", "Em Marte"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que o computador da Apollo tocou alarme?",
+                    "options": [
+                      "Recebeu tarefas demais ao mesmo tempo",
+                      "Estava com fome",
+                      "Viu um alienígena"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              },
+              "B": {
+                "prompt": "Responda as 4 perguntas das páginas molhadas.",
+                "hint1": "Releia o dossiê e as curiosidades.",
+                "hint2": "Águia, Michael Collins, esperar a vez e menos de um minuto.",
+                "questions": [
+                  {
+                    "q": "Qual era o apelido do módulo que pousou na Lua?",
+                    "options": ["Águia (Eagle)", "Pérola do Mar", "Golfinho"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quem ficou na órbita da Lua, sem descer?",
+                    "options": ["Michael Collins", "Margaret Hamilton", "Ada Lovelace"],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que acontecia com as tarefas menos importantes durante o alarme?",
+                    "options": [
+                      "Esperavam a vez delas",
+                      "Explodiam",
+                      "Viravam tarefas importantes"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Quanto combustível sobrava quando a Águia pousou?",
+                    "options": ["Menos de um minuto", "Uma semana inteira", "Dez horas"],
+                    "correct": 0
+                  }
+                ]
+              },
+              "C": {
+                "prompt": "Responda as 5 perguntas das páginas molhadas.",
+                "hint1": "Pense no alarme 1201, no pouso e na frase famosa.",
+                "hint2": "Sem espaço livre, desviar das pedras, o essencial na frente, o pequeno passo e o que ajuda a chegar.",
+                "questions": [
+                  {
+                    "q": "O alarme 1201, primo do 1202, avisava que...",
+                    "options": [
+                      "Não sobrava espaço livre para guardar mais tarefas",
+                      "O astronauta estava com sono",
+                      "O rádio estava sem pilha"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Ao ver pedras no lugar do pouso, Armstrong...",
+                    "options": [
+                      "Pilotou a Águia até um lugar mais seguro",
+                      "Pousou em cima das pedras",
+                      "Desistiu da missão"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Por que cada tarefa do software tinha uma prioridade?",
+                    "options": [
+                      "Para o essencial nunca ficar sem vez",
+                      "Para enfeitar o painel",
+                      "Para as tarefas brigarem entre si"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "O que Armstrong disse ao pisar na Lua?",
+                    "options": [
+                      "Um pequeno passo para um homem, um salto gigante para a humanidade",
+                      "Terra à vista!",
+                      "Houston, cadê o lanche?"
+                    ],
+                    "correct": 0
+                  },
+                  {
+                    "q": "Num navio com pouca energia, a melhor escolha é...",
+                    "options": [
+                      "Ligar os sistemas que mais ajudam a chegar ao destino",
+                      "Ligar tudo até acabar",
+                      "Desligar tudo e esperar"
+                    ],
+                    "correct": 0
+                  }
+                ]
+              }
+            }
           }
         },
         {
@@ -578,6 +1290,35 @@
               "mode": "whole",
               "hint1": "Ela liderou o software da Apollo.",
               "hint2": "Primeiro nome: M A R G A R E T."
+            }
+          },
+          "stage2": {
+            "key": "blue-lock2-2",
+            "title": "Outra garrafa!",
+            "leaderLine": "Outra garrafa bateu no casco. As letras vieram ainda mais bagunçadas!",
+            "type": "anagram",
+            "variants": {
+              "A": {
+                "prompt": "Arrume as letras para descobrir a palavra secreta.",
+                "answer": "ASTRONAUTA",
+                "mode": "perWordFirstFixed",
+                "hint1": "É quem viaja até o espaço.",
+                "hint2": "Começa com A S T..."
+              },
+              "B": {
+                "prompt": "Arrume as letras para descobrir a palavra secreta. A primeira letra já está no lugar.",
+                "answer": "COMPUTADOR",
+                "mode": "perWordFirstFixed",
+                "hint1": "A Apollo tinha um, com pouquíssima memória.",
+                "hint2": "Começa com C O M..."
+              },
+              "C": {
+                "prompt": "Arrume as letras para descobrir a frase secreta.",
+                "answer": "TAREFAS ESSENCIAIS",
+                "mode": "whole",
+                "hint1": "É o que o software manteve durante o alarme.",
+                "hint2": "Primeira palavra: T A R E F A S."
+              }
             }
           }
         },
@@ -692,6 +1433,131 @@
               "hint1": "O que é preciso para pousar com segurança?",
               "hint2": "Radar, motores e altitude."
             }
+          },
+          "stage2": {
+            "key": "blue-lock3-2",
+            "title": "Volta para casa",
+            "leaderLine": "Pousamos! Agora a volta: o computador só aguenta a mesma quantidade de antes. Só o essencial!",
+            "type": "priority",
+            "variants": {
+              "A": {
+                "prompt": "Mesma quantidade do rádio: escolha os sistemas essenciais para voltar à Terra.",
+                "mode": "select",
+                "pick": 2,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "escudo",
+                    "label": "Escudo de calor"
+                  },
+                  {
+                    "id": "paraquedas",
+                    "label": "Paraquedas"
+                  },
+                  {
+                    "id": "lanche",
+                    "label": "Lanchinho espacial"
+                  },
+                  {
+                    "id": "fotos",
+                    "label": "Fotos da Terra"
+                  },
+                  {
+                    "id": "luzes",
+                    "label": "Luzes coloridas"
+                  },
+                  {
+                    "id": "cartas",
+                    "label": "Jogo de cartas"
+                  }
+                ],
+                "correct": ["escudo", "paraquedas"],
+                "hint1": "O que protege a cápsula na descida até o mar?",
+                "hint2": "Escudo de calor e paraquedas."
+              },
+              "B": {
+                "prompt": "Mesma quantidade do rádio: escolha os sistemas essenciais para voltar à Terra.",
+                "mode": "select",
+                "pick": 3,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "escudo",
+                    "label": "Escudo de calor"
+                  },
+                  {
+                    "id": "paraquedas",
+                    "label": "Paraquedas"
+                  },
+                  {
+                    "id": "radio",
+                    "label": "Rádio com a Terra"
+                  },
+                  {
+                    "id": "lanche",
+                    "label": "Lanchinho espacial"
+                  },
+                  {
+                    "id": "fotos",
+                    "label": "Fotos da Terra"
+                  },
+                  {
+                    "id": "luzes",
+                    "label": "Luzes coloridas"
+                  },
+                  {
+                    "id": "cartas",
+                    "label": "Jogo de cartas"
+                  }
+                ],
+                "correct": ["escudo", "paraquedas", "radio"],
+                "hint1": "Sem quais sistemas a volta dá errado?",
+                "hint2": "Escudo, paraquedas e rádio."
+              },
+              "C": {
+                "prompt": "Mesma quantidade do rádio: escolha os sistemas essenciais para voltar à Terra.",
+                "mode": "select",
+                "pick": 3,
+                "pickSpoken": true,
+                "tasks": [
+                  {
+                    "id": "escudo",
+                    "label": "Escudo de calor"
+                  },
+                  {
+                    "id": "paraquedas",
+                    "label": "Paraquedas"
+                  },
+                  {
+                    "id": "radio",
+                    "label": "Rádio com a Terra"
+                  },
+                  {
+                    "id": "relatorio",
+                    "label": "Imprimir o relatório"
+                  },
+                  {
+                    "id": "video",
+                    "label": "Gravar vídeo da janela"
+                  },
+                  {
+                    "id": "ar",
+                    "label": "Ar-condicionado extra"
+                  },
+                  {
+                    "id": "cronometro",
+                    "label": "Cronômetro decorativo"
+                  },
+                  {
+                    "id": "planta",
+                    "label": "Regar a planta de bordo"
+                  }
+                ],
+                "correct": ["escudo", "paraquedas", "radio"],
+                "hint1": "A cápsula precisa aguentar o calor, frear e avisar onde caiu.",
+                "hint2": "Escudo, paraquedas e rádio."
+              }
+            }
           }
         }
       ],
@@ -741,7 +1607,8 @@
             ],
             "optimalValue": 13,
             "hint1": "Comece pelos sistemas com mais estrelas.",
-            "hint2": "Radar, motores e altitude."
+            "hint2": "Radar, motores e altitude.",
+            "livePreview": true
           },
           "B": {
             "prompt": "O navio tem 11 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
@@ -789,7 +1656,8 @@
             ],
             "optimalValue": 14,
             "hint1": "Compare quantas estrelas cada unidade de energia rende.",
-            "hint2": "Radar, motores e altitude."
+            "hint2": "Radar, motores e altitude.",
+            "livePreview": true
           },
           "C": {
             "prompt": "O navio tem 13 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
@@ -844,6 +1712,314 @@
             "optimalValue": 19,
             "hint1": "Nem sempre a soma das menores ganha. Teste combinações.",
             "hint2": "Radar, motores e comunicação."
+          }
+        },
+        "stage2": {
+          "key": "blue-vault-2",
+          "title": "O Cofre: a volta da tripulação",
+          "leaderLine": "O tesouro está a bordo! Para voltar, escolham os sistemas que valem mais sem estourar a energia.",
+          "type": "priority",
+          "variants": {
+            "A": {
+              "prompt": "O navio tem 10 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+              "mode": "budget",
+              "capacity": 10,
+              "capacityLabel": "energia",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "escudo",
+                  "label": "Escudo de calor",
+                  "cost": 4,
+                  "value": 7
+                },
+                {
+                  "id": "paraquedas",
+                  "label": "Paraquedas",
+                  "cost": 3,
+                  "value": 5
+                },
+                {
+                  "id": "radio",
+                  "label": "Rádio com a Terra",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "fotos",
+                  "label": "Fotos da Terra",
+                  "cost": 2,
+                  "value": 1
+                },
+                {
+                  "id": "luz",
+                  "label": "Luz decorativa",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "cartas",
+                  "label": "Jogo de cartas",
+                  "cost": 3,
+                  "value": 2
+                }
+              ],
+              "optimalValue": 16,
+              "hint1": "Comece pelos sistemas com mais estrelas.",
+              "hint2": "Escudo, paraquedas e rádio.",
+              "livePreview": true
+            },
+            "B": {
+              "prompt": "O navio tem 12 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+              "mode": "budget",
+              "capacity": 12,
+              "capacityLabel": "energia",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "escudo",
+                  "label": "Escudo de calor",
+                  "cost": 5,
+                  "value": 8
+                },
+                {
+                  "id": "paraquedas",
+                  "label": "Paraquedas",
+                  "cost": 4,
+                  "value": 6
+                },
+                {
+                  "id": "radio",
+                  "label": "Rádio com a Terra",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "combustivel",
+                  "label": "Combustível extra",
+                  "cost": 3,
+                  "value": 3
+                },
+                {
+                  "id": "fotos",
+                  "label": "Fotos da Terra",
+                  "cost": 2,
+                  "value": 1
+                },
+                {
+                  "id": "luz",
+                  "label": "Luz decorativa",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "cartas",
+                  "label": "Jogo de cartas",
+                  "cost": 2,
+                  "value": 1
+                }
+              ],
+              "optimalValue": 18,
+              "hint1": "Compare quantas estrelas cada unidade de energia rende.",
+              "hint2": "Escudo, paraquedas e rádio.",
+              "livePreview": true
+            },
+            "C": {
+              "prompt": "O navio tem 15 unidades de energia. Escolha os sistemas que somam mais estrelas sem passar do limite.",
+              "mode": "budget",
+              "capacity": 15,
+              "capacityLabel": "energia",
+              "valueLabel": "estrelas",
+              "tasks": [
+                {
+                  "id": "motores",
+                  "label": "Motores de retorno",
+                  "cost": 7,
+                  "value": 12
+                },
+                {
+                  "id": "escudo",
+                  "label": "Escudo de calor",
+                  "cost": 5,
+                  "value": 8
+                },
+                {
+                  "id": "paraquedas",
+                  "label": "Paraquedas",
+                  "cost": 4,
+                  "value": 7
+                },
+                {
+                  "id": "radio",
+                  "label": "Rádio com a Terra",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "oxigenio",
+                  "label": "Oxigênio extra",
+                  "cost": 3,
+                  "value": 4
+                },
+                {
+                  "id": "combustivel",
+                  "label": "Combustível extra",
+                  "cost": 2,
+                  "value": 2
+                },
+                {
+                  "id": "fotos",
+                  "label": "Fotos da Terra",
+                  "cost": 1,
+                  "value": 0
+                },
+                {
+                  "id": "musica",
+                  "label": "Música ambiente",
+                  "cost": 2,
+                  "value": 1
+                }
+              ],
+              "optimalValue": 24,
+              "hint1": "O sistema com mais estrelas nem sempre está no melhor plano. Teste combinações.",
+              "hint2": "Os motores de retorno entram no melhor plano."
+            }
+          }
+        }
+      },
+      "bonus": {
+        "key": "blue-bonus",
+        "title": "A carga dos sonhos",
+        "type": "priority",
+        "leaderLine": "Tesouro a bordo? A Capitã quer levar mais uma carga, sem afundar o navio. Topam?",
+        "variants": {
+          "A": {
+            "prompt": "O navio aguenta 8 unidades de peso. Leve a carga com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 8,
+            "capacityLabel": "peso",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "ouro",
+                "label": "Baú de ouro",
+                "cost": 4,
+                "value": 6
+              },
+              {
+                "id": "mapa",
+                "label": "Mapa antigo",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "canhao",
+                "label": "Canhão velho",
+                "cost": 5,
+                "value": 5
+              },
+              {
+                "id": "rede",
+                "label": "Rede de pesca",
+                "cost": 2,
+                "value": 1
+              }
+            ],
+            "optimalValue": 10,
+            "hint1": "Some as estrelas de cada combinação que cabe.",
+            "hint2": "Ouro, mapa e rede.",
+            "livePreview": true
+          },
+          "B": {
+            "prompt": "O navio aguenta 10 unidades de peso. Leve a carga com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 10,
+            "capacityLabel": "peso",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "ouro",
+                "label": "Baú de ouro",
+                "cost": 4,
+                "value": 7
+              },
+              {
+                "id": "mapa",
+                "label": "Mapa antigo",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "canhao",
+                "label": "Canhão velho",
+                "cost": 4,
+                "value": 5
+              },
+              {
+                "id": "rede",
+                "label": "Rede de pesca",
+                "cost": 2,
+                "value": 1
+              },
+              {
+                "id": "barril",
+                "label": "Barril de água",
+                "cost": 3,
+                "value": 4
+              }
+            ],
+            "optimalValue": 15,
+            "hint1": "Some as estrelas de cada combinação que cabe.",
+            "hint2": "Ouro, canhão e mapa.",
+            "livePreview": true
+          },
+          "C": {
+            "prompt": "O navio aguenta 12 unidades de peso. Leve a carga com mais estrelas. (Missão bônus: errar aqui não tira ponto.)",
+            "mode": "budget",
+            "capacity": 12,
+            "capacityLabel": "peso",
+            "valueLabel": "estrelas",
+            "tasks": [
+              {
+                "id": "ouro",
+                "label": "Baú de ouro",
+                "cost": 4,
+                "value": 6
+              },
+              {
+                "id": "mapa",
+                "label": "Mapa antigo",
+                "cost": 2,
+                "value": 3
+              },
+              {
+                "id": "canhao",
+                "label": "Canhão velho",
+                "cost": 7,
+                "value": 11
+              },
+              {
+                "id": "rede",
+                "label": "Rede de pesca",
+                "cost": 2,
+                "value": 2
+              },
+              {
+                "id": "barril",
+                "label": "Barril de água",
+                "cost": 3,
+                "value": 4
+              },
+              {
+                "id": "perola",
+                "label": "Pérola rara",
+                "cost": 1,
+                "value": 1
+              }
+            ],
+            "optimalValue": 18,
+            "hint1": "Teste combinações e compare o total de estrelas.",
+            "hint2": "Some e compare antes de confirmar."
           }
         }
       }

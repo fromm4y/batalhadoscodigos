@@ -3,6 +3,13 @@
 Jogo web em episódios semanais (HQ + cabo de guerra) para o Núcleo WIT, de Barueri/SP.
 Especificação completa: [`SPEC.md`](./SPEC.md) · Direção de arte: [`VISUAL.md`](./VISUAL.md) · Regras para o Claude: [`CLAUDE.md`](./CLAUDE.md) · Imagens: [`docs/IMAGENS.md`](./docs/IMAGENS.md)
 
+## 🎨 Imagens que ainda faltam (18/11)
+
+- **16 personagens novos** (`menina-13` a `menina-20`, `menino-13` a `menino-20`), cada um nas versões Bando e Piratas: 32 imagens. Descrição e prompt de cada um em [`docs/IMAGENS.md` §6](./docs/IMAGENS.md).
+- **`card-ep5`** (carta do Deep Blue) e **`teaser-ep5`** (encerramento da temporada).
+
+Enquanto uma imagem não existe, o jogo segue funcionando (placeholder ou o personagem simplesmente não aparece na lista).
+
 ## Rodando localmente
 
 ```bash

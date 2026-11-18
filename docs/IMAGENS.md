@@ -131,8 +131,8 @@ Retrato da cintura pra cima, olhando um pouco para o lado, para caber ao lado do
 
 A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado. Cada personagem tem **duas imagens da MESMA pessoa** (mesmo rosto, cabelo e pele): uma no figurino do **Bando** e outra no dos **Piratas**.
 
-- **Quantidade:** 12 meninas + 12 meninos = **24 personagens × 2 versões = 48 imagens**. Pode entregar aos poucos: o personagem aparece no jogo assim que as **duas** versões dele existirem. Enquanto não houver nenhum, continua o criador de avatar em desenho.
-- **Ids (nome do arquivo):** `avatar-menina-01-bando`, `avatar-menina-01-piratas`, … até `avatar-menina-12-…`; e `avatar-menino-01-bando`, `avatar-menino-01-piratas`, … até `avatar-menino-12-…`.
+- **Quantidade (18/11):** **20 meninas + 20 meninos** = 40 personagens × 2 versões = 80 imagens. Os 24 primeiros já estão prontos; **faltam os 16 novos (32 imagens)**, ids 13 a 20. Pode entregar aos poucos: o personagem aparece no jogo assim que as **duas** versões dele existirem.
+- **Ids (nome do arquivo):** `avatar-menina-01-bando`, `avatar-menina-01-piratas`, … até `avatar-menina-20-…`; e `avatar-menino-01-bando`, `avatar-menino-01-piratas`, … até `avatar-menino-20-…`.
 - **Formato:** retrato **vertical 600 × 720** (proporção 5:6), **da cintura para cima**, personagem centralizado, **fundo liso de uma cor só** (eu recorto). `.webp`, `.png` ou o `.jfif` do Gemini, tanto faz.
 - **Idade:** crianças/pré-adolescentes de **9 a 14 anos**, simpáticas, cheias de atitude, nada assustador.
 - **Diversidade:** variar tom de pele, tipo e cor de cabelo (crespo, cacheado, liso, trança, black, raspado), óculos, aparelho nos dentes, sardas, hijab, cadeira de rodas (de cintura pra cima aparece o encosto), aparelho auditivo.
@@ -143,7 +143,7 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 > _noir comic book illustration, waist-up portrait of an original kid character, [11]-year-old [girl/boy] with [dark brown skin, curly black hair in two puffs, round glasses], confident friendly smile, wearing [a red hooded jumpsuit and a simple red domino eye mask, holding a flashlight] / [a straw hat with a blue ribbon, blue vest and neck scarf, holding a spyglass], bold black ink outlines, halftone shading, dramatic rim lighting, plain solid flat dark navy background (#0B0D14), no pattern, no text, no logos_
 
-### Situação dos personagens — ✅ COMPLETOS (15/11) · recortados de novo (17/11)
+### Situação dos personagens — 24 prontos (15/11) · recortados de novo (17/11) · 16 vagas novas (18/11)
 
 > **17/11:** as 48 imagens foram recortadas de novo a partir dos originais com um recorte **por forma** (não por cor), porque o recorte antigo deixava buracos no cabelo escuro, nos contornos e em partes da roupa. Para personagens novos: fundo liso de uma cor só continua ajudando, mas o recorte já não depende disso.
 
@@ -152,6 +152,31 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 | Meninas                                                                                                                                                                                                                                                                            | Meninos                                                                                                                                                                                                                                               |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 01 ruiva, sardas · 02 chanel preto · 03 tranças · 04 puffs + óculos · 05 hijab · 06 cachos com mechas roxas · 07 cadeirante, cabelo castanho · 08 trança lateral · 09 cabelo preto liso com franja · 10 loira, coque cacheado · 11 tranças com miçangas · 12 cabelo black curtinho | 01 loiro · 02 cabelo curto · 03 black alto · 04 undercut + óculos · 05 cacheado + óculos · 06 cadeirante · 07 cabelo preto espetado · 08 franja preta · 09 ruivo cacheado + óculos · 10 dreads · 11 cacheado castanho · 12 castanho, sorriso banguela |
+
+### 🆕 Personagens novos (18/11) — 16 vagas, 32 imagens
+
+Pensados para **não repetir** os 24 que já existem e para mais crianças se verem no jogo. Use o **prompt modelo** acima trocando só o trecho entre colchetes (em inglês na coluna da direita) e gere as duas versões em seguida ("same character").
+
+| id          | Quem é                                                                      | Trecho para o prompt                                                                           |
+| ----------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `menina-13` | pele morena, cabelo preto bem comprido e liso, rabo de cavalo alto          | _10-year-old girl with warm brown skin, very long straight black hair in a high ponytail_      |
+| `menina-14` | pele negra retinta, cabelo raspado bem curtinho, brincos de argola pequenos | _12-year-old girl with deep dark skin, buzz-cut hair, small hoop earrings_                     |
+| `menina-15` | descendente de asiáticos, dois coquinhos no alto, aparelho nos dentes       | _11-year-old East Asian girl with two hair buns on top, braces on her teeth_                   |
+| `menina-16` | pele clara, cabelo castanho ondulado curto, aparelho auditivo colorido      | _10-year-old girl with fair skin, short wavy brown hair, a colorful hearing aid_               |
+| `menina-17` | vitiligo no rosto e nas mãos, cabelo cacheado volumoso solto                | _12-year-old girl with vitiligo patches on her face and hands, big voluminous curly hair_      |
+| `menina-18` | pele morena clara, cabelo liso com as pontas azuis, óculos redondos grandes | _13-year-old girl with light brown skin, straight hair with blue-dyed tips, big round glasses_ |
+| `menina-19` | menina com síndrome de Down, cabelo castanho curto com tiara                | _10-year-old girl with Down syndrome, short brown hair with a headband, big joyful smile_      |
+| `menina-20` | pele parda, tranças nagô até a nuca, covinhas                               | _11-year-old girl with medium brown skin, cornrow braids, dimples when smiling_                |
+| `menino-13` | pele morena, cabelo preto liso em cuia                                      | _10-year-old boy with warm brown skin, straight black bowl-cut hair_                           |
+| `menino-14` | descendente de asiáticos, cabelo liso repartido de lado, óculos quadrados   | _12-year-old East Asian boy with side-parted straight hair, square glasses_                    |
+| `menino-15` | pele negra, cabelo curtinho com risquinho na lateral, sorrisão              | _11-year-old boy with dark skin, short hair with a shaved line design on the side, huge grin_  |
+| `menino-16` | pele clara, cabelo castanho bagunçado, sardas, curativo no nariz            | _10-year-old boy with fair skin, messy brown hair, freckles, a small bandage on his nose_      |
+| `menino-17` | cabelo cacheado curto, aparelho auditivo                                    | _12-year-old boy with light brown skin, short curly hair, a hearing aid_                       |
+| `menino-18` | prótese no braço (aparece da cintura para cima), cabelo crespo curto        | _13-year-old boy with dark brown skin, short coily hair, a modern prosthetic arm_              |
+| `menino-19` | pele morena, cabelo ondulado até o ombro preso num rabinho                  | _12-year-old boy with tan skin, shoulder-length wavy hair tied in a small ponytail_            |
+| `menino-20` | cabelo crespo com topete descolorido, óculos de grau grossos                | _11-year-old boy with medium brown skin, coily hair with a bleached top, thick-framed glasses_ |
+
+> **Figurino continua igual** (Bando: macacão vermelho com capuz + máscara dominó vermelha; Piratas: chapéu de palha com **fita azul** + colete azul + lenço). Se alguma vaga não ficar boa, troque à vontade por outra ideia: o que importa é o id do arquivo.
 
 Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na máscara), menina-09 com penas e com cinto, menino-04 antigo de cabelo espetado e aparelho (Bando e Piratas: lembrava um personagem de anime) e menina-10 com óculos gatinho.
 
@@ -180,7 +205,7 @@ Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na
 
 ---
 
-**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 48 ✅**. Ep. 2–5: **30 de 32 ✅** (17/11). Faltam só **`card-ep5`** (carta do Deep Blue, 600 × 840) e **`teaser-ep5`** (encerramento da temporada, 1376 × 768).
+**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 80** (os 24 primeiros ✅; faltam os 16 novos de 18/11). Ep. 2–5: **30 de 32 ✅** (17/11). Faltam só **`card-ep5`** (carta do Deep Blue, 600 × 840) e **`teaser-ep5`** (encerramento da temporada, 1376 × 768).
 **Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
 
 > O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.

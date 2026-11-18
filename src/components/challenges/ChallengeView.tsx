@@ -3,6 +3,7 @@ import type { Level } from '@/types/domain';
 import { AnagramChallenge } from './AnagramChallenge';
 import { BlockBuildChallenge, BlockDebugChallenge } from './BlockChallenges';
 import { CipherChallenge } from './CipherChallenge';
+import { PriorityChallenge } from './PriorityChallenge';
 import { WiringChallenge } from './WiringChallenge';
 import type { ChallengeBaseProps } from './common';
 import { PunchCardReadChallenge, PunchCardWriteChallenge } from './PunchCardChallenges';
@@ -61,8 +62,17 @@ export function ChallengeView({ challenge, level, seed, heardTransmission, ...ba
           {...base}
         />
       );
+    case 'priority':
+      return (
+        <PriorityChallenge
+          variant={challenge.variant}
+          heard={heardTransmission}
+          seed={`${seed}:${challenge.key}`}
+          {...base}
+        />
+      );
     default:
-      // tipos dos próximos episódios (priority, boardChoice, gameTree) entram com eles
+      // tipos do Ep. 5 (boardChoice, gameTree) entram com ele
       return null;
   }
 }
