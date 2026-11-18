@@ -66,8 +66,18 @@ export const GAME_RULES = {
   coop: {
     /** RN-C3 [PADRÃO]: um cadeado aberto puxa `pullTotal / duplas da Aliança` pela turma. */
     pullTotal: 15,
-    /** RN-C5 [PADRÃO]: a turma vence se esta fração das duplas abrir o Cofre antes da máquina. */
-    winShare: 0.5,
+    /**
+     * RN-C5: a turma vence se esta fração das duplas abrir o Cofre antes da máquina.
+     * Pedido da May (18/11): "o boss do último Ep precisa ser o BOSS" → 2/3 (era metade).
+     */
+    winShare: 2 / 3,
+    /**
+     * O CHEFÃO FINAL (pedido da May, 18/11): a máquina do Ep. 5 é bem mais difícil, para a turma
+     * inteira se empenhar. `speedFactor` multiplica o tempo dela por desafio (menor = mais
+     * rápida), `pullFactor` multiplica o puxão dela e `counterPull` é o contra-ataque: cada
+     * resposta errada de qualquer dupla puxa este tanto para a máquina.
+     */
+    boss: { speedFactor: 0.7, pullFactor: 1.5, counterPull: 3 },
     /** RN-C7: cada dupla que terminou o Cofre manda este tanto de reforços (Dica 1 grátis). */
     reinforcementsPerTeam: 1,
   },

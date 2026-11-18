@@ -56,12 +56,16 @@ export async function machineTick(
     const st = m.machine;
     if (!side || !st || m.winner) return;
     const now = serverNow();
-    const delay = (slot: 'lock' | 'vault') => Math.round(machineDelayMs(level, slot) / speed);
+    // Ep. 5: o CHEFÃO FINAL é mais rápido e puxa mais forte (pedido da May, 18/11)
+    const boss = m.coop ? GAME_RULES.coop.boss : null;
+    const delay = (slot: 'lock' | 'vault') =>
+      Math.round((machineDelayMs(level, slot) * (boss?.speedFactor ?? 1)) / speed);
+    const force = (f: number) => Math.round(f * (boss?.pullFactor ?? 1));
 
     // RN-36: no evento do museu, o robô acerta 80% das vezes (puxão de 10).
     if (env.eventRunning && !st.eventDone) {
       const okEvent = Math.random() < GAME_RULES.museumEvent.machineSuccessChance;
-      const pull = okEvent ? applyPull(m, side, GAME_RULES.pull.museumEventOk, now) : null;
+      const pull = okEvent ? applyPull(m, side, force(GAME_RULES.pull.museumEventOk), now) : null;
       tx.update(ref, {
         ...(pull ? { bar: pull.bar, effects: pull.effects } : {}),
         machine: { ...st, eventDone: true },
@@ -90,7 +94,7 @@ export async function machineTick(
 
     if (phase === 'locks' && st.lockIndex < 3) {
       const lockIndex = st.lockIndex + 1;
-      const pull = applyPull(m, side, GAME_RULES.pull.lockOpen, now);
+      const pull = applyPull(m, side, force(GAME_RULES.pull.lockOpen), now);
       let effects = pull.effects;
       const used = [...st.usedAbilities];
       let log = pushLog(m.log, {

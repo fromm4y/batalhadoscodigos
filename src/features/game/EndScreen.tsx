@@ -389,10 +389,22 @@ function AlbumCard({ episode, card }: { episode: Episode; card: TeamCard | undef
 /** No último episódio da temporada, o ranking é o FINAL (RN-C9). */
 function RankingTitle({ episodeId }: { episodeId: string }) {
   const hook = useEpisodeHook('student', episodeId);
+  const end = hook?.kind === 'seasonEnd';
   return (
-    <h1 className="font-heist text-4xl tracking-[0.12em] text-brass text-glow-brass sm:text-5xl">
-      {hook?.kind === 'seasonEnd' ? '🏆 RANKING FINAL DA TEMPORADA' : 'RANKING DA TURMA'}
-    </h1>
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <h1 className="font-heist text-4xl tracking-[0.12em] text-brass text-glow-brass sm:text-5xl">
+        {end ? '🏆 RANKING FINAL DA TEMPORADA' : 'RANKING DA TURMA'}
+      </h1>
+      {end && (
+        // SPEC-02 E: medalhas e certificado no fim do último episódio
+        <Link
+          to="/certificado-temporada"
+          className="grid min-h-11 place-items-center border-[3px] border-ink bg-brass px-4 pt-1 font-heist text-xl tracking-wider text-ink hover:glow-brass"
+        >
+          🎖️ Nosso certificado da temporada
+        </Link>
+      )}
+    </div>
   );
 }
 

@@ -43,7 +43,9 @@ describe('Ep. 4 (Apollo 11) é resolvível nos 3 níveis, dos dois lados', () =>
           const fit = subsets(ids).filter((s) => selectionCost(v.tasks, s) <= v.capacity!);
           const winners = fit.filter((s) => checkBudget(v.tasks, v.capacity!, best, s));
           expect(winners.length, ch.key).toBeGreaterThan(0);
-          expect(winners.length, `${ch.key}: não pode ter combinações demais`).toBeLessThanOrEqual(3);
+          expect(winners.length, `${ch.key}: não pode ter combinações demais`).toBeLessThanOrEqual(
+            3,
+          );
           // etapa 2 do Cofre no C: o "guloso" (melhor estrela por custo primeiro) não basta
           if (lv === 'C' && ch.key.endsWith('vault-2')) {
             const greedy = [...v.tasks]

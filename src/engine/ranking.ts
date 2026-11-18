@@ -46,3 +46,10 @@ export function sessionHighlights<T extends { teamId: string; episodePoints: num
     points: best,
   };
 }
+
+/** SPEC-02 E: medalha da temporada pela posição no ranking (empate divide a medalha). */
+export type SeasonMedal = 'ouro' | 'prata' | 'bronze';
+export function seasonMedal(place: number, totalPoints: number): SeasonMedal | null {
+  if (totalPoints <= 0) return null;
+  return place === 1 ? 'ouro' : place === 2 ? 'prata' : place === 3 ? 'bronze' : null;
+}

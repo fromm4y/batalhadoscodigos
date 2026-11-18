@@ -39,7 +39,8 @@ export const isCoopMatch = (m: Pick<MatchDoc, 'coop'> | null | undefined): boole
  * grandes e pequenas terem o mesmo ritmo. `force` é o puxão normal (cadeado = `pull.lockOpen`).
  */
 export function coopPull(force: number, teams: number): number {
-  const scaled = (force * GAME_RULES.coop.pullTotal) / GAME_RULES.pull.lockOpen / Math.max(1, teams);
+  const scaled =
+    (force * GAME_RULES.coop.pullTotal) / GAME_RULES.pull.lockOpen / Math.max(1, teams);
   return Math.max(1, Math.round(scaled));
 }
 

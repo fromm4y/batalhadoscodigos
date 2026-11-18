@@ -483,34 +483,43 @@
       "stage2": {
         "key": "coop-vault-2",
         "title": "O Grande Cofre: a última partida",
-        "leaderLine": "A máquina abriu a última camada do Cofre. Pensem como ela, até o fim!",
+        "leaderLine": "É o CHEFÃO FINAL: a máquina abriu a última camada do Cofre. Pensem como ela, até o fim!",
         "type": "gameTree",
         "variants": {
           "A": {
             "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
             "depth": 2,
             "tree": {
-              "Jogada 1": [4, 9],
-              "Jogada 2": [3, 8],
-              "Jogada 3": [6, 7]
+              "Jogada 1": [7, 2, 9],
+              "Jogada 2": [5, 6, 8],
+              "Jogada 3": [10, 1, 6],
+              "Jogada 4": [4, 9, 7]
             },
-            "answer": "Jogada 3",
-            "hint1": "Para cada jogada, veja qual número a máquina vai escolher.",
-            "hint2": "A máquina deixaria 4, 3 e 6.",
+            "answer": "Jogada 2",
+            "hint1": "Para cada jogada, ache o MENOR número: é o que a máquina vai deixar.",
+            "hint2": "A máquina deixaria 2, 5, 1 e 4.",
             "livePreview": true
           },
           "B": {
-            "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
-            "depth": 2,
+            "prompt": "Vocês jogam, a máquina responde com o PIOR para vocês, e depois vocês escolhem o MAIOR número. Qual primeira jogada é a melhor?",
+            "depth": 3,
             "tree": {
-              "Jogada 1": [9, 3, 8],
-              "Jogada 2": [2, 6, 7],
-              "Jogada 3": [10, 1, 6],
-              "Jogada 4": [5, 8, 6]
+              "Jogada 1": {
+                "R1": [3, 9],
+                "R2": [6, 5]
+              },
+              "Jogada 2": {
+                "R1": [8, 7],
+                "R2": [2, 10]
+              },
+              "Jogada 3": {
+                "R1": [7, 4],
+                "R2": [6, 8]
+              }
             },
-            "answer": "Jogada 4",
-            "hint1": "Os números grandes são uma armadilha: a máquina nunca deixa você pegar.",
-            "hint2": "A máquina deixaria 3, 2, 1 e 5.",
+            "answer": "Jogada 2",
+            "hint1": "De baixo para cima: em cada resposta, o seu MAIOR; depois, o MENOR da máquina.",
+            "hint2": "As jogadas garantem 6, 8 e 7.",
             "livePreview": true
           },
           "C": {
@@ -518,24 +527,29 @@
             "depth": 3,
             "tree": {
               "Jogada 1": {
-                "R1": [3, 8],
-                "R2": [7, 2],
-                "R3": [9, 1]
+                "R1": [4, 9],
+                "R2": [8, 3],
+                "R3": [7, 6]
               },
               "Jogada 2": {
                 "R1": [10, 2],
-                "R2": [4, 5],
-                "R3": [6, 9]
+                "R2": [5, 4],
+                "R3": [9, 9]
               },
               "Jogada 3": {
-                "R1": [6, 8],
-                "R2": [9, 3],
-                "R3": [8, 7]
+                "R1": [8, 8],
+                "R2": [6, 9],
+                "R3": [8, 2]
+              },
+              "Jogada 4": {
+                "R1": [3, 10],
+                "R2": [7, 7],
+                "R3": [1, 9]
               }
             },
             "answer": "Jogada 3",
-            "hint1": "De baixo para cima: em cada resposta, o seu maior; depois, o menor da máquina.",
-            "hint2": "Jogada 3 garante 8; as outras garantem 7 e 5."
+            "hint1": "O 10 é isca: a máquina nunca deixa vocês chegarem nele. Resolvam de baixo para cima.",
+            "hint2": "As jogadas garantem 7, 5, 8 e 7."
           }
         }
       }

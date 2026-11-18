@@ -102,6 +102,9 @@ service cloud.firestore {
     // ---------- schools/{schoolId} ----------
     match /schools/{schoolId} {
       allow read: if isInstructor();
+      // a dupla lê só o nome da PRÓPRIA escola, para o certificado da temporada (SPEC-02 E)
+      allow get: if isTeam()
+        && get(/databases/$(database)/documents/classes/$(request.auth.token.classId)).data.schoolId == schoolId;
       allow update: if isAdmin()
         && request.resource.data.name is string
         && request.resource.data.active is bool

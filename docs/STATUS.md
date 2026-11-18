@@ -2,22 +2,22 @@
 
 _Atualizado em 18/11/2026 (noite)._
 
-**Resumo:** os **5 episódios são jogáveis** 🎉 (o Ep. 5, Deep Blue, entrou em 18/11 à noite com o modo cooperativo: a turma inteira contra a máquina). As **Partes A, B, C e D do SPEC-02** estão prontas; faltam a **E** (certificado da temporada) e a **F** (relatório da turma).
+**Resumo:** os **5 episódios são jogáveis** 🎉 e o Ep. 5 agora é o **CHEFÃO FINAL**. As **Partes A a E do SPEC-02** estão prontas (a E, certificado da temporada, entrou em 18/11); falta só a **F** (relatório da turma).
 
 ## 🗺️ Plano em andamento (15/11)
 
-| #   | Item                                                                                                   | Situação                   |
-| --- | ------------------------------------------------------------------------------------------------------ | -------------------------- |
-| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May                         | ✅ pronto (PR #16)         |
-| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida)                       | ✅ pronto (PR #17)         |
-| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)         |
-| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)         |
-| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)     |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ✅ pronto (PR #24)         |
-| 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)     |
-| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto (PR #23)         |
-| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ✅ pronto, **para testar** |
-| 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                         |
+| #   | Item                                                                                                   | Situação                    |
+| --- | ------------------------------------------------------------------------------------------------------ | --------------------------- |
+| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May                         | ✅ pronto (PR #16)          |
+| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida)                       | ✅ pronto (PR #17)          |
+| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)          |
+| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)          |
+| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)      |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ✅ pronto (PR #24)          |
+| 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)      |
+| 6   | SPEC-02 **D** + **E** — ficha, selos e certificado da temporada                                        | ✅ pronto, **para testar**  |
+| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ✅ pronto (PR #25) + chefão |
+| 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                          |
 
 ---
 
@@ -50,6 +50,12 @@ _Atualizado em 18/11/2026 (noite)._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 18/11 (madrugada) — certificado da temporada e o CHEFÃO 😈
+
+- **Certificado da temporada (SPEC-02 E):** medalha de ouro, prata e bronze para as 3 primeiras duplas do ranking (empate divide) e participação para todas. Traz escola, turma, temporada, avatar, codinome e nome pirata, nível, pontos, cartas (dourada com ★) e selos, com duas linhas "Nome:" em branco (LGPD). A dupla baixa em **PNG** (Álbum, ou no fim do último episódio); a Narradora baixa o **PDF da turma** (uma página por dupla) na página da turma.
+- **Ep. 5 = CHEFÃO FINAL (pedido da May):** a máquina resolve 30% mais rápido, puxa 1,5× mais forte e **contra-ataca** (+3 para ela) a cada resposta errada de qualquer dupla. A turma agora precisa de **2 de cada 3 duplas** no Cofre (era metade). O Cofre da etapa 2 ficou mais difícil nos 3 níveis (o B virou árvore de 3 níveis; o C tem 4 jogadas com isca). A barra mostra "CHEFÃO 😈" e o erro estoura "CONTRA-ATAQUE!".
+- ⚠️ **Publicar o `firestore.rules` novo** (a dupla lê o nome da escola para o certificado).
 
 ### Novidades de 18/11 (noite) — Ep. 5: Deep Blue, a Aliança 🤝
 

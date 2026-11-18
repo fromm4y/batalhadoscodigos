@@ -22,13 +22,14 @@ describe('modo coop (SPEC-03 §4.1)', () => {
     expect(coopPull(10, 3)).toBe(3); // etapa 1 = meio puxão
     expect(coopPull(20, 40)).toBe(1);
   });
-  it('RN-C5: metade das duplas (para cima) vence', () => {
+  it('RN-C5 + CHEFÃO (18/11): 2/3 das duplas (para cima) vencem', () => {
     expect(vaultGoal(1)).toBe(1);
-    expect(vaultGoal(4)).toBe(2);
-    expect(vaultGoal(5)).toBe(3);
-    const st = { ...newCoopState(['a', 'b', 'c', 'd']), vaultSolvers: ['a'] };
+    expect(vaultGoal(3)).toBe(2);
+    expect(vaultGoal(4)).toBe(3);
+    expect(vaultGoal(10)).toBe(7);
+    const st = { ...newCoopState(['a', 'b', 'c', 'd']), vaultSolvers: ['a', 'b'] };
     expect(classWins(st)).toBe(false);
-    expect(classWins({ ...st, vaultSolvers: ['a', 'b'] })).toBe(true);
+    expect(classWins({ ...st, vaultSolvers: ['a', 'b', 'c'] })).toBe(true);
   });
   it('RN-C6: +5 para todas se a turma vence, +2 se a máquina vence', () => {
     const st = newCoopState(['a', 'b']);

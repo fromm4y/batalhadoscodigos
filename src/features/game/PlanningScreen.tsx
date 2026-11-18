@@ -303,13 +303,17 @@ export function PlanningScreen({
               <p className="max-w-2xl bg-black/50 p-3 text-lg font-semibold text-paper">
                 {episode.intro.red}
               </p>
+              <p className="max-w-3xl border-[3px] border-alert bg-[#2a0f14] px-4 py-2 font-heist text-2xl tracking-wider text-paper glow-red">
+                😈 CHEFÃO FINAL: a máquina é mais rápida, puxa mais forte e CONTRA-ATACA a cada
+                erro. Só a turma inteira junta derruba ela!
+              </p>
               <ul className="grid max-w-3xl gap-2 text-left font-type text-base text-paper sm:grid-cols-3">
                 <li className="border-2 border-brass/60 bg-graphite p-3">
                   🧩 Cada desafio que <strong>qualquer</strong> dupla resolve puxa a corda pela
                   turma.
                 </li>
                 <li className="border-2 border-brass/60 bg-graphite p-3">
-                  🔓 A turma vence se <strong>metade das duplas</strong> abrir o Cofre antes da
+                  🔓 A turma vence se <strong>2 de cada 3 duplas</strong> abrirem o Cofre antes da
                   máquina.
                 </li>
                 <li className="border-2 border-brass/60 bg-graphite p-3">
