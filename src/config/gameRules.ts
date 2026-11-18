@@ -62,6 +62,16 @@ export const GAME_RULES = {
     stageOne: 10,
   },
 
+  /** Ep. 5, modo cooperativo (SPEC-03 §4.1). */
+  coop: {
+    /** RN-C3 [PADRÃO]: um cadeado aberto puxa `pullTotal / duplas da Aliança` pela turma. */
+    pullTotal: 15,
+    /** RN-C5 [PADRÃO]: a turma vence se esta fração das duplas abrir o Cofre antes da máquina. */
+    winShare: 0.5,
+    /** RN-C7: cada dupla que terminou o Cofre manda este tanto de reforços (Dica 1 grátis). */
+    reinforcementsPerTeam: 1,
+  },
+
   /** Seção 7.6: pontuação da temporada. */
   points: {
     lockOpen: 1, // [PADRÃO]
@@ -69,6 +79,9 @@ export const GAME_RULES = {
     museumEventOk: 1, // [PADRÃO]
     vaultWin: 5,
     draw: 2,
+    /** RN-C6 (Ep. 5, coop): a turma venceu a máquina = todas ganham; a máquina venceu = participação. */
+    coopWin: 5,
+    coopPlay: 2,
     sideBonus: 2,
     wrongAnswer: -2,
     /** Dicas no nível A (o B e o C pagam mais, ver `hintsByLevel`). */

@@ -27,6 +27,14 @@
 | 28–40 | **Cofre** (12 min)       | Clique **Liberar: Cofre**. Quem estava na frente na barra ganha a Dica 1 grátis.                                                                                                                                                                                                                                                                                                                                                      | O Cofre (tear de blocos). Quem resolver primeiro vence o confronto.                                                                     |
 | 40–47 | **Fim** (guia 10 min)    | Clique **Liberar: Fim** (os confrontos sem vencedor são decididos pela barra). Leia a **revelação** do roteiro. No projetor, alterne **🏆 Ranking** e **📡 Gancho** (botões no canto).                                                                                                                                                                                                                                                | Vitória/Quase/Empate → extrato → ranking + ⭐ destaque da aula → revelação + carta do Álbum → TRANSMISSÃO INTERCEPTADA                  |
 
+## Ep. 5 (Deep Blue): a turma inteira contra a máquina 🤝
+
+- **Planejamento:** ninguém escolhe lado. Cada dupla clica em **"Entrar na Aliança"**; você clica em **"🤝 Formar a Aliança"** (no lugar de "Formar confrontos").
+- **Cadeados:** cada desafio que qualquer dupla resolve puxa a barra **TURMA × MÁQUINA**. O puxão é dividido pelo número de duplas, para turmas grandes e pequenas terem o mesmo ritmo.
+- **Cadeado 3 (jogo da velha):** transmita a jogada da máquina ("casa 3", "casa 7"...). A dupla clica onde a máquina jogou e depois faz a jogada dela. Na etapa 2 a jogada já aparece.
+- **Cofre (árvore de jogadas):** a turma vence se **metade das duplas** abrir o Cofre antes da máquina. Quem abriu vira **Reforço** e pode mandar **uma** Dica 1 para outra dupla. O projetor mostra "x de y duplas" e quem ajudou quem.
+- **Fim:** +5 para **todas** as duplas se a turma venceu, +2 de participação se a máquina venceu. Se for o último episódio da temporada, o ranking é o **final**.
+
 ## Se algo der errado
 
 | Situação                                     | O que fazer                                                                                              |

@@ -30,8 +30,11 @@ import { validateEpisode } from './validateEpisode';
 const ALL = { ep1, ep2, ep3, ep4, ep5 } as unknown as Record<string, AnyEpisode>;
 
 function challengesOf(e: AnyEpisode): Challenge[] {
-  if (e.mode === 'coop') return [...e.coop.locks, e.coop.vault];
   const opt = (c: Challenge | undefined) => (c ? [c] : []);
+  if (e.mode === 'coop') {
+    const base = [...e.coop.locks, e.coop.vault, ...opt(e.coop.bonus)];
+    return [...base, ...base.flatMap((c) => opt(c.stage2))];
+  }
   const all = [
     ...e.sides.red.locks,
     e.sides.red.vault,

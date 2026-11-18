@@ -131,7 +131,7 @@ Retrato da cintura pra cima, olhando um pouco para o lado, para caber ao lado do
 
 A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado. Cada personagem tem **duas imagens da MESMA pessoa** (mesmo rosto, cabelo e pele): uma no figurino do **Bando** e outra no dos **Piratas**.
 
-- **Quantidade (18/11):** **20 meninas + 20 meninos** = 40 personagens × 2 versões = 80 imagens. Os 24 primeiros já estão prontos; **faltam os 16 novos (32 imagens)**, ids 13 a 20. Pode entregar aos poucos: o personagem aparece no jogo assim que as **duas** versões dele existirem.
+- **Quantidade (18/11):** **20 meninas + 20 meninos** = 40 personagens × 2 versões = 80 imagens. Os 24 primeiros já estão prontos; dos 16 novos, **8 já estão no jogo** (18/11) e falta o resto (veja a tabela abaixo). Pode entregar aos poucos: o personagem aparece no jogo assim que as **duas** versões dele existirem.
 - **Ids (nome do arquivo):** `avatar-menina-01-bando`, `avatar-menina-01-piratas`, … até `avatar-menina-20-…`; e `avatar-menino-01-bando`, `avatar-menino-01-piratas`, … até `avatar-menino-20-…`.
 - **Formato:** retrato **vertical 600 × 720** (proporção 5:6), **da cintura para cima**, personagem centralizado, **fundo liso de uma cor só** (eu recorto). `.webp`, `.png` ou o `.jfif` do Gemini, tanto faz.
 - **Idade:** crianças/pré-adolescentes de **9 a 14 anos**, simpáticas, cheias de atitude, nada assustador.
@@ -143,7 +143,7 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 
 > _noir comic book illustration, waist-up portrait of an original kid character, [11]-year-old [girl/boy] with [dark brown skin, curly black hair in two puffs, round glasses], confident friendly smile, wearing [a red hooded jumpsuit and a simple red domino eye mask, holding a flashlight] / [a straw hat with a blue ribbon, blue vest and neck scarf, holding a spyglass], bold black ink outlines, halftone shading, dramatic rim lighting, plain solid flat dark navy background (#0B0D14), no pattern, no text, no logos_
 
-### Situação dos personagens — 24 prontos (15/11) · recortados de novo (17/11) · 16 vagas novas (18/11)
+### Situação dos personagens — 32 prontos · 1 pela metade · 7 faltando (18/11)
 
 > **17/11:** as 48 imagens foram recortadas de novo a partir dos originais com um recorte **por forma** (não por cor), porque o recorte antigo deixava buracos no cabelo escuro, nos contornos e em partes da roupa. Para personagens novos: fundo liso de uma cor só continua ajudando, mas o recorte já não depende disso.
 
@@ -154,6 +154,8 @@ A dupla escolhe **quem quer ser** e o jogo troca sozinho a roupa conforme o lado
 | 01 ruiva, sardas · 02 chanel preto · 03 tranças · 04 puffs + óculos · 05 hijab · 06 cachos com mechas roxas · 07 cadeirante, cabelo castanho · 08 trança lateral · 09 cabelo preto liso com franja · 10 loira, coque cacheado · 11 tranças com miçangas · 12 cabelo black curtinho | 01 loiro · 02 cabelo curto · 03 black alto · 04 undercut + óculos · 05 cacheado + óculos · 06 cadeirante · 07 cabelo preto espetado · 08 franja preta · 09 ruivo cacheado + óculos · 10 dreads · 11 cacheado castanho · 12 castanho, sorriso banguela |
 
 ### 🆕 Personagens novos (18/11) — 16 vagas, 32 imagens
+
+**Situação (18/11, noite):** ✅ prontos e no jogo: `menina-13`, `menina-14`, `menina-15`, `menina-18`, `menino-13`, `menino-14`, `menino-15`, `menino-17`. 🟡 `menina-16`: só a versão Bando (falta `avatar-menina-16-piratas`; ela só aparece no jogo quando as duas existirem). ⏳ faltam as duas versões de `menina-17`, `menina-19`, `menina-20`, `menino-16`, `menino-18`, `menino-19`, `menino-20`.
 
 Pensados para **não repetir** os 24 que já existem e para mais crianças se verem no jogo. Use o **prompt modelo** acima trocando só o trecho entre colchetes (em inglês na coluna da direita) e gere as duas versões em seguida ("same character").
 
@@ -202,10 +204,11 @@ Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na
 - **Prioridade:** Ep. 2 primeiro. **(16/11) O Ep. 2 já é jogável:** sem as 8 imagens dele (`ep2-*`, `card-ep2`, `teaser-ep2`), o jogo mostra um quadro provisório. A imagem nova entra sozinha quando o arquivo com o id certo aparece na pasta.
 - **Onde cada imagem do Ep. 2 aparece:** `ep2-sala-guerra`, `ep2-enigma-vitrine`, `ep2-professor-radio` e `ep2-capita-radio` na HQ de abertura e no planejamento; `ep2-bletchley`, `ep2-bombe` e `narradora` na revelação do fim; `card-ep2` na carta do Álbum; `teaser-ep2` no gancho "TRANSMISSÃO INTERCEPTADA" (aponta para o Ep. 3).
 - **O disco de cifra** é desenhado em SVG pelo próprio jogo: não precisa de imagem.
+- **(18/11) Ep. 4 e 5 jogáveis:** o console da Apollo, o jogo da velha neon e a árvore de jogadas também são desenhados pelo jogo. Do Ep. 5 só faltam **`card-ep5`** (carta do Álbum) e **`teaser-ep5`** (o encerramento da temporada, que aparece com o carimbo "FIM DA TEMPORADA"); até lá, o jogo mostra um quadro provisório.
 
 ---
 
-**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **48 de 80** (os 24 primeiros ✅; faltam os 16 novos de 18/11). Ep. 2–5: **30 de 32 ✅** (17/11). Faltam só **`card-ep5`** (carta do Deep Blue, 600 × 840) e **`teaser-ep5`** (encerramento da temporada, 1376 × 768).
+**Ep. 1: 32 imagens, todas entregues ✅.** Personagens das duplas: **65 de 80** (32 personagens completos; faltam 15 imagens). Ep. 2–5: **30 de 32 ✅** (17/11). Faltam só **`card-ep5`** (carta do Deep Blue, 600 × 840) e **`teaser-ep5`** (encerramento da temporada, 1376 × 768).
 **Prioridade** se faltar tempo: 1) `capa-entrada`, `lado-bando`, `lado-piratas` e os quadros do Ep. 1 (são as telas do protótipo) → 2) personagens neutros + robô provocando → 3) o resto.
 
 > O robô, a fachada do museu e as cenas de lado já têm uma versão provisória em SVG no código. A imagem gerada substitui automaticamente quando o arquivo com o id certo aparece na pasta.

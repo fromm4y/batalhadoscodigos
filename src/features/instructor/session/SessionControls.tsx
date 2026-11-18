@@ -15,6 +15,7 @@ import type { Level, Phase, PlayerDoc, SessionDoc } from '@/types/domain';
 import { useProfile } from '../auth/authStore';
 import type { WithId } from '../data';
 import {
+  formAlliance,
   formSessionMatches,
   grantEpisodeCards,
   markVaultLeaders,
@@ -160,26 +161,49 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
           ))}
         {(session.phase === 'planning' || session.phase === 'locks') && (
           <div className="mt-4 border-t-2 border-dashed border-graphite-light pt-3">
-            <p className="mb-2 font-type text-sm text-mist">
-              {players.filter((p) => p.side).length}/{players.length} duplas escolheram lado ·{' '}
-              {players.filter((p) => p.matchId).length} já em confronto
-            </p>
-            <ComicButton
-              variant={session.matchesFormed ? 'graphite' : 'red'}
-              icon="⚔️"
-              onClick={() =>
-                void run(async () => {
-                  const r = await formSessionMatches(opsCtx);
-                  setInfo(
-                    r.matches
-                      ? `${r.matches} confronto(s) formado(s)${r.bonus ? `, ${r.bonus} dupla(s) com bônus de lado vazio` : ''}.`
-                      : 'Todas as duplas já estão em confronto.',
-                  );
-                })
-              }
-            >
-              {session.matchesFormed ? 'Formar confrontos (novas duplas)' : 'Formar confrontos'}
-            </ComicButton>
+            {episode?.alliance ? (
+              <>
+                <p className="mb-2 font-type text-sm text-mist">
+                  🤝 Ep. 5: sem lados. {players.filter((p) => p.matchId).length}/{players.length}{' '}
+                  duplas na Aliança
+                </p>
+                <ComicButton
+                  variant={session.matchesFormed ? 'graphite' : 'red'}
+                  icon="🤝"
+                  onClick={() =>
+                    void run(async () => {
+                      const r = await formAlliance(opsCtx);
+                      setInfo(`A Aliança tem ${r.teams} dupla(s) contra a máquina.`);
+                    })
+                  }
+                >
+                  {session.matchesFormed ? 'Formar a Aliança (novas duplas)' : 'Formar a Aliança'}
+                </ComicButton>
+              </>
+            ) : (
+              <>
+                <p className="mb-2 font-type text-sm text-mist">
+                  {players.filter((p) => p.side).length}/{players.length} duplas escolheram lado ·{' '}
+                  {players.filter((p) => p.matchId).length} já em confronto
+                </p>
+                <ComicButton
+                  variant={session.matchesFormed ? 'graphite' : 'red'}
+                  icon="⚔️"
+                  onClick={() =>
+                    void run(async () => {
+                      const r = await formSessionMatches(opsCtx);
+                      setInfo(
+                        r.matches
+                          ? `${r.matches} confronto(s) formado(s)${r.bonus ? `, ${r.bonus} dupla(s) com bônus de lado vazio` : ''}.`
+                          : 'Todas as duplas já estão em confronto.',
+                      );
+                    })
+                  }
+                >
+                  {session.matchesFormed ? 'Formar confrontos (novas duplas)' : 'Formar confrontos'}
+                </ComicButton>
+              </>
+            )}
             {session.matchesFormed && session.phase === 'planning' && (
               <ComicButton
                 variant="paper"

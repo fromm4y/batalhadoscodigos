@@ -124,7 +124,11 @@ export type BoardChoiceVariant = Base & {
   board: string;
   you: 'X';
   spokenMove: { cell: number; symbol: 'O' };
+  /** etapa 2: a jogada da máquina já aparece (sem nova transmissão) */
+  revealed?: boolean;
   answer: number;
+  /** apoio ao vivo (A e B): destaca a linha em perigo depois da jogada da máquina */
+  livePreview?: boolean;
 };
 
 /** Ep. 5 — árvore de jogadas / minimax (SPEC-03 §4.3). */
@@ -132,6 +136,8 @@ export type GameTreeVariant = Base & {
   depth: 2 | 3;
   tree: Record<string, number[] | Record<string, number[]>>;
   answer: string;
+  /** apoio ao vivo (A e B): o rascunho de cada galho fica verde quando o valor está certo */
+  livePreview?: boolean;
 };
 
 export type VariantByType = {
@@ -239,6 +245,11 @@ type EpisodeBase = {
 /** Episódio Bando × Piratas (Ep. 1 a 4). */
 export type Episode = EpisodeBase & {
   mode?: 'versus';
+  /**
+   * Ep. 5 (coop) visto pelo jogo: o loader devolve o cooperativo neste formato, com o conteúdo
+   * da Aliança nos dois lados (`asVersus`). Telas e regras checam isto para mudar o que precisa.
+   */
+  alliance?: boolean;
   intro: { comic: ComicPanelContent[]; red: string; blue: string };
   sides: { red: SideContent; blue: SideContent };
 };
@@ -247,7 +258,7 @@ export type Episode = EpisodeBase & {
 export type CoopEpisode = EpisodeBase & {
   mode: 'coop';
   intro: { comic: ComicPanelContent[]; coop: string };
-  coop: { locks: [Challenge, Challenge, Challenge]; vault: Challenge };
+  coop: { locks: [Challenge, Challenge, Challenge]; vault: Challenge; bonus?: Challenge };
 };
 
 export type AnyEpisode = Episode | CoopEpisode;

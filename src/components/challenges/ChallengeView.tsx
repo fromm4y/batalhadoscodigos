@@ -2,7 +2,9 @@ import type { ResolvedChallenge } from '@/content/types';
 import type { Level } from '@/types/domain';
 import { AnagramChallenge } from './AnagramChallenge';
 import { BlockBuildChallenge, BlockDebugChallenge } from './BlockChallenges';
+import { BoardChoiceChallenge } from './BoardChoiceChallenge';
 import { CipherChallenge } from './CipherChallenge';
+import { GameTreeChallenge } from './GameTreeChallenge';
 import { PriorityChallenge } from './PriorityChallenge';
 import { WiringChallenge } from './WiringChallenge';
 import type { ChallengeBaseProps } from './common';
@@ -71,8 +73,22 @@ export function ChallengeView({ challenge, level, seed, heardTransmission, ...ba
           {...base}
         />
       );
-    default:
-      // tipos do Ep. 5 (boardChoice, gameTree) entram com ele
-      return null;
+    case 'boardChoice':
+      return (
+        <BoardChoiceChallenge
+          variant={challenge.variant}
+          heard={heardTransmission}
+          level={level}
+          {...base}
+        />
+      );
+    case 'gameTree':
+      return (
+        <GameTreeChallenge
+          variant={challenge.variant}
+          seed={`${seed}:${challenge.key}`}
+          {...base}
+        />
+      );
   }
 }

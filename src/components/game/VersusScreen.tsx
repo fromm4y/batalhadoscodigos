@@ -6,21 +6,27 @@ import { RobotFigure, Typewriter } from '@/components/scene';
 import { pickTaunt } from '@/content/robot';
 import type { Side, TeamDoc } from '@/types/domain';
 
-type Fighter = { team: TeamDoc | null; side: Side };
+type Fighter = { team: TeamDoc | null; side: Side; label?: string };
 
 /** Tela VERSUS (VISUAL 8.4): dois holofotes acendendo sobre os avatares, com estrondo. */
 export function VersusScreen({
   me,
   side,
   rival,
+  alliance = false,
 }: {
   me: TeamDoc;
   side: Side;
   rival: TeamDoc | null;
+  /** Ep. 5: a turma inteira (A Aliança) contra a máquina */
+  alliance?: boolean;
 }) {
   useSfxOnMount('whoosh', 300);
   useSfxOnMount('stamp', 900);
-  const left: Fighter = side === 'red' ? { team: me, side: 'red' } : { team: rival, side: 'red' };
+  const left: Fighter =
+    side === 'red'
+      ? { team: me, side: 'red', ...(alliance ? { label: 'A ALIANÇA' } : {}) }
+      : { team: rival, side: 'red' };
   const right: Fighter =
     side === 'blue' ? { team: me, side: 'blue' } : { team: rival, side: 'blue' };
   return (
@@ -38,7 +44,11 @@ export function VersusScreen({
             </p>
           )}
           <Typewriter
-            text="Aguardando a Narradora liberar os cadeados..."
+            text={
+              alliance
+                ? 'Bando e Piratas juntos! Aguardando a Narradora liberar os cadeados...'
+                : 'Aguardando a Narradora liberar os cadeados...'
+            }
             speed={45}
             className="text-xl text-brass text-glow-brass"
           />
@@ -51,7 +61,7 @@ export function VersusScreen({
 function FighterView({ f, mine, delay }: { f: Fighter; mine: boolean; delay: number }) {
   const reduce = useReducedMotion();
   const red = f.side === 'red';
-  const name = f.team ? (red ? f.team.cityName : f.team.pirateName) : 'O ROBÔ';
+  const name = f.label ?? (f.team ? (red ? f.team.cityName : f.team.pirateName) : 'O ROBÔ');
   const beam = red ? 'rgb(230 57 70 / 0.35)' : 'rgb(47 107 255 / 0.35)';
   return (
     <motion.div

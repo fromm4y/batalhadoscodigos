@@ -13,5 +13,7 @@ export const LEDGER_LABEL: Record<LedgerReason, string> = {
   hint_2: 'Dica 2',
   vault_fast: 'Cofre Relâmpago ⚡',
   bonus_mission: 'Missão bônus 🌟',
+  coop_win: 'A Aliança venceu a máquina 🤝',
+  coop_play: 'Participação na Aliança',
   manual: 'Ajuste da Narradora',
 };

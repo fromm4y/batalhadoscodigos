@@ -138,6 +138,127 @@
               }
             ]
           }
+        },
+        "stage2": {
+          "key": "coop-lock1-2",
+          "title": "O arquivo secreto da máquina",
+          "leaderLine": "Achamos o arquivo secreto da máquina. Mais perguntas, Aliança!",
+          "type": "quiz",
+          "variants": {
+            "A": {
+              "prompt": "Responda as 3 perguntas do arquivo secreto.",
+              "hint1": "Releia o dossiê e as curiosidades.",
+              "hint2": "Tabuleiro de 64 casas, xeque-mate e uma máquina não sente nada.",
+              "questions": [
+                {
+                  "q": "Quantas casas tem um tabuleiro de xadrez?",
+                  "options": ["64", "10", "100"],
+                  "correct": 0
+                },
+                {
+                  "q": "Como se chama a jogada que vence a partida de xadrez?",
+                  "options": ["Xeque-mate", "Gol de placa", "Bingo"],
+                  "correct": 0
+                },
+                {
+                  "q": "O Deep Blue ficava nervoso durante as partidas?",
+                  "options": [
+                    "Não: era uma máquina, só calculava",
+                    "Sim, ficava muito nervoso",
+                    "Só quando perdia"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "B": {
+              "prompt": "Responda as 4 perguntas do arquivo secreto.",
+              "hint1": "Releia o dossiê e as curiosidades.",
+              "hint2": "64 casas, xeque-mate, o Deep Blue foi aposentado e calculava jogadas à frente.",
+              "questions": [
+                {
+                  "q": "Quantas casas tem um tabuleiro de xadrez?",
+                  "options": ["64", "32", "81"],
+                  "correct": 0
+                },
+                {
+                  "q": "Como se chama a jogada que vence a partida de xadrez?",
+                  "options": ["Xeque-mate", "Roque", "Empate"],
+                  "correct": 0
+                },
+                {
+                  "q": "O que aconteceu com o Deep Blue depois de vencer em 1997?",
+                  "options": [
+                    "A IBM aposentou a máquina",
+                    "Virou campeão olímpico",
+                    "Foi jogar futebol"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Para escolher uma jogada, o Deep Blue...",
+                  "options": [
+                    "Imaginava várias jogadas à frente",
+                    "Escolhia a primeira que via",
+                    "Jogava sempre igual"
+                  ],
+                  "correct": 0
+                }
+              ]
+            },
+            "C": {
+              "prompt": "Responda as 5 perguntas do arquivo secreto.",
+              "hint1": "Pense em como a máquina olhava para o futuro do jogo.",
+              "hint2": "Árvore de jogadas, pior resposta, poda, especialistas e o que vem depois.",
+              "questions": [
+                {
+                  "q": "Na árvore de jogadas, cada galho representa...",
+                  "options": [
+                    "Uma jogada possível e o que pode vir depois",
+                    "Uma peça capturada",
+                    "Um minuto de partida"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Minimax é pensar assim:",
+                  "options": [
+                    "O adversário vai escolher a resposta pior para mim",
+                    "O adversário sempre erra",
+                    "Vou jogar no primeiro lugar vazio"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Por que a máquina não olhava TODAS as jogadas até o fim da partida?",
+                  "options": [
+                    "São possibilidades demais, nem um supercomputador dá conta",
+                    "Porque tinha preguiça",
+                    "Porque o xadrez tem poucas jogadas"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Quem ajudou a ajustar as regras que o Deep Blue usava para avaliar posições?",
+                  "options": [
+                    "Especialistas em xadrez",
+                    "Os torcedores",
+                    "Ninguém, ele nasceu sabendo"
+                  ],
+                  "correct": 0
+                },
+                {
+                  "q": "Hoje, programas de xadrez...",
+                  "options": [
+                    "Jogam melhor que qualquer pessoa",
+                    "Não conseguem nem mover o peão",
+                    "Só funcionam em museus"
+                  ],
+                  "correct": 0
+                }
+              ]
+            }
+          }
         }
       },
       {
@@ -174,6 +295,40 @@
             "hint1": "Não é o rei, mas é da família real.",
             "hint2": "Também é chamada de dama."
           }
+        },
+        "stage2": {
+          "key": "coop-lock2-2",
+          "title": "O enigma do tabuleiro",
+          "leaderLine": "A máquina riu e deixou outro enigma. Pensem juntos!",
+          "type": "riddle",
+          "variants": {
+            "A": {
+              "prompt": "Quem sou eu?",
+              "mode": "choice",
+              "text": "Sou a peça mais importante do xadrez. Se eu ficar preso sem saída, a partida acaba. Quem sou eu?",
+              "options": ["Rei", "Torre", "Cavalo"],
+              "accept": ["rei", "o rei"],
+              "hint1": "Usa coroa.",
+              "hint2": "Tem 3 letras."
+            },
+            "B": {
+              "prompt": "Quem sou eu?",
+              "mode": "choice",
+              "text": "Pareço um castelo, ando em linha reta para frente, para trás e para os lados, quantas casas quiser. Quem sou eu?",
+              "options": ["Torre", "Bispo", "Peão", "Rei"],
+              "accept": ["torre", "a torre"],
+              "hint1": "Parece um castelo.",
+              "hint2": "Começa com T."
+            },
+            "C": {
+              "prompt": "Digite a resposta do enigma.",
+              "mode": "text",
+              "text": "Sou o jeito de escolher pensando que o adversário vai fazer o PIOR para você. Meu nome junta o menor e o maior. Quem sou eu?",
+              "accept": ["minimax", "o minimax", "mini max"],
+              "hint1": "Junta duas palavras: mínimo e máximo.",
+              "hint2": "Começa com MINI..."
+            }
+          }
         }
       },
       {
@@ -192,7 +347,8 @@
             },
             "answer": 1,
             "hint1": "Depois da jogada da máquina, onde ela pode completar 3 em linha?",
-            "hint2": "Bloqueie a fileira de cima."
+            "hint2": "Bloqueie a fileira de cima.",
+            "livePreview": true
           },
           "B": {
             "prompt": "Vocês são o X. Escute onde a máquina jogou e escolha a casa que impede a vitória dela.",
@@ -204,7 +360,8 @@
             },
             "answer": 7,
             "hint1": "A máquina ameaça completar uma coluna.",
-            "hint2": "Bloqueie a coluna do meio, embaixo."
+            "hint2": "Bloqueie a coluna do meio, embaixo.",
+            "livePreview": true
           },
           "C": {
             "prompt": "Vocês são o X. Escute onde a máquina jogou e escolha a casa que cria uma armadilha dupla.",
@@ -217,6 +374,55 @@
             "answer": 8,
             "hint1": "Uma armadilha dupla cria duas ameaças ao mesmo tempo.",
             "hint2": "Olhe o canto de baixo à direita."
+          }
+        },
+        "stage2": {
+          "key": "coop-lock3-2",
+          "title": "A revanche no tabuleiro",
+          "leaderLine": "A máquina pediu revanche! Dessa vez a jogada dela já aparece. Respondam rápido!",
+          "type": "boardChoice",
+          "variants": {
+            "A": {
+              "prompt": "Vocês são o X. A máquina acabou de jogar (o O que pisca). Escolham a casa que impede a vitória dela.",
+              "board": "..X.O..X.",
+              "you": "X",
+              "spokenMove": {
+                "cell": 5,
+                "symbol": "O"
+              },
+              "revealed": true,
+              "answer": 3,
+              "hint1": "Onde a máquina já tem dois O na mesma linha?",
+              "hint2": "Bloqueie a fileira do meio, à esquerda.",
+              "livePreview": true
+            },
+            "B": {
+              "prompt": "Vocês são o X. A máquina acabou de jogar (o O que pisca). Escolham a casa que impede a vitória dela.",
+              "board": "OX.XO...X",
+              "you": "X",
+              "spokenMove": {
+                "cell": 2,
+                "symbol": "O"
+              },
+              "revealed": true,
+              "answer": 6,
+              "hint1": "Procure as diagonais também!",
+              "hint2": "Bloqueie o canto de baixo, à esquerda.",
+              "livePreview": true
+            },
+            "C": {
+              "prompt": "Vocês são o X. A máquina acabou de jogar (o O que pisca). Escolham a casa que cria uma armadilha dupla.",
+              "board": "...XO...X",
+              "you": "X",
+              "spokenMove": {
+                "cell": 5,
+                "symbol": "O"
+              },
+              "revealed": true,
+              "answer": 6,
+              "hint1": "Procure uma casa que crie DUAS linhas com dois X.",
+              "hint2": "Olhe o canto de baixo à esquerda."
+            }
           }
         }
       }
@@ -236,7 +442,8 @@
           },
           "answer": "Jogada 2",
           "hint1": "Para cada jogada, veja qual número a máquina vai escolher.",
-          "hint2": "A máquina escolheria 3 na Jogada 1 e 5 na Jogada 2."
+          "hint2": "A máquina escolheria 3 na Jogada 1 e 5 na Jogada 2.",
+          "livePreview": true
         },
         "B": {
           "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
@@ -248,7 +455,8 @@
           },
           "answer": "Jogada 2",
           "hint1": "Não se deixe enganar pelos números grandes: a máquina não vai deixar você pegá-los.",
-          "hint2": "A máquina deixaria 2, 4 e 1."
+          "hint2": "A máquina deixaria 2, 4 e 1.",
+          "livePreview": true
         },
         "C": {
           "prompt": "Vocês jogam, a máquina responde com o PIOR para vocês, e depois vocês escolhem o MAIOR número. Qual primeira jogada é a melhor?",
@@ -270,6 +478,121 @@
           "answer": "Jogada 1",
           "hint1": "Resolva de baixo para cima: primeiro o seu maior, depois o menor da máquina.",
           "hint2": "Jogada 1 garante 8; as outras garantem 5."
+        }
+      },
+      "stage2": {
+        "key": "coop-vault-2",
+        "title": "O Grande Cofre: a última partida",
+        "leaderLine": "A máquina abriu a última camada do Cofre. Pensem como ela, até o fim!",
+        "type": "gameTree",
+        "variants": {
+          "A": {
+            "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
+            "depth": 2,
+            "tree": {
+              "Jogada 1": [4, 9],
+              "Jogada 2": [3, 8],
+              "Jogada 3": [6, 7]
+            },
+            "answer": "Jogada 3",
+            "hint1": "Para cada jogada, veja qual número a máquina vai escolher.",
+            "hint2": "A máquina deixaria 4, 3 e 6.",
+            "livePreview": true
+          },
+          "B": {
+            "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número?",
+            "depth": 2,
+            "tree": {
+              "Jogada 1": [9, 3, 8],
+              "Jogada 2": [2, 6, 7],
+              "Jogada 3": [10, 1, 6],
+              "Jogada 4": [5, 8, 6]
+            },
+            "answer": "Jogada 4",
+            "hint1": "Os números grandes são uma armadilha: a máquina nunca deixa você pegar.",
+            "hint2": "A máquina deixaria 3, 2, 1 e 5.",
+            "livePreview": true
+          },
+          "C": {
+            "prompt": "Vocês jogam, a máquina responde com o PIOR para vocês, e depois vocês escolhem o MAIOR número. Qual primeira jogada é a melhor?",
+            "depth": 3,
+            "tree": {
+              "Jogada 1": {
+                "R1": [3, 8],
+                "R2": [7, 2],
+                "R3": [9, 1]
+              },
+              "Jogada 2": {
+                "R1": [10, 2],
+                "R2": [4, 5],
+                "R3": [6, 9]
+              },
+              "Jogada 3": {
+                "R1": [6, 8],
+                "R2": [9, 3],
+                "R3": [8, 7]
+              }
+            },
+            "answer": "Jogada 3",
+            "hint1": "De baixo para cima: em cada resposta, o seu maior; depois, o menor da máquina.",
+            "hint2": "Jogada 3 garante 8; as outras garantem 7 e 5."
+          }
+        }
+      }
+    },
+    "bonus": {
+      "key": "coop-bonus",
+      "title": "A partida extra",
+      "type": "gameTree",
+      "leaderLine": "Cofre aberto? A máquina desafia a Aliança para uma partida extra. Topam?",
+      "variants": {
+        "A": {
+          "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número? (Missão bônus: errar aqui não tira ponto.)",
+          "depth": 2,
+          "tree": {
+            "Jogada 1": [5, 8],
+            "Jogada 2": [9, 2],
+            "Jogada 3": [4, 4]
+          },
+          "answer": "Jogada 1",
+          "hint1": "Para cada jogada, veja o menor número.",
+          "hint2": "A máquina deixaria 5, 2 e 4.",
+          "livePreview": true
+        },
+        "B": {
+          "prompt": "Escolha sua jogada. A máquina sempre responde com o número MENOR. Qual jogada garante o maior número? (Missão bônus: errar aqui não tira ponto.)",
+          "depth": 2,
+          "tree": {
+            "Jogada 1": [7, 3, 9],
+            "Jogada 2": [6, 8, 6],
+            "Jogada 3": [10, 2, 5],
+            "Jogada 4": [5, 5, 9]
+          },
+          "answer": "Jogada 2",
+          "hint1": "Para cada jogada, veja o menor número.",
+          "hint2": "A máquina deixaria 3, 6, 2 e 5.",
+          "livePreview": true
+        },
+        "C": {
+          "prompt": "Vocês jogam, a máquina responde com o PIOR para vocês, e depois vocês escolhem o MAIOR número. Qual primeira jogada é a melhor? (Missão bônus: errar aqui não tira ponto.)",
+          "depth": 3,
+          "tree": {
+            "Jogada 1": {
+              "R1": [2, 9],
+              "R2": [6, 6]
+            },
+            "Jogada 2": {
+              "R1": [7, 1],
+              "R2": [3, 8]
+            },
+            "Jogada 3": {
+              "R1": [5, 4],
+              "R2": [10, 3]
+            }
+          },
+          "answer": "Jogada 2",
+          "hint1": "De baixo para cima, como no Cofre.",
+          "hint2": "Some nada: compare o que cada jogada garante."
         }
       }
     }
