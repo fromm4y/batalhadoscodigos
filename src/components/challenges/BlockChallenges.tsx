@@ -9,7 +9,7 @@ import { countNodes, run } from '@/engine/blocks';
 import { checkBlockBuild, checkBlockDebug } from '@/engine/challenges';
 import type { Level } from '@/types/domain';
 import { SubmitButton, type ChallengeBaseProps } from './common';
-import { Loom } from './blocks/Loom';
+import { Loom, SymbolRow } from './blocks/Loom';
 import {
   containerDepth,
   fromProgram,
@@ -122,6 +122,7 @@ export function BlockBuildChallenge({
       </div>
       {/* Botões embaixo do tear: no 1366×768 a coluna da esquerda fica livre para o programa. */}
       <div className="flex flex-col gap-3">
+        {variant.livePreview && !weave && <LivePreview nodes={nodes} target={variant.target} />}
         <Loom
           key={weave?.key ?? 0}
           target={variant.target}
@@ -200,6 +201,7 @@ export function BlockDebugChallenge({
       </div>
       {/* Botões embaixo do tear: no 1366×768 a coluna da esquerda fica livre para o programa. */}
       <div className="flex flex-col gap-3">
+        {variant.livePreview && !weave && <LivePreview nodes={nodes} target={variant.target} />}
         <Loom
           key={weave?.key ?? 0}
           target={variant.target}
@@ -228,6 +230,30 @@ export function BlockDebugChallenge({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Prévia ao vivo do tecido (mais fácil, níveis A e B; 17/11): mostra o que o programa tece
+ * enquanto a dupla monta, marcando onde começa a ficar diferente do padrão.
+ */
+function LivePreview({ nodes, target }: { nodes: EditorNode[]; target: BlockSymbol[] }) {
+  const out = run(toProgram(nodes)).slice(0, target.length + 6);
+  const firstDiff = out.findIndex((s, i) => s !== target[i]);
+  return (
+    <div className="flex flex-wrap items-center gap-2 rounded-md border-2 border-dashed border-ink/40 px-2 py-1">
+      <span className="font-type text-xs uppercase">🔍 Prévia:</span>
+      {out.length ? (
+        <SymbolRow
+          symbols={out}
+          size="sm"
+          label="Prévia do tecido"
+          mismatchFrom={firstDiff >= 0 ? firstDiff : undefined}
+        />
+      ) : (
+        <span className="font-type text-xs">(vazio)</span>
+      )}
     </div>
   );
 }

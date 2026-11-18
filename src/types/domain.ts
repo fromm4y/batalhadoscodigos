@@ -89,13 +89,30 @@ export type TeamCard = { episodeId: string; variant: CardVariant; earnedAt: Time
 /** Efeito de carta esperando o momento certo (Bombe Turbinada, Válvula Reserva, Contagem). */
 export type CardBoost = 'extraPull' | 'forgiveMiss' | 'lightningPlus';
 
+/** Selos (SPEC-02 D2) e carimbos da ficha (D1). Regras em src/engine/badges.ts. */
+export type BadgeId =
+  | 'cofreRelampago'
+  | 'semDicas'
+  | 'virada'
+  | 'duasCaras'
+  | 'ouvidoAtento'
+  | 'colecionador'
+  | 'missaoBonus';
+export type Badge<T = unknown> = { id: BadgeId; episodeId: string; at: T };
+export type StampResult = 'venceu' | 'perdeu' | 'empate' | 'jogou';
+export type Stamp = { episodeId: string; side: Side; result: StampResult };
+
 export type TeamDoc = {
   cityName: string;
   pirateName: string;
   avatar: AvatarConfig;
   totalPoints: number;
+  /** episódios jogados (= carimbos na ficha; SPEC-02 D1) */
   episodesPlayed: number;
-  badges: string[];
+  /** selos (SPEC-02 D2) */
+  badges: Badge<Timestamp>[];
+  /** carimbos da ficha: um por episódio jogado, com lado e resultado */
+  stamps?: Stamp[];
   /** Álbum do Museu (inventário de cartas) */
   cards?: TeamCard[];
   createdAt: Timestamp;

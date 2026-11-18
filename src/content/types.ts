@@ -56,11 +56,15 @@ export type BlockBuildVariant = Base & {
   palette: PaletteBlock[];
   target: BlockSymbol[];
   maxBlocks: number;
+  /** prévia ao vivo do tecido enquanto monta (mais fácil; 17/11) */
+  livePreview?: boolean;
 };
 export type BlockDebugVariant = Base & {
   program: Program;
   target: BlockSymbol[];
   editable: 'symbols' | 'counts' | 'both';
+  /** prévia ao vivo do tecido enquanto conserta (mais fácil; 17/11) */
+  livePreview?: boolean;
 };
 
 /** Ep. 2 — cifra de deslocamento A–Z, sem acentos (SPEC-03 §1). */

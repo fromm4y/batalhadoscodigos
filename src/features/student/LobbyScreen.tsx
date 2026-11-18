@@ -1,4 +1,5 @@
 import { AlbumLink } from '@/components/game/AlbumLink';
+import { BadgeRow, LevelTag, StampRow } from '@/components/game/TeamRecord';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Avatar } from '@/components/avatar/Avatar';
@@ -57,13 +58,27 @@ export function LobbyScreen({ team, episodeTitle, curiosities }: Props) {
                       <dd className="font-heist text-2xl tracking-wider">
                         🪙 {team.totalPoints} barras
                       </dd>
+                      <dt className="font-type">Nível:</dt>
+                      <dd>
+                        <LevelTag played={team.episodesPlayed ?? 0} side="red" />
+                      </dd>
                     </dl>
+                  </div>
+                  {/* SPEC-02 D1: um carimbo por episódio jogado */}
+                  <div className="mt-3 flex flex-col gap-2">
+                    <StampRow stamps={team.stamps} />
+                    <BadgeRow badges={team.badges} size="sm" />
                   </div>
                 </Dossier>
               ) : (
-                <WantedPoster name={team.pirateName} reward={team.totalPoints} rotate={2}>
-                  <Avatar avatar={team.avatar} side="blue" className="h-full w-full" />
-                </WantedPoster>
+                <div className="flex flex-col items-center gap-3">
+                  <WantedPoster name={team.pirateName} reward={team.totalPoints} rotate={2}>
+                    <Avatar avatar={team.avatar} side="blue" className="h-full w-full" />
+                  </WantedPoster>
+                  <LevelTag played={team.episodesPlayed ?? 0} side="blue" />
+                  <StampRow stamps={team.stamps} />
+                  <BadgeRow badges={team.badges} size="sm" onDark />
+                </div>
               )}
             </motion.div>
           </AnimatePresence>

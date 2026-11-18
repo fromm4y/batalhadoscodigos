@@ -6,17 +6,18 @@ _Atualizado em 17/11/2026._
 
 ## 🗺️ Plano em andamento (15/11)
 
-| #   | Item                                                                             | Situação                   |
-| --- | -------------------------------------------------------------------------------- | -------------------------- |
-| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May   | ✅ pronto (PR #16)         |
-| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida) | ✅ pronto (PR #17)         |
-| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                       | ✅ pronto, **para testar** |
-| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum do Museu                       | ⏳ próximo                 |
-| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                         | ⏳                         |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority`                                   | ⏳                         |
-| 6   | SPEC-02 **D + E** — ficha que evolui, selos, certificados                        | ⏳                         |
-| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                       | ⏳                         |
-| 8   | SPEC-02 **F** — relatório da turma                                               | ⏳                         |
+| #   | Item                                                                                                   | Situação                   |
+| --- | ------------------------------------------------------------------------------------------------------ | -------------------------- |
+| 1   | SPEC-02 **A** (correções + LGPD) e **B** (temporada dinâmica) + pedidos da May                         | ✅ pronto (PR #16)         |
+| 1b  | **Diversão e desafio** (combo, dica mais cara, Relâmpago, missão bônus, corrida)                       | ✅ pronto (PR #17)         |
+| 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)         |
+| 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)         |
+| 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)     |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ⏳                         |
+| 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)     |
+| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto, **para testar** |
+| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ⏳                         |
+| 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                         |
 
 ---
 
@@ -49,6 +50,14 @@ _Atualizado em 17/11/2026._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 18/11 — ficha que evolui, selos e tudo mais fácil 🏅
+
+- **Ficha que evolui:** no lobby, a ficha do Bando e o cartaz dos Piratas mostram o **nível** (Novato → Recruta → Agente → Especialista → Mestre do Plano → Lenda; nos Piratas, Aprendiz → Grumete → Marujo → Imediato → Capitão de Fragata → Lenda dos Mares) e um **carimbo por episódio** jogado, com o lado e o resultado (🏆 venceu, 🤝 empatou, 💪 lutou).
+- **7 selos** (não dão pontos): ⚡ Cofre Relâmpago (o Cofre mais rápido da turma), 🧠 Sem Dicas, 🔄 Virada (venceu começando o Cofre atrás), 🎭 Duas Caras (jogou nos dois lados), 🎧 Ouvido Atento (pista falada de primeira), 🗂️ Colecionador (todas as cartas da temporada) e 🌟 Missão Bônus. Aparecem estourando no fim do episódio, na ficha, no Álbum e no painel da turma.
+- **Todos os episódios mais fáceis no A e no B:** prévia ao vivo do tecido no tear (Ep. 1), disco já girado e pista no Cofre no B (Ep. 2), conta ao vivo no painel (Ep. 3).
+- Correção: "episódios jogados" agora conta de verdade (antes ficava sempre 0).
+- ⚠️ **Publicar o `firestore.rules` novo** (a Narradora grava carimbos e selos).
 
 ### Novidades de 17/11 (mais tarde) — continuar a aula, ENIAC mais fácil, temporada curta com o ENIAC
 
@@ -115,7 +124,7 @@ _Atualizado em 17/11/2026._
 
 - Regras do Firestore fechadas por padrão, com testes; pontos sempre com extrato; sem dados pessoais de aluno.
 - **Conteúdo validado por teste:** formato de todos os episódios e as conferências do SPEC-03 §7 (cifras, uma única ordem dos cabos, combinação ótima, jogo da velha, minimax).
-- **Testes:** 133 unitários + 72 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
+- **Testes:** 144 unitários + 73 de regras/API no emulador + testes ponta a ponta de cada etapa + ensaio geral de 43 min.
 
 ---
 

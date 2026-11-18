@@ -283,12 +283,12 @@
               "hint2": "A palavra é o sobrenome de quem quebrou a Enigma."
             },
             "B": {
-              "prompt": "A chave é 3: cada letra andou 3 casas. Use o disco para voltar.",
+              "prompt": "A chave é 3: cada letra andou 3 casas. Use o disco para voltar (o disco já está na chave).",
               "mode": "decode",
               "shift": 3,
               "text": "HQLJPD",
               "answer": "ENIGMA",
-              "wheel": "free",
+              "wheel": "preset",
               "hint1": "Gire o disco 3 casas e leia as letras de dentro.",
               "hint2": "É o nome da máquina deste episódio."
             },
@@ -320,12 +320,12 @@
                 "hint2": "Começa com MENSAGEM."
               },
               "B": {
-                "prompt": "A chave é 6. Decifre a mensagem inteira.",
+                "prompt": "A chave é 6. Decifre a mensagem inteira (o disco já está na chave).",
                 "mode": "decode",
                 "shift": 6,
                 "text": "G HUSHK BKTIKA",
                 "answer": "A BOMBE VENCEU",
-                "wheel": "free",
+                "wheel": "preset",
                 "hint1": "Volte 6 casas em cada letra.",
                 "hint2": "A segunda palavra é BOMBE."
               },
@@ -442,14 +442,15 @@
             "hint2": "A chave é 4. A primeira palavra é MUSEU."
           },
           "B": {
-            "prompt": "Ninguém sabe a chave. Descubra a chave e digite a mensagem decifrada.",
+            "prompt": "Ninguém sabe a chave, mas a mensagem começa com A CHAVE. Gire o disco até ela aparecer e digite tudo.",
             "mode": "crack",
             "shift": 6,
             "text": "G INGBK SAJG ZUJU JOG",
             "answer": "A CHAVE MUDA TODO DIA",
             "wheel": "free",
             "hint1": "A primeira palavra tem só uma letra: qual letra sozinha faz sentido?",
-            "hint2": "G virou A: a chave é 6."
+            "hint2": "G virou A: a chave é 6.",
+            "crib": "A CHAVE"
           },
           "C": {
             "prompt": "Ninguém sabe a chave, mas vocês têm um crib: a mensagem começa com TURING. Quebre o código e digite a mensagem.",
@@ -481,14 +482,15 @@
               "crib": "O SEGREDO"
             },
             "B": {
-              "prompt": "Ninguém sabe a chave. Descubra a chave e digite a mensagem decifrada.",
+              "prompt": "Ninguém sabe a chave, mas a mensagem começa com OS ALIADOS. Gire o disco até ela aparecer e digite tudo.",
               "mode": "crack",
               "shift": 15,
               "text": "DH PAXPSDH KTCRTGPB",
               "answer": "OS ALIADOS VENCERAM",
               "wheel": "free",
               "hint1": "Procure uma palavra curta que faça sentido.",
-              "hint2": "A chave está entre 12 e 18."
+              "hint2": "A chave está entre 12 e 18.",
+              "crib": "OS ALIADOS"
             },
             "C": {
               "prompt": "Ninguém sabe a chave e não há pista. Quebre o código e digite a mensagem.",
@@ -751,12 +753,12 @@
               "hint2": "Comece com B M..."
             },
             "B": {
-              "prompt": "A chave é 3: ande 3 casas com cada letra.",
+              "prompt": "A chave é 3: ande 3 casas com cada letra (o disco já está na chave).",
               "mode": "encode",
               "shift": 3,
               "text": "CODIGO",
               "answer": "FRGLJR",
-              "wheel": "free",
+              "wheel": "preset",
               "hint1": "Gire o disco 3 casas e leia as letras de fora.",
               "hint2": "C vira F, O vira R..."
             },
@@ -788,12 +790,12 @@
                 "hint2": "C vira F."
               },
               "B": {
-                "prompt": "A chave é 6. Cifre a mensagem inteira.",
+                "prompt": "A chave é 6. Cifre a mensagem inteira (o disco já está na chave).",
                 "mode": "encode",
                 "shift": 6,
                 "text": "ALERTA NO MAR",
                 "answer": "GRKXZG TU SGX",
-                "wheel": "free",
+                "wheel": "preset",
                 "hint1": "Ande 6 casas com cada letra.",
                 "hint2": "A vira G."
               },

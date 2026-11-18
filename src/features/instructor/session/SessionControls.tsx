@@ -7,6 +7,8 @@ import { loadEpisode } from '@/content/episodes';
 import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
 import { currentStage, needsTransmission, spokenClueFor } from '@/engine/progress';
+import { seasonEpisodes } from '@/content/season';
+import { useSeasonOrder } from '@/features/game/useEpisodeHook';
 import { getFirebase } from '@/lib/firebase';
 import { useNow } from '@/lib/useNow';
 import type { Level, Phase, PlayerDoc, SessionDoc } from '@/types/domain';
@@ -41,6 +43,8 @@ type Props = {
  * e transmissão da Narradora (RN-45). O painel completo chega na Etapa 5.
  */
 export function SessionControls({ sessionId, session, level, players }: Props) {
+  // selo Colecionador: as cartas da temporada ativa (longa ou curta)
+  const seasonOrder = useSeasonOrder('instructor');
   const profile = useProfile()!;
   const opsCtx = { sessionId, session, uid: profile.uid };
   const [info, setInfo] = useState<string | null>(null);
@@ -123,8 +127,13 @@ export function SessionControls({ sessionId, session, level, players }: Props) {
                     // RN-18: vantagem do Cofre antes de liberar; RN-20: resultado antes do fim.
                     if (next === 'vault') await markVaultLeaders(opsCtx);
                     if (next === 'end') {
-                      const { winners } = await resolveOpenMatches(opsCtx);
-                      await grantEpisodeCards(opsCtx, winners);
+                      const { winners, leaders } = await resolveOpenMatches(opsCtx);
+                      await grantEpisodeCards(opsCtx, winners, {
+                        leaders,
+                        episode,
+                        level,
+                        seasonEpisodes: seasonEpisodes(seasonOrder).map((e) => e.id),
+                      });
                     }
                     await updateDoc(ref, {
                       phase: next,

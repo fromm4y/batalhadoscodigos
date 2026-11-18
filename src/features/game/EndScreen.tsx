@@ -18,6 +18,7 @@ import { ledgerSum } from '@/engine/ranking';
 import { Link } from 'react-router';
 import { AlbumLink } from '@/components/game/AlbumLink';
 import { CollectibleCard } from '@/components/game/CollectibleCard';
+import { NewBadges } from '@/components/game/TeamRecord';
 import type { LedgerEntryDoc, MatchDoc, PlayerDoc, TeamCard, TeamDoc } from '@/types/domain';
 import { LEDGER_LABEL } from './ledgerLabels';
 import { useEpisodeHook } from './useEpisodeHook';
@@ -100,7 +101,13 @@ export function EndScreen({
             className="flex flex-1 flex-col gap-5"
           >
             {step === 'result' && (
-              <ResultChapter team={team} player={player} match={match} ledger={ledger} />
+              <ResultChapter
+                team={team}
+                player={player}
+                match={match}
+                ledger={ledger}
+                episodeId={episode.id}
+              />
             )}
             {step === 'ranking' && (
               <div className="flex flex-col items-center gap-4">
@@ -150,11 +157,13 @@ function ResultChapter({
   player,
   match,
   ledger,
+  episodeId,
 }: {
   team: TeamDoc;
   player: PlayerDoc;
   match: MatchDoc | null;
   ledger: (LedgerEntryDoc & { id: string })[];
+  episodeId: string;
 }) {
   const reduce = useReducedMotion();
   const red = player.side !== 'blue';
@@ -244,6 +253,8 @@ function ResultChapter({
             </p>
           </div>
         </div>
+        {/* SPEC-02 D2: selos ganhos neste episódio, estourando um por um */}
+        <NewBadges badges={team.badges} episodeId={episodeId} />
       </div>
 
       <ComicPanel caption="Extrato do episódio" tone="paper" className="pt-8">

@@ -14,12 +14,16 @@ import {
   type Firestore,
   type Transaction,
 } from 'firebase/firestore';
+import { addBadges, addStamp, badgesEarned, stampResult } from '@/engine/badges';
 import { addCard, cardsToGrant } from '@/engine/cards';
+import { resolveChallenge } from '@/engine/challenges';
+import { needsTransmission } from '@/engine/progress';
+import type { Episode } from '@/content/types';
 import { formMatches, leader, resolveByBar } from '@/engine/match';
 import { applyDelta, POINTS } from '@/engine/scoring';
 import { newMatchDoc } from '@/features/game/actions';
 import { getFirebase } from '@/lib/firebase';
-import type { LedgerReason, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
+import type { Level, LedgerReason, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 
 export type Ctx = { sessionId: string; session: SessionDoc; uid: string };
 
@@ -114,19 +118,24 @@ export async function markVaultLeaders(c: Ctx): Promise<void> {
  * RN-20: ao liberar o fim, confrontos sem Cofre resolvido são decididos pela barra
  * (+5 para o vencedor humano; empate = +2 para cada dupla). A máquina não pontua (RN-23).
  */
-export async function resolveOpenMatches(
-  c: Ctx,
-): Promise<{ resolved: number; winners: Record<string, MatchDoc['winner']> }> {
+export async function resolveOpenMatches(c: Ctx): Promise<{
+  resolved: number;
+  winners: Record<string, MatchDoc['winner']>;
+  leaders: Record<string, MatchDoc['vaultLeader']>;
+}> {
   const { db } = getFirebase();
   const matches = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'matches'));
   let resolved = 0;
   // Resultado final de cada confronto, lido DENTRO da transação (sem cache): as cartas usam isto.
   const winners: Record<string, MatchDoc['winner']> = {};
+  // quem estava na frente ao liberar o Cofre (selo Virada)
+  const leaders: Record<string, MatchDoc['vaultLeader']> = {};
   for (const m of matches.docs) {
     await runTransaction(db, async (tx) => {
       const snap = await tx.get(m.ref);
       const data = snap.data() as MatchDoc | undefined;
       if (!data) return;
+      leaders[m.id] = data.vaultLeader ?? null;
       if (data.winner) {
         winners[m.id] = data.winner;
         return;
@@ -153,7 +162,7 @@ export async function resolveOpenMatches(
       resolved++;
     });
   }
-  return { resolved, winners };
+  return { resolved, winners, leaders };
 }
 
 /**
@@ -164,25 +173,66 @@ export async function resolveOpenMatches(
 export async function grantEpisodeCards(
   c: Ctx,
   winners: Record<string, MatchDoc['winner']>,
+  extra: {
+    leaders: Record<string, MatchDoc['vaultLeader']>;
+    episode: Episode | null;
+    level: Level | null;
+    seasonEpisodes: string[];
+  },
 ): Promise<number> {
   const { db } = getFirebase();
   const playersSnap = await getDocsFromServer(collection(db, 'sessions', c.sessionId, 'players'));
+  const players = playersSnap.docs.map((d) => d.data() as PlayerDoc);
   const matches = Object.fromEntries(
     Object.entries(winners).map(([id, winner]) => [id, { winner }]),
   );
-  const grants = cardsToGrant(
-    playersSnap.docs.map((d) => d.data() as PlayerDoc),
-    matches,
-  );
+  const grants = cardsToGrant(players, matches);
+  // Cofre mais rápido da turma (selo ⚡): o menor horário entre quem resolveu
+  const vaultTimes = players
+    .map((p) => p.progress.vaultSolvedAt?.toMillis?.())
+    .filter((t): t is number => typeof t === 'number');
+  const fastest = vaultTimes.length ? Math.min(...vaultTimes) : null;
+  const ep = c.session.episodeId;
   let granted = 0;
   for (const g of grants) {
+    const p = players.find((x) => x.teamId === g.teamId);
+    if (!p?.side) continue;
+    const side = p.side;
     const ref = doc(db, 'classes', c.session.classId, 'teams', g.teamId);
     await runTransaction(db, async (tx) => {
       const t = (await tx.get(ref)).data() as TeamDoc | undefined;
       if (!t) return;
-      const next = addCard(t.cards, c.session.episodeId, g.variant, Timestamp.now());
-      if (!next) return;
-      tx.update(ref, { cards: next });
+      const now = Timestamp.now();
+      const cards = addCard(t.cards, ep, g.variant, now) ?? t.cards ?? [];
+      const winner = p.matchId ? (winners[p.matchId] ?? null) : null;
+      const stamps = addStamp(t.stamps, { episodeId: ep, side, result: stampResult(side, winner) });
+      // pista falada: etapa 1 do cadeado que espera a transmissão (cartão, cifra, entrada)
+      const spokenKeys =
+        extra.episode && extra.level
+          ? ([0, 1, 2] as const)
+              .map((slot) => resolveChallenge(extra.episode!, side, extra.level!, slot, 0))
+              .filter(needsTransmission)
+              .map((ch) => ch.key)
+          : [];
+      const vaultAt = p.progress.vaultSolvedAt?.toMillis?.();
+      const ids = badgesEarned({
+        episodeId: ep,
+        side,
+        winner,
+        vaultLeader: p.matchId ? (extra.leaders[p.matchId] ?? null) : null,
+        vaultSolved: typeof vaultAt === 'number',
+        fastestVault: typeof vaultAt === 'number' && vaultAt === fastest,
+        hints: p.hints,
+        misses: p.misses,
+        spokenKeys,
+        spokenOpened: p.progress.lockIndex >= 3,
+        bonusSolved: !!p.bonusSolvedAt,
+        stamps,
+        cardEpisodes: cards.map((x) => x.episodeId),
+        seasonEpisodes: extra.seasonEpisodes,
+      });
+      const badges = addBadges(t.badges, ids, ep, now);
+      tx.update(ref, { cards, stamps, badges, episodesPlayed: stamps.length });
       granted++;
     });
   }

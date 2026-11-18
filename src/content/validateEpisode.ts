@@ -74,10 +74,12 @@ function checkVariant(type: ChallengeType, v: Obj, at: string, err: (m: string) 
         Array.isArray(v.palette) && Array.isArray(v.target) && isInt(v.maxBlocks),
         'palette/target/maxBlocks',
       );
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
     case 'blockDebug':
       need(Array.isArray(v.program) && Array.isArray(v.target), 'program/target');
       need(['symbols', 'counts', 'both'].includes(v.editable as string), 'editable');
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
     case 'cipher': {
       const mode = v.mode as string;

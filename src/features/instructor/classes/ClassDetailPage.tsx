@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { Avatar } from '@/components/avatar/Avatar';
+import { BadgeRow, StampRow } from '@/components/game/TeamRecord';
+import { teamLevel } from '@/engine/badges';
 import { ComicButton, ComicPanel, SpeechBubble, cn } from '@/components/comic';
 import { GAME_RULES } from '@/config/gameRules';
 import { SEASON } from '@/content/season';
@@ -273,8 +275,11 @@ export function ClassDetailPage() {
                       {t.pirateName}
                     </p>
                     <p className="font-type text-sm text-mist">
-                      {t.totalPoints} pts · {t.episodesPlayed} ep.
+                      {t.totalPoints} pts · {t.episodesPlayed} ep. ·{' '}
+                      {teamLevel(t.episodesPlayed ?? 0, 'red')}
                     </p>
+                    <StampRow stamps={t.stamps} size="sm" />
+                    <BadgeRow badges={t.badges} size="sm" onDark />
                     {active && (
                       <button
                         type="button"
