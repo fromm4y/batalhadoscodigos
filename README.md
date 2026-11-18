@@ -5,7 +5,7 @@ Especificação completa: [`SPEC.md`](./SPEC.md) · Direção de arte: [`VISUAL.
 
 ## 🎨 Imagens que ainda faltam (18/11)
 
-- **16 personagens novos** (`menina-13` a `menina-20`, `menino-13` a `menino-20`), cada um nas versões Bando e Piratas: 32 imagens. Descrição e prompt de cada um em [`docs/IMAGENS.md` §6](./docs/IMAGENS.md).
+- **15 imagens de personagem:** `menina-16` (só a versão Piratas) e as duas versões de `menina-17`, `menina-19`, `menina-20`, `menino-16`, `menino-18`, `menino-19` e `menino-20`. Descrição e prompt de cada um em [`docs/IMAGENS.md` §6](./docs/IMAGENS.md).
 - **`card-ep5`** (carta do Deep Blue) e **`teaser-ep5`** (encerramento da temporada).
 
 Enquanto uma imagem não existe, o jogo segue funcionando (placeholder ou o personagem simplesmente não aparece na lista).
