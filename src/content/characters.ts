@@ -8,7 +8,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 export const CHARACTER_GROUPS = ['menina', 'menino'] as const;
 export type CharacterGroup = (typeof CHARACTER_GROUPS)[number];
 
-export const CHARACTERS_PER_GROUP = 12;
+/** 12 + 8 vagas novas (18/11, pedido da May: "mais opções de personagens"). */
+export const CHARACTERS_PER_GROUP = 20;
 
 export const CHARACTER_IDS = CHARACTER_GROUPS.flatMap((g) =>
   Array.from({ length: CHARACTERS_PER_GROUP }, (_, i) => `${g}-${pad(i + 1)}`),

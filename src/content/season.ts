@@ -9,7 +9,7 @@ export const SEASON: SeasonEntry[] = [
   { id: 'ep1', number: 1, title: 'Máquina Analítica', available: true },
   { id: 'ep2', number: 2, title: 'Máquina Enigma', available: true },
   { id: 'ep3', number: 3, title: 'ENIAC', available: true },
-  { id: 'ep4', number: 4, title: 'Apollo 11', available: false },
+  { id: 'ep4', number: 4, title: 'Apollo 11', available: true },
   { id: 'ep5', number: 5, title: 'Deep Blue', available: false },
 ];
 

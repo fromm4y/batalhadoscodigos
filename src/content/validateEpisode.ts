@@ -127,6 +127,7 @@ function checkVariant(type: ChallengeType, v: Obj, at: string, err: (m: string) 
           'budget: capacity/optimalValue/cost/value',
         );
       else err(`${at}: mode`);
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
     }
     case 'boardChoice':
@@ -175,6 +176,14 @@ function checkChallenge(c: unknown, at: string, err: (m: string) => void, keys: 
         const b = s2.variants[lv] as Obj | undefined;
         if (b?.startSpoken === true && (a?.startSpoken !== true || a.start !== b.start))
           err(`${at} etapa 2 nível ${lv}: entrada falada diferente da etapa 1`);
+      }
+    // console da Apollo: a etapa 2 com quantidade falada usa a MESMA quantidade da etapa 1
+    if (isObj(s2) && s2.type === 'priority' && isObj(s2.variants) && isObj(c.variants))
+      for (const lv of LEVELS) {
+        const a = c.variants[lv] as Obj | undefined;
+        const b = s2.variants[lv] as Obj | undefined;
+        if (b?.pickSpoken === true && (a?.pickSpoken !== true || a.pick !== b.pick))
+          err(`${at} etapa 2 nível ${lv}: quantidade falada diferente da etapa 1`);
       }
     // cartão da etapa 2 não pede outra pista falada (spokenColumn = -1)
     if (

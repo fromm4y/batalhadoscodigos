@@ -1,8 +1,8 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 17/11/2026._
+_Atualizado em 18/11/2026._
 
-**Resumo:** os **Episódios 1, 2 e 3 são jogáveis** (o Ep. 2, Máquina Enigma, entrou em 16/11 com o disco de cifra). Os **Ep. 4 e 5 já estão no projeto como conteúdo** (validados por teste), mas ainda **não são jogáveis**: cada um precisa do seu tipo de desafio novo. A **Parte A (LGPD) e a Parte B (temporada dinâmica) do SPEC-02** estão prontas.
+**Resumo:** os **Episódios 1, 2, 3 e 4 são jogáveis** (o Ep. 4, Apollo 11, entrou em 18/11 com o console de missão). O **Ep. 5 já está no projeto como conteúdo** (validado por teste), mas ainda **não é jogável**: precisa do modo cooperativo e dos tipos de desafio dele. As **Partes A, B, C e D do SPEC-02** estão prontas.
 
 ## 🗺️ Plano em andamento (15/11)
 
@@ -13,9 +13,9 @@ _Atualizado em 17/11/2026._
 | 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)         |
 | 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)         |
 | 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)     |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ⏳                         |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ✅ pronto, **para testar** |
 | 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)     |
-| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto, **para testar** |
+| 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto (PR #23)         |
 | 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ⏳                         |
 | 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                         |
 
@@ -50,6 +50,14 @@ _Atualizado em 17/11/2026._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 18/11 (tarde) — Ep. 4: Apollo 11 🚀
+
+- **Console de missão** (tipo `priority`): painel verde da NASA com o **ALARME 1202** piscando. Cadeado 3: chaves de liga/desliga, **"Chaves ligadas: x de ?"** até a Narradora falar quantas tarefas cabem (depois não deixa ligar a mais). Cofre: cada tarefa custa ⏱️ minutos (Bando) ou ⚡ energia (Piratas) e vale ⭐; a barra do limite enche e trava; **qualquer combinação que chega no máximo de estrelas vale**. Errou? "Ainda dá para fazer melhor! Faltam X estrelas" (sem dizer quais).
+- **Duas etapas em tudo**, como no Ep. 3: quiz com mais perguntas, enigma/anagrama novos, plano de fuga (Bando) e volta para a Terra (Piratas) com a **mesma quantidade falada** (sem nova transmissão), e um Cofre maior.
+- **Mais fácil no A e no B:** o Cofre mostra a **meta de estrelas** ao vivo (⭐ 7 / meta 13). No C, sem meta, e na etapa 2 o "pegar o que rende mais primeiro" não funciona: tem que testar combinações.
+- **Missão bônus:** o plano dos sonhos (Bando) e a carga dos sonhos (Piratas).
+- **Mais vagas de personagens:** 20 meninas + 20 meninos (16 novos, ids `menina-13` a `menina-20` e `menino-13` a `menino-20`). Cada um aparece sozinho assim que as duas artes existirem (lista e prompts no `docs/IMAGENS.md` §6).
 
 ### Novidades de 18/11 — ficha que evolui, selos e tudo mais fácil 🏅
 
