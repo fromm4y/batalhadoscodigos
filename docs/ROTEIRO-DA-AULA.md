@@ -32,8 +32,15 @@
 - **Planejamento:** ninguém escolhe lado. Cada dupla clica em **"Entrar na Aliança"**; você clica em **"🤝 Formar a Aliança"** (no lugar de "Formar confrontos").
 - **Cadeados:** cada desafio que qualquer dupla resolve puxa a barra **TURMA × MÁQUINA**. O puxão é dividido pelo número de duplas, para turmas grandes e pequenas terem o mesmo ritmo.
 - **Cadeado 3 (jogo da velha):** transmita a jogada da máquina ("casa 3", "casa 7"...). A dupla clica onde a máquina jogou e depois faz a jogada dela. Na etapa 2 a jogada já aparece.
-- **Cofre (árvore de jogadas):** a turma vence se **metade das duplas** abrir o Cofre antes da máquina. Quem abriu vira **Reforço** e pode mandar **uma** Dica 1 para outra dupla. O projetor mostra "x de y duplas" e quem ajudou quem.
+- **😈 A máquina é o CHEFÃO FINAL:** mais rápida que nos outros episódios, puxa mais forte e **contra-ataca a cada resposta errada** de qualquer dupla. Combine com a turma antes: pensar junto, sem chutar!
+- **Cofre (árvore de jogadas):** a turma vence se **2 de cada 3 duplas** abrirem o Cofre antes da máquina. Quem abriu vira **Reforço** e pode mandar **uma** Dica 1 para outra dupla. O projetor mostra "x de y duplas" e quem ajudou quem.
 - **Fim:** +5 para **todas** as duplas se a turma venceu, +2 de participação se a máquina venceu. Se for o último episódio da temporada, o ranking é o **final**.
+
+## Certificados da temporada 🏆
+
+- Na página da turma: **"🏆 Certificados da temporada"** → **"Baixar PDF da turma"** (uma página por dupla, A4 deitado) ou **"Imprimir"**. Medalha de ouro, prata e bronze para as 3 primeiras do ranking; participação para todas.
+- A dupla baixa o próprio certificado em PNG pelo Álbum ou no fim do último episódio.
+- Sem nome de aluno: duas linhas "Nome:" em branco para escrever à mão.
 
 ## Se algo der errado
 

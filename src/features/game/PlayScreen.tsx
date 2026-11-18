@@ -168,7 +168,12 @@ export function PlayScreen({
 
   function onWrong() {
     playSfx('error');
-    setPop({ kind: 'errou', key: stamp() });
+    // Ep. 5: o chefão contra-ataca a cada erro (pedido da May, 18/11)
+    setPop(
+      alliance
+        ? { kind: 'custom', key: stamp(), text: 'CONTRA-ATAQUE!' }
+        : { kind: 'errou', key: stamp() },
+    );
     void shake.start({ x: [0, -12, 10, -6, 4, 0], transition: { duration: 0.4 } });
     setCooldown(true);
     setTimeout(() => setCooldown(false), GAME_RULES.answers.wrongAnswerCooldownMs);
@@ -274,7 +279,7 @@ export function PlayScreen({
               bar={match.bar}
               redName={alliance ? 'TURMA' : red ? team.cityName : (rival?.cityName ?? 'Robô')}
               blueName={
-                alliance ? 'MÁQUINA' : red ? (rival?.pirateName ?? 'Robô') : team.pirateName
+                alliance ? 'CHEFÃO 😈' : red ? (rival?.pirateName ?? 'Robô') : team.pirateName
               }
               hidden={disguised}
             />

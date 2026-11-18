@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ledgerSum, podiumOrder, rankTeams, sessionHighlights } from './ranking';
+import { ledgerSum, podiumOrder, rankTeams, seasonMedal, sessionHighlights } from './ranking';
 
 const t = (id: string, cityName: string, totalPoints: number) => ({ id, cityName, totalPoints });
 
@@ -42,5 +42,24 @@ describe('destaque da aula', () => {
   it('ninguém pontuou → sem destaque', () => {
     expect(sessionHighlights([p('a', 0)])).toBeNull();
     expect(sessionHighlights([])).toBeNull();
+  });
+});
+
+describe('medalhas da temporada (SPEC-02 E)', () => {
+  it('ouro, prata e bronze para as 3 primeiras posições; empate divide', () => {
+    const rows = rankTeams([
+      { id: 'a', cityName: 'A', totalPoints: 30 },
+      { id: 'b', cityName: 'B', totalPoints: 30 },
+      { id: 'c', cityName: 'C', totalPoints: 20 },
+      { id: 'd', cityName: 'D', totalPoints: 10 },
+      { id: 'e', cityName: 'E', totalPoints: 0 },
+    ]);
+    expect(rows.map((r) => seasonMedal(r.position, r.team.totalPoints))).toEqual([
+      'ouro',
+      'ouro',
+      'bronze',
+      null,
+      null,
+    ]);
   });
 });

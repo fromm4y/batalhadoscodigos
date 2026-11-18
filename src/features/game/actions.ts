@@ -40,6 +40,7 @@ import {
   canReinforce,
   classWins,
   COOP_CLASS_SIDE,
+  COOP_MACHINE_SIDE,
   COOP_MATCH_ID,
   coopPull,
   newCoopState,
@@ -138,6 +139,24 @@ export async function registerWrongAnswer(
   const { db } = getFirebase('student');
   await runTransaction(db, async (tx) => {
     const { team, player } = await readBoth(tx, db, c);
+    // Ep. 5: CONTRA-ATAQUE do chefão — cada erro (fora da missão bônus) puxa para a máquina
+    const mRef = !free && player.matchId === COOP_MATCH_ID ? matchRef(db, c, COOP_MATCH_ID) : null;
+    const mSnap = mRef ? await tx.get(mRef) : null;
+    const m = mSnap?.data() as MatchDoc | undefined;
+    if (mRef && m?.coop && !m.winner) {
+      const now = serverNow();
+      const r = applyPull(m, COOP_MACHINE_SIDE, GAME_RULES.coop.boss.counterPull, now);
+      tx.update(mRef, {
+        bar: r.bar,
+        effects: r.effects,
+        log: pushLog(m.log, {
+          at: now,
+          side: COOP_MACHINE_SIDE,
+          type: 'pull',
+          text: 'CONTRA-ATAQUE! A máquina aproveitou um erro da turma.',
+        }),
+      });
+    }
     // carta Válvula Reserva: o próximo erro não tira ponto
     const forgiven = !free && player.cardBoost === 'forgiveMiss';
     writePoints(

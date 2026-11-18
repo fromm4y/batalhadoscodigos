@@ -153,3 +153,20 @@ describe('Aliança (confronto coop)', () => {
     await assertFails(updateDoc(ref(asTeam('a')), { coopAwarded: false }));
   });
 });
+
+describe('certificado da temporada (SPEC-02 E)', () => {
+  it('a dupla lê só o nome da própria escola; a lista de escolas continua fechada', async () => {
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      const db = ctx.firestore();
+      await setDoc(doc(db, 'classes', 'turma'), {
+        instructorId: ANA.uid,
+        archived: false,
+        schoolId: 'esc1',
+      });
+      await setDoc(doc(db, 'schools', 'esc1'), { name: 'Escola 1', active: true });
+      await setDoc(doc(db, 'schools', 'esc2'), { name: 'Escola 2', active: true });
+    });
+    await assertSucceeds(getDoc(doc(asTeam('a'), 'schools', 'esc1')));
+    await assertFails(getDoc(doc(asTeam('a'), 'schools', 'esc2')));
+  });
+});

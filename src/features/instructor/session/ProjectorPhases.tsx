@@ -207,9 +207,9 @@ function CoopBoard({
   return (
     <div className="flex flex-col gap-5 rounded-hand border-4 border-ink bg-graphite/90 p-6 shadow-[8px_8px_0_#000]">
       <p className="text-center font-heist text-6xl tracking-[0.12em] text-paper">
-        🤝 TURMA <span className="text-mist">×</span> MÁQUINA 🤖
+        🤝 TURMA <span className="text-mist">×</span> CHEFÃO FINAL 😈
       </p>
-      <TugBar bar={match.bar} redName="TURMA" blueName="MÁQUINA" />
+      <TugBar bar={match.bar} redName="TURMA" blueName="CHEFÃO 😈" />
       {match.winner && (
         <p className="text-center font-comic text-6xl tracking-wide text-brass text-outline">
           {match.winner === 'red'

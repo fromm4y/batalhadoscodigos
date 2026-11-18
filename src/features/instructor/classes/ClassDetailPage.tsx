@@ -243,6 +243,14 @@ export function ClassDetailPage() {
                   >
                     🎓 Certificados deste episódio
                   </a>
+                  <a
+                    href={`/instrutor/turmas/${classId}/certificados-temporada`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="grid min-h-11 place-items-center border-[3px] border-ink bg-brass px-3 pt-1 font-heist text-lg tracking-wider text-ink hover:glow-brass"
+                  >
+                    🏆 Certificados da temporada
+                  </a>
                 </div>
               )}
             </ComicPanel>

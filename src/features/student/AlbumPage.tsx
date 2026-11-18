@@ -70,12 +70,20 @@ function Album({ claims }: { claims: TeamClaims }) {
               {owned} de {eps.length} cartas
             </p>
           </div>
-          <Link
-            to="/jogo"
-            className="grid min-h-11 place-items-center border-[3px] border-ink bg-brass px-4 pt-1 font-heist text-xl tracking-wider text-ink"
-          >
-            ← Voltar para a missão
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/certificado-temporada"
+              className="grid min-h-11 place-items-center border-[3px] border-ink bg-paper px-4 pt-1 font-heist text-xl tracking-wider text-ink hover:glow-brass"
+            >
+              🏆 Certificado da temporada
+            </Link>
+            <Link
+              to="/jogo"
+              className="grid min-h-11 place-items-center border-[3px] border-ink bg-brass px-4 pt-1 font-heist text-xl tracking-wider text-ink"
+            >
+              ← Voltar para a missão
+            </Link>
+          </div>
         </header>
 
         {team && (team.stamps?.length || team.badges?.length) ? (
