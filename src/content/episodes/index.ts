@@ -2,6 +2,7 @@
  * Carregamento dos episódios (JSON). Import dinâmico: o conteúdo só é baixado quando a dupla entra no jogo.
  * Criar um episódio novo = adicionar `epN.json` aqui e registrar em `season.ts`.
  */
+import { asVersus } from '@/engine/coop';
 import type { AnyEpisode, Episode } from '../types';
 
 export type EpisodeMeta = Pick<
@@ -23,10 +24,14 @@ export async function loadAnyEpisode(id: string): Promise<AnyEpisode | null> {
   return load ? ((await load()).default as AnyEpisode) : null;
 }
 
-/** Episódio Bando × Piratas (o jogo versus). O cooperativo (Ep. 5) devolve null aqui. */
+/**
+ * Episódio no formato do jogo. O cooperativo (Ep. 5) vem com o conteúdo da Aliança nos dois
+ * lados e `alliance: true` (SPEC-03 §4).
+ */
 export async function loadEpisode(id: string): Promise<Episode | null> {
   const e = await loadAnyEpisode(id);
-  return e && e.mode !== 'coop' ? e : null;
+  if (!e) return null;
+  return e.mode === 'coop' ? asVersus(e) : e;
 }
 
 export async function loadEpisodeMeta(id: string): Promise<EpisodeMeta | null> {

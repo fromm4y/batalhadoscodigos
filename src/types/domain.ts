@@ -10,7 +10,8 @@ export type Grade = 4 | 5 | 6 | 7 | 8 | 9;
 export type Shift = 'manha' | 'tarde';
 export type Phase = 'lobby' | 'planning' | 'locks' | 'vault' | 'end';
 export type Role = 'admin' | 'instructor';
-export type GameMode = 'pessoas' | 'maquina';
+/** 'coop' (Ep. 5): a turma inteira contra a máquina, sem lados (SPEC-03 §4). */
+export type GameMode = 'pessoas' | 'maquina' | 'coop';
 
 export type AbilityId =
   | 'interferencia' // Bando — atrapalhar
@@ -34,6 +35,9 @@ export type LedgerReason =
   | 'vault_fast'
   /** Missão bônus (16/11) */
   | 'bonus_mission'
+  /** Ep. 5 (coop): a turma venceu a máquina / participação (RN-C6) */
+  | 'coop_win'
+  | 'coop_play'
   | 'manual';
 
 /** Seção 9.5 */
@@ -202,6 +206,8 @@ export type PlayerDoc = {
   /** poder que espera o momento certo (próximo cadeado, próximo erro, Cofre) */
   cardBoost?: CardBoost | null;
   helpUsed: boolean;
+  /** Ep. 5 (coop, RN-C7): a dupla que mandou o reforço que esta dupla já recebeu */
+  reinforcedBy?: string | null;
   /** RN-07: a Narradora adiantou/atrasou só esta dupla */
   phaseOverride?: Phase | null;
   abilities: { owned: AbilityId[]; used: AbilityId[] };
@@ -244,6 +250,15 @@ export type MatchDoc = {
   resolvedAt: Timestamp | null;
   log: MatchLogEntry[];
   machine: MachineState | null;
+  /** Só no confronto `coop` do Ep. 5: a Aliança inteira contra a máquina (SPEC-03 RN-C2). */
+  coop?: CoopState | null;
+};
+
+/** A Aliança (Ep. 5): quem joga, quem já abriu o Cofre e os reforços mandados (quem → para quem). */
+export type CoopState = {
+  teams: string[];
+  vaultSolvers: string[];
+  reinforcements: Record<string, string>;
 };
 
 export type HelpRequestDoc = {

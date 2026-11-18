@@ -133,10 +133,13 @@ function checkVariant(type: ChallengeType, v: Obj, at: string, err: (m: string) 
     case 'boardChoice':
       need(typeof v.board === 'string' && /^[XO.]{9}$/.test(v.board), 'board com 9 casas');
       need(v.you === 'X' && isObj(v.spokenMove) && isInt(v.answer), 'you/spokenMove/answer');
+      need(v.revealed === undefined || typeof v.revealed === 'boolean', 'revealed');
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
     case 'gameTree':
       need(v.depth === 2 || v.depth === 3, 'depth');
       need(isObj(v.tree) && isStr(v.answer) && v.answer in (v.tree as Obj), 'tree/answer');
+      need(v.livePreview === undefined || typeof v.livePreview === 'boolean', 'livePreview');
       break;
   }
 }
@@ -184,6 +187,12 @@ function checkChallenge(c: unknown, at: string, err: (m: string) => void, keys: 
         const b = s2.variants[lv] as Obj | undefined;
         if (b?.pickSpoken === true && (a?.pickSpoken !== true || a.pick !== b.pick))
           err(`${at} etapa 2 nível ${lv}: quantidade falada diferente da etapa 1`);
+      }
+    // jogo da velha da etapa 2: a jogada da máquina já aparece (sem nova transmissão)
+    if (isObj(s2) && s2.type === 'boardChoice' && isObj(s2.variants))
+      for (const lv of LEVELS) {
+        const b = s2.variants[lv] as Obj | undefined;
+        if (b && b.revealed !== true) err(`${at} etapa 2 nível ${lv}: use revealed true`);
       }
     // cartão da etapa 2 não pede outra pista falada (spokenColumn = -1)
     if (
@@ -253,6 +262,7 @@ export function validateEpisode(e: unknown): string[] {
         checkChallenge(c, `coop cadeado ${i + 1}`, err, keys),
       );
       checkChallenge(coop.vault, 'coop Cofre', err, keys);
+      if (coop.bonus !== undefined) checkChallenge(coop.bonus, 'coop missão bônus', err, keys);
     }
     if (!isObj(intro) || !isStr(intro.coop)) err('intro.coop');
   } else {

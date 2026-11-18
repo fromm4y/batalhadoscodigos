@@ -3,6 +3,8 @@
  */
 import type {
   AnagramVariant,
+  BoardChoiceVariant,
+  GameTreeVariant,
   BlockBuildVariant,
   BlockDebugVariant,
   CipherVariant,
@@ -17,6 +19,7 @@ import type {
 } from '@/content/types';
 import type { Level, Side } from '@/types/domain';
 import { matchesAccepted, normalizeAnswer } from './answers';
+import { bestMoves } from './boardGames';
 import { runChain } from './wiring';
 import { countNodes, nestingDepth, respectsDebugEdits, run, sameSymbols } from './blocks';
 
@@ -93,6 +96,12 @@ export function checkWiring(v: WiringVariant, chain: readonly string[], start: n
   }
   return runChain(start, chain) === v.target;
 }
+
+// ---------- Ep. 5: jogo da velha e árvore de jogadas ----------
+/** boardChoice: a casa escolhida é a resposta (bloquear, ou a armadilha dupla no C). */
+export const checkBoardChoice = (v: BoardChoiceVariant, cell: number) => v.answer === cell;
+/** gameTree: a primeira jogada escolhida é a melhor pelo minimax (o conteúdo garante que é única). */
+export const checkGameTree = (v: GameTreeVariant, move: string) => bestMoves(v.tree).includes(move);
 
 // ---------- quiz ----------
 export const checkQuiz = (v: QuizVariant, question: number, option: number) =>

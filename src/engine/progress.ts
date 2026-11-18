@@ -39,7 +39,7 @@ export function spokenClueFor(
 /**
  * O desafio depende da transmissão da Narradora? Cartões com coluna "rasgada/molhada" (Ep. 1) e
  * cifra com a chave falada (Ep. 2),
- * entrada do painel (Ep. 3) e quantidade de tarefas do console (Ep. 4).
+ * entrada do painel (Ep. 3) quantidade de tarefas do console (Ep. 4) e jogada da máquina (Ep. 5).
  */
 export function needsTransmission(ch: ResolvedChallenge): boolean {
   switch (ch.type) {
@@ -53,6 +53,9 @@ export function needsTransmission(ch: ResolvedChallenge): boolean {
       return ch.variant.startSpoken === true;
     case 'priority':
       return ch.variant.mode === 'select' && ch.variant.pickSpoken === true;
+    case 'boardChoice':
+      // etapa 2: a jogada da máquina já aparece
+      return ch.variant.revealed !== true;
     default:
       return false;
   }

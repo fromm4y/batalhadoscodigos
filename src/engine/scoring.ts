@@ -19,6 +19,8 @@ export const POINTS: Record<Exclude<LedgerReason, 'manual'>, number> = {
   hint_2: P.hint2,
   vault_fast: P.vaultFast,
   bonus_mission: P.bonusMission,
+  coop_win: P.coopWin,
+  coop_play: P.coopPlay,
 };
 
 /** RN-22: o total nunca fica abaixo de 0. */
