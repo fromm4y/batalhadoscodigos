@@ -47,8 +47,10 @@ import {
   activateAbility,
   addFeed,
   callHelp,
+  sendReinforcement,
   type GameCtx,
 } from './actions';
+import { AllianceStrip } from './AllianceStrip';
 
 type Props = {
   ctx: GameCtx;
@@ -59,6 +61,8 @@ type Props = {
   player: PlayerDoc;
   match: MatchDoc | null;
   rival: TeamDoc | null;
+  /** Ep. 5: nomes das duplas da turma (para mandar reforço) */
+  allianceTeams?: (TeamDoc & { id: string })[];
 };
 
 const PHASE_TITLE = { locks: 'OS CADEADOS', vault: 'O COFRE' } as const;
@@ -67,7 +71,18 @@ const PHASE_TITLE = { locks: 'OS CADEADOS', vault: 'O COFRE' } as const;
 const stamp = () => Date.now();
 
 /** Fases `locks` e `vault`: layout fixo do jogo (SPEC 9.2, item 6; VISUAL 8.6). */
-export function PlayScreen({ ctx, episode, level, session, team, player, match, rival }: Props) {
+export function PlayScreen({
+  ctx,
+  episode,
+  level,
+  session,
+  team,
+  player,
+  match,
+  rival,
+  allianceTeams = [],
+}: Props) {
+  const alliance = episode.alliance === true;
   const side = player.side ?? 'red';
   const red = side === 'red';
   const stage = currentStage(session.phase, player.progress);
@@ -227,7 +242,8 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
               red ? 'text-bando text-glow-red' : 'text-piratas text-glow-blue',
             )}
           >
-            {red ? '🎭' : '⚓'} {red ? team.cityName : team.pirateName}
+            {alliance ? '🤝' : red ? '🎭' : '⚓'} {red ? team.cityName : team.pirateName}
+            {alliance && <span className="ml-2 text-lg text-brass">· A Aliança</span>}
           </p>
           <p className="hidden font-heist text-3xl tracking-[0.15em] text-paper md:block">
             {PHASE_TITLE[session.phase as 'locks' | 'vault']}
@@ -256,14 +272,21 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
           <div className="border-b-4 border-ink bg-night/80 px-3 py-1 sm:px-6">
             <TugBar
               bar={match.bar}
-              redName={red ? team.cityName : (rival?.cityName ?? 'Robô')}
-              blueName={red ? (rival?.pirateName ?? 'Robô') : team.pirateName}
+              redName={alliance ? 'TURMA' : red ? team.cityName : (rival?.cityName ?? 'Robô')}
+              blueName={
+                alliance ? 'MÁQUINA' : red ? (rival?.pirateName ?? 'Robô') : team.pirateName
+              }
               hidden={disguised}
             />
             <p
               className={cn(
                 'flex justify-center gap-4 font-type text-sm text-mist',
-                (anchored || shielded || vaultAdvantage || comboAvailable) && 'mt-1',
+                (anchored ||
+                  shielded ||
+                  vaultAdvantage ||
+                  comboAvailable ||
+                  !!player.reinforcedBy) &&
+                  'mt-1',
               )}
               aria-live="polite"
             >
@@ -278,6 +301,9 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
                   🔥 COMBO valendo: acertem de primeira, sem dica, e puxem +
                   {GAME_RULES.pull.comboBonus}!
                 </span>
+              )}
+              {player.reinforcedBy && (
+                <span className="text-success">🤝 Reforço recebido: a Dica 1 está liberada!</span>
               )}
               {vaultAdvantage && (
                 <span className="text-brass">
@@ -357,12 +383,25 @@ export function PlayScreen({ ctx, episode, level, session, team, player, match, 
 
           {/* Centro: o desafio */}
           <motion.section animate={shake} className="relative flex min-h-0 flex-col gap-2 pt-3">
+            {alliance && match?.coop && session.phase === 'vault' && (
+              <AllianceStrip
+                coop={match.coop}
+                teamId={ctx.teamId}
+                teams={allianceTeams}
+                onSend={(to) => {
+                  playSfx('hint');
+                  return sendReinforcement(ctx, to);
+                }}
+              />
+            )}
             {rivalWon ? (
               <WaitingPanel
                 text={
-                  match?.machineSide
-                    ? 'O Robô abriu o Cofre primeiro... QUASE!'
-                    : 'O rival abriu o Cofre primeiro... QUASE!'
+                  alliance
+                    ? 'A máquina abriu o Cofre antes da Aliança... QUASE! Continuem jogando pela turma!'
+                    : match?.machineSide
+                      ? 'O Robô abriu o Cofre primeiro... QUASE!'
+                      : 'O rival abriu o Cofre primeiro... QUASE!'
                 }
                 curiosities={episode.curiosities}
               />

@@ -1,6 +1,8 @@
 /**
  * O Robô (RN-42 a RN-44): roda no navegador da dupla que joga contra ele e grava os passos
  * no documento do confronto (SPEC 5.2). Nunca erra cadeados (RN-43).
+ * No Ep. 5 (coop, RN-C4) todas as duplas da Aliança rodam o tique: a transação garante que
+ * só uma grava cada passo (eleição por transação, como o alarme).
  */
 import { doc, runTransaction } from 'firebase/firestore';
 import { GAME_RULES } from '@/config/gameRules';
@@ -98,7 +100,8 @@ export async function machineTick(
         text: pickTaunt('lock'),
       });
       // RN-41: chance de usar uma habilidade depois de resolver um desafio.
-      const left = MACHINE_ABILITIES[side].filter((a) => !used.includes(a));
+      // coop: a máquina não usa habilidade (congelaria a turma inteira de uma vez)
+      const left = m.coop ? [] : MACHINE_ABILITIES[side].filter((a) => !used.includes(a));
       if (left.length && Math.random() < GAME_RULES.abilities.machineUseChance) {
         const id = left[Math.floor(Math.random() * left.length)]!;
         const out = abilityEffect(id, side, now);

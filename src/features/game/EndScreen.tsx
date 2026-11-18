@@ -107,13 +107,12 @@ export function EndScreen({
                 match={match}
                 ledger={ledger}
                 episodeId={episode.id}
+                alliance={episode.alliance === true}
               />
             )}
             {step === 'ranking' && (
               <div className="flex flex-col items-center gap-4">
-                <h1 className="font-heist text-4xl tracking-[0.12em] sm:text-5xl text-brass text-glow-brass">
-                  RANKING DA TURMA
-                </h1>
+                <RankingTitle episodeId={episode.id} />
                 <SessionHighlight
                   teams={classTeams}
                   players={sessionPlayers}
@@ -158,12 +157,15 @@ function ResultChapter({
   match,
   ledger,
   episodeId,
+  alliance = false,
 }: {
   team: TeamDoc;
   player: PlayerDoc;
   match: MatchDoc | null;
   ledger: (LedgerEntryDoc & { id: string })[];
   episodeId: string;
+  /** Ep. 5: a turma inteira contra a máquina (RN-C6) */
+  alliance?: boolean;
 }) {
   const reduce = useReducedMotion();
   const red = player.side !== 'blue';
@@ -175,18 +177,26 @@ function ResultChapter({
       ? {
           title: 'EMPATE!',
           tone: 'text-brass',
-          text: 'Ninguém cedeu um centímetro. +2 para cada lado!',
+          text: alliance
+            ? 'Turma e máquina empataram! +2 de participação para todas as duplas.'
+            : 'Ninguém cedeu um centímetro. +2 para cada lado!',
         }
       : match.winner === player.side
         ? {
             title: 'VITÓRIA!',
             tone: 'text-success',
-            text: red ? 'A vitrine é de vocês!' : 'O tesouro está a salvo!',
+            text: alliance
+              ? 'A Aliança venceu a máquina! +5 para TODAS as duplas da turma.'
+              : red
+                ? 'A vitrine é de vocês!'
+                : 'O tesouro está a salvo!',
           }
         : {
             title: 'QUASE!',
             tone: 'text-alert',
-            text: 'Foi por pouco. Semana que vem tem revanche!',
+            text: alliance
+              ? 'A máquina venceu dessa vez. +2 de participação para todas as duplas!'
+              : 'Foi por pouco. Semana que vem tem revanche!',
           };
   const today = ledgerSum(ledger);
   const resultKind = result?.title;
@@ -376,6 +386,16 @@ function AlbumCard({ episode, card }: { episode: Episode; card: TeamCard | undef
 }
 
 /** Cliffhanger obrigatório (VISUAL 8.7): transmissão interceptada + silhueta da próxima invenção. */
+/** No último episódio da temporada, o ranking é o FINAL (RN-C9). */
+function RankingTitle({ episodeId }: { episodeId: string }) {
+  const hook = useEpisodeHook('student', episodeId);
+  return (
+    <h1 className="font-heist text-4xl tracking-[0.12em] text-brass text-glow-brass sm:text-5xl">
+      {hook?.kind === 'seasonEnd' ? '🏆 RANKING FINAL DA TEMPORADA' : 'RANKING DA TURMA'}
+    </h1>
+  );
+}
+
 function HookChapter({ episode }: { episode: Episode }) {
   const hook = useEpisodeHook('student', episode.id);
   if (!hook) return <div className="flex-1" />;

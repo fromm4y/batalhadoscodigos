@@ -238,11 +238,15 @@ service cloud.firestore {
         allow update: if teamSessionOpen()
           && request.auth.token.sessionId == sessionId
           && request.auth.token.teamId == teamId
-          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'misses', 'bonusSolvedAt', 'equippedCard', 'cardUses', 'cardBoost', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed'])
+          && changedOnly(['connected', 'lastSeenAt', 'side', 'mode', 'progress', 'hints', 'misses', 'bonusSolvedAt', 'equippedCard', 'cardUses', 'cardBoost', 'solvedCount', 'episodePoints', 'finishedAt', 'abilities', 'matchId', 'helpUsed', 'reinforcedBy'])
           && request.resource.data.connected is bool
-          // matchId: só para entrar sozinha contra a máquina, se ainda não tinha confronto
+          // matchId: só para entrar sozinha contra a máquina, ou na Aliança do Ep. 5, se ainda não tinha confronto
           && (request.resource.data.get('matchId', null) == resource.data.get('matchId', null)
-            || (resource.data.get('matchId', null) == null && request.resource.data.get('matchId', null) == 'maq_' + teamId))
+            || (resource.data.get('matchId', null) == null && request.resource.data.get('matchId', null) == 'maq_' + teamId)
+            || (resource.data.get('matchId', null) == null && request.resource.data.get('matchId', null) == 'coop'))
+          // reforço recebido (Ep. 5): só marca uma vez
+          && (resource.data.get('reinforcedBy', null) == null
+            || request.resource.data.get('reinforcedBy', null) == resource.data.get('reinforcedBy', null))
           && (request.resource.data.side == null || request.resource.data.side in ['red', 'blue'])
           && request.resource.data.progress.lockIndex is int
           && request.resource.data.progress.lockIndex >= resource.data.progress.lockIndex
@@ -263,8 +267,27 @@ service cloud.firestore {
         return request.resource.data.bar is number
           && request.resource.data.bar >= -100 && request.resource.data.bar <= 100;
       }
+      // Ep. 5 (coop): todas as duplas da sessão estão no mesmo confronto, a Aliança
+      function inAlliance(mid) {
+        return mid == 'coop' && isTeam() && request.auth.token.sessionId == sessionId;
+      }
+      // a Aliança só cresce: duplas, Cofres abertos e reforços nunca somem
+      function allianceGrows() {
+        let before = resource.data.coop;
+        let after = request.resource.data.coop;
+        return after.teams.hasAll(before.teams)
+          && after.vaultSolvers.hasAll(before.vaultSolvers)
+          && after.reinforcements.keys().hasAll(before.reinforcements.keys())
+          && after.teams.size() <= before.teams.size() + 1
+          && after.vaultSolvers.size() <= before.vaultSolvers.size() + 1
+          && after.reinforcements.keys().size() <= before.reinforcements.keys().size() + 1
+          // a dupla só se coloca a si mesma (entrar, abrir o Cofre, mandar o próprio reforço)
+          && after.teams.removeAll(before.teams).hasOnly([request.auth.token.teamId])
+          && after.vaultSolvers.removeAll(before.vaultSolvers).hasOnly([request.auth.token.teamId])
+          && after.reinforcements.keys().removeAll(before.reinforcements.keys()).hasOnly([request.auth.token.teamId]);
+      }
       match /matches/{matchId} {
-        allow read: if inMatch(resource.data)
+        allow read: if inMatch(resource.data) || inAlliance(matchId)
           || (isInstructor() && (sessionDoc(sessionId).instructorId == request.auth.uid || isAdmin()));
         allow create: if (isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid)
           // dupla atrasada cria o próprio confronto contra a máquina
@@ -279,8 +302,14 @@ service cloud.firestore {
           && changedOnly(['bar', 'effects', 'log', 'winner', 'resolvedAt', 'machine'])
           && validBar()
           && (resource.data.winner == null || request.resource.data.winner == resource.data.winner);
+        // Aliança: puxões, robô, Cofres e reforços (o vencedor nunca muda depois de definido)
+        allow update: if teamSessionOpen() && inAlliance(matchId) && resource.data.get('coop', null) != null
+          && changedOnly(['bar', 'effects', 'log', 'winner', 'resolvedAt', 'machine', 'coop'])
+          && validBar()
+          && (resource.data.winner == null || request.resource.data.winner == resource.data.winner)
+          && allianceGrows();
         allow update: if isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid
-          && changedOnly(['vaultLeader', 'winner', 'resolvedAt', 'bar', 'redTeamId', 'blueTeamId', 'machineSide', 'machine'])
+          && changedOnly(['vaultLeader', 'winner', 'resolvedAt', 'bar', 'redTeamId', 'blueTeamId', 'machineSide', 'machine', 'coop', 'coopAwarded'])
           && validBar();
         allow delete: if isInstructor() && sessionDoc(sessionId).instructorId == request.auth.uid;
       }

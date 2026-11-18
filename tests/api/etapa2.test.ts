@@ -140,9 +140,9 @@ describe('abrir sessão (RN-03, RN-04)', () => {
     expect((await call(sessionOpen, { classId, episodeId: 'ep1' })).status).toBe(401);
   });
 
-  it('rejeita episódio indisponível', async () => {
+  it('rejeita episódio que não existe', async () => {
     await newClassAndSession();
-    const r = await call(sessionOpen, { classId, episodeId: 'ep5' }, { token: anaToken });
+    const r = await call(sessionOpen, { classId, episodeId: 'ep9' }, { token: anaToken });
     expect(r.status).toBe(400);
   });
 });

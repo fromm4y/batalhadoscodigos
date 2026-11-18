@@ -13,7 +13,8 @@ import { RobotFigure, Stamp, Typewriter } from '@/components/scene';
 import { GAME_RULES } from '@/config/gameRules';
 import type { Episode } from '@/content/types';
 import { raceOrder } from '@/engine/race';
-import type { MatchDoc, PlayerDoc, SessionDoc, Side, TeamDoc } from '@/types/domain';
+import { vaultGoal } from '@/engine/coop';
+import type { CoopState, MatchDoc, PlayerDoc, SessionDoc, Side, TeamDoc } from '@/types/domain';
 import type { WithId } from '../data';
 
 type Teams = WithId<TeamDoc>[];
@@ -114,6 +115,8 @@ export function ProjectorMatches({
   const playerById = new Map(players.map((p) => [p.id, p]));
   const sorted = [...matches].sort((a, b) => a.id.localeCompare(b.id));
   const big = sorted.length <= 4;
+  // Ep. 5: um confronto só, a Aliança contra a máquina
+  const coopMatch = matches.find((m) => m.coop);
 
   return (
     <div className="flex w-full flex-col gap-6">
@@ -130,7 +133,9 @@ export function ProjectorMatches({
         </p>
       </div>
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_22rem]">
-        {sorted.length === 0 ? (
+        {coopMatch?.coop ? (
+          <CoopBoard match={coopMatch} coop={coopMatch.coop} teamById={teamById} />
+        ) : sorted.length === 0 ? (
           <p className="font-type text-4xl text-mist">Os confrontos ainda não foram formados.</p>
         ) : (
           <ul className={cn('grid gap-5', big ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-2')}>
@@ -179,6 +184,57 @@ export function ProjectorMatches({
         )}
         <RaceBoard players={players} teamById={teamById} />
       </div>
+    </div>
+  );
+}
+
+/**
+ * Ep. 5 no projetor (SPEC-03 §5): barra gigante "TURMA × MÁQUINA", contador de duplas que
+ * abriram o Cofre e a lista de Reforços (quem ajudou quem).
+ */
+function CoopBoard({
+  match,
+  coop,
+  teamById,
+}: {
+  match: MatchDoc;
+  coop: CoopState;
+  teamById: Map<string, TeamDoc>;
+}) {
+  const goal = vaultGoal(coop.teams.length);
+  const nm = (id: string) => teamById.get(id)?.cityName ?? '—';
+  const reinf = Object.entries(coop.reinforcements);
+  return (
+    <div className="flex flex-col gap-5 rounded-hand border-4 border-ink bg-graphite/90 p-6 shadow-[8px_8px_0_#000]">
+      <p className="text-center font-heist text-6xl tracking-[0.12em] text-paper">
+        🤝 TURMA <span className="text-mist">×</span> MÁQUINA 🤖
+      </p>
+      <TugBar bar={match.bar} redName="TURMA" blueName="MÁQUINA" />
+      {match.winner && (
+        <p className="text-center font-comic text-6xl tracking-wide text-brass text-outline">
+          {match.winner === 'red'
+            ? 'A ALIANÇA VENCEU A MÁQUINA!'
+            : match.winner === 'draw'
+              ? 'EMPATE!'
+              : 'A MÁQUINA VENCEU... DESSA VEZ!'}
+        </p>
+      )}
+      <p className="text-center font-heist text-5xl tracking-wider text-brass text-glow-brass">
+        🔓 {coop.vaultSolvers.length} de {coop.teams.length} duplas abriram o Cofre
+        <span className="ml-3 font-type text-2xl text-mist">meta: {goal}</span>
+      </p>
+      {reinf.length > 0 && (
+        <div>
+          <p className="font-heist text-3xl tracking-wider text-success">🤝 REFORÇOS</p>
+          <ul className="flex flex-wrap gap-3 font-type text-2xl text-paper">
+            {reinf.map(([from, to]) => (
+              <li key={from} className="border-2 border-success/60 px-3 py-1">
+                {nm(from)} → {nm(to)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -98,7 +98,7 @@ export function BoardChoiceChallenge({
                 onClick={() => click(i)}
                 aria-label={`${cellName(i)}: ${v === 'X' ? 'X' : v === 'O' ? 'O' : isPick ? 'X escolhido' : 'vazia'}`}
                 className={cn(
-                  'relative grid h-20 w-20 cursor-pointer place-items-center rounded-sm border-2 font-heist text-5xl leading-none disabled:cursor-default sm:h-24 sm:w-24',
+                  'relative grid h-[4.5rem] w-[4.5rem] cursor-pointer place-items-center rounded-sm border-2 font-heist text-5xl leading-none disabled:cursor-default sm:h-20 sm:w-20 lg:h-[4.5rem] lg:w-[4.5rem]',
                   hot ? 'border-alert bg-[#2a0f14]' : 'border-[#2b3550] bg-graphite',
                   wrongSpot === i && 'outline-4 outline-alert',
                   v === '.' && !busy && 'hover:bg-graphite-light',

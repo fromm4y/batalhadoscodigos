@@ -57,7 +57,7 @@ export function GameTreeChallenge({
           initial={reduce ? false : { y: 16, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: id.split('/').length === 2 ? 0.2 : 0.7 }}
-          className="grid h-9 w-11 place-items-center rounded-sm border-2 border-success bg-night font-heist text-2xl text-success"
+          className="grid h-8 w-10 place-items-center rounded-sm border-2 border-success bg-night font-heist text-xl text-success"
           aria-label={`${label}: ${right}`}
         >
           {right}
@@ -74,7 +74,7 @@ export function GameTreeChallenge({
         placeholder="?"
         aria-label={`Rascunho: ${label}`}
         className={cn(
-          'h-9 w-11 rounded-sm border-2 bg-white text-center font-heist text-2xl text-ink',
+          'h-8 w-10 rounded-sm border-2 bg-white text-center font-heist text-xl text-ink',
           ok ? 'border-success bg-[#d9f7e6]' : bad ? 'border-alert' : 'border-ink',
         )}
       />
@@ -114,7 +114,7 @@ export function GameTreeChallenge({
             <li
               key={move}
               className={cn(
-                'flex flex-col items-center gap-2 rounded-md border-2 p-2',
+                'flex flex-col items-center gap-1.5 rounded-md border-2 p-1.5',
                 chosen ? 'border-brass bg-[#2b2615]' : 'border-[#2b3550]',
               )}
             >
@@ -139,15 +139,15 @@ export function GameTreeChallenge({
                 🔴 máquina:
                 {draftBox(move, values[move]!, `valor da ${move}`)}
               </span>
-              <span aria-hidden className="h-3 w-0.5 bg-bando/70" />
+              <span aria-hidden className="h-2 w-0.5 bg-bando/70" />
               {Array.isArray(sub) ? (
                 <div className="flex flex-wrap justify-center gap-1.5">{sub.map(leaf)}</div>
               ) : (
-                <div className="flex w-full flex-wrap justify-center gap-2">
+                <div className="flex w-full flex-wrap justify-center gap-1 lg:flex-nowrap">
                   {Object.entries(sub as Sub).map(([r, leaves]) => (
                     <div
                       key={r}
-                      className="flex flex-col items-center gap-1 rounded-sm border border-[#2b3550] px-1.5 py-1"
+                      className="flex flex-col items-center gap-0.5 rounded-sm border border-[#2b3550] px-1 py-0.5"
                     >
                       <span className="font-type text-xs text-piratas">
                         {r} · 🔵

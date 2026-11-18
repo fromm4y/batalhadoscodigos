@@ -91,8 +91,16 @@ export function PlanningScreen({
   ];
   const [busy, setBusy] = useState(false);
 
+  const alliance = episode.alliance === true;
   if (match && player.side) {
-    return <VersusScreen me={team} side={player.side} rival={match.machineSide ? null : rival} />;
+    return (
+      <VersusScreen
+        me={team}
+        side={player.side}
+        rival={match.machineSide ? null : rival}
+        alliance={alliance}
+      />
+    );
   }
 
   return (
@@ -120,7 +128,7 @@ export function PlanningScreen({
                   step === s ? 'bg-brass text-ink' : 'bg-graphite-light text-paper',
                 )}
               >
-                {i + 1}. {STEP_LABEL[s]}
+                {i + 1}. {alliance && s === 'side' ? 'A Aliança' : STEP_LABEL[s]}
               </button>
             ))}
           </nav>
@@ -255,7 +263,11 @@ export function PlanningScreen({
                 icon={hasCards ? '🃏' : '⚡'}
                 onClick={() => setStep(hasCards ? 'card' : 'side')}
               >
-                {hasCards ? 'Escolher a carta da missão' : 'Escolher meu lado'}
+                {hasCards
+                  ? 'Escolher a carta da missão'
+                  : alliance
+                    ? 'Entrar na Aliança'
+                    : 'Escolher meu lado'}
               </ComicButton>
             </motion.section>
           )}
@@ -277,7 +289,60 @@ export function PlanningScreen({
             </motion.section>
           )}
 
-          {step === 'side' && (
+          {step === 'side' && alliance && (
+            <motion.section
+              key="alliance"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center gap-5 text-center"
+            >
+              <h1 className="font-heist text-4xl tracking-[0.12em] text-paper text-glow-spot sm:text-5xl">
+                🎭 + ⚓ = 🤝 A ALIANÇA
+              </h1>
+              <p className="max-w-2xl bg-black/50 p-3 text-lg font-semibold text-paper">
+                {episode.intro.red}
+              </p>
+              <ul className="grid max-w-3xl gap-2 text-left font-type text-base text-paper sm:grid-cols-3">
+                <li className="border-2 border-brass/60 bg-graphite p-3">
+                  🧩 Cada desafio que <strong>qualquer</strong> dupla resolve puxa a corda pela
+                  turma.
+                </li>
+                <li className="border-2 border-brass/60 bg-graphite p-3">
+                  🔓 A turma vence se <strong>metade das duplas</strong> abrir o Cofre antes da
+                  máquina.
+                </li>
+                <li className="border-2 border-brass/60 bg-graphite p-3">
+                  🤝 Abriu o Cofre? Vire <strong>Reforço</strong> e mande uma dica para outra dupla.
+                </li>
+              </ul>
+              {player.mode === 'coop' ? (
+                <Typewriter
+                  text={
+                    late
+                      ? 'Entrando na Aliança...'
+                      : 'Vocês estão na Aliança! Aguardando a Narradora formar o time...'
+                  }
+                  speed={40}
+                  className="text-xl text-brass text-glow-brass"
+                />
+              ) : (
+                <ComicButton
+                  variant="brass"
+                  icon="🤝"
+                  disabled={busy}
+                  onClick={async () => {
+                    setBusy(true);
+                    await onChooseSide('red').finally(() => setBusy(false));
+                  }}
+                >
+                  Entrar na Aliança
+                </ComicButton>
+              )}
+            </motion.section>
+          )}
+
+          {step === 'side' && !alliance && (
             <motion.section
               key="side"
               initial={{ opacity: 0 }}

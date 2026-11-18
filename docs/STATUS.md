@@ -1,8 +1,8 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 18/11/2026._
+_Atualizado em 18/11/2026 (noite)._
 
-**Resumo:** os **Episódios 1, 2, 3 e 4 são jogáveis** (o Ep. 4, Apollo 11, entrou em 18/11 com o console de missão). O **Ep. 5 já está no projeto como conteúdo** (validado por teste), mas ainda **não é jogável**: precisa do modo cooperativo e dos tipos de desafio dele. As **Partes A, B, C e D do SPEC-02** estão prontas.
+**Resumo:** os **5 episódios são jogáveis** 🎉 (o Ep. 5, Deep Blue, entrou em 18/11 à noite com o modo cooperativo: a turma inteira contra a máquina). As **Partes A, B, C e D do SPEC-02** estão prontas; faltam a **E** (certificado da temporada) e a **F** (relatório da turma).
 
 ## 🗺️ Plano em andamento (15/11)
 
@@ -13,10 +13,10 @@ _Atualizado em 18/11/2026._
 | 2   | SPEC-03 **Ep. 2** — Enigma, tipo `cipher` (disco de cifra)                                             | ✅ pronto (PR #18)         |
 | 3   | SPEC-02 **C** — "Anteriormente na Caçada" + Álbum + cartas com poder + certificado do episódio         | ✅ pronto (PR #19)         |
 | 4   | SPEC-03 **Ep. 3** — ENIAC, tipo `wiring`                                                               | ✅ pronto (PR #21/#22)     |
-| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ✅ pronto, **para testar** |
+| 5   | SPEC-03 **Ep. 4** — Apollo 11, tipo `priority` (fora da temporada curta)                               | ✅ pronto (PR #24)         |
 | 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)     |
 | 6   | SPEC-02 **D** — ficha que evolui e selos (a parte E, certificado da temporada, vem depois)             | ✅ pronto (PR #23)         |
-| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ⏳                         |
+| 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ✅ pronto, **para testar** |
 | 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                         |
 
 ---
@@ -50,6 +50,17 @@ _Atualizado em 18/11/2026._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 18/11 (noite) — Ep. 5: Deep Blue, a Aliança 🤝
+
+- **Modo cooperativo:** no planejamento ninguém escolhe lado; a dupla clica em "Entrar na Aliança" e a Narradora em **"Formar a Aliança"**. Um confronto só, **TURMA × MÁQUINA**: cada desafio de qualquer dupla puxa pela turma (o puxão é dividido pelo número de duplas). A máquina joga sozinha (sem habilidades, para não congelar a turma inteira).
+- **Cadeado 3 — jogo da velha neon:** a jogada da máquina chega pela transmissão; a dupla clica onde a máquina jogou (casa errada só avisa, sem perder ponto) e depois escolhe a casa dela. A: a linha em perigo acende; B: aviso "a máquina ameaça uma linha"; C: armadilha dupla, sem ajuda.
+- **Cofre — árvore de jogadas (minimax):** galhos com rascunho em cada um (no A e no B o rascunho fica verde quando acerta); ao acertar, os valores "sobem" pela árvore.
+- **A turma vence** se metade das duplas abrir o Cofre antes da máquina. Quem abriu vira **Reforço** e manda uma Dica 1 para outra dupla. No fim, **+5 para todas** (ou +2 de participação) e carta dourada para todas se a turma venceu.
+- **Projetor:** barra gigante TURMA × MÁQUINA, "x de y duplas abriram o Cofre" e a lista de Reforços. **Fim da temporada:** "🏆 RANKING FINAL DA TEMPORADA" com pódio e medalhas, e o carimbo "FIM DA TEMPORADA".
+- Duas etapas em todos os desafios e missão bônus (árvore extra), como nos outros episódios.
+- **8 personagens novos** no jogo (e a versão Bando da `menina-16`).
+- ⚠️ **Publicar o `firestore.rules` novo** (a Aliança tem regras próprias).
 
 ### Novidades de 18/11 (tarde) — Ep. 4: Apollo 11 🚀
 

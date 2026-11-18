@@ -252,6 +252,8 @@ export type MatchDoc = {
   machine: MachineState | null;
   /** Só no confronto `coop` do Ep. 5: a Aliança inteira contra a máquina (SPEC-03 RN-C2). */
   coop?: CoopState | null;
+  /** a Narradora já lançou os pontos de fim da Aliança (RN-C6, idempotente) */
+  coopAwarded?: boolean;
 };
 
 /** A Aliança (Ep. 5): quem joga, quem já abriu o Cofre e os reforços mandados (quem → para quem). */

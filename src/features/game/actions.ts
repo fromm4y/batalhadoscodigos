@@ -36,6 +36,16 @@ import {
   POINTS,
 } from '@/engine/scoring';
 import { cardEffect, cardUsesLeft } from '@/engine/cards';
+import {
+  canReinforce,
+  classWins,
+  COOP_CLASS_SIDE,
+  COOP_MATCH_ID,
+  coopPull,
+  newCoopState,
+  reinforceTargets,
+  vaultGoal,
+} from '@/engine/coop';
 import type { CardPowerId } from '@/content/types';
 import { getFirebase } from '@/lib/firebase';
 import { serverNow } from '@/lib/serverClock';
@@ -63,6 +73,12 @@ const matchRef = (db: Firestore, c: GameCtx, matchId: string) =>
 
 /** Rótulo curto da dupla para o log do confronto. */
 const who = (side: Side) => (side === 'red' ? 'Bando' : 'Piratas');
+/** Ep. 5 (coop): quem puxa é "uma dupla da Aliança" ou a máquina. */
+const whoIn = (m: MatchDoc, side: Side) =>
+  m.coop ? (side === COOP_CLASS_SIDE ? 'Uma dupla da Aliança' : 'A máquina') : who(side);
+/** RN-C3: no coop, a força do puxão é dividida pelo tamanho da Aliança. */
+const forceIn = (m: MatchDoc, force: number) =>
+  m.coop ? coopPull(force, m.coop.teams.length) : force;
 
 type PointsChange = { reason: Exclude<LedgerReason, 'manual'>; delta: number };
 
@@ -205,7 +221,7 @@ export async function openLock(
       if (!m.winner) {
         const now = serverNow();
         const boost = player.cardBoost === 'extraPull' ? GAME_RULES.cards.extraPull : 0;
-        const r = applyPull(m, side, lockPull(combo) + boost, now);
+        const r = applyPull(m, side, forceIn(m, lockPull(combo) + boost), now);
         bar = r.bar;
         blocked = r.blocked;
         tx.update(mRef, {
@@ -216,8 +232,8 @@ export async function openLock(
             side,
             type: r.blocked ? 'blocked' : 'pull',
             text: r.blocked
-              ? `${who(side)} abriu o cadeado ${index + 1}, mas o Escudo segurou a corda!`
-              : `${who(side)} abriu o cadeado ${index + 1} e puxou ${r.applied}${combo ? ' (COMBO!)' : ''}!`,
+              ? `${whoIn(m, side)} abriu o cadeado ${index + 1}, mas o Escudo segurou a corda!`
+              : `${whoIn(m, side)} abriu o cadeado ${index + 1} e puxou ${r.applied}${combo ? ' (COMBO!)' : ''}!`,
           }),
         });
       } else bar = m.bar;
@@ -275,6 +291,34 @@ export async function solveVault(
     }
     const m = mSnap.data() as MatchDoc;
     const now = serverNow();
+    if (m.coop) {
+      // RN-C5/C6: o Cofre conta para a turma; os +5 (ou +2) de todas vêm no fim, pela Narradora
+      const coop = {
+        ...m.coop,
+        vaultSolvers: [...new Set([...m.coop.vaultSolvers, c.teamId])],
+      };
+      const won = classWins(coop);
+      tx.update(mRef, {
+        coop,
+        ...(won
+          ? {
+              winner: COOP_CLASS_SIDE,
+              bar: winningBar(COOP_CLASS_SIDE),
+              resolvedAt: serverTimestamp(),
+            }
+          : {}),
+        log: pushLog(m.log, {
+          at: now,
+          side,
+          type: 'vault',
+          text: won
+            ? 'A Aliança abriu o Grande Cofre antes da máquina! BOOM!'
+            : `Mais uma dupla abriu o Cofre: ${coop.vaultSolvers.length} de ${vaultGoal(coop.teams.length)}!`,
+        }),
+      });
+      writePoints(tx, db, c, team, player, fastPts, extra);
+      return { won, fast };
+    }
     tx.update(mRef, {
       winner: side,
       bar: winningBar(side),
@@ -322,7 +366,7 @@ export async function finishStageOne(
       const m = mSnap.data() as MatchDoc;
       if (!m.winner) {
         const now = serverNow();
-        const r = applyPull(m, side, GAME_RULES.pull.stageOne, now);
+        const r = applyPull(m, side, forceIn(m, GAME_RULES.pull.stageOne), now);
         blocked = r.blocked;
         const what = slot === 'vault' ? 'o Cofre' : `o cadeado ${slot + 1}`;
         tx.update(mRef, {
@@ -333,8 +377,8 @@ export async function finishStageOne(
             side,
             type: r.blocked ? 'blocked' : 'pull',
             text: r.blocked
-              ? `${who(side)} passou da metade de ${what}, mas o Escudo segurou a corda!`
-              : `${who(side)} passou da metade de ${what} e puxou ${r.applied}!`,
+              ? `${whoIn(m, side)} passou da metade de ${what}, mas o Escudo segurou a corda!`
+              : `${whoIn(m, side)} passou da metade de ${what} e puxou ${r.applied}!`,
           }),
         });
       }
@@ -394,12 +438,15 @@ export async function activateAbility(
           at: now,
           side,
           type: 'ability',
-          text: `${who(side)} usou ${ABILITY_INFO[id].name}!`,
+          text: `${whoIn(m, side)} usou ${ABILITY_INFO[id].name}!`,
         }),
       };
       if (m.machineSide && m.machine) {
         // Contra a máquina: Âncora/Escudo/Disfarce valem como efeito; Interferência atrasa o robô.
-        const delay = machineDelayFromEffect(outcome.effect);
+        // coop (RN-C3): como o puxão, o atraso é dividido pelo tamanho da Aliança
+        const delay = Math.round(
+          machineDelayFromEffect(outcome.effect) / (m.coop ? Math.max(1, m.coop.teams.length) : 1),
+        );
         if (delay && m.machine.nextAt) patch['machine.nextAt'] = m.machine.nextAt + delay;
         if (!delay) patch.effects = [...m.effects, outcome.effect];
       } else {
@@ -456,6 +503,68 @@ export function newMatchDoc(
 }
 
 /** Escolha de lado na fase de planejamento (RN-11). */
+/**
+ * Ep. 5 (RN-C1): a dupla entra na Aliança. Se a Narradora já formou a Aliança, entra no
+ * confronto `coop` (dupla atrasada); se não, só marca o modo e espera a formação.
+ */
+export async function joinAlliance(c: GameCtx): Promise<void> {
+  const { db } = getFirebase('student');
+  const mRef = matchRef(db, c, COOP_MATCH_ID);
+  await runTransaction(db, async (tx) => {
+    const p = (await tx.get(refs(db, c).player)).data() as PlayerDoc | undefined;
+    const mSnap = await tx.get(mRef);
+    if (!p || p.matchId) return;
+    if (!mSnap.exists()) {
+      tx.update(refs(db, c).player, { side: COOP_CLASS_SIDE, mode: 'coop' });
+      return;
+    }
+    const m = mSnap.data() as MatchDoc;
+    const coop = m.coop ?? newCoopState();
+    tx.update(mRef, { coop: { ...coop, teams: [...new Set([...coop.teams, c.teamId])] } });
+    tx.update(refs(db, c).player, {
+      side: COOP_CLASS_SIDE,
+      mode: 'coop',
+      matchId: COOP_MATCH_ID,
+    });
+  });
+}
+
+/** RN-C7: quem abriu o Cofre manda UM reforço (Dica 1 grátis) para uma dupla que não terminou. */
+export async function sendReinforcement(c: GameCtx, to: string): Promise<boolean> {
+  const { db } = getFirebase('student');
+  const mRef = matchRef(db, c, COOP_MATCH_ID);
+  return runTransaction(db, async (tx) => {
+    const snap = await tx.get(mRef);
+    const m = snap.data() as MatchDoc | undefined;
+    if (!m?.coop || !canReinforce(m.coop, c.teamId) || !reinforceTargets(m.coop).includes(to))
+      return false;
+    tx.update(mRef, {
+      coop: { ...m.coop, reinforcements: { ...m.coop.reinforcements, [c.teamId]: to } },
+      log: pushLog(m.log, {
+        at: serverNow(),
+        side: COOP_CLASS_SIDE,
+        type: 'reinforce',
+        text: 'Reforço a caminho! Uma dupla mandou uma dica para outra. 🤝',
+      }),
+    });
+    return true;
+  });
+}
+
+/** A dupla que recebeu o reforço ganha a Dica 1 (sem custo) no desafio em que está. */
+export async function applyReinforcement(c: GameCtx, from: string, key: string): Promise<void> {
+  const { db } = getFirebase('student');
+  await runTransaction(db, async (tx) => {
+    const p = (await tx.get(refs(db, c).player)).data() as PlayerDoc | undefined;
+    if (!p || p.reinforcedBy) return;
+    const have = p.hints?.[key] ?? 0;
+    tx.update(refs(db, c).player, {
+      reinforcedBy: from,
+      hints: { ...p.hints, [key]: Math.max(have, 1) as 0 | 1 | 2 },
+    });
+  });
+}
+
 export async function chooseSide(c: GameCtx, side: Side): Promise<void> {
   await updateDoc(refs(getFirebase('student').db, c).player, { side });
 }
@@ -506,7 +615,7 @@ export async function finishMuseumEvent(
       bar = m.bar;
       if (!m.winner) {
         const now = serverNow();
-        const r = applyPull(m, side, GAME_RULES.pull.museumEventOk, now);
+        const r = applyPull(m, side, forceIn(m, GAME_RULES.pull.museumEventOk), now);
         bar = r.bar;
         tx.update(mRef, {
           bar: r.bar,
@@ -515,7 +624,7 @@ export async function finishMuseumEvent(
             at: now,
             side,
             type: r.blocked ? 'blocked' : 'pull',
-            text: `${who(side)} desvendou o alarme e puxou ${r.applied}!`,
+            text: `${whoIn(m, side)} desvendou o alarme e puxou ${r.applied}!`,
           }),
         });
       }

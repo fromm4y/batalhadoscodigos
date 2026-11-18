@@ -7,14 +7,17 @@ import { GAME_RULES } from '@/config/gameRules';
 import { loadEpisode } from '@/content/episodes';
 import type { Episode } from '@/content/types';
 import { resolveChallenge } from '@/engine/challenges';
-import { currentStage, needsTransmission } from '@/engine/progress';
+import { reinforcementFor } from '@/engine/coop';
+import { challengeKey, currentStage, needsTransmission } from '@/engine/progress';
 import {
   addFeed,
   chooseMode,
   chooseSide,
   equipCard,
   finishMuseumEvent,
+  joinAlliance,
   joinLateAgainstMachine,
+  applyReinforcement,
   markHeardTransmission,
   type GameCtx,
 } from '@/features/game/actions';
@@ -231,6 +234,22 @@ function Game({ claims }: { claims: TeamClaims }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transmissionOn, waitingClue]);
 
+  // Ep. 5 (RN-C7): reforço recebido de outra dupla da Aliança vira a Dica 1 do desafio atual.
+  const reinforcement = (() => {
+    if (!match?.coop || !player || player.reinforcedBy || !episode || !level || !player.side)
+      return null;
+    const from = reinforcementFor(match.coop, claims.teamId);
+    if (!from || session === null || session === 'missing') return null;
+    const stage = currentStage(phase ?? session.phase, player.progress);
+    if (stage.kind !== 'challenge') return null;
+    return { from, key: challengeKey(episode, player.side, stage.slot, stage.step) };
+  })();
+  useEffect(() => {
+    if (reinforcement)
+      void applyReinforcement(ctx, reinforcement.from, reinforcement.key).catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reinforcement?.from, reinforcement?.key]);
+
   // Evento do museu (RN-32 a RN-35): só para quem está jogando os cadeados.
   const inEvent =
     eventStartMs !== null &&
@@ -244,7 +263,9 @@ function Game({ claims }: { claims: TeamClaims }) {
   useMuseumEventElection('student', claims.sessionId, open ? session : null);
 
   // RN-25: o ranking da turma só aparece no planejamento e no fim.
-  const rankingOn = open && (phase === 'planning' || phase === 'end');
+  const rankingOn =
+    open &&
+    (phase === 'planning' || phase === 'end' || (episode?.alliance === true && phase === 'vault'));
   const classTeams = useStudentClassTeams(claims.classId, rankingOn);
   const endLedger = useSessionLedger(
     claims.classId,
@@ -305,7 +326,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         rival={rivalId ? rival : null}
         classTeams={classTeams}
         teamId={claims.teamId}
-        onChooseSide={(s) => chooseSide(ctx, s)}
+        onChooseSide={(s) => (episode.alliance ? joinAlliance(ctx) : chooseSide(ctx, s))}
         onChooseMode={(m) => chooseMode(ctx, m)}
         onEquipCard={(id) => void equipCard(ctx, id)}
         session={session}
@@ -334,7 +355,9 @@ function Game({ claims }: { claims: TeamClaims }) {
         match={null}
         rival={null}
         late
-        onChooseSide={(s) => joinLateAgainstMachine(ctx, s)}
+        onChooseSide={(s) =>
+          episode.alliance ? joinAlliance(ctx) : joinLateAgainstMachine(ctx, s)
+        }
         onChooseMode={(m) => chooseMode(ctx, m)}
         onEquipCard={(id) => void equipCard(ctx, id)}
       />
@@ -351,6 +374,7 @@ function Game({ claims }: { claims: TeamClaims }) {
         player={player}
         match={matchId ? match : null}
         rival={rivalId ? rival : null}
+        allianceTeams={classTeams}
       />
     );
   }

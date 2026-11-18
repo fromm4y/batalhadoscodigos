@@ -204,6 +204,7 @@ Descartadas a pedido da May (15/11): menino-03-bando antigo (óculos fundidos na
 - **Prioridade:** Ep. 2 primeiro. **(16/11) O Ep. 2 já é jogável:** sem as 8 imagens dele (`ep2-*`, `card-ep2`, `teaser-ep2`), o jogo mostra um quadro provisório. A imagem nova entra sozinha quando o arquivo com o id certo aparece na pasta.
 - **Onde cada imagem do Ep. 2 aparece:** `ep2-sala-guerra`, `ep2-enigma-vitrine`, `ep2-professor-radio` e `ep2-capita-radio` na HQ de abertura e no planejamento; `ep2-bletchley`, `ep2-bombe` e `narradora` na revelação do fim; `card-ep2` na carta do Álbum; `teaser-ep2` no gancho "TRANSMISSÃO INTERCEPTADA" (aponta para o Ep. 3).
 - **O disco de cifra** é desenhado em SVG pelo próprio jogo: não precisa de imagem.
+- **(18/11) Ep. 4 e 5 jogáveis:** o console da Apollo, o jogo da velha neon e a árvore de jogadas também são desenhados pelo jogo. Do Ep. 5 só faltam **`card-ep5`** (carta do Álbum) e **`teaser-ep5`** (o encerramento da temporada, que aparece com o carimbo "FIM DA TEMPORADA"); até lá, o jogo mostra um quadro provisório.
 
 ---
 

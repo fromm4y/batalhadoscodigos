@@ -19,6 +19,13 @@ import { addCard, cardsToGrant } from '@/engine/cards';
 import { resolveChallenge } from '@/engine/challenges';
 import { needsTransmission } from '@/engine/progress';
 import type { Episode } from '@/content/types';
+import {
+  COOP_CLASS_SIDE,
+  COOP_MACHINE_SIDE,
+  COOP_MATCH_ID,
+  coopEndAwards,
+  newCoopState,
+} from '@/engine/coop';
 import { formMatches, leader, resolveByBar } from '@/engine/match';
 import { applyDelta, POINTS } from '@/engine/scoring';
 import { newMatchDoc } from '@/features/game/actions';
@@ -102,6 +109,33 @@ export async function formSessionMatches(c: Ctx): Promise<{ matches: number; bon
   return { matches: formation.matches.length, bonus: formation.sideBonus.length };
 }
 
+/**
+ * Ep. 5 (RN-C1/C2): "Formar a Aliança". Um único confronto `coop` (turma × máquina) com todas as
+ * duplas; cada dupla vai para o lado da turma. Quem chegar depois entra sozinha (`joinAlliance`).
+ */
+export async function formAlliance(c: Ctx): Promise<{ teams: number }> {
+  const { db } = getFirebase();
+  const playersSnap = await getDocs(collection(db, 'sessions', c.sessionId, 'players'));
+  const teams = playersSnap.docs.map((d) => (d.data() as PlayerDoc).teamId);
+  const ref = doc(db, 'sessions', c.sessionId, 'matches', COOP_MATCH_ID);
+  await runTransaction(db, async (tx) => {
+    const cur = (await tx.get(ref)).data() as MatchDoc | undefined;
+    if (cur) {
+      const coop = cur.coop ?? newCoopState();
+      tx.update(ref, { coop: { ...coop, teams: [...new Set([...coop.teams, ...teams])] } });
+    } else {
+      tx.set(ref, { ...newMatchDoc(null, null, COOP_MACHINE_SIDE), coop: newCoopState(teams) });
+    }
+    for (const teamId of teams)
+      tx.update(doc(db, 'sessions', c.sessionId, 'players', teamId), {
+        matchId: COOP_MATCH_ID,
+        side: COOP_CLASS_SIDE,
+      });
+    tx.update(doc(db, 'sessions', c.sessionId), { matchesFormed: true });
+  });
+  return { teams: teams.length };
+}
+
 /** RN-18: ao liberar o Cofre, quem está à frente na barra ganha a vantagem (Dica 1 grátis). */
 export async function markVaultLeaders(c: Ctx): Promise<void> {
   const { db } = getFirebase();
@@ -136,6 +170,22 @@ export async function resolveOpenMatches(c: Ctx): Promise<{
       const data = snap.data() as MatchDoc | undefined;
       if (!data) return;
       leaders[m.id] = data.vaultLeader ?? null;
+      if (data.coop) {
+        // RN-C6: o Cofre não decidiu (nem a turma nem a máquina chegaram): vale a barra;
+        // e TODAS as duplas da Aliança ganham +5 (turma venceu) ou +2 (participação).
+        const winner = data.winner ?? resolveByBar(data.bar);
+        winners[m.id] = winner;
+        if (data.coopAwarded) return;
+        const apply = await awardPoints(tx, db, c, coopEndAwards(data.coop, winner));
+        tx.update(m.ref, {
+          winner,
+          coopAwarded: true,
+          ...(data.winner ? {} : { resolvedAt: serverTimestamp() }),
+        });
+        apply();
+        resolved++;
+        return;
+      }
       if (data.winner) {
         winners[m.id] = data.winner;
         return;
@@ -227,7 +277,8 @@ export async function grantEpisodeCards(
         spokenKeys,
         spokenOpened: p.progress.lockIndex >= 3,
         bonusSolved: !!p.bonusSolvedAt,
-        stamps,
+        // Aliança (Ep. 5) não é lado: não conta para o Duas Caras
+        stamps: extra.episode?.alliance ? stamps.filter((x) => x.episodeId !== ep) : stamps,
         cardEpisodes: cards.map((x) => x.episodeId),
         seasonEpisodes: extra.seasonEpisodes,
       });
