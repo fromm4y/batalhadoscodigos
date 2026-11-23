@@ -240,3 +240,22 @@ export function machineDelayMs(
 export function machineDelayFromEffect(effect: ActiveEffect): number {
   return effect.kind === 'freeze' ? GAME_RULES.abilities.interferenceFreezeSeconds * 1000 : 0;
 }
+
+/**
+ * Economia do Firebase (23/11, a cota grátis estourou): o robô só abre uma transação quando
+ * há algo para fazer. A tela já recebe o confronto ao vivo; antes, cada dupla consultava o
+ * banco 1 vez por segundo. A transação continua conferindo tudo de novo lá dentro.
+ */
+export function machineDue(
+  m: Pick<MatchDoc, 'machine' | 'machineSide' | 'winner'> | null,
+  phase: string,
+  now: number,
+  eventRunning: boolean,
+): boolean {
+  const st = m?.machine;
+  if (!m || !st || !m.machineSide || m.winner) return false;
+  if (phase !== 'locks' && phase !== 'vault') return false;
+  if (eventRunning && !st.eventDone) return true;
+  if (st.phase !== phase) return true;
+  return st.nextAt !== null && now >= st.nextAt;
+}

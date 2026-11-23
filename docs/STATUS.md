@@ -51,6 +51,13 @@ _Atualizado em 18/11/2026 (noite)._
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
 
+### Correção de 23/11 — a cota grátis do Firebase estourou 🔥
+
+- **O que aconteceu:** o log da Vercel mostrou `RESOURCE_EXHAUSTED: Quota exceeded` (limite diário do plano grátis). Tudo falhava: abrir sessão, entrar com o código, jogar ("a conexão falhou").
+- **Causa:** o robô consultava o banco **1 vez por segundo** em cada computador que jogava contra ele (e, no Ep. 5, em todos), e o alarme automático consultava a cada 5 s em cada tela. Duas aulas no mesmo dia passavam das 50 mil leituras.
+- **Correção:** cada tela usa os dados que já recebe ao vivo e só vai ao banco **quando é a vez do robô** (ou quando chega a hora do alarme). O jogo não muda; o custo desses dois cai mais de 99%. Teste: o robô abre os 3 cadeados e o Cofre sozinho, e o alarme dispara no horário.
+- A cota zera todo dia por volta das **5h** (horário de Brasília).
+
 ### Novidades de 18/11 (madrugada) — certificado da temporada e o CHEFÃO 😈
 
 - **Certificado da temporada (SPEC-02 E):** medalha de ouro, prata e bronze para as 3 primeiras duplas do ranking (empate divide) e participação para todas. Traz escola, turma, temporada, avatar, codinome e nome pirata, nível, pontos, cartas (dourada com ★) e selos, com duas linhas "Nome:" em branco (LGPD). A dupla baixa em **PNG** (Álbum, ou no fim do último episódio); a Narradora baixa o **PDF da turma** (uma página por dupla) na página da turma.
