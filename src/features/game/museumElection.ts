@@ -36,12 +36,18 @@ export function useMuseumEventElection(
     session.phase === 'locks' &&
     session.museumEvent?.status === 'idle' &&
     !!session.autoEventAt;
+  // Economia (23/11): só abre a transação depois do horário sorteado (antes, 1 consulta a cada
+  // poucos segundos em cada tela, a aula inteira).
+  const at = session?.autoEventAt?.toMillis?.() ?? null;
   useEffect(() => {
-    if (!armed) return;
+    if (!armed || at === null) return;
     const { db } = getFirebase(role);
-    const tick = () => void tryAutoMuseumEvent(db, sessionId).catch(() => undefined);
+    const tick = () => {
+      if (serverNow() < at) return;
+      void tryAutoMuseumEvent(db, sessionId).catch(() => undefined);
+    };
     tick();
     const t = setInterval(tick, GAME_RULES.museumEvent.electionCheckSeconds * 1000);
     return () => clearInterval(t);
-  }, [armed, role, sessionId]);
+  }, [armed, at, role, sessionId]);
 }

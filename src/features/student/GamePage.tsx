@@ -29,6 +29,7 @@ import { getFirebase } from '@/lib/firebase';
 import { calibrate, serverNow } from '@/lib/serverClock';
 import type { ClassDoc, Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import { machineTick } from '@/features/game/machine';
+import { machineDue } from '@/engine/match';
 import { FreezeOverlay } from '@/features/game/FreezeOverlay';
 import { useMuseumEventElection } from '@/features/game/museumElection';
 import { JailScreen } from '@/features/game/JailScreen';
@@ -166,12 +167,24 @@ function Game({ claims }: { claims: TeamClaims }) {
     level &&
     (phase === 'locks' || phase === 'vault')
   );
+  // Economia (23/11): a tela confere o confronto que já recebe ao vivo e só abre a transação
+  // quando é a vez do robô. Antes era uma consulta por segundo por dupla (estourava a cota).
+  const matchRef = useRef(match);
+  useEffect(() => {
+    matchRef.current = match;
+  }, [match]);
   useEffect(() => {
     if (!runMachine || !matchId || !level || !phase) return;
-    const tick = () =>
-      void machineTick(claims.sessionId, matchId, level, phase, { eventRunning, frozen }).catch(
-        () => undefined,
-      );
+    let busy = false;
+    const tick = () => {
+      if (busy || frozen || !machineDue(matchRef.current, phase, serverNow(), eventRunning)) return;
+      busy = true;
+      void machineTick(claims.sessionId, matchId, level, phase, { eventRunning, frozen })
+        .catch(() => undefined)
+        .finally(() => {
+          busy = false;
+        });
+    };
     tick();
     const t = setInterval(tick, 1000);
     return () => clearInterval(t);

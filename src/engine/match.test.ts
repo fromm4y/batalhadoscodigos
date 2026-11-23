@@ -7,6 +7,7 @@ import {
   barFavorsRival,
   earnsAbility,
   formMatches,
+  machineDue,
   machineDelayMs,
   pickAbility,
   resolveByBar,
@@ -154,5 +155,32 @@ describe('máquina (RN-42)', () => {
     expect(machineDelayMs('C', 'vault', () => 0.5)).toBe(
       ((M.C.vault[0] + M.C.vault[1]) / 2) * 1000,
     );
+  });
+});
+
+describe('robô econômico (só vai ao banco quando é a vez dele)', () => {
+  const base = {
+    machineSide: 'blue' as const,
+    winner: null,
+    machine: {
+      lockIndex: 0,
+      phase: 'locks' as const,
+      nextAt: 10_000,
+      vaultSolved: false,
+      usedAbilities: [],
+    },
+  };
+  it('espera o horário da próxima jogada', () => {
+    expect(machineDue(base, 'locks', 9_999, false)).toBe(false);
+    expect(machineDue(base, 'locks', 10_000, false)).toBe(true);
+  });
+  it('fase nova, evento do museu e fim de jogo', () => {
+    expect(machineDue(base, 'vault', 0, false)).toBe(true);
+    expect(machineDue(base, 'locks', 0, true)).toBe(true);
+    expect(machineDue({ ...base, winner: 'red' }, 'locks', 99_999, false)).toBe(false);
+    expect(machineDue(base, 'end', 99_999, false)).toBe(false);
+    expect(
+      machineDue({ ...base, machine: { ...base.machine, nextAt: null } }, 'locks', 99_999, false),
+    ).toBe(false);
   });
 });
