@@ -1,5 +1,6 @@
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { CleanupPanel } from '../lifecycle/CleanupPanel';
+import { ImportPanel } from './ImportPanel';
 import { SeasonOrderPanel } from './SeasonOrderPanel';
 import { useState } from 'react';
 import { ComicButton, ComicPanel, cn } from '@/components/comic';
@@ -222,6 +223,7 @@ export function AdminPage() {
         <div className="flex flex-col gap-8">
           <SeasonOrderPanel uid={profile.uid} />
           <CleanupPanel isAdmin />
+          <ImportPanel />
           <p className="font-type text-sm text-mist">
             🏁 Para arquivar uma turma ou encerrar a temporada dela, abra a página da turma.
           </p>

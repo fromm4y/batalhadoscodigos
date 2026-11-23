@@ -118,6 +118,20 @@ Pode abrir de novo sem medo (não duplica nada).
 
 ---
 
+## Banco reserva: levar os dados junto (23/11)
+
+Para a turma continuar no banco reserva **com tudo** (turmas, duplas, PINs, pontos, cartas, selos e histórico):
+
+1. Monte o Firebase reserva e o **segundo projeto na Vercel** (Partes 1 a 3 acima, com as variáveis do banco reserva).
+2. No projeto da Vercel **do reserva**, crie mais uma variável: **`FIREBASE_SOURCE_SERVICE_ACCOUNT_JSON`** = o arquivo `.json` da **chave secreta do banco ORIGINAL** (Configurações do projeto → Contas de serviço → Gerar nova chave privada). Cole o conteúdo inteiro, como na outra chave. **Nunca mande essa chave para ninguém.** Depois, **Redeploy**.
+3. Cada Narradora entra **uma vez** no site reserva (Entrar com Google), mesmo que apareça "sem acesso". Assim as turmas chegam com a dona certa.
+4. A admin abre **Admin → 📦 Importar de outro banco**, digita `COPIAR` e clica em **Importar agora**. Leva até 1 minuto.
+5. Pronto: as duplas entram no site reserva com o **mesmo nome e PIN** de sempre.
+
+**Para voltar ao original depois:** faça o contrário. No projeto da Vercel **original**, crie a mesma variável com a chave do **reserva**, faça o Redeploy e use o mesmo botão no site original. Os pontos das aulas jogadas no reserva voltam junto.
+
+> A cópia lê o banco de origem: se ele estiver com a cota estourada, espere ela zerar (umas 5h da manhã). Depois de importar, pode apagar a variável `FIREBASE_SOURCE_SERVICE_ACCOUNT_JSON` (mais seguro).
+
 ## Se der erro
 
 | Sintoma                                   | Causa provável                                                    | O que fazer                                                   |
@@ -131,5 +145,6 @@ Pode abrir de novo sem medo (não duplica nada).
 
 ## Limites do plano gratuito (Spark)
 
-- 50 mil leituras e 20 mil gravações por dia no Firestore. Uma aula com 10 duplas fica bem abaixo disso.
+- 50 mil leituras e 20 mil gravações por dia no Firestore. **Atenção (23/11):** antes da correção do robô (PR #27) duas aulas no mesmo dia estouravam a cota; com a correção, o gasto por aula caiu muito.
+- **Banco reserva (sugestão de 23/11):** em vez de trocar as variáveis do site principal, crie um **segundo projeto na Vercel** (mesmo repositório) com as variáveis do Firebase reserva. Ficam dois endereços: o normal e o reserva. Os dados de um não aparecem no outro.
 - Se um dia aparecer "quota exceeded", o limite zera à meia-noite (horário do Pacífico, umas 5h da manhã no Brasil).

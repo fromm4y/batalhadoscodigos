@@ -36,12 +36,48 @@ export function getAdmin(): AdminBundle {
   // Testes locais: com os emuladores ligados, não usa credencial (nunca acontece na Vercel).
   if (process.env.FIRESTORE_EMULATOR_HOST) {
     const projectId = process.env.GCLOUD_PROJECT ?? 'demo-cacada';
-    const app = getApps()[0] ?? initializeApp({ projectId });
+    const app = getApps().find((a) => a.name === '[DEFAULT]') ?? initializeApp({ projectId });
     cached = { app, auth: getAuth(app), db: getFirestore(app), projectId };
     return cached;
   }
   const sa = readServiceAccount();
-  const app = getApps()[0] ?? initializeApp({ credential: cert(sa), projectId: sa.projectId });
+  const app =
+    getApps().find((a) => a.name === '[DEFAULT]') ??
+    initializeApp({ credential: cert(sa), projectId: sa.projectId });
   cached = { app, auth: getAuth(app), db: getFirestore(app), projectId: sa.projectId };
   return cached;
+}
+
+/**
+ * Banco de ORIGEM da importação (banco reserva, 23/11): outro projeto do Firebase, com a chave
+ * em `FIREBASE_SOURCE_SERVICE_ACCOUNT_JSON` (só no projeto da Vercel que vai receber os dados).
+ * Nos emuladores, `FIREBASE_SOURCE_PROJECT` escolhe o projeto de origem.
+ */
+export function getSourceDb(): { db: Firestore; projectId: string } | null {
+  const existing = getApps().find((a) => a.name === 'source');
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    const projectId = process.env.FIREBASE_SOURCE_PROJECT;
+    if (!projectId) return null;
+    const app = existing ?? initializeApp({ projectId }, 'source');
+    return { db: getFirestore(app), projectId };
+  }
+  const value = process.env.FIREBASE_SOURCE_SERVICE_ACCOUNT_JSON;
+  if (!value) return null;
+  const raw = parseServiceAccount(value) as RawServiceAccount;
+  if (!raw.project_id || !raw.client_email || !raw.private_key)
+    throw new Error('FIREBASE_SOURCE_SERVICE_ACCOUNT_JSON inválida (faltam campos).');
+  const app =
+    existing ??
+    initializeApp(
+      {
+        credential: cert({
+          projectId: raw.project_id,
+          clientEmail: raw.client_email,
+          privateKey: raw.private_key,
+        }),
+        projectId: raw.project_id,
+      },
+      'source',
+    );
+  return { db: getFirestore(app), projectId: raw.project_id };
 }
