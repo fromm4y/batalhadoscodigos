@@ -131,5 +131,6 @@ Pode abrir de novo sem medo (não duplica nada).
 
 ## Limites do plano gratuito (Spark)
 
-- 50 mil leituras e 20 mil gravações por dia no Firestore. Uma aula com 10 duplas fica bem abaixo disso.
+- 50 mil leituras e 20 mil gravações por dia no Firestore. **Atenção (23/11):** antes da correção do robô (PR #27) duas aulas no mesmo dia estouravam a cota; com a correção, o gasto por aula caiu muito.
+- **Banco reserva (sugestão de 23/11):** em vez de trocar as variáveis do site principal, crie um **segundo projeto na Vercel** (mesmo repositório) com as variáveis do Firebase reserva. Ficam dois endereços: o normal e o reserva. Os dados de um não aparecem no outro.
 - Se um dia aparecer "quota exceeded", o limite zera à meia-noite (horário do Pacífico, umas 5h da manhã no Brasil).
