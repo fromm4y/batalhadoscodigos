@@ -44,6 +44,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     res.status(200).json({ ok: true, from: source.projectId, ...r });
   } catch (err) {
     if (err instanceof HttpError) return sendError(res, err.status, err.message);
+    // cota grátis do dia esgotada (no banco de origem ou neste): avisar com clareza
+    if ((err as { code?: unknown }).code === 8)
+      return sendError(
+        res,
+        503,
+        'O limite grátis do dia do Firebase acabou (num dos bancos). Ele zera por volta das 5h da manhã: tente depois desse horário.',
+      );
     console.error('[admin-import]', err);
     sendError(res, 500, 'Não consegui importar. Confira a chave de origem e tente de novo.');
   }
