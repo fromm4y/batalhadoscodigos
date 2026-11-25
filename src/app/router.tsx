@@ -6,6 +6,7 @@ import { AdminPage } from '@/features/instructor/admin/AdminPage';
 import { InstructorLoginPage } from '@/features/instructor/auth/InstructorLoginPage';
 import { RequireInstructor } from '@/features/instructor/auth/RequireInstructor';
 import { ClassCertificatesPage } from '@/features/instructor/classes/ClassCertificatesPage';
+import { ReportPage } from '@/features/instructor/classes/ReportPage';
 import { ClassSeasonCertificatesPage } from '@/features/instructor/classes/ClassSeasonCertificatesPage';
 import { ClassDetailPage } from '@/features/instructor/classes/ClassDetailPage';
 import { ClassesPage } from '@/features/instructor/classes/ClassesPage';
@@ -45,6 +46,14 @@ export const router = createBrowserRouter([
     element: (
       <RequireInstructor>
         <ClassDetailPage />
+      </RequireInstructor>
+    ),
+  },
+  {
+    path: '/instrutor/turmas/:classId/relatorio',
+    element: (
+      <RequireInstructor>
+        <ReportPage />
       </RequireInstructor>
     ),
   },

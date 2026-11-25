@@ -14,6 +14,7 @@ import {
   type Transaction,
 } from 'firebase/firestore';
 import { GAME_RULES } from '@/config/gameRules';
+import type { Attempt } from '@/engine/report';
 import {
   abilityEffect,
   applyPull,
@@ -714,4 +715,19 @@ export async function activateCard(
     }
     tx.update(refs(db, c).player, patch);
   });
+}
+
+/**
+ * SPEC-02 F1: registra cada envio de resposta (certa ou errada) para o relatório da turma.
+ * Só números, sem dado de aluno. "Atire e esqueça": se falhar, o jogo continua normalmente.
+ */
+export function recordAttempt(c: GameCtx, a: Omit<Attempt, 'teamId' | 'episodeId'>): void {
+  const { db } = getFirebase('student');
+  void addDoc(collection(db, 'sessions', c.sessionId, 'attempts'), {
+    ...a,
+    teamId: c.teamId,
+    episodeId: c.episodeId,
+    msSinceChallengeStart: Math.max(0, Math.round(a.msSinceChallengeStart)),
+    at: serverTimestamp(),
+  }).catch(() => undefined);
 }

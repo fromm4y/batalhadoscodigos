@@ -252,6 +252,12 @@ export function ClassDetailPage() {
                   >
                     🏆 Certificados da temporada
                   </a>
+                  <Link
+                    to={`/instrutor/turmas/${classId}/relatorio`}
+                    className="grid min-h-11 place-items-center border-[3px] border-ink bg-paper px-3 pt-1 font-heist text-lg tracking-wider text-ink hover:glow-brass"
+                  >
+                    📊 Relatório da turma
+                  </Link>
                 </div>
               )}
             </ComicPanel>

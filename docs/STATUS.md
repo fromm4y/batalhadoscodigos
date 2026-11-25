@@ -1,8 +1,8 @@
 # Status do projeto — A Grande Caçada aos Códigos
 
-_Atualizado em 18/11/2026 (noite)._
+_Atualizado em 25/11/2026._
 
-**Resumo:** os **5 episódios são jogáveis** 🎉 e o Ep. 5 agora é o **CHEFÃO FINAL**. As **Partes A a E do SPEC-02** estão prontas (a E, certificado da temporada, entrou em 18/11); falta só a **F** (relatório da turma).
+**Resumo:** os **5 episódios são jogáveis** e o **plano inteiro está pronto**: Partes A a F do SPEC-02 (a F, relatório da turma, entrou em 25/11). Também dá para **mesclar** fichas, turmas e bancos (reserva ↔ principal).
 
 ## 🗺️ Plano em andamento (15/11)
 
@@ -17,7 +17,7 @@ _Atualizado em 18/11/2026 (noite)._
 | 3b  | **Duas etapas por desafio** + mais fácil no A/mediano no B + continuar a aula + personagens recortados | ✅ pronto (PR #20–#22)      |
 | 6   | SPEC-02 **D** + **E** — ficha, selos e certificado da temporada                                        | ✅ pronto, **para testar**  |
 | 7   | SPEC-03 **Ep. 5** — Deep Blue, modo `coop`                                                             | ✅ pronto (PR #25) + chefão |
-| 8   | SPEC-02 **F** — relatório da turma                                                                     | ⏳                          |
+| 8   | SPEC-02 **F** — relatório da turma                                                                     | ✅ pronto, **para testar**  |
 
 ---
 
@@ -50,6 +50,15 @@ _Atualizado em 18/11/2026 (noite)._
 - **Roteiro da Narradora em nova aba**, um por episódio (`/instrutor/roteiro/ep1`...), com linha do tempo, pistas por nível, respostas do alarme, curiosidades e **gabarito** escondido. Dá para imprimir.
 - **Painéis da turma e do admin** com números-resumo no topo; escolas em grade.
 - **Site responsivo:** celular e tablet sem nada cortado; no computador o jogo continua cabendo em 1366×768.
+
+### Novidades de 25/11 — mesclar e relatório da turma 📊
+
+- **Mesclar fichas da mesma dupla** (página da turma → 🔀 Mesclar): a ficha repetida (criada numa sessão separada) entra na original com o extrato de pontos, as cartas (a dourada vale), os selos, os carimbos e o progresso/habilidades das sessões. Nome, personagem e PIN são os da ficha que fica; a repetida é apagada.
+- **Trazer outra turma** (mesmo painel): as duplas (com pontos e PIN) e as sessões da outra turma passam para esta, confirmando com o nome da turma que vai sumir. Depois dá para mesclar as fichas repetidas.
+- **Banco reserva ↔ principal agora MESCLA:** nada do destino é apagado; a dupla que jogou nos dois soma os pontos sem contar duas vezes (cada lançamento tem id único). Vale nos dois sentidos.
+- **Sessão vencida:** a tela da dupla usa a hora do servidor e avisa "⏰ A sessão terminou..." (em vez de "conexão falhou"); o painel mostra quanto falta e avisa nos últimos 15 min.
+- **Relatório da turma (SPEC-02 F):** cada resposta vira uma "tentativa" (só números). Página **📊 Relatório da turma**: acerto de primeira por episódio (temporada) e, por desafio, acerto de primeira, tentativas, Dica 1/2, tempo médio e pedidos de ajuda; lados, modos, vitórias e alarme. **CSV anonimizado por padrão** ("Dupla 01"...). O resumo fica guardado na turma e **sobrevive à limpeza**.
+- ⚠️ **Publicar o `firestore.rules` novo** (tentativas e resumo do relatório).
 
 ### Correção de 23/11 — a cota grátis do Firebase estourou 🔥
 

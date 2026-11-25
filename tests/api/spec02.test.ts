@@ -142,6 +142,45 @@ async function oldSession(id: string, daysAgo: number) {
 }
 
 describe('limpar sessões antigas (SPEC-02 A3)', () => {
+  it('SPEC-02 F2: o resumo do relatório sobrevive à limpeza', async () => {
+    await newClassAndSession();
+    const ref = await oldSession('velha', 40);
+    await ref.update({ episodeId: 'ep2', phase: 'end' });
+    await ref.collection('players').doc('t1').set({ teamId: 't1', side: 'red', mode: 'pessoas' });
+    const at = { episodeId: 'ep2', level: 'B', side: 'red', hintLevel: 0 };
+    await ref
+      .collection('attempts')
+      .add({
+        ...at,
+        teamId: 't1',
+        challengeKey: 'red-lock1',
+        correct: false,
+        msSinceChallengeStart: 20000,
+      });
+    await ref
+      .collection('attempts')
+      .add({
+        ...at,
+        teamId: 't1',
+        challengeKey: 'red-lock1',
+        correct: true,
+        msSinceChallengeStart: 45000,
+      });
+    expect(
+      (await call(adminCleanup, { scope: 'sessions' }, { token: anaToken })).body.deleted,
+    ).toBe(1);
+    expect((await db.collection('sessions/velha/attempts').get()).size).toBe(0);
+    const rep = (await db.doc(`classes/${classId}/reports/ep2`).get()).data();
+    expect(rep?.teams).toBe(1);
+    expect(rep?.attempts).toBe(2);
+    expect(rep?.challenges[0]).toMatchObject({
+      challengeKey: 'red-lock1',
+      firstTry: 0,
+      avgAttempts: 2,
+      avgSeconds: 45,
+    });
+  });
+
   it('apaga só as vencidas há mais de 30 dias, com as subcoleções, sem mexer nos pontos', async () => {
     await newClassAndSession();
     const team = (

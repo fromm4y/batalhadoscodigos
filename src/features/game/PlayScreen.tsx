@@ -47,6 +47,7 @@ import {
   activateAbility,
   addFeed,
   callHelp,
+  recordAttempt,
   sendReinforcement,
   type GameCtx,
 } from './actions';
@@ -175,7 +176,26 @@ export function PlayScreen({
     }
   }
 
+  // F1: quando o desafio atual apareceu (para o tempo do relatório)
+  const startedAt = useRef(0);
+  const challengeKeyNow = challenge?.key ?? null;
+  useEffect(() => {
+    startedAt.current = stamp();
+  }, [challengeKeyNow]);
+  function attempt(correct: boolean) {
+    if (!challenge) return;
+    recordAttempt(ctx, {
+      challengeKey: challenge.key,
+      level,
+      side: alliance ? 'coop' : side,
+      correct,
+      hintLevel: Math.min(2, usedHints) as 0 | 1 | 2,
+      msSinceChallengeStart: stamp() - (startedAt.current || stamp()),
+    });
+  }
+
   function onWrong() {
+    attempt(false);
     playSfx('error');
     // Ep. 5: o chefão contra-ataca a cada erro (pedido da May, 18/11)
     setPop(
@@ -191,6 +211,7 @@ export function PlayScreen({
 
   function onSolved() {
     if (slot === null || busy) return;
+    attempt(true);
     setBusy(true);
     void guard(async () => {
       if (twoSteps && step === 0) {
