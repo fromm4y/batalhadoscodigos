@@ -16,6 +16,7 @@ import { useClass, useClassTeams, useOpenSessions, useSchools, type WithId } fro
 import { InstructorLayout } from '../InstructorLayout';
 import { SeasonCloseDialog } from '../lifecycle/SeasonCloseDialog';
 import { StatCards } from '../StatCards';
+import { MergePanel } from './MergePanel';
 
 /** `/instrutor/turmas/:classId` — duplas (avatares, pontos, reset de PIN) + ranking + "Abrir sessão". */
 export function ClassDetailPage() {
@@ -337,6 +338,19 @@ export function ClassDetailPage() {
               </ol>
             )}
           </ComicPanel>
+          {canManage && !c.archived && (
+            <MergePanel
+              classId={classId}
+              className={c.name}
+              teams={teams.data}
+              uid={profile.uid}
+              isAdmin={profile.role === 'admin'}
+              onDone={(m) => {
+                setMsg(m);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          )}
           {canManage && !c.archived && (
             <ComicPanel caption="Fim de ano" tone="graphite" className="pt-8">
               <p className="mb-3 font-type text-mist">

@@ -147,11 +147,43 @@ describe('importar de outro banco (banco reserva)', () => {
     expect((await db.collection('auditLog').where('action', '==', 'import').get()).size).toBe(1);
   });
 
-  it('importar de novo não duplica (sobrescreve documento por documento)', async () => {
+  it('MESCLA: pontos dos dois bancos somam sem duplicar; o destino não perde nada', async () => {
     await call(adminImport, { confirm: 'COPIAR' }, { token: chefeToken });
+    // aula no DESTINO (reserva): +3 e uma carta nova
+    await db.doc('classes/c1/teams/t1/ledger/l2').set({ delta: 3, reason: 'lock_open' });
+    await db.doc('classes/c1/teams/t1').update({
+      totalPoints: 10,
+      cards: [
+        { episodeId: 'ep1', variant: 'normal' },
+        { episodeId: 'ep2', variant: 'normal' },
+      ],
+    });
+    // aula na ORIGEM: +5 e a mesma sessão que já veio
+    await src.doc('classes/c1/teams/t1/ledger/l3').set({ delta: 5, reason: 'vault_win' });
     await src.doc('classes/c1/teams/t1').update({ totalPoints: 12 });
+    await src
+      .doc('sessions/s2')
+      .set({ classId: 'c1', instructorId: 'uid-antigo-ana', phase: 'end' });
     await call(adminImport, { confirm: 'COPIAR' }, { token: chefeToken });
-    expect((await db.doc('classes/c1/teams/t1').get()).data()?.totalPoints).toBe(12);
+    const team = (await db.doc('classes/c1/teams/t1').get()).data();
+    expect(team?.totalPoints).toBe(15); // 7 + 3 + 5, sem contar o 7 duas vezes
+    expect((await db.collection('classes/c1/teams/t1/ledger').get()).size).toBe(3);
+    // a dourada da origem vence a normal do destino; a carta do ep2 (só no destino) fica
+    expect(team?.cards).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ episodeId: 'ep1', variant: 'dourada' }),
+        expect.objectContaining({ episodeId: 'ep2' }),
+      ]),
+    );
+    expect((await db.doc('sessions/s2').get()).exists).toBe(true);
     expect((await db.collection('classes/c1/teams').get()).size).toBe(1);
+  });
+
+  it('a Narradora que entra depois ganha a turma na importação seguinte', async () => {
+    await call(adminImport, { confirm: 'COPIAR' }, { token: chefeToken });
+    const zoe = await googleToken('zoe@teste.br');
+    const r = await call(adminImport, { confirm: 'COPIAR' }, { token: chefeToken });
+    expect(r.body.unmapped).toEqual([]);
+    expect((await db.doc('classes/c2').get()).data()?.instructorId).toBe(zoe.uid);
   });
 });

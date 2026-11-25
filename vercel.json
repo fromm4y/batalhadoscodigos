@@ -12,6 +12,9 @@
   "functions": {
     "api/admin-import.ts": {
       "maxDuration": 60
+    },
+    "api/merge.ts": {
+      "maxDuration": 60
     }
   }
 }
