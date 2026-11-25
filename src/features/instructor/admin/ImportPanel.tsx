@@ -36,15 +36,16 @@ export function ImportPanel() {
   }
 
   return (
-    <ComicPanel caption="📦 Importar de outro banco (reserva)" tone="graphite" className="pt-8">
+    <ComicPanel
+      caption="📦 Mesclar com outro banco (reserva ↔ principal)"
+      tone="graphite"
+      className="pt-8"
+    >
       <ul className="mb-3 list-disc space-y-1 pl-5 font-type text-mist">
         <li>
-          Copia{' '}
-          <strong className="text-paper">
-            turmas, duplas, PINs, pontos, cartas, selos e sessões
-          </strong>{' '}
-          do banco de origem para este site. O que já existe aqui com o mesmo registro é substituído
-          pela versão da origem.
+          <strong className="text-paper">Mescla</strong> turmas, duplas, PINs, pontos, cartas, selos
+          e sessões do banco de origem com os deste site. Nada daqui é apagado; a dupla que existe
+          nos dois bancos soma os pontos sem contar duas vezes.
         </li>
         <li>
           Antes: cada Narradora entra <strong className="text-paper">uma vez</strong> neste site

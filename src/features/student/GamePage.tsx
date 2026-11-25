@@ -69,9 +69,10 @@ function Game({ claims }: { claims: TeamClaims }) {
   }, [claims.sessionId]);
 
   // Relógio para perceber quando a sessão vence (RN-04: 3 h).
-  const [nowMs, setNowMs] = useState(() => Date.now());
+  // 23/11: hora do SERVIDOR (o relógio do computador da escola pode estar atrasado)
+  const [nowMs, setNowMs] = useState(() => serverNow());
   useEffect(() => {
-    const t = setInterval(() => setNowMs(Date.now()), 30_000);
+    const t = setInterval(() => setNowMs(serverNow()), 15_000);
     return () => clearInterval(t);
   }, []);
 

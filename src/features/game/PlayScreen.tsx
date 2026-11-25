@@ -33,7 +33,7 @@ import {
 import { currentStage, needsTransmission } from '@/engine/progress';
 import { ABILITY_INFO, hasEffect, other } from '@/engine/match';
 import { hintCost, lightningSecondsLeft, nextHint } from '@/engine/scoring';
-import { clockOffset } from '@/lib/serverClock';
+import { clockOffset, serverNow } from '@/lib/serverClock';
 import { useNow } from '@/lib/useNow';
 import type { Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import {
@@ -47,6 +47,7 @@ import {
   activateAbility,
   addFeed,
   callHelp,
+  recordAttempt,
   sendReinforcement,
   type GameCtx,
 } from './actions';
@@ -162,11 +163,39 @@ export function PlayScreen({
       await fn();
     } catch (err) {
       console.error('[jogo]', err);
-      setError('Ops! A conexão falhou. Tentem de novo.');
+      // 23/11: dizer o motivo de verdade (sessão vencida ou cota do dia), não só "conexão"
+      const code = (err as { code?: string }).code;
+      const expired = (session.expiresAt?.toMillis?.() ?? Infinity) <= serverNow();
+      setError(
+        expired || (code === 'permission-denied' && session.status !== 'open')
+          ? '⏰ A sessão terminou. Peçam para a Narradora abrir outra: dá para continuar de onde pararam!'
+          : code === 'resource-exhausted'
+            ? 'O limite grátis do dia do Firebase acabou. Avisem a Narradora.'
+            : 'Ops! A conexão falhou. Tentem de novo.',
+      );
     }
   }
 
+  // F1: quando o desafio atual apareceu (para o tempo do relatório)
+  const startedAt = useRef(0);
+  const challengeKeyNow = challenge?.key ?? null;
+  useEffect(() => {
+    startedAt.current = stamp();
+  }, [challengeKeyNow]);
+  function attempt(correct: boolean) {
+    if (!challenge) return;
+    recordAttempt(ctx, {
+      challengeKey: challenge.key,
+      level,
+      side: alliance ? 'coop' : side,
+      correct,
+      hintLevel: Math.min(2, usedHints) as 0 | 1 | 2,
+      msSinceChallengeStart: stamp() - (startedAt.current || stamp()),
+    });
+  }
+
   function onWrong() {
+    attempt(false);
     playSfx('error');
     // Ep. 5: o chefão contra-ataca a cada erro (pedido da May, 18/11)
     setPop(
@@ -182,6 +211,7 @@ export function PlayScreen({
 
   function onSolved() {
     if (slot === null || busy) return;
+    attempt(true);
     setBusy(true);
     void guard(async () => {
       if (twoSteps && step === 0) {

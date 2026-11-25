@@ -6,6 +6,7 @@
 import { FieldValue, Timestamp, type Firestore } from 'firebase-admin/firestore';
 import type { InstructorIdentity } from './instructor.js';
 import { HttpError } from './instructor.js';
+import { saveEpisodeReport } from './report.js';
 
 const DAY = 86_400_000;
 
@@ -42,6 +43,12 @@ export async function cleanupOldSessions(
     const exp = d.data().expiresAt as Timestamp | undefined;
     return !!exp && exp.toMillis() < cutoff.toMillis();
   });
+  // SPEC-02 F2: antes de apagar, guarda o resumo de cada episódio (sobrevive à limpeza)
+  const pairs = new Set(old.map((d) => `${d.data().classId}|${d.data().episodeId}`));
+  for (const pair of pairs) {
+    const [classId, episodeId] = pair.split('|');
+    if (classId && episodeId) await saveEpisodeReport(db, classId, episodeId);
+  }
   for (const d of old) await db.recursiveDelete(d.ref);
   await audit(db, me, 'cleanup-sessions', { olderThanDays, deleted: old.length });
   return old.length;

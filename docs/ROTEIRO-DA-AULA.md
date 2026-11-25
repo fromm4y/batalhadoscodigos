@@ -42,6 +42,11 @@
 - A dupla baixa o próprio certificado em PNG pelo Álbum ou no fim do último episódio.
 - Sem nome de aluno: duas linhas "Nome:" em branco para escrever à mão.
 
+## Depois da aula: relatório e mesclas
+
+- **📊 Relatório da turma** (página da turma): o que a turma acertou de primeira, onde pediu mais dica e ajuda, tempo por desafio. O CSV sai **anonimizado** (Dupla 01...).
+- **🔀 Mesclar** (página da turma): se uma dupla criou uma ficha nova, junte na original (pontos, cartas, selos e progresso vão juntos). Se você separou uma turma (ex.: "avançados"), traga de volta com "Trazer outra turma".
+
 ## Se algo der errado
 
 | Situação                                     | O que fazer                                                                                              |

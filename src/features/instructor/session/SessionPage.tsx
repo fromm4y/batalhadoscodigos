@@ -1,3 +1,4 @@
+import { GAME_RULES } from '@/config/gameRules';
 import { doc, updateDoc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
@@ -134,6 +135,7 @@ export function SessionPage() {
               {episode ? `Ep. ${episode.number} — ${episode.title}` : s.episodeId} · fase:{' '}
               {PHASE_LABEL[s.phase]}
             </p>
+            {!finished && <ExpiryNote ms={s.expiresAt.toMillis() - now} />}
           </ComicPanel>
           {!finished && mine && (
             <div className="flex flex-col gap-3">
@@ -331,4 +333,22 @@ function teamFlags(
   }
   if (p.helpUsed) flags.push('🙋 pediu ajuda');
   return flags;
+}
+
+/** 23/11: quanto falta para a sessão vencer (3 h); nos últimos minutos, aviso em vermelho. */
+function ExpiryNote({ ms }: { ms: number }) {
+  const min = Math.max(0, Math.ceil(ms / 60_000));
+  const warn = min <= GAME_RULES.session.expiryWarnMinutes;
+  const text =
+    min >= 60 ? `${Math.floor(min / 60)}h${String(min % 60).padStart(2, '0')}` : `${min} min`;
+  return (
+    <p
+      role={warn ? 'alert' : undefined}
+      className={cn('mt-1 font-type text-sm', warn ? 'font-bold text-alert' : 'text-mist')}
+    >
+      {warn
+        ? `⏳ A sessão vence em ${text}! Depois disso, abra outra com "Continuar de onde pararam".`
+        : `⏳ A sessão vence em ${text}.`}
+    </p>
+  );
 }
