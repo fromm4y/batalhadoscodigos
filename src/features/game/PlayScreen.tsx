@@ -33,7 +33,7 @@ import {
 import { currentStage, needsTransmission } from '@/engine/progress';
 import { ABILITY_INFO, hasEffect, other } from '@/engine/match';
 import { hintCost, lightningSecondsLeft, nextHint } from '@/engine/scoring';
-import { clockOffset } from '@/lib/serverClock';
+import { clockOffset, serverNow } from '@/lib/serverClock';
 import { useNow } from '@/lib/useNow';
 import type { Level, MatchDoc, PlayerDoc, SessionDoc, TeamDoc } from '@/types/domain';
 import {
@@ -162,7 +162,16 @@ export function PlayScreen({
       await fn();
     } catch (err) {
       console.error('[jogo]', err);
-      setError('Ops! A conexão falhou. Tentem de novo.');
+      // 23/11: dizer o motivo de verdade (sessão vencida ou cota do dia), não só "conexão"
+      const code = (err as { code?: string }).code;
+      const expired = (session.expiresAt?.toMillis?.() ?? Infinity) <= serverNow();
+      setError(
+        expired || (code === 'permission-denied' && session.status !== 'open')
+          ? '⏰ A sessão terminou. Peçam para a Narradora abrir outra: dá para continuar de onde pararam!'
+          : code === 'resource-exhausted'
+            ? 'O limite grátis do dia do Firebase acabou. Avisem a Narradora.'
+            : 'Ops! A conexão falhou. Tentem de novo.',
+      );
     }
   }
 

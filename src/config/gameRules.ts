@@ -13,6 +13,8 @@ export const GAME_RULES = {
   session: {
     /** RN-04: a sessão expira 3 h após criada. */
     expiresAfterHours: 3,
+    /** 23/11: o painel avisa quando faltam estes minutos para a sessão vencer. */
+    expiryWarnMinutes: 15,
     /** RN-03: tamanho do código e alfabeto (sem 0/O/1/I). */
     codeLength: 4,
     codeAlphabet: 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789',
